@@ -1,79 +1,128 @@
-"use client";
+"use client"
 
-import { CotaMapa } from "@/components/CotaMapa";
-import type { CotasData, ExposicaoSetor, ExposicaoMun } from "./types";
-import { SETOR_LABEL, SETOR_COLORS, fmtBRL, fmtN, MAPA_SLUG } from "./helpers";
-import { KpiRow, Section, DataTable, Note } from "./ui";
-import { DetalhePorCategoria } from "./DetalhePorCategoria";
+import { CotaMapa } from "@/components/CotaMapa"
+import type { CotasData, ExposicaoSetor, ExposicaoMun } from "./types"
+import { SETOR_LABEL, SETOR_COLORS, fmtBRL, fmtN, MAPA_SLUG } from "./helpers"
+import { KpiRow, Section, DataTable, Note } from "./ui"
+import { DetalhePorCategoria } from "./DetalhePorCategoria"
 
-export function ExposicaoView({ expo, mun, cota, setAba, diag }: {
-  expo: ExposicaoMun; diag?: CotasData["diagnostico"] | null; mun: string; cota: string; setAba: (a: "dala" | "climada") => void;
+export function ExposicaoView({
+  expo,
+  mun,
+  cota,
+  setAba,
+  diag,
+}: {
+  expo: ExposicaoMun
+  diag?: CotasData["diagnostico"] | null
+  mun: string
+  cota: string
+  setAba: (a: "dala" | "climada") => void
 }) {
-  const setores = ["empresas", "educacao", "saude"];
-  const soma = (r: Record<string, ExposicaoSetor>, k: "valor_exposto_atingido_brl" | "exposicao_total_brl") =>
-    setores.reduce((s, st) => s + r[st][k], 0);
-  const cotasLista = Object.keys(expo.por_cota).sort((a, b) => parseFloat(a) - parseFloat(b));
-  const cotaAtiva = expo.por_cota[cota] ? cota : cotasLista[Math.floor(cotasLista.length / 2)];
-  const atual = expo.por_cota[cotaAtiva];
-  const titulo = `${mun} · cota ${cotaAtiva} m`;
-  const total = soma(atual, "valor_exposto_atingido_brl");
-  const expTotal = soma(atual, "exposicao_total_brl");
+  const setores = ["empresas", "educacao", "saude"]
+  const soma = (
+    r: Record<string, ExposicaoSetor>,
+    k: "valor_exposto_atingido_brl" | "exposicao_total_brl"
+  ) => setores.reduce((s, st) => s + r[st][k], 0)
+  const cotasLista = Object.keys(expo.por_cota).sort(
+    (a, b) => parseFloat(a) - parseFloat(b)
+  )
+  const cotaAtiva = expo.por_cota[cota]
+    ? cota
+    : cotasLista[Math.floor(cotasLista.length / 2)]
+  const atual = expo.por_cota[cotaAtiva]
+  const titulo = `${mun} · cota ${cotaAtiva} m`
+  const total = soma(atual, "valor_exposto_atingido_brl")
+  const expTotal = soma(atual, "exposicao_total_brl")
 
   return (
     <>
       <Section id="c-resumo" num="1" title="Resumo">
         <Note type="warning">
-          <strong>Este indicador é exposição, não dano.</strong> Sem curva de dano (JRC) não há como converter a
-          profundidade da água em fração destruída, e não há perda observada para calibrar. Por isso o painel
-          mostra o <strong>valor exposto atingido</strong>: o valor de reposição de tudo o que fica sob água.
-          Ele é o <strong>teto</strong> do dano (equivale a perda total de tudo que molha), não uma estimativa
-          dele, e <strong>não deve ser somado</strong> aos Danos Operacionais (
-          <button onClick={() => setAba("dala")} className="underline underline-offset-2 font-bold">DaLA</button>
-          ), que medem outra coisa (produção e serviço interrompidos){mun !== "Porto Alegre" && "; também não se compara ao dano físico de Porto Alegre"}.
+          <strong>Este indicador é exposição, não dano.</strong> Sem curva de
+          dano (JRC) não há como converter a profundidade da água em fração
+          destruída, e não há perda observada para calibrar. Por isso o painel
+          mostra o <strong>valor exposto atingido</strong>: o valor de reposição
+          de tudo o que fica sob água. Ele é o <strong>teto</strong> do dano
+          (equivale a perda total de tudo que molha), não uma estimativa dele, e{" "}
+          <strong>não deve ser somado</strong> aos Danos Operacionais (
+          <button
+            onClick={() => setAba("dala")}
+            className="font-bold underline underline-offset-2"
+          >
+            DaLA
+          </button>
+          ), que medem outra coisa (produção e serviço interrompidos)
+          {mun !== "Porto Alegre" &&
+            "; também não se compara ao dano físico de Porto Alegre"}
+          .
         </Note>
         <div className="my-4 rounded-xl border border-[#b3cdd8] bg-white px-4 py-3 text-sm text-slate-700 shadow-sm">
-          <p className="text-[10px] font-black uppercase tracking-wider text-[#2f6a83] mb-2">Como ler os resultados</p>
-          <ul className="list-disc list-inside space-y-1.5">
+          <p className="mb-2 text-[10px] font-black tracking-wider text-[#2f6a83] uppercase">
+            Como ler os resultados
+          </p>
+          <ul className="list-inside list-disc space-y-1.5">
             <li>
-              <strong>Como é calculado:</strong> cada empresa, escola ou unidade de saúde é um ponto com um valor de
-              reposição estimado. O ponto conta como <em>atingido</em> quando a profundidade do raster
-              naquela cota é maior que 0; o valor exposto
-              atingido é a soma desses valores. Não há fração de dano: o ponto entra com 100% do valor ou não entra.
+              <strong>Como é calculado:</strong> cada empresa, escola ou unidade
+              de saúde é um ponto com um valor de reposição estimado. O ponto
+              conta como <em>atingido</em> quando a profundidade do raster
+              naquela cota é maior que 0; o valor exposto atingido é a soma
+              desses valores. Não há fração de dano: o ponto entra com 100% do
+              valor ou não entra.
             </li>
             <li>
-              <strong>Os percentuais:</strong> &ldquo;% da exposição total&rdquo; e &ldquo;% do setor&rdquo; comparam o valor atingido
-              com o patrimônio de todos os pontos do município (atingidos ou não).{" "}
-              Cada cota é um cenário independente; os valores crescem com a cota porque o máximo é acumulado (a água de uma cota maior cobre pelo menos o que a menor cobria).
+              <strong>Os percentuais:</strong> &ldquo;% da exposição
+              total&rdquo; e &ldquo;% do setor&rdquo; comparam o valor atingido
+              com o patrimônio de todos os pontos do município (atingidos ou
+              não). Cada cota é um cenário independente; os valores crescem com
+              a cota porque o máximo é acumulado (a água de uma cota maior cobre
+              pelo menos o que a menor cobria).
             </li>
             <li>
-              <strong>Os dados por categoria</strong> (empresas, saúde, educação) somam os atributos dos pontos atingidos:
-              empregados e massa salarial (RAIS), leitos e profissionais (CNES), matrículas e docentes (Censo Escolar).
-              A agricultura é medida em hectares sob água, sem valor em R$.
+              <strong>Os dados por categoria</strong> (empresas, saúde,
+              educação) somam os atributos dos pontos atingidos: empregados e
+              massa salarial (RAIS), leitos e profissionais (CNES), matrículas e
+              docentes (Censo Escolar). A agricultura é medida em hectares sob
+              água, sem valor em R$.
             </li>
             <li>
-              <strong>Ordem de grandeza, não precisão:</strong> muitos estabelecimentos compartilham a mesma coordenada, então o valor
-              sobe em degraus (cada pilha entra de uma vez), e o valor de reposição é estimado. Use os números para
-              comparar cotas e setores, não como perda a ser paga.
+              <strong>Ordem de grandeza, não precisão:</strong> muitos
+              estabelecimentos compartilham a mesma coordenada, então o valor
+              sobe em degraus (cada pilha entra de uma vez), e o valor de
+              reposição é estimado. Use os números para comparar cotas e
+              setores, não como perda a ser paga.
             </li>
           </ul>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-5">
-          <div className="bg-white border border-[#b3cdd8] rounded-xl overflow-hidden shadow-sm">
+        <div className="my-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="overflow-hidden rounded-xl border border-[#b3cdd8] bg-white shadow-sm">
             <div className="px-4 py-3" style={{ backgroundColor: "#055071" }}>
-              <p className="text-[10px] font-black uppercase tracking-wider text-white/95 mb-0.5">{titulo}</p>
-              <p className="text-2xl font-black text-white leading-none">{fmtBRL(total)}</p>
-              <p className="text-[9px] text-white/95 font-mono mt-1">
-                valor exposto atingido (3 setores) · {expTotal ? ((total / expTotal) * 100).toFixed(1) : "0,0"}% da exposição total · teto, não dano
+              <p className="mb-0.5 text-[10px] font-black tracking-wider text-white/95 uppercase">
+                {titulo}
+              </p>
+              <p className="text-2xl leading-none font-black text-white">
+                {fmtBRL(total)}
+              </p>
+              <p className="mt-1 font-mono text-[9px] text-white/95">
+                valor exposto atingido (3 setores) ·{" "}
+                {expTotal ? ((total / expTotal) * 100).toFixed(1) : "0,0"}% da
+                exposição total · teto, não dano
               </p>
             </div>
             <div className="px-4 pt-3 pb-1">
-              <div className="flex h-2 rounded-full overflow-hidden bg-slate-100">
+              <div className="flex h-2 overflow-hidden rounded-full bg-slate-100">
                 {setores.map((st) => (
-                  <div key={st} style={{ width: `${(atual[st].valor_exposto_atingido_brl / (total || 1)) * 100}%`, backgroundColor: SETOR_COLORS[st] }} />
+                  <div
+                    key={st}
+                    style={{
+                      width: `${(atual[st].valor_exposto_atingido_brl / (total || 1)) * 100}%`,
+                      backgroundColor: SETOR_COLORS[st],
+                    }}
+                  />
                 ))}
               </div>
             </div>
-            <div className="px-4 pb-4 pt-2 grid grid-cols-1 gap-y-1">
+            <div className="grid grid-cols-1 gap-y-1 px-4 pt-2 pb-4">
               {setores.map((st) => (
                 <KpiRow
                   key={st}
@@ -85,150 +134,218 @@ export function ExposicaoView({ expo, mun, cota, setAba, diag }: {
               ))}
             </div>
           </div>
-          <div className="bg-white border border-[#b3cdd8] rounded-xl p-4 shadow-sm">
-            <p className="text-[10px] font-black uppercase tracking-wider text-[#2f6a83] mb-2">Exposição total (patrimônio no município)</p>
-            <p className="text-2xl font-black text-slate-800 leading-none mb-3">{fmtBRL(expTotal)}</p>
+          <div className="rounded-xl border border-[#b3cdd8] bg-white p-4 shadow-sm">
+            <p className="mb-2 text-[10px] font-black tracking-wider text-[#2f6a83] uppercase">
+              Exposição total (patrimônio no município)
+            </p>
+            <p className="mb-3 text-2xl leading-none font-black text-slate-800">
+              {fmtBRL(expTotal)}
+            </p>
             {setores.map((st) => (
-              <div key={st} className="flex items-center justify-between text-[11px] py-1 border-t border-slate-100 first:border-t-0">
-                <span className="text-slate-600">{SETOR_LABEL[st]}: {atual[st].n_atingidos}/{atual[st].n_total} pontos atingidos</span>
-                <span className="font-bold text-slate-700">prof. média {atual[st].profundidade_media_atingidos_m.toFixed(2)}m</span>
+              <div
+                key={st}
+                className="flex items-center justify-between border-t border-slate-100 py-1 text-[11px] first:border-t-0"
+              >
+                <span className="text-slate-600">
+                  {SETOR_LABEL[st]}: {atual[st].n_atingidos}/{atual[st].n_total}{" "}
+                  pontos atingidos
+                </span>
+                <span className="font-bold text-slate-700">
+                  prof. média{" "}
+                  {atual[st].profundidade_media_atingidos_m.toFixed(2)}m
+                </span>
               </div>
             ))}
           </div>
         </div>
       </Section>
 
-      <Section id="c-tabela" num="2" title="Valor exposto atingido por cota do rio">
+      <Section
+        id="c-tabela"
+        num="2"
+        title="Valor exposto atingido por cota do rio"
+      >
         <p>
-          Valor exposto atingido em cada cota (rasters de {cotasLista[0]} a {cotasLista[cotasLista.length - 1]} m), com o máximo
-          acumulado entre cotas. Sem período de retorno associado a cada cota, não há EAI nesta visão.
+          Valor exposto atingido em cada cota (rasters de {cotasLista[0]} a{" "}
+          {cotasLista[cotasLista.length - 1]} m), com o máximo acumulado entre
+          cotas. Sem período de retorno associado a cada cota, não há EAI nesta
+          visão.
         </p>
         <DataTable
           destaque={cotasLista.indexOf(cotaAtiva)}
           rows={[
-            ["Cota (m)", "Empresas atingidas", "Escolas atingidas", "Unid. saúde atingidas", "Valor exposto atingido"],
+            [
+              "Cota (m)",
+              "Empresas atingidas",
+              "Escolas atingidas",
+              "Unid. saúde atingidas",
+              "Valor exposto atingido",
+            ],
             ...cotasLista.map((c) => {
-              const r = expo.por_cota[c];
+              const r = expo.por_cota[c]
               return [
-                <span key="c" className={c === cotaAtiva ? "font-black text-amber-800" : "font-bold"}>{c}</span>,
+                <span
+                  key="c"
+                  className={
+                    c === cotaAtiva ? "font-black text-amber-800" : "font-bold"
+                  }
+                >
+                  {c}
+                </span>,
                 `${r.empresas.n_atingidos}/${r.empresas.n_total}`,
                 `${r.educacao.n_atingidos}/${r.educacao.n_total}`,
                 `${r.saude.n_atingidos}/${r.saude.n_total}`,
                 fmtBRL(soma(r, "valor_exposto_atingido_brl")),
-              ];
+              ]
             }),
           ]}
         />
       </Section>
 
-      {expo.detalhe && <DetalhePorCategoria det={expo.detalhe} cota={cotaAtiva} mun={mun} />}
+      {expo.detalhe && (
+        <DetalhePorCategoria det={expo.detalhe} cota={cotaAtiva} mun={mun} />
+      )}
 
-      <Section id="c-limitacoes" num={expo.detalhe ? "7" : "3"} title="Limitações">
+      <Section
+        id="c-limitacoes"
+        num={expo.detalhe ? "7" : "3"}
+        title="Limitações"
+      >
         <Note type="warning">
-          Estes números medem a <strong>exposição</strong> a cada cota do rio: o que fica sob água segundo os rasters de
-          profundidade, cruzado com os dados de empresas (RAIS), escolas (Censo Escolar), saúde (CNES) e
-          agricultura (MapBiomas). Não usam o modelo CLIMADA nem curva de dano, e não substituem os Danos
-          Operacionais (DaLA) da aba principal. Leia os limites abaixo antes de usar qualquer valor:
+          Estes números medem a <strong>exposição</strong> a cada cota do rio: o
+          que fica sob água segundo os rasters de profundidade, cruzado com os
+          dados de empresas (RAIS), escolas (Censo Escolar), saúde (CNES) e
+          agricultura (MapBiomas). Não usam o modelo CLIMADA nem curva de dano,
+          e não substituem os Danos Operacionais (DaLA) da aba principal. Leia
+          os limites abaixo antes de usar qualquer valor:
         </Note>
-        <ul className="list-disc list-inside space-y-2 text-sm text-slate-700 mt-3">
+        <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-slate-700">
           <li>
-            <strong>Exposição, não dano.</strong> Todo ponto com profundidade &gt; 0 conta com 100% do
-            seu valor de reposição. Não há curva de dano nem calibração para {mun}; o dano real fica entre
-            zero e este valor.
+            <strong>Exposição, não dano.</strong> Todo ponto com profundidade
+            &gt; 0 conta com 100% do seu valor de reposição. Não há curva de
+            dano nem calibração para {mun}; o dano real fica entre zero e este
+            valor.
           </li>
           <li>
-            <strong>Valor de reposição é estimativa</strong> (CUB/RS × área por proxy: 9 m² por pessoa,
-            salas por matrícula; ver metodologia), não cadastro de valor de mercado.
+            <strong>Valor de reposição é estimativa</strong> (CUB/RS × área por
+            proxy: 9 m² por pessoa, salas por matrícula; ver metodologia), não
+            cadastro de valor de mercado.
           </li>
-          {mun === "Lajeado" && (
-            <li>
-              <strong>Coordenada corrigida em um estabelecimento.</strong> O Hospital Bruno Born
-              (1.867 profissionais e 201 leitos) estava geocodificado na coordenada genérica do
-              centro, dentro da mancha; foi movido para o endereço real (Av. Benjamin Constant, 881,
-              coordenada do OpenStreetMap), que fica fora dela. É a única exceção à regra de manter
-              a base como reportada, porque sozinho ele respondia pela maior parte do valor atingido
-              de Saúde.
-            </li>
-          )}
           <li>
             <strong>Coordenadas repetidas (geocodificação).</strong>{" "}
             {diag ? (
               <>
-                Em {mun}: {(["empresas", "saude", "educacao"] as const).map((k, i) => {
-                  const r = diag.coordenadas_repetidas[k];
-                  return <span key={k}>{i > 0 ? "; " : ""}{{ empresas: "empresas", saude: "saúde", educacao: "educação" }[k]} {fmtN(r.n_pontos)} em {fmtN(r.n_coordenadas_unicas)} coordenadas (maior pilha: {fmtN(r.maior_pilha)})</span>;
-                })}.
+                Em {mun}:{" "}
+                {(["empresas", "saude", "educacao"] as const).map((k, i) => {
+                  const r = diag.coordenadas_repetidas[k]
+                  return (
+                    <span key={k}>
+                      {i > 0 ? "; " : ""}
+                      {
+                        {
+                          empresas: "empresas",
+                          saude: "saúde",
+                          educacao: "educação",
+                        }[k]
+                      }{" "}
+                      {fmtN(r.n_pontos)} em {fmtN(r.n_coordenadas_unicas)}{" "}
+                      coordenadas (maior pilha: {fmtN(r.maior_pilha)})
+                    </span>
+                  )
+                })}
+                .
               </>
-            ) : "Muitos estabelecimentos compartilham a mesma coordenada."}{" "}
-            {expo.detalhe?.maior_pilha?.empresas && (() => {
-              const e = expo.detalhe.maior_pilha.empresas;
-              return <>A maior pilha de empresas reúne {fmtN(e.n_pontos)} estabelecimentos de {fmtN(e.ruas_distintas)} ruas e {fmtN(e.bairros_distintos)} bairros num único ponto, o que indica o geocodificador caindo num ponto padrão e não um endereço real. </>;
-            })()}
-            A base é mantida como reportada, sem filtro nem correção. Efeito: cada pilha entra de uma vez, com a profundidade de um
-            único pixel de ~5 m, o que gera degraus no valor atingido.{" "}
-            {expo.detalhe?.maior_pilha && (() => {
-              const pil = expo.detalhe.maior_pilha;
-              const partes = (["empresas", "saude", "educacao"] as const)
-                .filter((k) => pil[k]?.cota_entrada && pil[k].n_pontos > 1)
-                .map((k) => `${{ empresas: "empresas", saude: "saúde", educacao: "educação" }[k]}: ${fmtN(pil[k].n_pontos)} pontos entram na cota ${pil[k].cota_entrada} m (valor exposto de ${fmtBRL(pil[k].valor_exposto_antes_brl ?? 0)} para ${fmtBRL(pil[k].valor_exposto_na_entrada_brl ?? 0)})`);
-              if (partes.length) return <>Neste município, a maior pilha de cada setor molha de uma vez: {partes.join("; ")}.</>;
-              return <>Neste município, a maior pilha de cada setor não é molhada em nenhuma cota dos rasters, então não causa degrau.</>;
-            })()}
+            ) : (
+              "Muitos estabelecimentos compartilham a mesma coordenada."
+            )}{" "}
+            {expo.detalhe?.maior_pilha?.empresas &&
+              (() => {
+                const e = expo.detalhe.maior_pilha.empresas
+                return (
+                  <>
+                    A maior pilha de empresas reúne {fmtN(e.n_pontos)}{" "}
+                    estabelecimentos de {fmtN(e.ruas_distintas)} ruas e{" "}
+                    {fmtN(e.bairros_distintos)} bairros num único ponto, o que
+                    indica o geocodificador caindo num ponto padrão e não um
+                    endereço real.{" "}
+                  </>
+                )
+              })()}
+            A base é mantida como reportada, sem filtro nem correção. Efeito:
+            cada pilha entra de uma vez, com a profundidade de um único pixel de
+            ~5 m, o que gera degraus no valor atingido.{" "}
+            {expo.detalhe?.maior_pilha &&
+              (() => {
+                const pil = expo.detalhe.maior_pilha
+                const partes = (["empresas", "saude", "educacao"] as const)
+                  .filter((k) => pil[k]?.cota_entrada && pil[k].n_pontos > 1)
+                  .map(
+                    (k) =>
+                      `${{ empresas: "empresas", saude: "saúde", educacao: "educação" }[k]}: ${fmtN(pil[k].n_pontos)} pontos entram na cota ${pil[k].cota_entrada} m (valor exposto de ${fmtBRL(pil[k].valor_exposto_antes_brl ?? 0)} para ${fmtBRL(pil[k].valor_exposto_na_entrada_brl ?? 0)})`
+                  )
+                if (partes.length)
+                  return (
+                    <>
+                      Neste município, a maior pilha de cada setor molha de uma
+                      vez: {partes.join("; ")}.
+                    </>
+                  )
+                return (
+                  <>
+                    Neste município, a maior pilha de cada setor não é molhada
+                    em nenhuma cota dos rasters, então não causa degrau.
+                  </>
+                )
+              })()}
           </li>
-            <>
-              {diag?.pontos_excluidos_fora_do_municipio && Object.values(diag.pontos_excluidos_fora_do_municipio).some((v) => v > 0) && (
+          <>
+            {diag &&
+              Object.values(diag.pontos_fora_do_raster).some((v) => v > 0) && (
                 <li>
-                  <strong>Pontos fora do município excluídos:</strong>{" "}
-                  {(["empresas", "saude", "educacao"] as const).filter((k) => (diag.pontos_excluidos_fora_do_municipio?.[k] ?? 0) > 0)
-                    .map((k) => `${fmtN(diag.pontos_excluidos_fora_do_municipio?.[k] ?? 0)} ${{ empresas: "empresas", saude: "unidades de saúde", educacao: "escolas" }[k]}`).join(", ")}.
-                  A coordenada geocodificada cai fora do polígono do município (IBGE), em alguns casos a dezenas de quilômetros, e o
-                  ponto não entra nos totais nem nos percentuais.
+                  <strong>Pontos fora da grade do raster</strong> entram com
+                  profundidade 0 (subestima):{" "}
+                  {(["empresas", "saude", "educacao"] as const)
+                    .filter((k) => diag.pontos_fora_do_raster[k] > 0)
+                    .map(
+                      (k) =>
+                        `${fmtN(diag.pontos_fora_do_raster[k])} de ${fmtN(diag.n_pontos[k])} ${{ empresas: "empresas", saude: "unidades de saúde", educacao: "escolas" }[k]}`
+                    )
+                    .join(", ")}
+                  . O mesmo vale para a área agrícola fora da grade.
                 </li>
               )}
-              {diag && Object.values(diag.pontos_fora_do_raster).some((v) => v > 0) && (
-                <li>
-                  <strong>Pontos fora da grade do raster</strong> entram com profundidade 0 (subestima):{" "}
-                  {(["empresas", "saude", "educacao"] as const).filter((k) => diag.pontos_fora_do_raster[k] > 0)
-                    .map((k) => `${fmtN(diag.pontos_fora_do_raster[k])} de ${fmtN(diag.n_pontos[k])} ${{ empresas: "empresas", saude: "unidades de saúde", educacao: "escolas" }[k]}`).join(", ")}. O mesmo vale para a área agrícola fora da grade.
-                </li>
-              )}
-              {mun !== "Lajeado" && (
-                <li>
-                  <strong>Rasters do Guaíba.</strong> Os mesmos rasters cobrem Porto Alegre e Eldorado do Sul (cota do
-                  Guaíba); cada município é amostrado com os seus próprios pontos. A cota é o rótulo do raster, sem conversão:
-                  a correspondência com a leitura na régua do Guaíba não foi verificada.
-                </li>
-              )}
-              {mun === "Lajeado" && (
-                <li>
-                  <strong>Datum:</strong> os rasters (18,45 a 34,45 m) estão em altitude ortométrica; a cota na régua do
-                  Taquari seria a do raster + 0,55 m, hipótese deduzida do parecer do SGB e não confirmada pelo autor dos rasters.
-                </li>
-              )}
-              <li>
-                <strong>Agricultura:</strong> área, não valor. Usa o MapBiomas {expo.detalhe?.ano_agricultura ?? 2024} sobreposto à
-                grade do raster; a área de cada pixel é calculada pela latitude, e bordas de polígono podem ter erro de até um pixel.
-                A área total de cada cultura é a soma geodésica dos polígonos, e a área fora da grade conta como seca.
-              </li>
-              <li>
-                <strong>Setores não disjuntos:</strong> as fontes são distintas (RAIS, CNES, Censo Escolar), e estabelecimentos de saúde e
-                educação aparecem em mais de uma delas; a soma dos três setores não é de ativos disjuntos.
-              </li>
-            </>
+            <li>
+              <strong>Agricultura:</strong> área, não valor. Usa o MapBiomas{" "}
+              {expo.detalhe?.ano_agricultura ?? 2024} sobreposto à grade do
+              raster; a área de cada pixel é calculada pela latitude, e bordas
+              de polígono podem ter erro de até um pixel. A área total de cada
+              cultura é a soma geodésica dos polígonos, e a área fora da grade
+              conta como seca.
+            </li>
+            <li>
+              <strong>Setores não disjuntos:</strong> as fontes são distintas
+              (RAIS, CNES, Censo Escolar), e estabelecimentos de saúde e
+              educação aparecem em mais de uma delas; a soma dos três setores
+              não é de ativos disjuntos.
+            </li>
+          </>
           <li>
-            <strong>Rasters não monotônicos entre cotas:</strong> aplicado o máximo acumulado por ponto (e por pixel,
-            na agricultura). Amostragem por pixel de ~5 m (vizinho mais próximo).
+            <strong>Rasters não monotônicos entre cotas:</strong> aplicado o
+            máximo acumulado por ponto (e por pixel, na agricultura). Amostragem
+            por pixel de ~5 m (vizinho mais próximo).
           </li>
         </ul>
       </Section>
 
-        <Section id="c-mapa" num={expo.detalhe ? "8" : "4"} title="Mapa por cota">
-          <p>
-            A água avança sozinha em loop (pause ou arraste a cota para controlar). A frente de avanço, em azul-claro, mostra o que
-            está alagando entre uma cota e a seguinte. Mesmos rasters das tabelas acima; a cota é o rótulo do raster.
-          </p>
-          <CotaMapa slug={MAPA_SLUG[mun] ?? ""} cotaInicial={cotaAtiva} />
-        </Section>
+      <Section id="c-mapa" num={expo.detalhe ? "8" : "4"} title="Mapa por cota">
+        <p>
+          A água avança sozinha em loop (pause ou arraste a cota para
+          controlar). A frente de avanço, em azul-claro, mostra o que está
+          alagando entre uma cota e a seguinte. Mesmos rasters das tabelas
+          acima; a cota é o rótulo do raster.
+        </p>
+        <CotaMapa slug={MAPA_SLUG[mun] ?? ""} cotaInicial={cotaAtiva} />
+      </Section>
     </>
-  );
+  )
 }
