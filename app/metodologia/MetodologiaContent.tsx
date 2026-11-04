@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import katex from "katex";
 import { HeaderLogos } from "@/components/HeaderLogos";
+import { CopyLinkButton } from "@/components/CopyLinkButton";
 import type { ClimadaData } from "@/app/danos/types";
 
 // ─── Constantes visuais — Dano Físico (CLIMADA) ────────────────────────────────
@@ -1395,6 +1396,11 @@ function Section({ id, num, title, children }: {
           {num}
         </span>
         <h2 className="text-lg font-black text-slate-800 tracking-tight">{title}</h2>
+        <CopyLinkButton
+          anchor={id}
+          title="Copiar link desta seção"
+          className="print:hidden ml-1 p-1 rounded text-slate-400 hover:text-[#055071] hover:bg-slate-100 transition-colors"
+        />
       </div>
       <div className="space-y-3 text-sm leading-relaxed">{children}</div>
       <div className="mt-8 border-b border-[#b3cdd8]" />

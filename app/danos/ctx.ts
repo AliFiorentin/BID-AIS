@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import type { CenarioDanos, DanosData, ClimadaData, CotaSetor, CotasData, MedidasMun, ExposicaoMun } from "./types";
-import { RP_ORDER, scaleTo } from "./helpers";
+import { RP_ORDER, DIAS_OPCOES, scaleTo } from "./helpers";
 import type { DiasOpcao } from "./helpers";
 
 export interface DanosProps {
   dados: DanosData; dadosClimada: ClimadaData | null; dadosClimadaMun: Record<string, ClimadaData>;
   dadosCotas: Record<string, CotasData>; dadosMedidas: Record<string, MedidasMun>; dadosExposicao: Record<string, ExposicaoMun>;
 }
+
+const MUNS_CLIMADA = ["Porto Alegre", "Lajeado", "Eldorado do Sul"];
 
 /** Estado e valores derivados da página Danos, compartilhados pelas abas/seções. */
 export function useDanosContext({ dados, dadosClimada: climadaPA, dadosClimadaMun, dadosCotas: cotasPorMun, dadosMedidas, dadosExposicao }: DanosProps) {
@@ -18,13 +20,42 @@ export function useDanosContext({ dados, dadosClimada: climadaPA, dadosClimadaMu
   const [visao, setVisao] = useState<"rp" | "cota">("cota");
   const [cota, setCota] = useState("29.45");
 
-  // Deep-link opcional: /danos?aba=climada abre direto na aba CLIMADA (ex.: botão do header do mapa).
+  // Permalink: ?aba=climada&dias=45&mun=Lajeado&visao=rp&rp=RP100&cota=27.45. Só o que difere do padrão vai
+  // para a URL. A leitura roda uma vez, após a hidratação (o servidor não vê a query), e só então a
+  // gravação é liberada para não apagar o link antes de ele ser lido.
+  const [urlLida, setUrlLida] = useState(false);
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    // Ler a URL só é possível após a hidratação, então o setState no efeito é intencional.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (params.get("aba") === "climada" && (climadaPA || Object.keys(cotasPorMun).length)) setAba("climada");
+    const p = new URLSearchParams(window.location.search);
+    /* eslint-disable react-hooks/set-state-in-effect */
+    if (p.get("aba") === "climada" && (climadaPA || Object.keys(cotasPorMun).length)) setAba("climada");
+    const d = Number(p.get("dias"));
+    if ((DIAS_OPCOES as readonly number[]).includes(d)) setDias(d as DiasOpcao);
+    const m = p.get("mun");
+    if (m && MUNS_CLIMADA.includes(m)) setMunClimada(m);
+    const v = p.get("visao");
+    if (v === "rp" || v === "cota") setVisao(v);
+    const r = p.get("rp");
+    if (r && RP_ORDER.includes(r)) setRp(r);
+    const c = p.get("cota");
+    if (c && Number.isFinite(parseFloat(c))) setCota(c);
+    setUrlLida(true);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [climadaPA, cotasPorMun]);
+
+  useEffect(() => {
+    if (!urlLida) return;
+    const p = new URLSearchParams(window.location.search);
+    const def = (k: string, set: boolean, v: string) => { if (set) p.set(k, v); else p.delete(k); };
+    def("aba", aba !== "dala", aba);
+    const clim = aba === "climada";
+    def("dias", !clim && dias !== 30, String(dias));
+    def("mun", clim && munClimada !== "Porto Alegre", munClimada);
+    def("visao", clim && munClimada === "Porto Alegre" && visao !== "cota", visao);
+    def("rp", clim && munClimada === "Porto Alegre" && visao === "rp" && rp !== "RP200", rp);
+    def("cota", clim && visao === "cota" && cota !== "29.45", cota);
+    const qs = p.toString();
+    window.history.replaceState(null, "", `${window.location.pathname}${qs ? `?${qs}` : ""}${window.location.hash}`);
+  }, [urlLida, aba, dias, munClimada, visao, rp, cota]);
 
   // ── Dados escalados (Danos Operacionais) para a duração selecionada ──
   const dadosEscalados: DanosData = Object.fromEntries(

@@ -4,6 +4,7 @@ import { INFRAESTRUTURA_CONFIG, INFRA_TAMANHOS_MB } from "@/lib/constants";
 import { scenarioSlug, countRuasUnicas, getRuasListPOA, countRuasUnicasPOA, getRotas, getLen } from "@/lib/geo-utils";
 import type { InfraFC, InfraPainelMetricas, PopupInfo } from "@/hooks/dashboard/types";
 import { usePermalink } from "@/hooks/dashboard/usePermalink";
+import { lerEstadoDaURL, usePermalinkEstado, CAMADAS_PADRAO } from "@/hooks/dashboard/permalinkEstado";
 import { useMapCamera } from "@/hooks/dashboard/useMapCamera";
 import { useCotas, useCotaFiltro, useBaseDentroDoMunicipio } from "@/hooks/dashboard/useCotas";
 import { useStaticData } from "@/hooks/dashboard/useStaticData";
@@ -29,7 +30,17 @@ export function useDashboard() {
   const [cenario, setCenario] = useState<string>("(nenhum)");
   const [renderMunicipio, setRenderMunicipio] = useState<string>("Visão Geral RS");
 
-  const [camadas, setCamadas] = useState<string[]>(["Empresas", "Educação", "Saúde", "Agricultura"]);
+  // Seleções vindas do link compartilhado (aba, camadas, infra, filtros, mancha, calor, dano físico).
+  const [inicial] = useState(lerEstadoDaURL);
+  // Infra e filtros são zerados a cada carga de município (useScenarioData); o valor do link é
+  // reaplicado ali, uma única vez, depois dessa carga.
+  const permalinkFiltrosRef = useRef<{ infra?: string[]; filtroSetor?: string; filtroDep?: string; filtroTipo?: string } | null>(
+    { infra: inicial.infra, filtroSetor: inicial.filtroSetor, filtroDep: inicial.filtroDep, filtroTipo: inicial.filtroTipo },
+  );
+
+  const danoLinkRef = useRef<{ dano?: boolean; rp?: string } | null>({ dano: inicial.dano, rp: inicial.rp });
+
+  const [camadas, setCamadas] = useState<string[]>(inicial.camadas ?? CAMADAS_PADRAO);
   const [infraAtivas, setInfraAtivas] = useState<string[]>([]);
 
   const [filtroSetor, setFiltroSetor] = useState<string>("(todos)");
@@ -56,12 +67,12 @@ export function useDashboard() {
   const [cursor, setCursor] = useState<string>("grab");
   const [popupInfo, setPopupInfo] = useState<PopupInfo | null>(null);
 
-  const [tabAtiva, setTabAtiva] = useState<string>("resumo");
-  const [showMancha, setShowMancha] = useState<boolean>(true);
+  const [tabAtiva, setTabAtiva] = useState<string>(inicial.tab ?? "resumo");
+  const [showMancha, setShowMancha] = useState<boolean>(inicial.mancha ?? true);
   const [showLegenda, setShowLegenda] = useState<boolean>(false);
-  const [showHeatmapEmpresas, setShowHeatmapEmpresas] = useState<boolean>(false);
-  const [showHeatmapSaude, setShowHeatmapSaude] = useState<boolean>(false);
-  const [showHeatmapEducacao, setShowHeatmapEducacao] = useState<boolean>(false);
+  const [showHeatmapEmpresas, setShowHeatmapEmpresas] = useState<boolean>(inicial.heatEmpresas ?? false);
+  const [showHeatmapSaude, setShowHeatmapSaude] = useState<boolean>(inicial.heatSaude ?? false);
+  const [showHeatmapEducacao, setShowHeatmapEducacao] = useState<boolean>(inicial.heatEducacao ?? false);
   const [showListaEscolas, setShowListaEscolas] = useState(false);
   const [showListaHospitais, setShowListaHospitais] = useState(false);
   const [showListaUBS, setShowListaUBS] = useState(false);
@@ -91,7 +102,7 @@ export function useDashboard() {
   const scenario = useScenarioData({
     municipio, cenario, setCenario, setRenderMunicipio, setIsLoading, setPopupInfo,
     setFiltroSetor, setFiltroDep, setFiltroTipo, setInfraAtivas, setBaseInfra, setAtingidosInfra,
-    permalinkCenarioRef,
+    permalinkCenarioRef, permalinkFiltrosRef,
   });
   const {
     baseEmpresas, baseEducacao, baseSaude,
@@ -112,6 +123,14 @@ export function useDashboard() {
   const { infraPainel } = useInfraData({ municipio, cenario, infraAtivas, setBaseInfra, setAtingidosInfra, setIsLoading });
 
   const dano = useDanoFisico({ municipio, renderMunicipio, baseEmpresas, baseEducacao, baseSaude });
+
+  usePermalinkEstado({
+    municipio, tabAtiva, camadas, infraAtivas, filtroSetor, filtroDep, filtroTipo, showMancha,
+    showHeatmapEmpresas, showHeatmapSaude, showHeatmapEducacao,
+    showDanoFisico: dano.showDanoFisico, rpDanoFisico: dano.rpDanoFisico,
+    setShowDanoFisico: dano.setShowDanoFisico, setRpDanoFisico: dano.setRpDanoFisico,
+    danoLinkRef,
+  });
 
   const toggleCamada = (camada: string) => { setCamadas(prev => prev.includes(camada) ? prev.filter(c => c !== camada) : [...prev, camada]); setPopupInfo(null); };
   const toggleInfra = (infra: string) => {

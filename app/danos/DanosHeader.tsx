@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { TrendingDown } from "lucide-react";
 import { HeaderLogos } from "@/components/HeaderLogos";
+import { CopyLinkButton } from "@/components/CopyLinkButton";
 
 export function DanosHeader() {
   return (
@@ -12,6 +13,7 @@ export function DanosHeader() {
             <div className="flex items-center gap-2 mb-5 print:hidden">
               <Link href="/" className="text-[10px] max-lg:text-xs max-lg:min-h-11 font-bold text-white/95 hover:text-white transition-colors px-3 py-1 rounded-full border border-white/20 hover:border-white/40 flex items-center gap-1.5">← Dashboard</Link>
               <Link href="/metodologia" className="text-[10px] max-lg:text-xs max-lg:min-h-11 font-bold text-white/95 hover:text-white transition-colors px-3 py-1 rounded-full border border-white/20 hover:border-white/40 flex items-center gap-1.5">← Metodologia</Link>
+              <CopyLinkButton label="Copiar link" title="Copiar link desta configuração (aba, município, período de retorno, cota...)" className="text-[10px] max-lg:text-xs max-lg:min-h-11 font-bold text-white/95 hover:text-white transition-colors px-3 py-1 rounded-full border border-white/20 hover:border-white/40 flex items-center gap-1.5" />
             </div>
             <h1 className="text-4xl font-black leading-none mb-2 tracking-tight flex items-center gap-3">
               <TrendingDown size={36} strokeWidth={2.5} className="opacity-80 shrink-0" />

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import type { FeatureCollection } from "geojson";
 import {
-  MUNICIPIOS, CENARIOS_CONFIG, AGRI_BOUNDS, AGRI_ANO_BASE, PIORES_CENARIOS, COTAS_CENARIO,
+  MUNICIPIOS, CENARIOS_CONFIG, AGRI_BOUNDS, AGRI_ANO_BASE, PIORES_CENARIOS, COTAS_CENARIO, INFRAESTRUTURA_CONFIG, INFRA_TAMANHOS_MB,
 } from "@/lib/constants";
 import { slugify, scenarioSlug, mergeGeoJSON } from "@/lib/geo-utils";
 import type { InfraStatsEntry, InfraFC, FC, AgriStats, ConabStats, PopupInfo } from "./types";
@@ -21,6 +21,8 @@ interface Args {
   setBaseInfra: Dispatch<SetStateAction<InfraFC>>;
   setAtingidosInfra: Dispatch<SetStateAction<InfraFC>>;
   permalinkCenarioRef: React.MutableRefObject<string | null>;
+  /** Infra e filtros do link, aplicados uma vez após a primeira carga do município. */
+  permalinkFiltrosRef: React.MutableRefObject<{ infra?: string[]; filtroSetor?: string; filtroDep?: string; filtroTipo?: string } | null>;
 }
 
 /**
@@ -32,7 +34,7 @@ interface Args {
 export function useScenarioData({
   municipio, cenario, setCenario, setRenderMunicipio, setIsLoading, setPopupInfo,
   setFiltroSetor, setFiltroDep, setFiltroTipo, setInfraAtivas, setBaseInfra, setAtingidosInfra,
-  permalinkCenarioRef,
+  permalinkCenarioRef, permalinkFiltrosRef,
 }: Args) {
   const [baseEmpresas, setBaseEmpresas] = useState<FC>(null);
   const [baseEducacao, setBaseEducacao] = useState<FC>(null);
@@ -158,7 +160,11 @@ export function useScenarioData({
     // Nenhuma camada de infra vem marcada por padrao -- o usuario escolhe.
     // As metricas de todos os tipos sao pre-carregadas nos efeitos de
     // useInfraData de qualquer forma, entao marcar uma camada depois disso e' instantaneo.
-    setInfraAtivas([]);
+    // Infra do link (só a primeira carga): camadas leves, as pesadas (INFRA_TAMANHOS_MB) pedem confirmação
+    // e por isso nunca são ligadas sozinhas por um link.
+    const extras = permalinkFiltrosRef.current;
+    const infraLink = (extras?.infra ?? []).filter(i => (INFRAESTRUTURA_CONFIG[municipio] ?? []).includes(i) && !INFRA_TAMANHOS_MB[i]);
+    setInfraAtivas(infraLink);
 
     const basePromises = Promise.all([
       fetch(`/dados_convertidos/${munSlug}/empresas_BASE.geojson`, { signal }).then(r => r.ok ? r.json() : null),
@@ -191,7 +197,9 @@ export function useScenarioData({
       // Alegre, onde as bases sao as mais pesadas, isso acontecia sempre e a
       // camada nunca aparecia no mapa.
       setAllMunAgriStats(null); setAllMunAgriAtingidosStats(null); setAllMunInfraStats(null);
-      setFiltroSetor("(todos)"); setFiltroDep("(todas)"); setFiltroTipo("(todas)");
+      const filtrosLink = permalinkFiltrosRef.current;
+      permalinkFiltrosRef.current = null;
+      setFiltroSetor(filtrosLink?.filtroSetor ?? "(todos)"); setFiltroDep(filtrosLink?.filtroDep ?? "(todas)"); setFiltroTipo(filtrosLink?.filtroTipo ?? "(todas)");
 
       setBaseEmpresas(emp); setBaseEducacao(edu); setBaseSaude(sau);
       setBaseAgriStats(agri);
