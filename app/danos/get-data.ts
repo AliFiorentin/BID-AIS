@@ -20,12 +20,11 @@ export function getDanosPageData(): { dados: DanosData; dadosClimada: ClimadaDat
     dadosClimada = JSON.parse(readFileSync(p, "utf8"));
   } catch { /* graceful degradation */ }
 
-  // Mesmo cálculo por RP de Porto Alegre, replicado nos municípios com rasters por cota
-  // (RP convertido em cota): pipeline/climada_rp_por_cota.py.
+  // Mesmo cálculo por RP de Porto Alegre, replicado em Eldorado do Sul (RP convertido em cota):
+  // pipeline/climada_rp_por_cota.py. Lajeado só tem a visão por cota.
   const dadosClimadaMun: Record<string, ClimadaData> = {};
   const arquivosRp: Record<string, string> = {
     "Eldorado do Sul": "climada_dano_fisico_eldorado_do_sul.json",
-    "Lajeado": "climada_dano_fisico_lajeado.json",
   };
   for (const [mun, arq] of Object.entries(arquivosRp)) {
     try {
@@ -57,12 +56,8 @@ export function getDanosPageData(): { dados: DanosData; dadosClimada: ClimadaDat
 
   // CLIMADA sem curva de dano (valor exposto atingido): pipeline/climada_exposicao.py.
   const dadosExposicao: Record<string, ExposicaoMun> = {};
-  try {
-    const p = join(process.cwd(), "public", "dados_convertidos", "climada_exposicao_lajeado.json");
-    dadosExposicao["Lajeado"] = JSON.parse(readFileSync(p, "utf8"));
-  } catch { /* graceful degradation */ }
-  // Eldorado do Sul e Porto Alegre: só a visão "Por Cota" (valor exposto, sem curva de dano).
-  for (const [mun, arq] of Object.entries({ "Eldorado do Sul": "climada_exposicao_eldorado_do_sul.json", "Porto Alegre": "climada_exposicao_porto_alegre.json" })) {
+  // Lajeado, Eldorado do Sul e Porto Alegre: só a visão "Por Cota" (valor exposto, sem curva de dano).
+  for (const [mun, arq] of Object.entries({ "Lajeado": "climada_exposicao_lajeado.json", "Eldorado do Sul": "climada_exposicao_eldorado_do_sul.json", "Porto Alegre": "climada_exposicao_porto_alegre.json" })) {
     try {
       const p = join(process.cwd(), "public", "dados_convertidos", arq);
       dadosExposicao[mun] = JSON.parse(readFileSync(p, "utf8"));

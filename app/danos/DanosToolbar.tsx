@@ -139,7 +139,7 @@ export function DanosToolbar({ ctx }: { ctx: DanosCtx }) {
                 <span className="text-[10px] font-black uppercase tracking-wider text-[#2f6a83]">
                   Período de retorno
                 </span>
-                <span className="text-[9px] text-slate-600">{dadosClimada?.rp_por_cota ? "(derivado das cotas do rio)" : "(cenário sintético CLIMADA)"}</span>
+                <span className="text-[9px] text-slate-600">(cenário sintético CLIMADA)</span>
               </div>
               <div className="flex gap-1.5 flex-wrap">
                 {rpsDisponiveis.map((r) => (
@@ -160,7 +160,7 @@ export function DanosToolbar({ ctx }: { ctx: DanosCtx }) {
               <div className="ml-auto flex items-center gap-1.5">
                 <div className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
                 <span className="text-[10px] text-slate-600 font-medium">
-                  {dadosClimada?.rp_por_cota ? "RPs convertidos em cota por análise de frequência" : "RP200 é a âncora de calibração usada pelo CLIMADA"}
+                  RP200 é a âncora de calibração usada pelo CLIMADA
                 </span>
               </div>
               </>
