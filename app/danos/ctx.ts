@@ -57,7 +57,7 @@ export function useDanosContext({ dados, dadosClimada: climadaPA, dadosClimadaMu
   const maxTotalDala = Math.max(...todosCenarios.map((c) => c.v.total));
 
   // ── Município ativo da aba CLIMADA ──
-  // Porto Alegre: RPs do estudo de risco de inundação de Porto Alegre (UNU-EHS). Lajeado: RPs derivados das cotas.
+  // Porto Alegre: RPs do estudo de risco de inundação de Porto Alegre (UNU-EHS). Lajeado: só a visão por cota.
   // Eldorado do Sul: rasters de Porto Alegre; RP do Guaíba vem de tabela defasada (sem 2024), ver a nota na aba.
   const climadaPorMun: Record<string, ClimadaData | null | undefined> = { ...dadosClimadaMun, "Porto Alegre": climadaPA };
   const munsClimada = ["Porto Alegre", "Lajeado", "Eldorado do Sul"].filter((m) => !!(climadaPorMun[m] || cotasPorMun[m]));
@@ -91,11 +91,10 @@ export function useDanosContext({ dados, dadosClimada: climadaPA, dadosClimadaMu
     ? Math.max(...cotasDisponiveis.map((c) => totalCota(dadosCotas.resultados_por_cota[c], "dano_fisico_brl_jrc_crua")))
     : 0;
   // Visão por cota: quando escolhida, ou quando o município não tem a visão por RP.
-  // Municípios sem curva de dano (Lajeado): valor exposto atingido no lugar do dano.
+  // Municípios sem curva de dano (Lajeado, Eldorado do Sul): valor exposto atingido no lugar do dano.
   const expo: ExposicaoMun | null = dadosExposicao[munClimadaAtivo] ?? null;
   const cotaAtivo = !!dadosCotas && !!atualCota && (visao === "cota" || !dadosClimada);
-  // Lajeado: exposição também por RP; Porto Alegre e Eldorado do Sul: só a visão por cota.
-  const semCurva = !!expo && (Object.keys(expo.resultados_por_rp).length > 0 || cotaAtivo);
+  const semCurva = !!expo && cotaAtivo;
   const totalRp10 = dadosClimada?.resultados_por_rp?.RP10
     ? climadaSetores.reduce((sum, k) => sum + dadosClimada.resultados_por_rp.RP10[k].dano_fisico_total_brl, 0)
     : 0;

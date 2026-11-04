@@ -24,43 +24,11 @@ export function ClimadaPorRp({ ctx }: { ctx: DanosCtx }) {
             antes de usar qualquer valor abaixo para tomada de decisão.
           </Note>
           <Note type="info">
-            Disponível para <strong>Porto Alegre</strong> (RPs do estudo de risco de inundação de Porto Alegre (UNU-EHS)) e{" "}
-            <strong>Lajeado</strong> (RPs derivados das cotas do rio), ambos também por cota
-            (alternar nos seletores acima): o cálculo depende de profundidade da água por ponto
-            (não apenas se o ponto foi atingido). <strong>Eldorado do Sul</strong> só tem a visão por
-            cota (valor exposto, sem curva de dano). Rio Grande não está disponível nesta aba.
+            Disponível para <strong>Porto Alegre</strong> (RPs do estudo de risco de inundação de Porto Alegre (UNU-EHS)),
+            também por cota (alternar nos seletores acima): o cálculo depende de profundidade da água por
+            ponto (não apenas se o ponto foi atingido). <strong>Lajeado</strong> e <strong>Eldorado do Sul</strong> só
+            têm a visão por cota (valor exposto, sem curva de dano). Rio Grande não está disponível nesta aba.
           </Note>
-          {dadosClimada.rp_por_cota && (
-            <>
-              <Note type="warning">
-                <strong>RPs de {munClimadaAtivo} derivados das cotas do rio</strong>, não de um
-                modelo de risco próprio: cada período de retorno foi convertido em cota (
-                {dadosClimada.rp_por_cota.frequencia.metodo}; série: {dadosClimada.rp_por_cota.frequencia.serie})
-                e a profundidade veio dos rasters por cota (cobertura{" "}
-                {dadosClimada.rp_por_cota.cota_cobertura_raster_m[0]} a {dadosClimada.rp_por_cota.cota_cobertura_raster_m[1]} m).
-                Datum: {dadosClimada.rp_por_cota.frequencia.datum}.
-                {dadosClimada.rp_por_cota.rps_acima_do_ultimo_raster.length > 0 && (
-                  <> {dadosClimada.rp_por_cota.rps_acima_do_ultimo_raster.join(" e ")} ficam acima do
-                  último raster e são <strong>extrapolados</strong>: os pontos já molhados ganham a
-                  diferença de cota, mas os que só molhariam acima do último raster continuam
-                  secos, então o dano desses RPs está subestimado.</>
-                )}{" "}
-                <strong>Herdados de Porto Alegre, como premissa:</strong> o fator de calibração das
-                curvas, o remapeamento de frequência 2025→2050 e o crescimento de 2% ao ano. Fonte da
-                frequência: {dadosClimada.rp_por_cota.frequencia.fonte}.
-              </Note>
-              <DataTable
-                rows={[
-                  ["Período de retorno", "Cota na régua (m)", "Cota no raster (m)"],
-                  ...rpsDisponiveis.map((r) => [
-                    r,
-                    dadosClimada.rp_por_cota!.rps[r].cota_regua_m.toFixed(2).replace(".", ","),
-                    dadosClimada.rp_por_cota!.rps[r].cota_raster_m.toFixed(2).replace(".", ","),
-                  ]),
-                ]}
-              />
-            </>
-          )}
 
           <Note type="info">
             <strong>O que é um Período de Retorno (RP)?</strong> É a magnitude estatística de um
