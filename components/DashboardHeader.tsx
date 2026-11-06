@@ -8,7 +8,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuCheckboxItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { MUNICIPIOS, CENARIOS_CONFIG, INFRAESTRUTURA_CONFIG, AGRI_BOUNDS, cenarioLabel } from "@/lib/constants";
-import { CopyLinkButton } from "@/components/CopyLinkButton";
 import type { DashboardState } from "@/hooks/useDashboard";
 
 interface DashboardHeaderProps {
@@ -91,12 +90,6 @@ export function DashboardHeader({ dash }: DashboardHeaderProps) {
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
           Metodologia
         </Link>
-        <CopyLinkButton
-          label="Copiar link"
-          title="Copiar link desta configuração (município, cenário, filtros, camadas e câmera)"
-          className={`${buttonVariants({ variant: "default", size: "xs" })} font-black gap-1 shrink-0 justify-start`}
-          style={{ fontSize: BTN_SIZE, height: BTN_H, paddingInline: "var(--btn-px)" }}
-        />
       </div>
 
       <div className="flex items-center movel:w-full" style={{ gap: SELECT_GAP }}>

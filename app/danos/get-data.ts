@@ -33,12 +33,13 @@ export function getDanosPageData(): { dados: DanosData; dadosClimada: ClimadaDat
     } catch { /* graceful degradation */ }
   }
 
-  // Dano físico por COTA do rio (Lajeado, Eldorado do Sul, Porto Alegre): pipeline/climada_cota.py.
+  // Dano físico por COTA do rio (Lajeado, Eldorado do Sul, Porto Alegre; Rio Grande só exposição): pipeline/climada_cota.py.
   const dadosCotas: Record<string, CotasData> = {};
   const arquivosCota: Record<string, string> = {
     "Porto Alegre": "climada_cota_porto_alegre.json",
     "Eldorado do Sul": "climada_cota_eldorado_do_sul.json",
     "Lajeado": "climada_cota_lajeado.json",
+    "Rio Grande": "climada_cota_rio_grande.json",
   };
   for (const [mun, arq] of Object.entries(arquivosCota)) {
     try {
@@ -57,7 +58,7 @@ export function getDanosPageData(): { dados: DanosData; dadosClimada: ClimadaDat
   // CLIMADA sem curva de dano (valor exposto atingido): pipeline/climada_exposicao.py.
   const dadosExposicao: Record<string, ExposicaoMun> = {};
   // Lajeado, Eldorado do Sul e Porto Alegre: só a visão "Por Cota" (valor exposto, sem curva de dano).
-  for (const [mun, arq] of Object.entries({ "Lajeado": "climada_exposicao_lajeado.json", "Eldorado do Sul": "climada_exposicao_eldorado_do_sul.json", "Porto Alegre": "climada_exposicao_porto_alegre.json" })) {
+  for (const [mun, arq] of Object.entries({ "Lajeado": "climada_exposicao_lajeado.json", "Eldorado do Sul": "climada_exposicao_eldorado_do_sul.json", "Porto Alegre": "climada_exposicao_porto_alegre.json", "Rio Grande": "climada_exposicao_rio_grande.json" })) {
     try {
       const p = join(process.cwd(), "public", "dados_convertidos", arq);
       dadosExposicao[mun] = JSON.parse(readFileSync(p, "utf8"));
@@ -65,7 +66,7 @@ export function getDanosPageData(): { dados: DanosData; dadosClimada: ClimadaDat
   }
 
   // Indicadores do painel por categoria e por cota (pipeline/climada_cota_detalhe.py).
-  const slugs: Record<string, string> = { "Lajeado": "lajeado", "Eldorado do Sul": "eldorado_do_sul", "Porto Alegre": "porto_alegre" };
+  const slugs: Record<string, string> = { "Lajeado": "lajeado", "Eldorado do Sul": "eldorado_do_sul", "Porto Alegre": "porto_alegre", "Rio Grande": "rio_grande" };
   for (const [mun, slug] of Object.entries(slugs)) {
     if (!dadosExposicao[mun]) continue;
     try {

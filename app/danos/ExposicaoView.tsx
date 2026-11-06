@@ -20,6 +20,8 @@ export function ExposicaoView({
   setAba: (a: "dala" | "climada") => void
 }) {
   const setores = ["empresas", "educacao", "saude"]
+  // Rio Grande: rasters são máscaras molhado/seco (sem profundidade): nada de "prof. média" nem de amostragem em ~5 m.
+  const semProf = !!expo.premissas?.sem_profundidade
   const soma = (
     r: Record<string, ExposicaoSetor>,
     k: "valor_exposto_atingido_brl" | "exposicao_total_brl"
@@ -65,8 +67,8 @@ export function ExposicaoView({
             <li>
               <strong>Como é calculado:</strong> cada empresa, escola ou unidade
               de saúde é um ponto com um valor de reposição estimado. O ponto
-              conta como <em>atingido</em> quando a profundidade do raster
-              naquela cota é maior que 0; o valor exposto atingido é a soma
+              conta como <em>atingido</em> quando {semProf ? "está dentro da mancha" : "a profundidade do raster"}
+              {semProf ? " daquela cota" : " naquela cota é maior que 0"}; o valor exposto atingido é a soma
               desses valores. Não há fração de dano: o ponto entra com 100% do
               valor ou não entra.
             </li>
@@ -150,10 +152,12 @@ export function ExposicaoView({
                   {SETOR_LABEL[st]}: {atual[st].n_atingidos}/{atual[st].n_total}{" "}
                   pontos atingidos
                 </span>
-                <span className="font-bold text-slate-700">
-                  prof. média{" "}
-                  {atual[st].profundidade_media_atingidos_m.toFixed(2)}m
-                </span>
+                {!semProf && (
+                  <span className="font-bold text-slate-700">
+                    prof. média{" "}
+                    {atual[st].profundidade_media_atingidos_m.toFixed(2)}m
+                  </span>
+                )}
               </div>
             ))}
           </div>
@@ -213,7 +217,7 @@ export function ExposicaoView({
       >
         <Note type="warning">
           Estes números medem a <strong>exposição</strong> a cada cota do rio: o
-          que fica sob água segundo os rasters de profundidade, cruzado com os
+          que fica sob água segundo os rasters {semProf ? "de mancha por cota (sem profundidade)" : "de profundidade"}, cruzado com os
           dados de empresas (RAIS), escolas (Censo Escolar), saúde (CNES) e
           agricultura (MapBiomas). Não usam o modelo CLIMADA nem curva de dano,
           e não substituem os Danos Operacionais (DaLA) da aba principal. Leia
@@ -221,8 +225,7 @@ export function ExposicaoView({
         </Note>
         <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-slate-700">
           <li>
-            <strong>Exposição, não dano.</strong> Todo ponto com profundidade
-            &gt; 0 conta com 100% do seu valor de reposição. Não há curva de
+            <strong>Exposição, não dano.</strong> Todo ponto {semProf ? "dentro da mancha" : "com profundidade > 0"} conta com 100% do seu valor de reposição. Não há curva de
             dano nem calibração para {mun}; o dano real fica entre zero e este
             valor.
           </li>
@@ -272,8 +275,8 @@ export function ExposicaoView({
                 )
               })()}
             A base é mantida como reportada, sem filtro nem correção. Efeito:
-            cada pilha entra de uma vez, com a profundidade de um único pixel de
-            ~5 m, o que gera degraus no valor atingido.{" "}
+            cada pilha entra de uma vez, com {semProf ? "a situação" : "a profundidade"} de um único pixel de
+            {semProf ? " ~1 m" : " ~5 m"}, o que gera degraus no valor atingido.{" "}
             {expo.detalhe?.maior_pilha &&
               (() => {
                 const pil = expo.detalhe.maior_pilha
@@ -332,8 +335,23 @@ export function ExposicaoView({
           <li>
             <strong>Rasters não monotônicos entre cotas:</strong> aplicado o
             máximo acumulado por ponto (e por pixel, na agricultura). Amostragem
-            por pixel de ~5 m (vizinho mais próximo).
+            por pixel de {semProf ? "~1 m" : "~5 m"} (vizinho mais próximo).
           </li>
+          {semProf && (
+            <>
+              <li>
+                <strong>Sem profundidade.</strong> As manchas de {mun} são máscaras
+                binárias (molhado/seco) do pico de 21/05/2024 e de cotas menores (1,00 a 2,62 m),
+                união das bacias hidrográficas; não há altura da água, então não há curva de dano, faixas
+                de profundidade nem profundidade média.
+              </li>
+              <li>
+                <strong>Cotas irregulares:</strong> a série é 1,00 / 1,50 / 2,00 / 2,50 / 2,62 m (a
+                última é o pico, só 0,12 m acima da anterior). A referência altimétrica da cota ainda
+                precisa ser confirmada com o autor dos rasters.
+              </li>
+            </>
+          )}
         </ul>
       </Section>
 

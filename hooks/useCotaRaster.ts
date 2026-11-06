@@ -34,6 +34,18 @@ export function popAtingidaNaCota(meta: CotaMeta | null, cota: number | null): n
 
 const passoDe = (m: CotaMeta) => (m.cotas.length > 1 ? m.cotas[1] - m.cotas[0] : 1)
 
+/**
+ * Duração do fade de cada pixel, indexada pela 1ª cota que o molha (k = 1..N): o intervalo até a cota
+ * anterior (a 1ª usa o passo da série). Em séries de passo uniforme dá o passo; em séries irregulares
+ * (Rio Grande: 1,00 / 1,50 / 2,00 / 2,50 / 2,6215) evita que a água de uma cota apareça antes da cota
+ * anterior já estar completa.
+ */
+const passosPorIndice = (m: CotaMeta): Float32Array => {
+  const p = new Float32Array(m.cotas.length + 1)
+  m.cotas.forEach((c, i) => { p[i + 1] = i === 0 ? passoDe(m) : c - m.cotas[i - 1] })
+  return p
+}
+
 export interface CotaRaster {
   meta: CotaMeta | null
   erro: boolean
@@ -56,11 +68,15 @@ export interface CotaRaster {
   passo: number
 }
 
-/** slug null = inativo (nada é baixado). autoplay = começa a tocar assim que carrega. */
-export function useCotaRaster(slug: string | null, opts: { cotaInicial?: string; autoplay?: boolean; prontoExterno?: boolean } = {}): CotaRaster {
+/**
+ * slug null = inativo (nada é baixado). autoplay = começa a tocar assim que carrega.
+ * inicio = cota em que o play começa (e recomeça a cada loop), p.ex. a 1ª cota com valor exposto; sem ela, parte do mínimo do slider.
+ */
+export function useCotaRaster(slug: string | null, opts: { cotaInicial?: string; autoplay?: boolean; prontoExterno?: boolean; inicio?: number | null } = {}): CotaRaster {
   const { cotaInicial, prontoExterno = true } = opts
-  // Quem pede menos movimento (prefers-reduced-motion) não recebe animação automática.
-  const autoplay = (opts.autoplay ?? false) && !(typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
+  // A água avançando é o próprio conteúdo do cenário "Todas as cotas" (e há botão de pausa), então o autoplay
+  // NÃO é desligado por prefers-reduced-motion: por decisão do produto, o play sempre abre ligado.
+  const autoplay = opts.autoplay ?? false
   const [meta, setMeta] = useState<CotaMeta | null>(null)
   const [erro, setErro] = useState(false)
   const [cota, setCotaState] = useState<number | null>(null)
@@ -80,6 +96,7 @@ export function useCotaRaster(slug: string | null, opts: { cotaInicial?: string;
   const passo = meta ? passoDe(meta) : 1
   const minimo = meta ? meta.cotas[0] - passo : 0
   const maximo = meta ? meta.cotas[meta.cotas.length - 1] : 0
+  const inicioLoop = meta ? Math.min(maximo, Math.max(minimo, opts.inicio ?? minimo)) : 0
 
   useEffect(() => {
     // Reiniciar o estado quando o slug muda é intencional (o raster é outro).
@@ -140,27 +157,28 @@ export function useCotaRaster(slug: string | null, opts: { cotaInicial?: string;
   useEffect(() => {
     if (!autoplay || !pronta || iniciouAuto.current) return
     iniciouAuto.current = true
+    setCotaState(inicioLoop) // já abre onde aparece o 1º valor exposto, não na cota mínima (mapa vazio)
     setTocando(true)
-  }, [autoplay, pronta])
+  }, [autoplay, pronta, inicioLoop])
 
   // Slider manual para o play; o hook expõe setCota que já desliga o avanço automático.
   const setCota = (c: number) => { setTocando(false); setCotaState(c) }
 
-  // Avanço automático em loop: minimo -> maximo em DURACAO_MS, segura PAUSA_FIM_MS e recomeça.
+  // Avanço automático em loop: inicioLoop -> maximo em DURACAO_MS, segura PAUSA_FIM_MS e recomeça.
   useEffect(() => {
     if (!tocando || !meta) return
     let anterior = performance.now()
     let segura = 0
     let raf = 0
     const tick = (agora: number) => {
-      const dt = Math.min(agora - anterior, 500)
+      const dt = Math.max(0, Math.min(agora - anterior, 500)) // o 1º timestamp do rAF pode ser anterior ao performance.now() do efeito
       anterior = agora
       if (segura > 0) {
         segura -= dt
-        if (segura <= 0) setCotaState(minimo)
+        if (segura <= 0) setCotaState(inicioLoop)
       } else {
         setCotaState((c) => {
-          const prox = (c ?? minimo) + ((maximo - minimo) * dt) / DURACAO_MS
+          const prox = (c ?? inicioLoop) + ((maximo - inicioLoop) * dt) / DURACAO_MS
           if (prox >= maximo) { segura = PAUSA_FIM_MS; return maximo }
           return prox
         })
@@ -169,7 +187,9 @@ export function useCotaRaster(slug: string | null, opts: { cotaInicial?: string;
     }
     raf = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf)
-  }, [tocando, meta, minimo, maximo])
+  }, [tocando, meta, inicioLoop, maximo])
+
+  const passos = useMemo(() => (meta ? passosPorIndice(meta) : null), [meta])
 
   const tabela = useMemo(() => {
     if (!meta) return null
@@ -180,7 +200,7 @@ export function useCotaRaster(slug: string | null, opts: { cotaInicial?: string;
 
   // Recolore o canvas (um quadro por vez, coalescendo movimentos); sem codificar PNG a cada quadro.
   useEffect(() => {
-    if (!meta || cota === null || !tabela || !idx.current || !canvas.current) return
+    if (!meta || cota === null || !tabela || !passos || !idx.current || !canvas.current) return
     ultima.current = cota
     if (pendente.current) return
     pendente.current = true
@@ -195,13 +215,13 @@ export function useCotaRaster(slug: string | null, opts: { cotaInicial?: string;
       const px32 = new Uint32Array(img.data.buffer) // RGBA little-endian: A<<24 | B<<16 | G<<8 | R
       const ALAGADO = ((255 << 24) | (COR_ALAGADO[2] << 16) | (COR_ALAGADO[1] << 8) | COR_ALAGADO[0]) >>> 0
       const frenteRgb = (COR_FRENTE[2] << 16) | (COR_FRENTE[1] << 8) | COR_FRENTE[0]
-      const limiar = (t: number) => t - passo // abaixo disso o pixel ainda está seco
       for (let i = 0; i < ix.length; i++) {
         const k = ix[i]
         if (!k) continue
         const t = tabela[k]
         if (c >= t) { px32[i] = ALAGADO; continue }
-        const a = (c - limiar(t)) / passo
+        const st = passos[k]
+        const a = (c - (t - st)) / st // abaixo de t - st o pixel ainda está seco
         if (a <= 0) continue
         px32[i] = ((Math.round(255 * (0.4 + 0.6 * a)) << 24) | frenteRgb) >>> 0
       }
@@ -209,7 +229,7 @@ export function useCotaRaster(slug: string | null, opts: { cotaInicial?: string;
       setCanvasId((atual) => atual ?? cv.id)
       setFrame((f) => f + 1)
     })
-  }, [cota, meta, tabela, passo])
+  }, [cota, meta, tabela, passos])
 
   return { meta, erro, cota, setCota, tocando, setTocando, pronta, marcarCamadaPronta, canvasId, frame, amostrar, minimo, maximo, passo }
 }

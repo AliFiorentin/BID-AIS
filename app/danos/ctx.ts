@@ -8,7 +8,7 @@ export interface DanosProps {
   dadosCotas: Record<string, CotasData>; dadosMedidas: Record<string, MedidasMun>; dadosExposicao: Record<string, ExposicaoMun>;
 }
 
-const MUNS_CLIMADA = ["Porto Alegre", "Lajeado", "Eldorado do Sul"];
+const MUNS_CLIMADA = ["Porto Alegre", "Lajeado", "Eldorado do Sul", "Rio Grande"];
 
 /** Estado e valores derivados da página Danos, compartilhados pelas abas/seções. */
 export function useDanosContext({ dados, dadosClimada: climadaPA, dadosClimadaMun, dadosCotas: cotasPorMun, dadosMedidas, dadosExposicao }: DanosProps) {
@@ -90,8 +90,9 @@ export function useDanosContext({ dados, dadosClimada: climadaPA, dadosClimadaMu
   // ── Município ativo da aba CLIMADA ──
   // Porto Alegre: RPs do estudo de risco de inundação de Porto Alegre (UNU-EHS). Lajeado: só a visão por cota.
   // Eldorado do Sul: rasters de Porto Alegre; RP do Guaíba vem de tabela defasada (sem 2024), ver a nota na aba.
+  // Rio Grande: máscaras de mancha por cota (sem profundidade): só exposição por cota.
   const climadaPorMun: Record<string, ClimadaData | null | undefined> = { ...dadosClimadaMun, "Porto Alegre": climadaPA };
-  const munsClimada = ["Porto Alegre", "Lajeado", "Eldorado do Sul"].filter((m) => !!(climadaPorMun[m] || cotasPorMun[m]));
+  const munsClimada = ["Porto Alegre", "Lajeado", "Eldorado do Sul", "Rio Grande"].filter((m) => !!(climadaPorMun[m] || cotasPorMun[m]));
   const munClimadaAtivo = munsClimada.includes(munClimada) ? munClimada : munsClimada[0];
   // Eldorado do Sul: só a visão por cota (a frequência do Guaíba é de tabela defasada, sem 2024).
   const dadosClimada: ClimadaData | null = munClimadaAtivo === "Eldorado do Sul" ? null : climadaPorMun[munClimadaAtivo] ?? null;

@@ -30,6 +30,12 @@ export function CompositionBar({ v }: { v: CenarioDanos }) {
   );
 }
 
+/** Nome do município em até 2 linhas (nomes compostos quebram no 1º espaço após a 1ª palavra) para caber sob a barra. */
+function linhasMunicipio(mun: string): string[] {
+  const [primeira, ...resto] = mun.split(" ");
+  return resto.length === 0 ? [mun] : [primeira, resto.join(" ")];
+}
+
 export function TotaisBarChart({
   todosCenarios,
   maxTotal,
@@ -41,7 +47,7 @@ export function TotaisBarChart({
   const gap = 8;
   const chartH = 140;
   const pL = 60;
-  const pB = 52;
+  const pB = 62;
   const W = pL + todosCenarios.length * (barW + gap) - gap + 10;
 
   return (
@@ -71,9 +77,11 @@ export function TotaisBarChart({
               {v.total >= 1e9 ? `${(v.total / 1e9).toFixed(1)}bi` : `${(v.total / 1e6).toFixed(0)}mi`}
             </text>
             <text x={x + barW / 2} y={chartH + 16} textAnchor="middle" fontSize="7.5" fill="#374151" fontWeight="bold">
-              {mun.split(" ")[0]}
+              {linhasMunicipio(mun).map((l, li) => (
+                <tspan key={li} x={x + barW / 2} dy={li === 0 ? 0 : 9}>{l}</tspan>
+              ))}
             </text>
-            <text x={x + barW / 2} y={chartH + 26} textAnchor="middle" fontSize="6" fill="#6b7280">
+            <text x={x + barW / 2} y={chartH + 16 + 9 * linhasMunicipio(mun).length + 3} textAnchor="middle" fontSize="6" fill="#6b7280">
               {label}
             </text>
           </g>
@@ -152,7 +160,7 @@ export function SensibChart({
                 );
               })}
               <text x={gx + gW / 2} y={chartH + 16} textAnchor="middle" fontSize="7.5" fill="#374151" fontWeight="bold">
-                {mun.split(" ")[0]}
+                {mun}
               </text>
             </g>
           );
