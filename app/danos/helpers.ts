@@ -93,4 +93,4 @@ export const STAFF_LABEL: Record<string, string> = {
 };
 export const ETAPA_LABEL: Record<string, string> = { infantil: "Infantil", fundamental: "Fundamental", medio: "Médio", profissional: "Profissional", eja: "EJA", especial: "Especial" };
 
-export const MAPA_SLUG: Record<string, string> = { "Lajeado": "lajeado", "Eldorado do Sul": "eldorado_do_sul", "Porto Alegre": "porto_alegre" };
+export const MAPA_SLUG: Record<string, string> = { "Lajeado": "lajeado", "Eldorado do Sul": "eldorado_do_sul", "Porto Alegre": "porto_alegre", "Rio Grande": "rio_grande" };

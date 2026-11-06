@@ -118,7 +118,7 @@ export const MUNICIPIOS = [
 // avançando cota a cota (slider/play) e o painel mostra os valores da cota atual
 // (pipeline/climada_cota_mapa.py e climada_cota_detalhe.py). Só municípios com rasters por cota.
 export const COTAS_CENARIO = "Todas as cotas"
-export const COTAS_MUNICIPIOS = ["Lajeado", "Porto Alegre", "Eldorado do Sul"]
+export const COTAS_MUNICIPIOS = ["Lajeado", "Porto Alegre", "Eldorado do Sul", "Rio Grande"]
 
 export const CENARIOS_CONFIG: Record<string, string[]> = {
   "Eldorado do Sul": ["Cenário ADA", COTAS_CENARIO],
@@ -126,7 +126,7 @@ export const CENARIOS_CONFIG: Record<string, string[]> = {
   // "Climada Evento 2024" primeiro -- vira o cenário padrão de Porto Alegre
   // (cenariosDisp[0] em useDashboard.ts, quando não há permalink específico).
   "Porto Alegre": ["Climada Evento 2024", "Cenário ADA", COTAS_CENARIO],
-  "Rio Grande": ["Cenário Maio 2024", "Cenário Maio 2024 + 50%"],
+  "Rio Grande": ["Cenário Maio 2024", "Cenário Maio 2024 + 50%", COTAS_CENARIO],
 }
 
 export const INFRAESTRUTURA_CONFIG: Record<string, string[]> = {

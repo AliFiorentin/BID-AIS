@@ -5,41 +5,34 @@ import type { CotaPontos, DetalheCotaMun } from "@/lib/cotas-types";
 import { COTAS_CENARIO, COTAS_MUNICIPIOS } from "@/lib/constants";
 import { slugify } from "@/lib/geo-utils";
 
-/** Cota pausada guardada no link (?cota=27.05). */
-function lerCotaDaURL(): number | null {
-  if (typeof window === "undefined") return null;
-  const v = parseFloat(new URLSearchParams(window.location.search).get("cota") ?? "");
-  return Number.isFinite(v) ? v : null;
-}
-
 /**
  * Cenário "Todas as cotas": água avançando por cota (raster) + painel com os
  * valores da cota atual. Devolve o estado derivado usado pelo resto do dashboard.
  */
 export function useCotas(municipio: string, cenario: string) {
   const cotasAtivo = COTAS_MUNICIPIOS.includes(municipio) && cenario === COTAS_CENARIO;
-  // Link com ?cota=: abre pausado nessa cota; sem ele, a água avança sozinha.
-  const [cotaPermalink] = useState<number | null>(() => lerCotaDaURL());
   const [cotaDetalhe, setCotaDetalhe] = useState<DetalheCotaMun | null>(null);
   // Cota de entrada de cada ponto (5 m, igual à aba "Por cota"); sem ele cai na amostragem do raster reduzido.
   const [cotaPontos, setCotaPontos] = useState<CotaPontos | null>(null);
   // Os dois arquivos do painel já foram buscados (com ou sem sucesso): a água só começa a avançar depois.
   const [dadosOk, setDadosOk] = useState({ pontos: false, detalhe: false });
+  // 1ª cota com algo exposto (pontos com valor ou área agrícola): o play começa aí, não na cota mínima (mapa vazio).
+  const primeiraCotaExposta = useMemo(() => {
+    const por = cotaDetalhe?.por_cota;
+    if (!por) return null;
+    const achada = Object.keys(por).sort((a, b) => parseFloat(a) - parseFloat(b)).find((k) => {
+      const v = por[k];
+      return (v.empresas?.valor_exposto_brl ?? 0) > 0 || (v.educacao?.valor_exposto_brl ?? 0) > 0
+        || (v.saude?.valor_exposto_brl ?? 0) > 0 || (v.agricultura?.area_ha ?? 0) > 0;
+    });
+    return achada === undefined ? null : parseFloat(achada);
+  }, [cotaDetalhe]);
   const cotaRaster = useCotaRaster(cotasAtivo ? slugify(municipio) : null, {
-    autoplay: cotaPermalink === null,
-    cotaInicial: cotaPermalink === null ? undefined : String(cotaPermalink),
+    inicio: primeiraCotaExposta,
+    // Sempre abre tocando, a partir da 1ª cota com valor exposto (um ?cota= antigo na URL não pausa mais).
+    autoplay: true,
     prontoExterno: dadosOk.pontos && dadosOk.detalhe,
   });
-  const cotaUrl = cotasAtivo && !cotaRaster.tocando && cotaRaster.cota !== null ? cotaRaster.cota : null;
-  useEffect(() => {
-    const t = setTimeout(() => {
-      const params = new URLSearchParams(window.location.search);
-      if (cotaUrl !== null) params.set("cota", cotaUrl.toFixed(2));
-      else params.delete("cota");
-      window.history.replaceState(null, "", `${window.location.pathname}?${params.toString()}`);
-    }, 300);
-    return () => clearTimeout(t);
-  }, [cotaUrl]);
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setCotaPontos(null); setDadosOk((o) => ({ ...o, pontos: false }));

@@ -189,6 +189,7 @@ export interface ExposicaoMun {
   projecao_2050: Projecao2050 | null;
   medidas: MedidasMun;
   por_cota: Record<string, Record<string, ExposicaoSetor>>;
+  premissas?: { sem_profundidade?: boolean; raster_nota?: string };
   detalhe?: DetalheCota;
 }
 

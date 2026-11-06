@@ -103,7 +103,7 @@ export function WelcomeModal() {
                 </svg>
               }
               title="Danos Físicos"
-              desc="Exposição física por cota do rio (empresas, saúde, educação e agricultura) em Porto Alegre, Lajeado e Eldorado do Sul, na aba “Danos Físicos” da página de Danos."
+              desc="Exposição física por cota do rio (empresas, saúde, educação e agricultura) em Porto Alegre, Lajeado, Eldorado do Sul e Rio Grande, na aba “Danos Físicos” da página de Danos."
             />
             <FeatureItem
               icon={
