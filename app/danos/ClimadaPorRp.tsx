@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { SETOR_LABEL, SETOR_COLORS, RP_PROBABILIDADE, fmtBRL, eaiValor } from "./helpers";
 import { CompositionBarClimada, RpBarChart } from "./charts";
 import { KpiRow, Section, SubTitle, MathBlock, DataTable, Note } from "./ui";
@@ -7,7 +8,7 @@ import { MedidasTable } from "./MedidasTable";
 import type { DanosCtx } from "./ctx";
 
 export function ClimadaPorRp({ ctx }: { ctx: DanosCtx }) {
-  const { atualClimada, climadaSetores, dadosClimada, eai, exposicaoAtualClimada, maxTotalClimada, medidasMun, munClimadaAtivo, rpAtivo, rpsDisponiveis, setAba, totalAtualClimada } = ctx;
+  const { atualClimada, climadaSetores, dadosClimada, eai, exposicaoAtualClimada, maxTotalClimada, medidasMun, munClimadaAtivo, rpAtivo, rpsDisponiveis, totalAtualClimada } = ctx;
   if (!dadosClimada || !atualClimada || !rpAtivo) return null;
   return (
         <>
@@ -18,7 +19,7 @@ export function ClimadaPorRp({ ctx }: { ctx: DanosCtx }) {
           <Note type="warning">
             <strong>Protótipo exploratório</strong>, não uma métrica oficial do painel. Mede{" "}
             <strong>destruição de patrimônio</strong> (estoque: prédio + equipamento), diferente
-            da aba <button onClick={() => setAba("dala")} className="underline underline-offset-2 font-bold">Danos Operacionais</button>{" "}
+            da página <Link href="/perdas-operacionais" className="underline underline-offset-2 font-bold">Perdas Operacionais</Link>{" "}
             (fluxo: produção/serviço não realizado, metodologia DaLA). Os dois números não devem
             ser somados. Ver <a href="#c-limitacoes" className="underline underline-offset-2">Limitações</a>{" "}
             antes de usar qualquer valor abaixo para tomada de decisão.

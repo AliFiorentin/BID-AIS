@@ -29,6 +29,8 @@ interface Props {
     | "setShowListaEixos"
     | "areaData"
     | "areaCotaKm2"
+    | "camadas"
+    | "infraAtivas"
   >;
 }
 
@@ -48,6 +50,8 @@ export function InfraTab({ dash }: Props) {
     setShowListaEixos,
     areaData,
     areaCotaKm2,
+    camadas,
+    infraAtivas,
   } = dash;
 
   // ── Visão Geral RS ─────────────────────────────────────────────────────────
@@ -200,6 +204,8 @@ export function InfraTab({ dash }: Props) {
   // nao o que aparece aqui. As metricas vem de infraPainel (JSON leve por
   // municipio/cenario, ver pipeline/10_infra_stats.py), sem baixar GeoJSON.
   const todosTipos = INFRAESTRUTURA_CONFIG[municipio] ?? [];
+  const isOculto = (nome: string) =>
+    !camadas.includes("Infraestrutura") || !infraAtivas.includes(nome);
 
   return (
     <TabsContent
@@ -212,6 +218,7 @@ export function InfraTab({ dash }: Props) {
 
         {todosTipos.includes("Logradouros") && (
           <LogradourosSection
+            ocultoNoMapa={isOculto("Logradouros")}
             dash={{
               infraPainel,
               infraAtg,
@@ -225,12 +232,14 @@ export function InfraTab({ dash }: Props) {
 
         {todosTipos.includes("Quadras") && (
           <QuadrasSection
+            ocultoNoMapa={isOculto("Quadras")}
             dash={{ infraPainel, infraAtg, mostraImpacto }}
           />
         )}
 
         {todosTipos.includes("Terrenos") && (
           <TerrenosSection
+            ocultoNoMapa={isOculto("Terrenos")}
             dash={{ infraPainel, infraAtg, mostraImpacto }}
           />
         )}
@@ -241,6 +250,7 @@ export function InfraTab({ dash }: Props) {
             <GenericInfraSection
               key={infraNome}
               infraNome={infraNome}
+              ocultoNoMapa={isOculto(infraNome)}
               dash={{
                 infraPainel,
                 infraAtg,

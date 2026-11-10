@@ -1,13 +1,13 @@
-import type { Metadata } from "next";
-import { DanosClient } from "./DanosClient";
-import { getDanosPageData } from "./get-data";
+import { redirect } from "next/navigation"
 
-export const metadata: Metadata = {
-  title: "Danos & Risco — Avaliação de Impactos Socioeconômicos RS",
-  description: "Estimativa de perdas econômicas operacionais (DaLA/CEPAL) e dano físico (exposição por cota e CLIMADA) causados pelas enchentes no Rio Grande do Sul.",
-};
-
-export default function DanosPage() {
-  const { dados, dadosClimada, dadosClimadaMun, dadosCotas, dadosMedidas, dadosExposicao } = getDanosPageData();
-  return <DanosClient dados={dados} dadosClimada={dadosClimada} dadosClimadaMun={dadosClimadaMun} dadosCotas={dadosCotas} dadosMedidas={dadosMedidas} dadosExposicao={dadosExposicao} />;
+export default async function DanosPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>
+}) {
+  const params = await searchParams
+  if (params.aba === "climada") {
+    redirect("/danos-fisicos")
+  }
+  redirect("/perdas-operacionais")
 }

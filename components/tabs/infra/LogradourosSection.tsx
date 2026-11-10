@@ -10,6 +10,7 @@ import type { DashboardState } from "@/hooks/useDashboard";
 const PANEL_HDR = { background: "linear-gradient(135deg, #055071 0%, #0a6e9a 100%)" } as const;
 
 interface Props {
+  ocultoNoMapa?: boolean;
   dash: Pick<
     DashboardState,
     | "infraPainel"
@@ -21,7 +22,7 @@ interface Props {
   >;
 }
 
-export function LogradourosSection({ dash }: Props) {
+export function LogradourosSection({ ocultoNoMapa, dash }: Props) {
   const { infraPainel, infraAtg, mostraImpacto, showListaLogradouros, setShowListaLogradouros } = dash;
 
   const entry = infraPainel?.["Logradouros"];
@@ -54,6 +55,7 @@ export function LogradourosSection({ dash }: Props) {
         <KPICard
           titulo="Logradouros"
           cor={cor}
+          extra={ocultoNoMapa ? <span className="text-[9px] font-medium text-white/75">oculto no mapa</span> : undefined}
           principal={{
             valor: compactoBr(mostraImpacto ? ruasAtg : ruasBase, 0),
             sub: mostraImpacto ? "Atingidas" : "Total",

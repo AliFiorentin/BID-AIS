@@ -1,234 +1,677 @@
-"use client";
+"use client"
 
-import React from "react";
-import Image from "next/image";
+import React, { useEffect, useRef } from "react"
+import Image from "next/image"
 
 import {
-  COLORS, INFRA_COLORS,
-  AGRI_COLORS, AGRI_BOUNDS,
-  MANCHA_DURACAO_CENARIO, MANCHA_DURACAO_GRADIENT_CSS, cenarioLabel,
-} from "@/lib/constants";
-import { DashboardMap } from "@/components/DashboardMap";
-import { LegendItem } from "@/components/LegendItem";
-import { useDashboard } from "@/hooks/useDashboard";
-import { AnalysisPanel } from "@/components/AnalysisPanel";
-import { DashboardHeader } from "@/components/DashboardHeader";
-import { FiltersPanel } from "@/components/FiltersPanel";
-import { WelcomeModal } from "@/components/WelcomeModal";
-import { CotaControle } from "@/components/CotaControle";
-import { COR_ALAGADO, COR_FRENTE } from "@/hooks/useCotaRaster";
+  C,
+  COLORS,
+  INFRA_COLORS,
+  AGRI_COLORS,
+  AGRI_BOUNDS,
+  MANCHA_DURACAO_CENARIO,
+  MANCHA_DURACAO_GRADIENT_CSS,
+  cenarioLabel,
+} from "@/lib/constants"
+import { DashboardMap } from "@/components/DashboardMap"
+import { LegendItem } from "@/components/LegendItem"
+import { useDashboard } from "@/hooks/useDashboard"
+import { AnalysisPanel } from "@/components/AnalysisPanel"
+import { DashboardHeader } from "@/components/DashboardHeader"
+import { FiltersPanel } from "@/components/FiltersPanel"
+import { CotaControle } from "@/components/CotaControle"
+import { COR_ALAGADO, COR_FRENTE } from "@/hooks/useCotaRaster"
+
+const BRAND_GRADIENT = "linear-gradient(135deg, #055071 0%, #0a6e9a 100%)"
+
+const glassStyle = (opacity = 0.55) =>
+  ({
+    backgroundColor: `rgba(255,255,255,${opacity})`,
+    backdropFilter: "saturate(180%) blur(20px)",
+    WebkitBackdropFilter: "saturate(180%) blur(20px)",
+    border: "0.5px solid rgba(255,255,255,0.6)",
+    boxShadow: "0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)",
+  }) as const
 
 export default function Dashboard() {
-  const dash = useDashboard();
+  const dash = useDashboard()
   const {
     municipio,
     cenario,
     camadas,
     infraAtivas,
     showPainelAnalise,
+    showFiltros,
     showMancha,
-    showLegenda, setShowLegenda,
+    showLegenda,
+    setShowLegenda,
+    avisoMancha,
+    setAvisoMancha,
     isLoading,
-    manchaCenario, manchaRS,
+    manchaCenario,
+    manchaRS,
     isVisaoGeral,
-    renderEmp, renderEdu, renderSau,
+    isCenarioAtivo,
+    temCamadaTabular,
+    renderEmp,
+    renderEdu,
+    renderSau,
     popData,
-    showDanoFisico, rpDanoFisico, renderMunicipio,
+    showDanoFisico,
+    rpDanoFisico,
+    renderMunicipio,
     manchaDuracaoClimada,
-    cotasAtivo, cotaRaster, headerBottom,
-  } = dash;
+    cotasAtivo,
+    cotaRaster,
+    headerBottom,
+    resetSeq,
+  } = dash
 
-  // Abaixo de lg o painel é um bottom sheet: o mapa termina acima dele (e acima do controle de
-  // cota, quando houver), e a legenda/controles se ancoram em --dock. No desktop nada disso é usado.
-  const temCotaBarra = cotasAtivo && cotaRaster.cota !== null;
-  const alturaSheet = showPainelAnalise ? (cotasAtivo ? "45dvh" : "50dvh") : "60px";
-  const alturaCotaBarra = temCotaBarra ? "72px" : "0px";
-  const varsMovel = {
-    "--hb": `${headerBottom}px`,
-    "--sheet-h": alturaSheet,
-    "--dock": `calc(${alturaSheet} + ${alturaCotaBarra})`,
-  } as React.CSSProperties;
+  const mostraDuracaoClimada =
+    renderMunicipio === "Porto Alegre" && cenario === MANCHA_DURACAO_CENARIO
 
-  const mostraDuracaoClimada = renderMunicipio === "Porto Alegre" && cenario === MANCHA_DURACAO_CENARIO;
+  // Legenda: nasce aberta e se recolhe sozinha em 6 s se ninguém mexer, reabrindo ao trocar município/cenário ou reiniciar.
+  const legendaInteragiu = useRef(false)
+  const legendaJaRecolheu = useRef(false)
+  const primeiraSelecao = useRef(true)
+
+  useEffect(() => {
+    if (primeiraSelecao.current) {
+      primeiraSelecao.current = false
+      return
+    }
+    legendaInteragiu.current = false
+    legendaJaRecolheu.current = false
+    setShowLegenda(true)
+  }, [municipio, cenario, resetSeq, setShowLegenda])
+
+  useEffect(() => {
+    if (!showLegenda || legendaJaRecolheu.current) return
+    const t = setTimeout(() => {
+      legendaJaRecolheu.current = true
+      if (!legendaInteragiu.current) setShowLegenda(false)
+    }, 6000)
+    return () => clearTimeout(t)
+  }, [showLegenda, setShowLegenda])
+
+  const filtrosVisiveis =
+    showFiltros && (temCamadaTabular || isCenarioAtivo) && !isVisaoGeral
 
   return (
-    <main className="dash-root relative w-screen h-screen movel:h-dvh font-sans overflow-hidden bg-slate-100 text-slate-900 print:overflow-visible print:h-auto print:w-full" style={varsMovel}>
-      <div className="hidden telefone:flex fixed inset-0 z-[100] flex-col items-center justify-center gap-6 px-8 text-center bg-white">
-        <Image src="/BID.webp" alt="BID" width={160} height={64} className="h-12 w-auto object-contain" />
+    <main
+      className="relative h-screen w-screen overflow-hidden font-sans text-slate-900 print:h-auto print:w-full print:overflow-visible"
+      style={{ backgroundColor: C.bg }}
+    >
+      {/* ── Aviso de tamanho: abaixo de 1150 x 650 px mostra só esta tela ── */}
+      <div className="fixed inset-0 z-[100] hidden flex-col items-center justify-center gap-6 bg-white px-8 text-center telefone:flex">
+        <Image
+          src="/BID.webp"
+          alt="BID"
+          width={160}
+          height={64}
+          className="h-12 w-auto object-contain"
+        />
         <div className="flex flex-col gap-2">
-          <h1 className="text-xl font-black leading-tight" style={{ color: "#055071" }}>Avaliação de Impactos Socioeconômicos</h1>
+          <h1
+            className="text-xl leading-tight font-black"
+            style={{ color: C.primary }}
+          >
+            Avaliação de Impactos Socioeconômicos
+          </h1>
           <p className="text-sm text-slate-500">Painel de Monitoramento</p>
         </div>
-        <div className="rounded-2xl px-6 py-5 flex flex-col items-center gap-3 max-w-sm" style={{ backgroundColor: "#f0f7fa", border: "1px solid #b3cdd8" }}>
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#055071" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <div
+          className="flex max-w-sm flex-col items-center gap-3 rounded-2xl px-6 py-5"
+          style={{ backgroundColor: C.cardBg, border: `1px solid ${C.border}` }}
+        >
+          <svg
+            width="40"
+            height="40"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke={C.primary}
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <rect x="2" y="3" width="20" height="14" rx="2" />
             <line x1="8" y1="21" x2="16" y2="21" />
             <line x1="12" y1="17" x2="12" y2="21" />
           </svg>
-          <p className="font-bold text-sm" style={{ color: "#055071" }}>Tamanho de tela insuficiente</p>
-          <p className="text-slate-500 text-xs leading-relaxed">
-            O painel precisa de uma janela de, no mínimo, <strong>1150 × 650 px</strong>. Aumente a janela do navegador
-            ou acesse em um computador (ou tablet na horizontal com tela grande).
+          <p className="text-sm font-bold" style={{ color: C.primary }}>
+            Tamanho de tela insuficiente
+          </p>
+          <p className="text-xs leading-relaxed text-slate-500">
+            O painel precisa de uma janela de, no mínimo,{" "}
+            <strong>1150 × 650 px</strong>. Aumente a janela do navegador ou
+            acesse em um computador.
           </p>
         </div>
-        <div className="flex items-center gap-3 mt-2">
+        <div className="mt-2 flex items-center gap-3">
           <div className="relative h-11 w-20">
-            <Image src="/GPEA.webp" alt="GPEa" fill sizes="80px" className="object-contain" />
+            <Image
+              src="/GPEA.webp"
+              alt="GPEa"
+              fill
+              sizes="80px"
+              className="object-contain"
+            />
           </div>
           <div className="relative h-11 w-20">
-            <Image src="/CIEX2.webp" alt="CIEX" fill sizes="80px" className="object-contain" />
+            <Image
+              src="/CIEX2.webp"
+              alt="CIEX"
+              fill
+              sizes="80px"
+              className="object-contain"
+            />
           </div>
           <div className="relative h-11 w-20">
-            <Image src="/IPH.webp" alt="IPH" fill sizes="80px" className="object-contain rounded-sm" />
+            <Image
+              src="/IPH.webp"
+              alt="IPH"
+              fill
+              sizes="80px"
+              className="rounded-sm object-contain"
+            />
           </div>
         </div>
       </div>
 
+      {/* ── Mapa (fundo) ─────────────────────────────────────────────── */}
       <DashboardMap dash={dash} />
 
-      {isLoading && (
+      {/* ── Cartão de logos institucionais: alinhado ao grupo de zoom (130 px), à esquerda dele, na base ── */}
+      <div className="pointer-events-none absolute right-[62px] bottom-[40px] z-10 print:hidden">
         <div
-          className="absolute inset-0 z-50 pointer-events-none flex items-center justify-center print:hidden"
-          style={{ backdropFilter: "blur(8px) saturate(120%)", WebkitBackdropFilter: "blur(8px) saturate(120%)", backgroundColor: "rgba(255,255,255,0.2)" }}
+          className="flex h-[130px] w-[196px] flex-col items-center justify-center gap-2 rounded-md bg-white/90 px-2.5 py-2 shadow-sm"
+          style={{ border: "2px solid rgba(0,0,0,0.1)" }}
         >
-          <div
-            className="flex flex-col items-center gap-3 rounded-2xl px-9 py-7"
-            style={{ backgroundColor: "rgba(255,255,255,0.9)", border: "0.5px solid rgba(255,255,255,0.7)", boxShadow: "0 24px 60px rgba(0,0,0,0.25), 0 4px 16px rgba(0,0,0,0.1)" }}
-          >
-            <svg className="animate-spin h-9 w-9" fill="none" viewBox="0 0 24 24" style={{ color: "#055071" }}>
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+          <div className="flex w-full items-center justify-center gap-2 border-b border-black/10 pb-1.5">
+            <Image
+              src="/BID.webp"
+              alt="BID"
+              width={84}
+              height={32}
+              className="object-contain"
+              style={{
+                width: "auto",
+                height: "auto",
+                maxWidth: "82px",
+                maxHeight: "34px",
+              }}
+              onError={(e) => (e.currentTarget.style.display = "none")}
+            />
+            <div className="h-7 w-px bg-black/10" />
+            <Image
+              src="/GPEA.webp"
+              alt="GPEa"
+              width={84}
+              height={32}
+              className="object-contain"
+              style={{
+                width: "auto",
+                height: "auto",
+                maxWidth: "82px",
+                maxHeight: "34px",
+              }}
+              onError={(e) => (e.currentTarget.style.display = "none")}
+            />
+          </div>
+          <div className="flex w-full items-center justify-center gap-3 pt-0.5">
+            <Image
+              src="/CIEX2.webp"
+              alt="CIEX"
+              width={54}
+              height={54}
+              className="object-contain"
+              style={{
+                width: "auto",
+                height: "auto",
+                maxWidth: "52px",
+                maxHeight: "48px",
+              }}
+              onError={(e) => (e.currentTarget.style.display = "none")}
+            />
+            <div className="h-8 w-px bg-black/10" />
+            <Image
+              src="/IPH.webp"
+              alt="IPH · UFRGS"
+              width={72}
+              height={48}
+              className="rounded-sm object-contain"
+              style={{
+                width: "auto",
+                height: "auto",
+                maxWidth: "76px",
+                maxHeight: "46px",
+              }}
+              onError={(e) => (e.currentTarget.style.display = "none")}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* ── Loading ──────────────────────────────────────────────────── */}
+      {isLoading && (
+        <div className="pointer-events-none absolute inset-0 z-50 flex items-end justify-center pb-6 print:hidden">
+          <div className="flex items-center gap-2 rounded-full border border-slate-200/60 bg-white/90 px-4 py-2 shadow-lg backdrop-blur-md">
+            <svg
+              className="h-4 w-4 animate-spin"
+              style={{ color: C.primary }}
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              />
             </svg>
-            <span className="text-sm font-black tracking-wide" style={{ color: "#055071" }}>Carregando dados...</span>
+            <span className="text-xs font-bold text-slate-700">
+              Carregando dados...
+            </span>
           </div>
         </div>
       )}
 
-      {/* Legenda e Copyright lado a lado, alinhados pela base -- antes o
-          Copyright ficava centralizado na tela inteira (inset-x-0) e a
-          Legenda flutuava sozinha, sem relação visual entre os dois. Agora um
-          único wrapper posiciona ambos juntos (mesmo left dinâmico do painel,
-          items-end pra alinhar a base mesmo quando a Legenda expande e fica
-          mais alta que o Copyright). */}
+      {/* ── Legenda: canto direito, acima do cartão de logos e dos controles do mapa ── */}
       <div
-        className={`absolute bottom-4 z-10 print:hidden movel:hidden flex items-end gap-3 transition-[left] duration-300 ${showPainelAnalise ? (cotasAtivo ? "left-[504px]" : "left-[440px]") : (cotasAtivo ? "left-[96px]" : "left-4")}`}
-        style={{ transitionTimingFunction: "var(--ease-out)" }}
+        onPointerDown={() => {
+          legendaInteragiu.current = true
+        }}
+        onPointerEnter={() => {
+          legendaInteragiu.current = true
+        }}
+        onFocus={() => {
+          legendaInteragiu.current = true
+        }}
+        className="absolute right-2 bottom-[178px] z-10 flex w-[250px] flex-col justify-end print:hidden"
+        style={{
+          maxHeight: filtrosVisiveis
+            ? "calc(100vh - 320px)"
+            : `calc(100vh - ${178 + headerBottom + 44}px)`,
+        }}
       >
         <div
-          className="px-3 py-1 rounded-xl select-none leading-none text-center shrink-0 pointer-events-none"
-          style={{ backgroundColor: "rgba(255,255,255,0.55)", backdropFilter: "saturate(200%) blur(24px)", WebkitBackdropFilter: "saturate(200%) blur(24px)", border: "0.5px solid rgba(255,255,255,0.6)", boxShadow: "0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)" }}
-        >
-          <span className="text-[9px] font-black uppercase tracking-wider" style={{ color: "#055071" }}>© GPEa - Grupo de Pesquisa em Economia Azul</span>
-          <span className="text-[9px]" style={{ color: "#055071" }}> | Alisson Tallys Geraldo Fiorentin</span>
-        </div>
-      </div>
-
-      {/* Legenda: canto direito, acima da logo GPEa e dos controles do mapa. */}
-      <div className="absolute right-2 desk:right-2 bottom-[calc(var(--dock)+62px)] desk:bottom-[88px] z-10 print:hidden w-[194px] desk:w-[168px] max-h-[calc(100dvh-var(--dock)-var(--hb)-80px)] desk:max-h-[calc(100vh-230px)] flex flex-col justify-end">
-        <div
-          className="rounded-xl overflow-hidden"
-          style={{ backgroundColor: "rgba(255,255,255,0.55)", backdropFilter: "saturate(200%) blur(24px)", WebkitBackdropFilter: "saturate(200%) blur(24px)", border: "0.5px solid rgba(255,255,255,0.6)", boxShadow: "0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)" }}
+          className="flex min-h-0 flex-col overflow-hidden rounded-xl"
+          style={glassStyle(0.55)}
         >
           <button
-            onClick={() => setShowLegenda(p => !p)}
-            className="w-full flex items-center justify-between gap-3 px-2.5 py-2 desk:px-2 desk:py-1.5 movel:min-h-11"
-            style={{ background: "linear-gradient(135deg, #055071 0%, #0a6e9a 100%)" }}
+            onClick={() => setShowLegenda((p) => !p)}
+            className="flex w-full shrink-0 items-center justify-between gap-3 px-2 py-1.5"
+            style={{ background: BRAND_GRADIENT }}
           >
-            <span className="text-[9px] desk:text-[8px] font-black uppercase tracking-wider text-white">Legenda</span>
-            <span className="text-white" style={{ fontSize: 8 }}>{showLegenda ? "▼" : "▲"}</span>
+            <span className="text-[8px] font-black tracking-wider text-white uppercase">
+              Legenda
+            </span>
+            <span className="text-white/80" style={{ fontSize: 8 }}>
+              {showLegenda ? "▼" : "▲"}
+            </span>
           </button>
           {showLegenda && (
-            <div className="flex flex-col gap-1.5 desk:gap-1 px-2.5 py-2.5 desk:px-2 desk:py-2">
-              {showDanoFisico && renderMunicipio === "Porto Alegre" ? (
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center gap-2">
-                    <div className="w-16 h-3 rounded-sm shrink-0" style={{ background: "linear-gradient(to right, #cbd5e1, #93c5fd, #fbbf24, #f97316, #dc2626, #7f1d1d)" }} />
-                    <div className="flex flex-col leading-none gap-0.5">
-                      <span className="text-[10px] text-slate-700 font-medium">Dano Físico (CLIMADA) · {rpDanoFisico}</span>
-                      <span className="text-[8px] text-slate-500">0% → 100% do valor de reposição</span>
-                    </div>
-                  </div>
-                  <span className="text-[8px] leading-tight text-slate-500 max-w-[180px]">
-                    Protótipo exploratório — ver página de Danos para detalhes e limitações.
-                  </span>
-                </div>
-              ) : (
-                <>
-                  {camadas.includes("Empresas") && renderEmp?.features && <LegendItem cor={COLORS.empresas} label="Empresas" />}
-                  {camadas.includes("Educação") && renderEdu?.features && <LegendItem cor={COLORS.educacao} label="Educação" />}
-                  {camadas.includes("Saúde") && renderSau?.features && <LegendItem cor={COLORS.saude} label="Saúde" />}
-                </>
-              )}
-              {camadas.includes("Agricultura") && !isVisaoGeral && AGRI_BOUNDS[municipio] && Object.entries(AGRI_COLORS).map(([tipo, cor]) => (
-                <LegendItem key={`agri-${tipo}`} cor={cor} label={tipo} area />
-              ))}
-              {camadas.includes("Infraestrutura") && infraAtivas.map(nome => (
-                <LegendItem key={`infra-${nome}`} cor={INFRA_COLORS[nome] ?? COLORS.infra} label={nome} area={["Quadras","Terrenos"].includes(nome)} />
-              ))}
-              {cotasAtivo && showMancha && (
-                <>
-                  <LegendItem cor={`rgb(${COR_ALAGADO})`} label="Área alagada" area />
-                  <LegendItem cor={`rgb(${COR_FRENTE})`} label="Frente de avanço" area />
-                </>
-              )}
-              {manchaCenario && !isVisaoGeral && showMancha && mostraDuracaoClimada && manchaDuracaoClimada ? (
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center gap-2">
-                    <div className="w-16 h-3 rounded-sm shrink-0" style={{ background: MANCHA_DURACAO_GRADIENT_CSS }} />
-                    <div className="flex flex-col leading-none gap-0.5">
-                      <span className="text-[10px] text-slate-700 font-medium">Duração da inundação (dias)</span>
-                      <span className="text-[8px] text-slate-500">0 → {manchaDuracaoClimada.duracao_max_dias.toFixed(0)} dias</span>
-                    </div>
-                  </div>
-                  <span className="text-[8px] leading-tight text-slate-500 max-w-[180px]">
-                    Evento real de maio/2024 (CLIMADA/UNU-EHS).
-                  </span>
-                </div>
-              ) : (
-                manchaCenario && !isVisaoGeral && showMancha && (
-                  <>
-                    <LegendItem cor={COLORS.cenario} label={cenarioLabel(cenario)} area />
-                    <span className="text-[8px] leading-tight text-slate-500 max-w-[180px]">
-                      Extensão da área alagada. Não há dado de profundidade da água para este cenário.
+            <div className="flex min-h-0 flex-col gap-2 overflow-y-auto px-2 py-2 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-track]:bg-transparent">
+              {(() => {
+                const mostraDano =
+                  showDanoFisico && renderMunicipio === "Porto Alegre"
+                const pontos = mostraDano
+                  ? []
+                  : [
+                      camadas.includes("Empresas") && renderEmp?.features && (
+                        <LegendItem
+                          key="emp"
+                          cor={COLORS.empresas}
+                          label="Empresas"
+                        />
+                      ),
+                      camadas.includes("Saúde") && renderSau?.features && (
+                        <LegendItem
+                          key="sau"
+                          cor={COLORS.saude}
+                          label="Saúde"
+                        />
+                      ),
+                      camadas.includes("Educação") && renderEdu?.features && (
+                        <LegendItem
+                          key="edu"
+                          cor={COLORS.educacao}
+                          label="Educação"
+                        />
+                      ),
+                    ].filter(Boolean)
+
+                const mostraInfra =
+                  camadas.includes("Infraestrutura") && infraAtivas.length > 0
+                const mostraAgri =
+                  camadas.includes("Agricultura") &&
+                  !isVisaoGeral &&
+                  !!AGRI_BOUNDS[municipio]
+                const mostraPop =
+                  camadas.includes("População") &&
+                  !isVisaoGeral &&
+                  !!popData?.[municipio]
+                const mostraCotas = cotasAtivo && showMancha
+                const mostraMancha =
+                  !cotasAtivo &&
+                  ((!isVisaoGeral && !!manchaCenario && showMancha) ||
+                    (isVisaoGeral && !!manchaRS && showMancha))
+
+                const secoes: {
+                  key: string
+                  titulo: string
+                  corpo: React.ReactNode
+                }[] = [
+                  ...(mostraDano
+                    ? [
+                        {
+                          key: "dano",
+                          titulo: `Dano Físico (CLIMADA) · ${rpDanoFisico}`,
+                          corpo: (
+                            <div className="flex flex-col gap-1">
+                              <div className="flex items-center gap-2">
+                                <div
+                                  className="h-3 w-16 shrink-0 rounded-sm"
+                                  style={{
+                                    background:
+                                      "linear-gradient(to right, #cbd5e1, #93c5fd, #fbbf24, #f97316, #dc2626, #7f1d1d)",
+                                  }}
+                                />
+                                <div className="flex flex-col gap-0.5 leading-none">
+                                  <span
+                                    className="text-[10px] font-medium"
+                                    style={{ color: C.primary }}
+                                  >
+                                    0% → 100%
+                                  </span>
+                                  <span
+                                    className="text-[8px]"
+                                    style={{ color: C.muted }}
+                                  >
+                                    do valor de reposição
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          ),
+                        },
+                      ]
+                    : []),
+                  ...(pontos.length > 0
+                    ? [{ key: "pontos", titulo: "Pontos", corpo: pontos }]
+                    : []),
+                  ...(mostraInfra
+                    ? [
+                        {
+                          key: "infra",
+                          titulo: "Infraestrutura",
+                          corpo: infraAtivas.map((nome) => (
+                            <LegendItem
+                              key={`infra-${nome}`}
+                              cor={INFRA_COLORS[nome] ?? COLORS.infra}
+                              label={nome}
+                              area={[
+                                "Quadras",
+                                "Terrenos",
+                                "Lotes",
+                                "Quarteirões",
+                                "Edificações",
+                              ].includes(nome)}
+                            />
+                          )),
+                        },
+                      ]
+                    : []),
+                  ...(mostraAgri
+                    ? [
+                        {
+                          key: "agri",
+                          titulo: "Agricultura",
+                          corpo: Object.entries(AGRI_COLORS).map(
+                            ([tipo, cor]) => (
+                              <LegendItem
+                                key={`agr-${tipo}`}
+                                cor={cor}
+                                label={tipo}
+                                area
+                              />
+                            )
+                          ),
+                        },
+                      ]
+                    : []),
+                  ...(mostraPop
+                    ? [
+                        {
+                          key: "pop",
+                          titulo: "População",
+                          corpo: (
+                            <div className="flex items-center gap-2">
+                              <div
+                                className="h-3 w-16 shrink-0 rounded-sm"
+                                style={{
+                                  background:
+                                    "linear-gradient(to right, #0d0887, #9c179e, #ed7953, #f0f921)",
+                                }}
+                              />
+                              <div className="flex flex-col gap-0.5 leading-none">
+                                <span
+                                  className="text-[10px] font-medium"
+                                  style={{ color: C.primary }}
+                                >
+                                  Pop. (hab./pixel)
+                                </span>
+                                <span
+                                  className="text-[8px]"
+                                  style={{ color: C.muted }}
+                                >
+                                  baixo → alto
+                                </span>
+                              </div>
+                            </div>
+                          ),
+                        },
+                      ]
+                    : []),
+                  ...(mostraCotas
+                    ? [
+                        {
+                          key: "cotas",
+                          titulo: "Simulação por Cota",
+                          corpo: (
+                            <>
+                              <LegendItem
+                                cor={`rgb(${COR_ALAGADO})`}
+                                label="Área alagada"
+                                area
+                              />
+                              <LegendItem
+                                cor={`rgb(${COR_FRENTE})`}
+                                label="Frente de avanço"
+                                area
+                              />
+                            </>
+                          ),
+                        },
+                      ]
+                    : []),
+                  ...(mostraMancha
+                    ? [
+                        {
+                          key: "mancha",
+                          titulo:
+                            mostraDuracaoClimada && manchaDuracaoClimada
+                              ? "Duração da inundação"
+                              : "Cenário",
+                          corpo:
+                            mostraDuracaoClimada && manchaDuracaoClimada ? (
+                              <div className="flex flex-col gap-1">
+                                <div className="flex items-center gap-2">
+                                  <div
+                                    className="h-3 w-16 shrink-0 rounded-sm"
+                                    style={{
+                                      background: MANCHA_DURACAO_GRADIENT_CSS,
+                                    }}
+                                  />
+                                  <div className="flex flex-col gap-0.5 leading-none">
+                                    <span
+                                      className="text-[10px] font-medium"
+                                      style={{ color: C.primary }}
+                                    >
+                                      0 →{" "}
+                                      {manchaDuracaoClimada.duracao_max_dias.toFixed(
+                                        0
+                                      )}{" "}
+                                      dias
+                                    </span>
+                                    <span
+                                      className="text-[8px]"
+                                      style={{ color: C.muted }}
+                                    >
+                                      CLIMADA · UNU-EHS
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            ) : isVisaoGeral ? (
+                              <LegendItem
+                                cor={COLORS.cenario}
+                                label="Enchente 2024 — RS"
+                                area
+                              />
+                            ) : (
+                              <LegendItem
+                                cor={COLORS.cenario}
+                                label={cenarioLabel(cenario)}
+                                area
+                              />
+                            ),
+                        },
+                      ]
+                    : []),
+                ]
+
+                if (secoes.length === 0)
+                  return (
+                    <span className="text-[9px]" style={{ color: C.muted }}>
+                      Nenhuma camada ativa.
                     </span>
-                  </>
-                )
-              )}
-              {isVisaoGeral && manchaRS && showMancha && <LegendItem cor={COLORS.cenario} label="Enchente 2024 — RS" area />}
-              {camadas.includes("População") && !isVisaoGeral && popData?.[municipio] && (
-                <div className="flex items-center gap-2">
-                  <div className="w-16 h-3 rounded-sm shrink-0" style={{ background: "linear-gradient(to right, #0d0887, #9c179e, #ed7953, #f0f921)" }} />
-                  <div className="flex flex-col leading-none gap-0.5">
-                    <span className="text-[10px] text-slate-700 font-medium">Pop. (hab./pixel)</span>
-                    <span className="text-[8px] text-slate-500">baixo → alto</span>
+                  )
+
+                return secoes.map(({ key, titulo, corpo }, i) => (
+                  <div
+                    key={key}
+                    className={`flex flex-col gap-1 ${i > 0 ? "border-t pt-2" : ""}`}
+                    style={{ borderColor: C.border }}
+                  >
+                    <div
+                      className="text-[8px] font-black tracking-wider uppercase"
+                      style={{ color: C.muted }}
+                    >
+                      {titulo}
+                    </div>
+                    {corpo}
                   </div>
-                </div>
-              )}
+                ))
+              })()}
             </div>
           )}
         </div>
       </div>
 
-      {cotasAtivo && cotaRaster.cota !== null && (
+      {/* ── Copyright: base, centralizado na área livre do mapa (entre o painel e o bloco de logos) ── */}
+      <div
+        className={`pointer-events-none absolute right-[330px] bottom-4 z-10 flex items-end justify-center transition-[left] duration-300 print:hidden ${
+          showPainelAnalise
+            ? cotasAtivo && cotaRaster.cota !== null
+              ? "left-[500px]"
+              : "left-[432px]"
+            : "left-0"
+        }`}
+        style={{ transitionTimingFunction: "var(--ease-out)" }}
+      >
         <div
-          className={`movel:hidden absolute z-10 print:hidden w-[68px] rounded-xl px-2 py-3 transition-[left] duration-300 ${showPainelAnalise ? "left-[424px]" : "left-4"}`}
-          style={{ top: headerBottom, bottom: 6, backgroundColor: "rgba(255,255,255,0.8)", backdropFilter: "saturate(200%) blur(24px)", WebkitBackdropFilter: "saturate(200%) blur(24px)", border: "0.5px solid rgba(255,255,255,0.6)", boxShadow: "0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)" }}
+          className="pointer-events-none shrink-0 rounded-xl px-3 py-1 text-center leading-none select-none"
+          style={glassStyle(0.55)}
         >
-          <CotaControle raster={cotaRaster} vertical className="h-full" />
+          <span
+            className="text-[9px] font-black tracking-wider uppercase"
+            style={{ color: C.muted }}
+          >
+            © GPEa — Grupo de Pesquisa em Economia Azul
+          </span>
+          <span className="text-[9px]" style={{ color: C.muted }}>
+            {" "}
+            | Alisson T. G. Fiorentin
+          </span>
+        </div>
+      </div>
+
+      {/* ── Aviso metodológico flutuante ── */}
+      {avisoMancha && (
+        <div
+          className="absolute inset-x-0 z-20 flex justify-center px-4 print:hidden"
+          style={{ top: headerBottom }}
+        >
+          <div
+            className="animate-fade-in-up flex max-w-md items-start gap-2 rounded-xl px-3.5 py-2.5 shadow-2xl"
+            style={glassStyle(0.78)}
+          >
+            <span className="mt-0.5 shrink-0 text-sm leading-none">⚠️</span>
+            <p
+              className="text-[11px] leading-snug"
+              style={{ color: C.primary }}
+            >
+              {avisoMancha}
+            </p>
+            <button
+              onClick={() => setAvisoMancha(null)}
+              aria-label="Fechar aviso"
+              className="shrink-0 rounded p-0.5 transition-colors hover:bg-slate-100"
+              style={{ color: C.muted }}
+            >
+              <span className="text-[13px] leading-none">✕</span>
+            </button>
+          </div>
         </div>
       )}
 
-      {/* Celular/tablet: controle de cota horizontal acima do bottom sheet. */}
-      {temCotaBarra && (
+      {/* ── Cenário "Todas as cotas": slider vertical acoplado à direita do Painel (432 px = 12 + 420) ── */}
+      {cotasAtivo && (cotaRaster.erro || cotaRaster.cota !== null) && (
         <div
-          className="desk:hidden absolute inset-x-2 z-10 print:hidden rounded-xl px-3 py-2"
-          style={{ bottom: "calc(var(--sheet-h) + 4px)", backgroundColor: "rgba(255,255,255,0.88)", backdropFilter: "saturate(200%) blur(24px)", WebkitBackdropFilter: "saturate(200%) blur(24px)", border: "0.5px solid rgba(255,255,255,0.6)", boxShadow: "0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)" }}
+          className={`absolute bottom-1.5 z-20 px-2 py-3 transition-[left] duration-300 print:hidden ${
+            showPainelAnalise && !cotaRaster.erro
+              ? "left-[432px] rounded-r-xl border-l border-slate-300/50 shadow-2xl"
+              : showPainelAnalise
+                ? "left-[432px] rounded-xl"
+                : "left-3 rounded-xl"
+          } ${cotaRaster.erro ? "max-w-[140px]" : "w-[68px]"}`}
+          style={{
+            top: showPainelAnalise ? headerBottom : headerBottom + 44,
+            ...(cotaRaster.erro ? { bottom: "auto" } : {}),
+            ...glassStyle(showPainelAnalise && !cotaRaster.erro ? 0.6 : 0.8),
+          }}
         >
-          <CotaControle raster={cotaRaster} />
+          {cotaRaster.erro ? (
+            <p className="text-center text-[11px] text-slate-600">
+              Mapa por cota indisponível
+            </p>
+          ) : (
+            <CotaControle
+              raster={cotaRaster}
+              vertical
+              className="h-full"
+            />
+          )}
         </div>
       )}
-
-      <WelcomeModal />
 
       <DashboardHeader dash={dash} />
 
@@ -236,8 +679,5 @@ export default function Dashboard() {
 
       <AnalysisPanel dash={dash} />
     </main>
-  );
+  )
 }
-
-
-

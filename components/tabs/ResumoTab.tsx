@@ -1,7 +1,9 @@
 import type React from "react";
+import Link from "next/link";
 import { Users, Building2, GraduationCap, HeartPulse, Stethoscope, Wrench, DollarSign, Sprout, Map } from "lucide-react";
 import { TabsContent } from "@/components/ui/tabs";
 import { FitHeight } from "@/components/FitHeight";
+import { ResumoPerdasDanos } from "@/components/ResumoPerdasDanos";
 import { DonutChart } from "@/components/ui/donut-chart";
 import { COLORS, MUNICIPIOS, PIORES_CENARIOS, CENARIO_PERIODO, IMPACTO_AGRICOLA, PANEL_CARD_BG, C, AREA_VISAO_GERAL_LABEL, AREA_VISAO_GERAL_CENARIO } from "@/lib/constants";
 import { compactoBr, scenarioSlug, findCenarioData } from "@/lib/geo-utils";
@@ -174,8 +176,14 @@ export function ResumoTab({ dash }: Props) {
   const agriPct = agriBase > 0 ? (agriAtg / agriBase) * 100 : 0;
 
   return (
-    <TabsContent value="resumo" className="flex-1 flex flex-col overflow-hidden mt-4 pb-2">
+    <TabsContent value="resumo" className="flex-1 flex flex-col overflow-hidden mt-3 pb-2">
       <FitHeight>
+      <ResumoPerdasDanos
+        municipio={municipio}
+        cenario={cenario}
+        isVisaoGeral={isVisaoGeral}
+        mostraImpacto={mostraImpacto}
+      />
       <div className="grid grid-cols-2" style={{ gap: CARD_GAP }}>
         <MiniStatCard
           icon={<Users strokeWidth={2.5} className="w-[45%] h-[45%]" />}
@@ -293,8 +301,20 @@ export function ResumoTab({ dash }: Props) {
         </div>
       )}
 
-      <p className="italic text-muted-foreground" style={{ fontSize: FONT_LABEL, marginTop: CARD_GAP }}>
-        Resumo das principais métricas por camada — veja o detalhamento em cada aba.
+      <p className="italic text-muted-foreground leading-snug" style={{ fontSize: FONT_LABEL, marginTop: CARD_GAP }}>
+        Resumo das principais métricas por camada — veja detalhes em{" "}
+        <Link href="/perdas-operacionais" className="font-semibold underline hover:no-underline" style={{ color: C.primary }}>
+          Perdas Operacionais
+        </Link>
+        ,{" "}
+        <Link href="/danos-fisicos" className="font-semibold underline hover:no-underline" style={{ color: C.primary }}>
+          Danos Físicos
+        </Link>{" "}
+        e{" "}
+        <Link href="/metodologia" className="font-semibold underline hover:no-underline" style={{ color: C.primary }}>
+          Metodologia
+        </Link>
+        .
       </p>
       </FitHeight>
     </TabsContent>

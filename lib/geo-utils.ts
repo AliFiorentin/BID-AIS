@@ -41,7 +41,7 @@ export const formatName = (str: string | undefined | null) => {
 };
 
 // ── Formatação ───────────────────────────────────────────────────────────────
-const formatoBr = (num: number, casas = 0) =>
+export const formatoBr = (num: number, casas = 0) =>
   num.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
 
 export const inteiroBr = (n: number): string =>

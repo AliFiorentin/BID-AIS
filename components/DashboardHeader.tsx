@@ -1,169 +1,392 @@
-"use client";
+"use client"
 
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { Building2, GraduationCap, HeartPulse, Wrench, Sprout } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuCheckboxItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { MUNICIPIOS, CENARIOS_CONFIG, INFRAESTRUTURA_CONFIG, AGRI_BOUNDS, cenarioLabel } from "@/lib/constants";
-import type { DashboardState } from "@/hooks/useDashboard";
+import React from "react"
+import Image from "next/image"
+import Link from "next/link"
+import {
+  Building2,
+  GraduationCap,
+  HeartPulse,
+  Wrench,
+  Sprout,
+  Users,
+  TrendingDown,
+  Waves,
+  BookOpen,
+  RotateCcw,
+} from "lucide-react"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
+  C,
+  MUNICIPIOS,
+  CENARIOS_CONFIG,
+  INFRAESTRUTURA_CONFIG,
+  AGRI_BOUNDS,
+  cenarioLabel,
+} from "@/lib/constants"
+import type { DashboardState } from "@/hooks/useDashboard"
 
 interface DashboardHeaderProps {
-  dash: DashboardState;
+  dash: DashboardState
 }
 
-// Tamanhos em variáveis CSS (.dash-header em globals.css): fluidos com a largura (vw) no desktop,
-// fixos e com alvo de toque >= 44px abaixo de lg.
-const LOGO_H = "var(--logo-h)";
-const LOGO_W = "var(--logo-w)";
-const LOGO_GAP = "var(--logo-gap)";
-const TITLE_SIZE = "clamp(10px, 0.95vw, 14px)";
-const SUBTITLE_SIZE = "clamp(6.5px, 0.6vw, 9px)";
-const SELECT_LABEL_SIZE = "var(--select-label)";
-const SELECT_TRIGGER_SIZE = "var(--select-trigger)";
-const SELECT_H = "var(--select-h)";
-const BTN_SIZE = "var(--btn-size)";
-const BTN_H = "var(--btn-h)";
-const SECTION_GAP = "var(--section-gap)";
-const SELECT_GAP = "var(--select-gap)";
+const HEADER_FLUID = {
+  titleSize: "clamp(11px, 1.05vw, 15px)",
+  subtitleSize: "clamp(7px, 0.65vw, 9px)",
+}
+
+const HEADER_GLASS = {
+  backgroundImage:
+    "linear-gradient(135deg, rgba(5,80,113,0.84) 0%, rgba(10,110,154,0.84) 100%)",
+  backdropFilter: "saturate(180%) blur(20px)",
+  WebkitBackdropFilter: "saturate(180%) blur(20px)",
+  border: "0.5px solid rgba(255,255,255,0.18)",
+  boxShadow: "0 4px 24px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.08)",
+} as const
+
+const NAV_LINK_CLASS =
+  "active-press hover-lift flex items-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-2.5 font-black whitespace-nowrap text-white/90 hover:bg-white/20 focus-visible:outline-none"
+const NAV_LINK_STYLE = {
+  fontSize: "var(--btn-size)",
+  height: "var(--btn-h)",
+} as const
+
+/** Nome da camada ao passar o mouse (o título nativo demora e some); `aria-hidden`: o botão já tem nome acessível. */
+function TipCamada({ texto }: { texto: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className="pointer-events-none absolute top-full left-1/2 z-30 mt-1 hidden -translate-x-1/2 rounded-md bg-slate-900 px-2 py-1 text-[10px] leading-none font-bold whitespace-nowrap text-white shadow-lg group-hover/tip:block"
+    >
+      {texto}
+    </span>
+  )
+}
 
 export function DashboardHeader({ dash }: DashboardHeaderProps) {
   const {
-    municipio, setMunicipio,
-    cenario, setCenario,
+    municipio,
+    setMunicipio,
+    renderMunicipio,
+    cenario,
+    setCenario,
     camadas,
     infraAtivas,
-    isVisaoGeral, possuiInfra,
-    toggleCamada, toggleInfra, toggleMenuInfra,
+    isVisaoGeral,
+    possuiInfra,
+    toggleCamada,
+    toggleInfra,
+    toggleMenuInfra,
+    reiniciar,
     headerRef,
-  } = dash;
+  } = dash
+
+  const subtitulo =
+    renderMunicipio === "Visão Geral RS"
+      ? "Painel de Monitoramento · RS"
+      : `${renderMunicipio}, RS`
+
+  const camadasBotoes: {
+    id: string
+    label: string
+    icon: React.ReactNode
+  }[] = [
+    {
+      id: "Empresas",
+      label: "Empresas",
+      icon: <Building2 size={11} strokeWidth={2.5} />,
+    },
+    {
+      id: "Saúde",
+      label: "Saúde",
+      icon: <HeartPulse size={11} strokeWidth={2.5} />,
+    },
+    {
+      id: "Educação",
+      label: "Educação",
+      icon: <GraduationCap size={11} strokeWidth={2.5} />,
+    },
+    ...(isVisaoGeral || AGRI_BOUNDS[municipio]
+      ? [
+          {
+            id: "Agricultura",
+            label: "Agricultura",
+            icon: <Sprout size={11} strokeWidth={2.5} />,
+          },
+        ]
+      : []),
+    {
+      id: "População",
+      label: "População",
+      icon: <Users size={11} strokeWidth={2.5} />,
+    },
+  ]
+
+  const infraAtivo =
+    camadas.includes("Infraestrutura") && infraAtivas.length > 0
 
   return (
-    <header ref={headerRef} className="dash-header absolute top-1.5 left-2 right-2 desk:left-3 desk:right-3 flex flex-wrap items-center z-20 rounded-xl" style={{ backgroundColor: "rgba(255,255,255,0.55)", backdropFilter: "saturate(200%) blur(24px)", WebkitBackdropFilter: "saturate(200%) blur(24px)", border: "0.5px solid rgba(255,255,255,0.6)", boxShadow: "0 4px 24px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06)", paddingInline: "0.625rem", paddingBlock: "0.25rem", gap: SECTION_GAP }}>
-      <div className="flex items-center border-r border-slate-200/60 shrink-0" style={{ gap: LOGO_GAP, paddingRight: SECTION_GAP }}>
-        {/* Caixa fixa igual para as 4 logos: BID/GPEA são bem mais largas que
-            altas e CIEX/IPH mais quadradas/altas -- só igualar a altura (como
-            antes) deixava CIEX e IPH visualmente menores. `fill` +
-            object-contain é o jeito confiável de encaixar proporções bem
-            diferentes numa caixa fixa com next/image -- w-auto/h-auto por si
-            só cortava a CIEX. Tamanho em clamp() (vw) pra nao forcar o header
-            a quebrar em duas linhas em telas mais estreitas. */}
-        <div className="relative shrink-0" style={{ height: LOGO_H, width: LOGO_W }}>
-          <Image src="/BID.webp" alt="BID Logo" fill className="object-contain" onError={(e) => (e.currentTarget.style.display = 'none')} />
-        </div>
-        <div className="relative shrink-0" style={{ height: LOGO_H, width: LOGO_W }}>
-          <Image src="/GPEA.webp" alt="GPEA Logo" fill className="object-contain" onError={(e) => (e.currentTarget.style.display = 'none')} />
-        </div>
-        <div className="relative shrink-0" style={{ height: LOGO_H, width: LOGO_W }}>
-          <Image src="/CIEX2.webp" alt="CIEX Logo" fill className="object-contain" onError={(e) => (e.currentTarget.style.display = 'none')} />
-        </div>
-        <div className="relative shrink-0" style={{ height: LOGO_H, width: LOGO_W }}>
-          <Image src="/IPH.webp" alt="IPH Logo" fill className="object-contain rounded-sm" onError={(e) => (e.currentTarget.style.display = 'none')} />
-        </div>
-        <div className="movel:sr-only flex flex-col justify-center min-w-0" style={{ paddingLeft: LOGO_GAP, maxWidth: "clamp(130px, 15vw, 260px)" }}>
-          {/* Sem whitespace-nowrap de propósito: com titulo curto o texto cabe
-              numa linha; em telas mais estreitas ele quebra em 2 linhas em vez
-              de forçar o header inteiro (selects/botões) pra baixo -- essa
-              caixa cresce só em altura, sem empurrar o resto pra 2a linha. */}
-          <h1 className="font-black text-slate-800 leading-tight" style={{ fontSize: TITLE_SIZE }}>Avaliação de Impactos Socioeconômicos</h1>
-          <span className="text-slate-500 font-medium tracking-wider uppercase whitespace-nowrap" style={{ fontSize: SUBTITLE_SIZE }}>Painel de Monitoramento</span>
+    <header
+      ref={headerRef}
+      className="dash-header absolute top-1.5 right-3 left-3 z-20 flex flex-wrap items-center rounded-xl shadow-2xl print:hidden"
+      style={{
+        ...HEADER_GLASS,
+        paddingInline: "0.75rem",
+        paddingBlock: "0.25rem",
+        gap: "var(--section-gap)",
+      }}
+    >
+      {/* Ícone do projeto + título e subtítulo */}
+      <div
+        className="flex shrink-0 items-center gap-2.5 border-r"
+        style={{
+          borderColor: "rgba(255,255,255,0.2)",
+          paddingRight: "var(--section-gap)",
+        }}
+      >
+        <Image
+          src="/icon.svg"
+          alt="BID · GPEa"
+          width={48}
+          height={48}
+          className="shrink-0 rounded-lg object-contain"
+          style={{ height: "calc(var(--logo-h) * 1.4)", width: "auto" }}
+        />
+        <div className="flex min-w-0 flex-col justify-center">
+          <h1
+            className="leading-tight font-black whitespace-nowrap text-white"
+            style={{ fontSize: HEADER_FLUID.titleSize }}
+          >
+            Avaliação de Impactos Socioeconômicos
+          </h1>
+          <span
+            className="font-medium tracking-wider whitespace-nowrap text-white/75 uppercase"
+            style={{ fontSize: HEADER_FLUID.subtitleSize }}
+          >
+            {subtitulo}
+          </span>
         </div>
       </div>
-      <div className="flex flex-row desk:flex-col gap-1.5 desk:gap-0.5 shrink-0 mr-auto">
+
+      {/* Perdas Operacionais / Danos Físicos / Metodologia — empurram o resto para a direita (mr-auto) */}
+      <div className="grid shrink-0 grid-cols-2 gap-0.5 max-[1999px]:flex max-[1999px]:flex-row max-[1999px]:gap-1 min-[1260px]:mr-auto">
         <Link
-          href="/danos"
-          className={`${buttonVariants({ variant: "default", size: "xs" })} font-black gap-1 shrink-0 justify-start`}
-          style={{ fontSize: BTN_SIZE, height: BTN_H, paddingInline: "var(--btn-px)" }}
-          title="Ver danos operacionais estimados"
+          href="/perdas-operacionais"
+          className={NAV_LINK_CLASS}
+          style={NAV_LINK_STYLE}
+          title="Ver perdas operacionais (DaLA)"
         >
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-          Danos
+          <TrendingDown size={11} strokeWidth={2.5} />
+          <span className="min-[2000px]:hidden">Perdas</span>
+          <span className="max-[1999px]:hidden">Perdas Operacionais</span>
+        </Link>
+        <Link
+          href="/danos-fisicos"
+          className={NAV_LINK_CLASS}
+          style={NAV_LINK_STYLE}
+          title="Ver danos físicos (exposição e CLIMADA)"
+        >
+          <Waves size={11} strokeWidth={2.5} />
+          <span className="min-[2000px]:hidden">Danos</span>
+          <span className="max-[1999px]:hidden">Danos Físicos</span>
         </Link>
         <Link
           href="/metodologia"
-          className={`${buttonVariants({ variant: "default", size: "xs" })} font-black gap-1 shrink-0 justify-start`}
-          style={{ fontSize: BTN_SIZE, height: BTN_H, paddingInline: "var(--btn-px)" }}
-          title="Ver metodologia de cálculo"
+          className={`${NAV_LINK_CLASS} min-[2000px]:col-span-2`}
+          style={NAV_LINK_STYLE}
+          title="Ver metodologia do painel"
         >
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          <BookOpen size={11} strokeWidth={2.5} />
           Metodologia
         </Link>
       </div>
 
-      <div className="flex items-center movel:w-full" style={{ gap: SELECT_GAP }}>
-        <div className="flex flex-col gap-0 shrink-0 movel:flex-1 movel:min-w-0" style={{ width: "var(--sel1-w)" }}>
-          <label className="font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap" style={{ fontSize: SELECT_LABEL_SIZE }}>Município</label>
-          <Select value={municipio} onValueChange={setMunicipio}>
-            <SelectTrigger aria-label="Município" className="bg-slate-50/80 w-full min-w-0" style={{ height: SELECT_H, fontSize: SELECT_TRIGGER_SIZE }}><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Visão Geral RS" className="font-bold text-blue-600">Visão Geral RS</SelectItem>
-              {MUNICIPIOS.map(m => <SelectItem key={m} value={m}>{m}</SelectItem>)}
-            </SelectContent>
-          </Select>
-        </div>
+      {/* Município */}
+      <div className="flex w-[var(--select-w)] shrink-0 flex-col gap-0 max-[1259px]:w-auto max-[1259px]:min-w-[var(--select-w)] max-[1259px]:flex-1">
+        <label
+          className="font-bold tracking-wider whitespace-nowrap text-white/75 uppercase"
+          style={{ fontSize: "var(--select-label)" }}
+        >
+          Município
+        </label>
+        <Select value={municipio} onValueChange={setMunicipio}>
+          <SelectTrigger
+            aria-label="Município"
+            className="w-full min-w-0 border-white/20 text-white"
+            style={{
+              backgroundColor: `${C.field}cc`,
+              fontSize: "var(--select-trigger)",
+              height: "var(--select-h)",
+            }}
+          >
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent position="popper" align="start" sideOffset={4}>
+            <SelectItem value="Visão Geral RS" className="font-bold text-[#055071]">
+              Visão Geral RS
+            </SelectItem>
+            {MUNICIPIOS.map((m) => (
+              <SelectItem key={m} value={m}>
+                {m}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
 
-        <div className="flex flex-col gap-0 desk:border-r border-slate-200/60 shrink-0 movel:flex-1 movel:min-w-0" style={{ width: "var(--sel2-w)", paddingRight: "var(--sel-pr)" }}>
-          <label className="font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap" style={{ fontSize: SELECT_LABEL_SIZE }}>Cenário de Inundação</label>
-          <Select value={cenario} onValueChange={setCenario} disabled={isVisaoGeral}>
-            <SelectTrigger aria-label="Cenário de inundação" className="bg-slate-50/80 w-full min-w-0" style={{ height: SELECT_H, fontSize: SELECT_TRIGGER_SIZE }}><SelectValue placeholder={isVisaoGeral ? "Piores Cenários" : "(nenhum)"} /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="(nenhum)">(Ver Total)</SelectItem>
-              {(CENARIOS_CONFIG[municipio] || []).map(c => <SelectItem key={c} value={c}>{cenarioLabel(c)}</SelectItem>)}
-            </SelectContent>
-          </Select>
+      {/* Cenário de Inundação + Reiniciar seleções */}
+      <div className="flex w-[calc(var(--select-w)+var(--section-gap)+var(--select-h)+4px)] shrink-0 flex-col gap-0 border-r border-white/20 pr-[var(--section-gap)] max-[1259px]:w-auto max-[1259px]:min-w-[var(--select-w)] max-[1259px]:flex-1 max-[1259px]:border-r-0 max-[1259px]:pr-0">
+        <label
+          className="font-bold tracking-wider whitespace-nowrap text-white/75 uppercase"
+          style={{ fontSize: "var(--select-label)" }}
+        >
+          Cenário de Inundação
+        </label>
+        <div className="flex items-center gap-1">
+          <div className="min-w-0 flex-1">
+            <Select
+              value={cenario}
+              onValueChange={setCenario}
+              disabled={isVisaoGeral}
+            >
+              <SelectTrigger
+                aria-label="Cenário de inundação"
+                className="w-full min-w-0 border-white/20 text-white disabled:opacity-60"
+                style={{
+                  backgroundColor: `${C.field}cc`,
+                  fontSize: "var(--select-trigger)",
+                  height: "var(--select-h)",
+                }}
+              >
+                <SelectValue
+                  placeholder={isVisaoGeral ? "Piores Cenários" : "(nenhum)"}
+                />
+              </SelectTrigger>
+              <SelectContent position="popper" align="start" sideOffset={4}>
+                <SelectItem value="(nenhum)">(Ver Total)</SelectItem>
+                {(CENARIOS_CONFIG[municipio] || []).map((c) => (
+                  <SelectItem key={c} value={c}>
+                    {cenarioLabel(c)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <span className="group/tip relative flex shrink-0">
+            <button
+              type="button"
+              onClick={reiniciar}
+              aria-label="Reiniciar seleções"
+              className="active-press hover-lift flex items-center justify-center rounded-md border border-white/20 text-white/90 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none"
+              style={{
+                backgroundColor: C.field,
+                height: "var(--select-h)",
+                width: "var(--select-h)",
+              }}
+            >
+              <RotateCcw size={12} strokeWidth={2.5} />
+            </button>
+            <TipCamada texto="Reiniciar seleções" />
+          </span>
         </div>
       </div>
 
-      <div className="flex items-center movel:w-full movel:overflow-x-auto movel:[scrollbar-width:none] max-[1399px]:desk:grid max-[1399px]:desk:grid-cols-2 max-[1399px]:desk:shrink-0" style={{ gap: "var(--layer-gap)" }}>
-        {([
-          { camada: "Empresas", icon: <Building2 size={10} strokeWidth={2.5} /> },
-          { camada: "Educação", icon: <GraduationCap size={10} strokeWidth={2.5} /> },
-          { camada: "Saúde", icon: <HeartPulse size={10} strokeWidth={2.5} /> },
-          ...((isVisaoGeral || AGRI_BOUNDS[municipio]) ? [{ camada: "Agricultura", icon: <Sprout size={10} strokeWidth={2.5} /> }] : []),
-        ] as { camada: string; icon: React.ReactNode }[]).map(({ camada, icon }) => (
-          <Button
-            key={camada}
-            variant={camadas.includes(camada) ? "default" : "outline"}
-            size="xs"
-            onClick={() => toggleCamada(camada)}
-            className="font-black gap-0.5 shrink-0 max-[1399px]:desk:w-full"
-            style={{ fontSize: BTN_SIZE, height: BTN_H, paddingInline: "var(--btn-px)" }}
-          >
-            {icon}{camada}
-          </Button>
-        ))}
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild disabled={isVisaoGeral || !possuiInfra}>
-            <Button
-              variant={camadas.includes("Infraestrutura") && infraAtivas.length > 0 ? "default" : "outline"}
-              size="xs"
-              className="font-black gap-1 shrink-0 max-[1399px]:desk:w-full max-[1399px]:desk:col-span-2"
-              style={{ fontSize: BTN_SIZE, height: BTN_H, paddingInline: "var(--btn-px)" }}
-            >
-              <Wrench size={11} strokeWidth={2.5} />Infraestrutura {infraAtivas.length > 0 && `(${infraAtivas.length})`}
-              <span className="text-[7px] opacity-70">▼</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56" align="end">
-            <button onClick={toggleMenuInfra} className="w-full text-left text-xs font-bold px-2 py-1 mb-1 text-slate-500 hover:bg-slate-100 border-b border-slate-200/60 transition-colors duration-150 focus-visible:outline-none focus-visible:bg-slate-100">
-              {camadas.includes("Infraestrutura") ? "Ocultar Camada" : "Exibir Camada"}
-            </button>
-            {(INFRAESTRUTURA_CONFIG[municipio] || []).map((infraNome) => (
-              <DropdownMenuCheckboxItem
-                key={infraNome}
-                checked={infraAtivas.includes(infraNome)}
-                onCheckedChange={() => toggleInfra(infraNome)}
-                className="text-xs hover:bg-slate-100"
+      {/* Camadas — na mesma linha do cabeçalho; só ícone (título no hover) abaixo de 2200 px */}
+      <div className="flex flex-col gap-0 max-[1259px]:order-last max-[1259px]:basis-full">
+        <span
+          className="font-bold tracking-wider whitespace-nowrap text-white/75 uppercase"
+          style={{ fontSize: "var(--select-label)" }}
+        >
+          Camadas
+        </span>
+        <div className="flex items-center" style={{ gap: "var(--layer-gap)" }}>
+          {camadasBotoes.map(({ id, label, icon }) => {
+            const ativo = camadas.includes(id)
+            return (
+              <span
+                key={id}
+                className="group/tip relative flex max-[1259px]:flex-1"
               >
-                {infraNome}
-              </DropdownMenuCheckboxItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+                <button
+                  onClick={() => toggleCamada(id)}
+                  aria-pressed={ativo}
+                  className={`active-press hover-lift flex shrink-0 items-center justify-center gap-1 rounded-md border font-black whitespace-nowrap focus-visible:ring-2 focus-visible:ring-[#055071]/40 focus-visible:ring-offset-1 focus-visible:outline-none max-[1259px]:w-full ${ativo ? "border-[#b3cdd8] bg-white text-[#055071]" : "border-white/20 text-white/85 hover:bg-white/10"}`}
+                  style={{
+                    fontSize: "var(--btn-size)",
+                    height: "var(--btn-h)",
+                    paddingInline: "var(--btn-px)",
+                    ...(ativo ? {} : { backgroundColor: C.field }),
+                  }}
+                >
+                  {icon}
+                  <span className="max-[999px]:sr-only min-[1260px]:max-[2199px]:sr-only">
+                    {label}
+                  </span>
+                </button>
+                <TipCamada texto={label} />
+              </span>
+            )
+          })}
+
+          {/* Infraestrutura dropdown */}
+          <span className="group/tip relative flex max-[1259px]:flex-1">
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                disabled={isVisaoGeral || !possuiInfra}
+                className={`active-press hover-lift flex shrink-0 items-center justify-center gap-1.5 rounded-md border font-black whitespace-nowrap disabled:cursor-not-allowed disabled:opacity-50 max-[1259px]:w-full ${infraAtivo ? "border-[#b3cdd8] bg-white text-[#055071]" : "border-white/20 text-white/85 hover:bg-white/10"}`}
+                style={{
+                  fontSize: "var(--btn-size)",
+                  height: "var(--btn-h)",
+                  paddingInline: "var(--btn-px)",
+                  ...(infraAtivo ? {} : { backgroundColor: C.field }),
+                }}
+              >
+                <span className="flex items-center gap-1">
+                  <Wrench size={11} strokeWidth={2.5} />
+                  <span className="max-[999px]:sr-only min-[1260px]:max-[2199px]:sr-only">
+                    Infraestrutura
+                  </span>{" "}
+                  {infraAtivas.length > 0 && `(${infraAtivas.length})`}
+                </span>
+                <span className="text-[7px] opacity-70">▼</span>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end">
+                <button
+                  onClick={toggleMenuInfra}
+                  className="mb-1 w-full border-b border-slate-200/60 px-2 py-1 text-left text-xs font-bold text-slate-500 transition-colors duration-150 hover:bg-slate-100 focus-visible:outline-none"
+                >
+                  {camadas.includes("Infraestrutura")
+                    ? "Ocultar Camada"
+                    : "Exibir Camada"}
+                </button>
+                {(INFRAESTRUTURA_CONFIG[municipio] || []).map((infraNome) => (
+                  <DropdownMenuCheckboxItem
+                    key={infraNome}
+                    checked={infraAtivas.includes(infraNome)}
+                    onCheckedChange={() => toggleInfra(infraNome)}
+                    className="text-xs hover:bg-slate-100"
+                  >
+                    {infraNome}
+                  </DropdownMenuCheckboxItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <TipCamada texto="Infraestrutura" />
+          </span>
+        </div>
       </div>
     </header>
-  );
+  )
 }

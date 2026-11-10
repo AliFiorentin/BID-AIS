@@ -7,10 +7,11 @@ import { KPIRow } from "@/components/KPIRow";
 import type { DashboardState } from "@/hooks/useDashboard";
 
 interface Props {
+  ocultoNoMapa?: boolean;
   dash: Pick<DashboardState, "infraPainel" | "infraAtg" | "mostraImpacto">;
 }
 
-export function QuadrasSection({ dash }: Props) {
+export function QuadrasSection({ ocultoNoMapa, dash }: Props) {
   const { infraPainel, infraAtg, mostraImpacto } = dash;
 
   const entry = infraPainel?.["Quadras"];
@@ -39,6 +40,7 @@ export function QuadrasSection({ dash }: Props) {
     <KPIRow
       titulo="Quadras"
       cor={cor}
+      extra={ocultoNoMapa ? <span className="text-[9px] font-medium text-white/75">oculto no mapa</span> : undefined}
       valor={compactoBr(mostraImpacto ? totalAtg : total, 0)}
       sub={mostraImpacto ? "Atingidas" : "Total"}
       delta={

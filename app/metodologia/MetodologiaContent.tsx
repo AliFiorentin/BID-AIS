@@ -1,8 +1,24 @@
 import React from "react";
 import Link from "next/link";
-import katex from "katex";
 import { HeaderLogos } from "@/components/HeaderLogos";
-import { CopyLinkButton } from "@/components/CopyLinkButton";
+import {
+  Section,
+  GroupTitle,
+  SubTitle,
+  MathBlock,
+  DataTable,
+  Note,
+  SectionSources,
+  ExtLink,
+  Math,
+  GeoCard,
+  RefBlock,
+  RefItem,
+} from "@/components/doc-kit";
+import {
+  DiagramaDadoAoIndicador,
+  DiagramaIndicadorAosDanos,
+} from "./DiagramasMetodologia";
 import type { ClimadaData } from "@/app/danos/types";
 
 // ─── Constantes visuais — Dano Físico (CLIMADA) ────────────────────────────────
@@ -24,12 +40,16 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
 
       {/* ── Header ─────────────────────────────────────────────────────────── */}
       <header className="bg-[#055071] text-white px-6 py-10 print:py-5">
-        <div className="max-w-[1200px] mx-auto flex items-start justify-between gap-6">
+        <div className="max-w-[1440px] mx-auto flex items-start justify-between gap-6">
           <div className="min-w-0">
-            <div className="flex items-center gap-2 mb-5 print:hidden">
+            <div className="flex items-center gap-2 mb-5 print:hidden flex-wrap">
               <Link href="/" className="text-[10px] max-lg:text-xs max-lg:min-h-11 font-bold text-white/95 hover:text-white transition-colors px-3 py-1 rounded-full border border-white/20 hover:border-white/40 flex items-center gap-1.5">← Dashboard</Link>
-              <Link href="/danos" className="text-[10px] max-lg:text-xs max-lg:min-h-11 font-bold text-white/95 hover:text-white transition-colors px-3 py-1 rounded-full border border-white/20 hover:border-white/40 flex items-center gap-1.5">Danos Operacionais →</Link>
+              <Link href="/perdas-operacionais" className="text-[10px] max-lg:text-xs max-lg:min-h-11 font-bold text-white/95 hover:text-white transition-colors px-3 py-1 rounded-full border border-white/20 hover:border-white/40 flex items-center gap-1.5">Perdas Operacionais →</Link>
+              <Link href="/danos-fisicos" className="text-[10px] max-lg:text-xs max-lg:min-h-11 font-bold text-white/95 hover:text-white transition-colors px-3 py-1 rounded-full border border-white/20 hover:border-white/40 flex items-center gap-1.5">Danos Físicos →</Link>
             </div>
+            <p className="mb-2 text-[11px] font-semibold tracking-[0.18em] uppercase opacity-70">
+              BID · GPEA · FURG · IPH/UFRGS
+            </p>
             <h1 className="text-4xl font-black leading-none mb-2 tracking-tight flex items-center gap-3">
               <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-80 shrink-0">
                 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
@@ -47,13 +67,13 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
         </div>
       </header>
 
-      <div className="max-w-[1200px] mx-auto px-6 py-10 print:py-5 flex gap-8 items-start print:block">
+      <div className="max-w-[1440px] mx-auto px-6 py-10 print:py-5 flex gap-8 items-start print:block">
 
         {/* ── Sidebar (Índice fixo) ────────────────────────────────────────────── */}
         <aside className="hidden lg:block w-52 shrink-0 print:hidden">
           <div className="sticky top-6 flex flex-col gap-3">
             <nav className="bg-white border border-[#b3cdd8] rounded-xl p-4 shadow-sm">
-              <p className="text-[10px] font-black uppercase tracking-wider text-[#2f6a83] mb-2">Índice</p>
+              <p className="text-[10px] font-black uppercase tracking-wider text-[#055071] mb-2">Índice</p>
               <ol className="flex flex-col gap-1">
                 {([
                   ["#manchas",        "1. Manchas de Inundação"],
@@ -64,10 +84,11 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
                   ["#saude",          "6. Saúde"],
                   ["#infraestrutura", "7. Infraestrutura"],
                   ["#edificacoes",    "8. Edificações"],
-                  ["#danos",          "9. Danos Operacionais"],
+                  ["#danos",          "9. Perdas Operacionais (DaLA)"],
                   ["#dano-fisico",    "10. Danos Físicos (Por Cota e CLIMADA)"],
                   ["#populacao",      "11. População Exposta"],
-                  ["#fontes",         "12. Fontes e Referências"],
+                  ["#limitacoes",     "12. Limitações"],
+                  ["#fontes",         "13. Fontes e Referências"],
                 ] as [string, string][]).map(([href, label]) => (
                   <li key={href}>
                     <a href={href} className="text-[11px] text-[#055071] font-medium hover:underline underline-offset-4 transition-colors duration-150 leading-snug block py-0.5">
@@ -84,15 +105,43 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
 
         {/* ── Contexto ────────────────────────────────────────────────────────── */}
         <div className="bg-white border border-[#b3cdd8] rounded-xl p-5 mb-8 shadow-sm">
-          <p className="text-[11px] font-black uppercase tracking-wider text-[#2f6a83] mb-2">Contexto</p>
+          <p className="text-[10px] font-black uppercase tracking-wider text-[#055071] mb-2">Contexto</p>
           <p className="text-sm leading-relaxed text-slate-700 mt-2">
             A metodologia distingue dois planos analíticos: (a) a{" "}
             <strong>exposição física</strong>, identificação dos estabelecimentos, escolas,
-            unidades de saúde e áreas agrícolas dentro da mancha de inundação; e (b) as{" "}
-            <strong>perdas econômicas operacionais</strong>, estimativa do fluxo de produção e
-            serviços não realizado durante o período de interrupção, seguindo a abordagem
-            DaLA (CEPAL/BID).
+            unidades de saúde, edificações, infraestrutura urbana e áreas agrícolas dentro da
+            mancha de inundação; e (b) as <strong>perdas econômicas operacionais</strong>,
+            estimativa do fluxo de produção e serviços não realizado durante o período de
+            interrupção, seguindo a abordagem DaLA (CEPAL/BID). Todo o processamento espacial é
+            pré-computado offline; o painel web exibe os resultados consolidados.
           </p>
+        </div>
+
+        {/* ── Visão geral: dois diagramas ─────────────────────────────────────── */}
+        <div className="mb-8 rounded-xl border border-[#b3cdd8] bg-white p-5 shadow-sm">
+          <p className="mb-1 text-[10px] font-black tracking-wider text-[#055071] uppercase">
+            Visão geral do método
+          </p>
+          <p className="mb-3 text-sm leading-relaxed text-slate-700">
+            Duas figuras resumem o caminho, do dado bruto às estimativas econômicas. A
+            primeira mostra como cada fonte é preparada e vira indicador espacial; a
+            segunda, como os indicadores alimentam as duas medidas em reais (Perdas
+            Operacionais e Exposição/Dano Físico), que não se somam.
+          </p>
+          <figure className="mx-auto max-w-[760px]">
+            <DiagramaDadoAoIndicador />
+            <figcaption className="mt-1 text-center text-[11px] text-slate-500">
+              Figura 1. Do dado ao indicador: quatro trilhas de dados convergem no
+              cruzamento espacial (Seções 1 a 8 e 11).
+            </figcaption>
+          </figure>
+          <figure className="mx-auto mt-6 max-w-[760px]">
+            <DiagramaIndicadorAosDanos />
+            <figcaption className="mt-1 text-center text-[11px] text-slate-500">
+              Figura 2. Do indicador às estimativas em reais: perdas operacionais (fluxo)
+              e exposição/dano físico (estoque) não se somam (Seções 9 e 10).
+            </figcaption>
+          </figure>
         </div>
 
 
@@ -1276,9 +1325,130 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
         </Section>
 
         {/* ══════════════════════════════════════════════════════════════════════
-            11. FONTES E REFERÊNCIAS
+            12. LIMITAÇÕES
         ══════════════════════════════════════════════════════════════════════ */}
-        <Section id="fontes" num="12" title="Fontes e Referências">
+        <Section id="limitacoes" num="12" title="Limitações">
+          <p>
+            Esta seção reúne as limitações e ressalvas metodológicas dos resultados do painel,
+            organizadas em três eixos: por{" "}
+            <a href="#lim-cenarios" className="font-semibold underline underline-offset-4">
+              cenário
+            </a>
+            , por{" "}
+            <a href="#lim-metodologia" className="font-semibold underline underline-offset-4">
+              metodologia
+            </a>{" "}
+            e por{" "}
+            <a href="#lim-municipio" className="font-semibold underline underline-offset-4">
+              município
+            </a>
+            .
+          </p>
+
+          <GroupTitle id="lim-cenarios">A. Por cenário</GroupTitle>
+
+          <SubTitle nested>Cenário ADA (Eldorado do Sul e Porto Alegre)</SubTitle>
+          <ul className="ml-1 list-inside list-disc space-y-1.5 text-sm text-slate-700">
+            <li>
+              Polígono de extensão máxima registrada pelo MUP/Gov. RS em maio de 2024: trata todos
+              os pontos no interior como atingidos de forma binária (dentro/fora), sem distinguir
+              lâmina d&apos;água rasa de submersão profunda.
+            </li>
+            <li>
+              Os cenários representam eventos independentes ou recortes alternativos e seus valores
+              não devem ser somados entre si.
+            </li>
+          </ul>
+
+          <SubTitle nested>Cenário Maio 2024 + 50% (Rio Grande)</SubTitle>
+          <ul className="ml-1 list-inside list-disc space-y-1.5 text-sm text-slate-700">
+            <li>
+              O nome &ldquo;+50%&rdquo; é herdado da fonte dos dados: a mancha corresponde à água
+              60 cm mais alta que o pico de maio de 2024 e tem 59,4 km² (cerca de 7 vezes a área da
+              mancha de Maio de 2024 sem o acréscimo). É um cenário de sensibilidade, não uma
+              previsão.
+            </li>
+          </ul>
+
+          <SubTitle nested>Simulação por Cotas (Lajeado, Porto Alegre, Eldorado do Sul e Rio Grande)</SubTitle>
+          <ul className="ml-1 list-inside list-disc space-y-1.5 text-sm text-slate-700">
+            <li>
+              Mostra a exposição de empresas, educação, saúde e agricultura em função do nível do
+              rio/lagoa. Em Rio Grande (1,00 a 2,62 m), as máscaras são binárias (molhado/seco, sem
+              profundidade).
+            </li>
+            <li>
+              Aplica-se o máximo acumulado entre cotas para garantir monotonicidade (a água de uma
+              cota superior cobre pelo menos o que a cota inferior cobria).
+            </li>
+          </ul>
+
+          <GroupTitle id="lim-metodologia">B. Por metodologia</GroupTitle>
+
+          <SubTitle nested>Perdas Operacionais (DaLA · Seção 9)</SubTitle>
+          <ul className="ml-1 list-inside list-disc space-y-1.5 text-sm text-slate-700">
+            <li>
+              Mede interrupção de <em>fluxo</em> (produção e serviços não realizados), não
+              destruição de <em>estoque</em> (prédios e equipamentos). Não deve ser somado à
+              exposição por cota nem ao dano físico (CLIMADA).
+            </li>
+            <li>
+              Considera apenas vínculos formais da RAIS 2023; o setor informal não está
+              representado. A Administração Pública (CNAE 84) está incluída com <em>labor share</em>{" "}
+              de 88,3%.
+            </li>
+            <li>
+              Na educação, o custo unitário diário (VAAT-MIN/200) é aplicado a todas as matrículas
+              atingidas (inclusive rede privada) e duplicado para somar serviço não prestado e
+              reposição obrigatória (LDB Art. 24, I).
+            </li>
+          </ul>
+
+          <SubTitle nested>Danos Físicos: Exposição por Cota e CLIMADA (Seção 10)</SubTitle>
+          <ul className="ml-1 list-inside list-disc space-y-1.5 text-sm text-slate-700">
+            <li>
+              <strong>Exposição por cota é um teto, não dano:</strong> todo ponto atingido entra com
+              100% do seu valor de reposição estimado (CUB/RS × área por proxy de porte ×
+              multiplicador de conteúdo). O dano real fica entre zero e esse valor.
+            </li>
+            <li>
+              <strong>Setores não disjuntos:</strong> estabelecimentos privados de saúde e educação
+              podem constar simultaneamente na RAIS e no CNES/Censo Escolar.
+            </li>
+            <li>
+              <strong>Protótipo CLIMADA (Porto Alegre):</strong> utiliza curvas JRC recalibradas pelo
+              fator empírico de Porto Alegre (teto de ~36% para Empresas e Saúde) e amostragem por
+              vizinho mais próximo.
+            </li>
+          </ul>
+
+          <GroupTitle id="lim-municipio">C. Por município e geocodificação</GroupTitle>
+          <ul className="ml-1 list-inside list-disc space-y-1.5 text-sm text-slate-700">
+            <li>
+              <strong>Pilhas de geocodificação (coordenadas repetidas):</strong> quando o endereço
+              cadastral na RAIS ou no Censo Escolar é incompleto, o geocodificador aloca múltiplos
+              estabelecimentos num único ponto padrão (centroide de rua, CEP ou município). Isso faz
+              com que centenas de estabelecimentos entrem ou saiam da mancha de uma só vez, gerando
+              degraus nas curvas de exposição por cota. No mapa e na aba Empresas, essas pilhas são
+              sinalizadas com aviso específico.
+            </li>
+            <li>
+              <strong>Cobertura dos rasters de cota:</strong> em Eldorado do Sul, a porção oeste do
+              município fica fora da grade do raster de Porto Alegre e entra com profundidade zero,
+              subestimando a exposição por cota naquela área.
+            </li>
+            <li>
+              <strong>Datas de referência das bases:</strong> RAIS (2023), Censo Escolar (2024),
+              CNES (abril/2024), SIA/SIH (jan–jul/2024), MapBiomas Coleção 10 (2023/2024) e WorldPop
+              (2024).
+            </li>
+          </ul>
+        </Section>
+
+        {/* ══════════════════════════════════════════════════════════════════════
+            13. FONTES E REFERÊNCIAS
+        ══════════════════════════════════════════════════════════════════════ */}
+        <Section id="fontes" num="13" title="Fontes e Referências">
           <div className="space-y-4">
 
             <RefBlock title="Manchas de Inundação e Contexto">
@@ -1370,7 +1540,7 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
 
         {/* ── Rodapé ──────────────────────────────────────────────────────────── */}
         <footer className="mt-12 pt-6 border-t border-[#b3cdd8] text-center print:mt-4">
-          <p className="text-[11px] text-[#2f6a83]">
+          <p className="text-[11px] text-[#055071]">
             Painel desenvolvido por GPEA/FURG em parceria com o BID (Banco Interamericano de Desenvolvimento).
           </p>
           <p className="text-[11px] text-[#2f6a83] mt-0.5">
@@ -1386,54 +1556,9 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
 
 // ─── Componentes internos ────────────────────────────────────────────────────
 
-function Section({ id, num, title, children }: {
-  id: string; num: string; title: string; children: React.ReactNode;
-}) {
-  return (
-    <section id={id} className="mb-10 scroll-mt-8">
-      <div className="flex items-center gap-2.5 mb-4">
-        <span className="text-[10px] font-black text-white bg-[#055071] rounded-md px-2 py-1 shrink-0 tabular-nums">
-          {num}
-        </span>
-        <h2 className="text-lg font-black text-slate-800 tracking-tight">{title}</h2>
-        <CopyLinkButton
-          anchor={id}
-          title="Copiar link desta seção"
-          className="print:hidden ml-1 p-1 rounded text-slate-400 hover:text-[#055071] hover:bg-slate-100 transition-colors"
-        />
-      </div>
-      <div className="space-y-3 text-sm leading-relaxed">{children}</div>
-      <div className="mt-8 border-b border-[#b3cdd8]" />
-    </section>
-  );
-}
-
-function SubTitle({ children }: { children: React.ReactNode }) {
-  return (
-    <h3 className="text-[13px] font-black text-[#055071] mt-5 mb-1.5 uppercase tracking-wide">
-      {children}
-    </h3>
-  );
-}
-
-function ExtLink({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <a href={href} target="_blank" rel="noopener noreferrer"
-      className="text-[#055071] font-medium hover:underline underline-offset-4 transition-colors duration-150">
-      {children}
-    </a>
-  );
-}
-
-function Math({ tex, display = false }: { tex: string; display?: boolean }) {
-  const html = katex.renderToString(tex, { displayMode: display, throwOnError: false, trust: false });
-  return <span dangerouslySetInnerHTML={{ __html: html }} className={display ? "block my-1" : "inline"} />;
-}
-
 function CurvasChart({ curvas }: { curvas: Record<string, ClimadaData["premissas"]["curvas"][string]> }) {
-  // globalThis.Math (não `Math` puro): este arquivo já define um componente
-  // <Math> para renderizar KaTeX, que sombreia o objeto global Math nesta
-  // mesma closure -- Math.min/round aqui chamariam o componente, não a API.
+  // globalThis.Math (não `Math` puro): este arquivo já importa um componente
+  // <Math> para renderizar KaTeX, que sombreia o objeto global Math.
   const { min, round } = globalThis.Math;
   const W = 480, H = 200, pL = 34, pB = 22, pT = 8, pR = 8;
   const chartW = W - pL - pR, chartH = H - pT - pB;
@@ -1463,122 +1588,5 @@ function CurvasChart({ curvas }: { curvas: Record<string, ClimadaData["premissas
       <text x={pL} y={H - 2} fontSize="8" fill="#6b7280">Profundidade da água</text>
       <text x={W - pR} y={12} textAnchor="end" fontSize="8" fill="#6b7280">MDD (% do valor destruído)</text>
     </svg>
-  );
-}
-
-function MathBlock({ exprs }: { exprs: Array<{ label?: string; tex: string }> }) {
-  return (
-    <div className="my-3 px-5 py-4 bg-[#f0f7fa] border border-[#b3cdd8] rounded-lg overflow-x-auto space-y-3">
-      {exprs.map(({ label, tex }, i) => (
-        <div key={i} className="flex items-baseline gap-4 flex-wrap">
-          {label && (
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#2f6a83] shrink-0 w-52">
-              {label}
-            </span>
-          )}
-          <Math tex={tex} display />
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function GeoCard({ title, operation, children }: {
-  title: string; operation: string; children: React.ReactNode;
-}) {
-  return (
-    <div className="rounded-xl border border-[#b3cdd8] bg-white p-4 mt-3 shadow-sm">
-      <p className="text-[11px] font-black text-[#055071] uppercase tracking-wider mb-0.5">{title}</p>
-      <p className="text-[10px] text-[#2f6a83] font-mono mb-3">{operation}</p>
-      {children}
-    </div>
-  );
-}
-
-function DataTable({ rows }: { rows: React.ReactNode[][] }) {
-  const [header, ...body] = rows;
-  return (
-    <div className="overflow-x-auto my-3 rounded-xl border border-[#b3cdd8] shadow-sm">
-      <table className="w-full text-[12px] border-collapse">
-        <thead>
-          <tr className="bg-[#055071] text-white">
-            {header.map((h, i) => (
-              <th key={i} className="text-left px-3 py-2.5 font-bold">{h}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {body.map((row, ri) => (
-            <tr key={ri}
-              className="border-t border-[#b3cdd8] transition-colors duration-100 hover:bg-[#e8f4f8]"
-              style={{ backgroundColor: ri % 2 === 0 ? "#ffffff" : "#f0f7fa" }}
-            >
-              {row.map((cell, ci) => (
-                <td key={ci} className="px-3 py-2 align-top">{cell}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-function Note({ type, children }: { type: "warning" | "info"; children: React.ReactNode }) {
-  const cfg = {
-    warning: { bg: "bg-amber-50",  border: "border-amber-300", text: "text-amber-900", icon: "⚠" },
-    info:    { bg: "bg-[#eff6ff]", border: "border-[#93c5fd]", text: "text-[#1e40af]", icon: "ℹ" },
-  }[type];
-  return (
-    <div className={`rounded-lg px-4 py-3 text-[12px] leading-relaxed my-3 border-l-[3px] ${cfg.bg} ${cfg.border} ${cfg.text}`}>
-      <span className="font-bold mr-1.5">{cfg.icon}</span>{children}
-    </div>
-  );
-}
-
-function SectionSources({ links }: { links: [string, string][] }) {
-  return (
-    <div className="mt-4 pt-3 border-t border-[#b3cdd8]">
-      <p className="text-[10px] font-bold uppercase tracking-wider text-[#2f6a83] mb-1.5">Fontes desta seção</p>
-      <ul className="space-y-0.5">
-        {links.map(([label, href]) => (
-          <li key={label}>
-            {href && href !== "#" ? (
-              <a href={href} target="_blank" rel="noopener noreferrer"
-                className="text-[11px] text-[#055071] hover:underline underline-offset-4 transition-colors duration-150">
-                ↗ {label}
-              </a>
-            ) : (
-              <span className="text-[11px] text-[#2f6a83]">— {label}</span>
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function RefBlock({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="bg-white border border-[#b3cdd8] rounded-xl p-4 shadow-sm">
-      <p className="text-[11px] font-black uppercase tracking-wider text-[#2f6a83] mb-3">{title}</p>
-      <div className="space-y-3">{children}</div>
-    </div>
-  );
-}
-
-function RefItem({ href, label, desc }: { href: string; label: string; desc: string }) {
-  return (
-    <div>
-      {href ? (
-        <a href={href} target="_blank" rel="noopener noreferrer"
-          className="text-sm font-semibold text-[#055071] hover:underline underline-offset-4 transition-colors duration-150">
-          {label} ↗
-        </a>
-      ) : (
-        <span className="text-sm font-semibold text-slate-700">{label}</span>
-      )}
-      <p className="text-[11px] text-[#2f6a83] mt-0.5 leading-relaxed">{desc}</p>
-    </div>
   );
 }

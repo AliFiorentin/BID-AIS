@@ -22,13 +22,15 @@ interface Args {
   baseInfra: InfraFC;
   atingidosInfra: InfraFC;
   setPopupInfo: Dispatch<SetStateAction<PopupInfo | null>>;
+  setTabAtiva: Dispatch<SetStateAction<string>>;
+  setShowPainelAnalise: Dispatch<SetStateAction<boolean>>;
 }
 
 /** Camadas clicáveis do mapa e o handler de clique (popup / zoom em cluster). */
 export function useMapInteraction({
   mapRef, camadas, infraAtivas, isVisaoGeral, isCenarioAtivo, showDanoFisico, renderMunicipio,
   renderEmp, renderEdu, renderSau, danoFisicoEmpresas, danoFisicoEducacao, danoFisicoSaude,
-  baseInfra, atingidosInfra, setPopupInfo,
+  baseInfra, atingidosInfra, setPopupInfo, setTabAtiva, setShowPainelAnalise,
 }: Args) {
   const interactiveLayerIds = useMemo(() => {
     const ids: string[] = [];
@@ -80,6 +82,12 @@ export function useMapInteraction({
       return;
     }
 
+    const src = feature.source;
+    if (src === "empresas" || src === "dano-fisico-empresas") setTabAtiva("empresas");
+    else if (src === "educacao" || src === "dano-fisico-educacao") setTabAtiva("educacao");
+    else if (src === "saude" || src === "dano-fisico-saude") setTabAtiva("saude");
+    else if (src.startsWith("infra-")) setTabAtiva("infra");
+    setShowPainelAnalise(true);
     setPopupInfo({ lngLat: [event.lngLat.lng, event.lngLat.lat], properties: props ?? {}, source: feature.source });
   };
 

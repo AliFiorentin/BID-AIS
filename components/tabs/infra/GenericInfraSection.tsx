@@ -10,6 +10,7 @@ const PANEL_HDR = { background: "linear-gradient(135deg, #055071 0%, #0a6e9a 100
 
 interface Props {
   infraNome: string;
+  ocultoNoMapa?: boolean;
   dash: Pick<
     DashboardState,
     | "infraPainel"
@@ -20,7 +21,7 @@ interface Props {
   >;
 }
 
-export function GenericInfraSection({ infraNome, dash }: Props) {
+export function GenericInfraSection({ infraNome, ocultoNoMapa, dash }: Props) {
   const { infraPainel, infraAtg, mostraImpacto, showListaEixos, setShowListaEixos } = dash;
 
   const entry    = infraPainel?.[infraNome];
@@ -66,6 +67,7 @@ export function GenericInfraSection({ infraNome, dash }: Props) {
         <KPICard
           titulo={infraNome}
           cor={cor}
+          extra={ocultoNoMapa ? <span className="text-[9px] font-medium text-white/75">oculto no mapa</span> : undefined}
           principal={{
             valor: compactoBr(mostraImpacto ? valAtg : valBase, 0),
             sub: mostraImpacto ? "Atingidos" : "Total",

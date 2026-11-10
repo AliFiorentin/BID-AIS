@@ -1,175 +1,210 @@
 @import "tailwindcss";
-@import "katex/dist/katex.min.css";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "katex/dist/katex.min.css";
 
-@custom-variant dark (&:is(.dark *));
-
-/* Layout do Dashboard: "desk" = layout de desktop (painel lateral); "movel" = tablet/celular (bottom sheet).
-   Quem usa mouse (pointer: fine) SEMPRE recebe o layout de desktop, mesmo com a janela estreita
-   (o tamanho minimo 1150 x 650 e aplicado pelo aviso de tamanho, sem rolagem); o layout movel e' so' para aparelhos de toque
-   com tela < 1024 px. "telefone" = janela menor que o tamanho mínimo do Dashboard (1150 x 650 px): mostra só o aviso de tamanho,
-   sem rolagem e sem reduzir o layout. */
+/* Tamanho mínimo do Dashboard: 1150 x 650 px. Abaixo disso (variante "telefone") só aparece o aviso
+   de tamanho, sem rolagem e sem reduzir o layout. */
 @custom-variant desk {
   @media (min-width: 64rem) { @slot; }
   @media (pointer: fine) { @slot; }
 }
 @custom-variant movel (@media (max-width: 63.99rem) and (pointer: coarse));
 @custom-variant telefone {
-  @media (max-width: 1149.98px) { @slot; }
-  @media (max-height: 649.98px) { @slot; }
+  @media (max-width: 1149.98px) {
+    @slot;
+  }
+  @media (max-height: 649.98px) {
+    @slot;
+  }
 }
 
 @theme inline {
-    --font-heading: var(--font-sans);
-    --font-sans: var(--font-sans);
-    --color-sidebar-ring: var(--sidebar-ring);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar: var(--sidebar);
-    --color-chart-5: var(--chart-5);
-    --color-chart-4: var(--chart-4);
-    --color-chart-3: var(--chart-3);
-    --color-chart-2: var(--chart-2);
-    --color-chart-1: var(--chart-1);
-    --color-ring: var(--ring);
-    --color-input: var(--input);
-    --color-border: var(--border);
-    --color-destructive: var(--destructive);
-    --color-accent-foreground: var(--accent-foreground);
-    --color-accent: var(--accent);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-muted: var(--muted);
-    --color-secondary-foreground: var(--secondary-foreground);
-    --color-secondary: var(--secondary);
-    --color-primary-foreground: var(--primary-foreground);
-    --color-primary: var(--primary);
-    --color-popover-foreground: var(--popover-foreground);
-    --color-popover: var(--popover);
-    --color-card-foreground: var(--card-foreground);
-    --color-card: var(--card);
-    --color-foreground: var(--foreground);
-    --color-background: var(--background);
-    --radius-sm: calc(var(--radius) * 0.6);
-    --radius-md: calc(var(--radius) * 0.8);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) * 1.4);
-    --radius-2xl: calc(var(--radius) * 1.8);
-    --radius-3xl: calc(var(--radius) * 2.2);
-    --radius-4xl: calc(var(--radius) * 2.6);
+  --font-heading: var(--font-sans);
+  --font-sans: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
 :root {
-    /* Custom easing curves (Emil Kowalski / impeccable) */
-    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
-    --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.408 0.085 235.476);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.408 0.085 235.476);
-    --chart-2: oklch(0.588 0.158 163.104);
-    --chart-3: oklch(0.670 0.160 55.147);
-    --chart-4: oklch(0.550 0.075 228.220);
-    --chart-5: oklch(0.509 0.106 235.785);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
-}
+  color-scheme: only light; /* sem tema escuro: ver `viewport.colorScheme` em layout.tsx */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 
-.dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.509 0.106 235.785);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.509 0.106 235.785);
-    --chart-2: oklch(0.650 0.170 163.104);
-    --chart-3: oklch(0.720 0.170 55.147);
-    --chart-4: oklch(0.600 0.085 228.220);
-    --chart-5: oklch(0.560 0.120 235.785);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+  /* Paleta BID — alinhada aos tokens usados em lib/constants.ts (objeto `C`),
+     para que os primitivos shadcn (Select/Dropdown/Tabs/Card/Button) que consomem
+     essas variáveis renderizem com a mesma identidade visual do resto do app. */
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --card: #f0f7fa;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #055071;
+  --primary-foreground: #ffffff;
+  --secondary: #f0f7fa;
+  --secondary-foreground: #055071;
+  --muted: #f0f7fa;
+  --muted-foreground: #3d7a94;
+  --accent: #0a6e9a;
+  --accent-foreground: #ffffff;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: #b3cdd8;
+  --input: #b3cdd8;
+  --ring: #055071;
+  --chart-1: #055071;
+  --chart-2: #0a6e9a;
+  --chart-3: #1b88b5;
+  --chart-4: #38a2cf;
+  --chart-5: #64bce0;
+  --radius: 0.625rem;
+
+  /* Sidebar BID */
+  --sidebar: #055071;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #ffffff;
+  --sidebar-primary-foreground: #055071;
+  --sidebar-accent: #0a6e9a;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(255, 255, 255, 0.15);
+  --sidebar-ring: rgba(255, 255, 255, 0.3);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    }
+  }
   body {
     @apply bg-background text-foreground;
-    }
+  }
   html {
     @apply font-sans;
-    }
+  }
   .maplibregl-popup-content {
-    @apply bg-transparent! shadow-none! p-0! rounded-none!;
-    }
+    @apply rounded-none! bg-transparent! p-0! shadow-none!;
+  }
   .maplibregl-popup-tip {
     @apply hidden!;
-    }
+  }
 }
 
 @keyframes panelSlideIn {
-  from { opacity: 0; transform: translateX(-16px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes chartBarIn {
-  from { opacity: 0; transform: translateX(-6px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-6px) scaleY(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scaleY(1);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 400ms var(--ease-out) both;
+}
+
+.animate-scale-in {
+  animation: scaleIn 300ms var(--ease-out) both;
 }
 
 .chart-bar-item {
-  animation: chartBarIn 220ms var(--ease-out) both;
+  animation: chartBarIn 300ms var(--ease-out) both;
+}
+
+/* Micro-interaction utilities */
+.hover-lift {
+  transition:
+    transform 200ms var(--ease-out),
+    box-shadow 200ms var(--ease-out);
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.05),
+    0 4px 6px -2px rgba(0, 0, 0, 0.025);
+}
+
+.active-press {
+  transition: transform 150ms var(--ease-out);
+}
+.active-press:active {
+  transform: scale(0.96);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -179,45 +214,25 @@
 @media print {
   body {
     background: white !important;
-    /* Force background colors to print (bar chart, badges, etc.) */
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
-
-  /* Show only the analysis panel; hide map controls */
-  .print\:hidden { display: none !important; }
-  header, [class*="NavigationControl"] { display: none !important; }
-
-  /* Make the panel take full page width */
-  [class*="absolute top-\[100px\] left-4 bottom-4 w-\[360px\]"] {
-    position: static !important;
-    width: 100% !important;
-    height: auto !important;
-    max-height: none !important;
-    box-shadow: none !important;
-    border: 1px solid #e2e8f0 !important;
-    overflow: visible !important;
+  .print\:hidden {
+    display: none !important;
   }
-
-  /* Hide the map */
-  [class*="absolute inset-0 z-0"] { display: none !important; }
-
-  /* Fix: root container and Tabs overflow-hidden clip KPI card rings/shadows */
-  [class*="h-screen"][class*="overflow-hidden"],
-  [class*="flex-1 flex flex-col overflow-hidden"] {
-    overflow: visible !important;
-    height: auto !important;
+  header,
+  [class*="NavigationControl"] {
+    display: none !important;
   }
-
-  /* Expand scrollable tab content */
-  [class*="overflow-y-auto"] { overflow: visible !important; max-height: none !important; }
 }
 
 .maplibregl-popup-content {
   background-color: #ffffff !important;
   padding: 0 !important;
   border-radius: 0.75rem !important;
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1) !important;
+  box-shadow:
+    0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1) !important;
 }
 .maplibregl-popup-tip {
   border-top-color: #ffffff !important;
@@ -234,55 +249,41 @@
   background-color: transparent !important;
   color: #000000 !important;
 }
-/* Cabeçalho do Dashboard: tamanhos como variáveis. Abaixo de lg (celular/tablet) os controles
-   ficam maiores (alvo de toque >= 44px); a partir de lg valem as escalas fluidas (vw) originais. */
+
+/* Cabeçalho do Dashboard: tamanhos fluidos com a largura da janela. */
 .dash-header {
-  --logo-h: 22px;
-  --logo-w: 30px;
-  --logo-gap: 3px;
-  --section-gap: 6px;
-  --select-gap: 8px;
-  --select-label: 10px;
-  --select-trigger: 14px;
-  --select-h: 44px;
-  --btn-size: 12px;
-  --btn-h: 44px;
-  --btn-px: 0.75rem;
-  --layer-gap: 6px;
-  --sel1-w: 122px;
-  --sel2-w: 155px;
-  --sel-pr: 0px;
-}
-@media (min-width: 1024px), (pointer: fine) {
-  .dash-header {
-    --logo-h: clamp(20px, 1.7vw, 28px);
-    --logo-w: clamp(40px, 3.4vw, 56px);
-    --logo-gap: clamp(2px, 0.35vw, 6px);
-    --section-gap: clamp(4px, 0.9vw, 8px);
-    --select-gap: clamp(12px, 2vw, 24px);
-    --select-label: clamp(7px, 0.65vw, 9px);
-    --select-trigger: clamp(9px, 0.85vw, 11px);
-    --select-h: clamp(18px, 1.7vw, 24px);
-    --btn-size: clamp(7.5px, 0.75vw, 10px);
-    --btn-h: clamp(18px, 1.7vw, 24px);
-    --btn-px: clamp(0.3rem, 0.6vw, 0.5rem);
-    --layer-gap: clamp(2px, 0.4vw, 4px);
-    --sel1-w: clamp(122px, 9vw, 160px);
-    --sel2-w: clamp(155px, 13vw, 210px);
-    --sel-pr: var(--select-gap);
-  }
+  --logo-h: clamp(20px, 1.7vw, 28px);
+  --logo-h2: clamp(17px, 1.45vw, 24px);
+  --section-gap: clamp(6px, 1vw, 16px);
+  --select-label: clamp(7px, 0.65vw, 9px);
+  --select-trigger: clamp(9px, 0.85vw, 11px);
+  --select-h: clamp(20px, 1.7vw, 28px);
+  --select-w: clamp(132px, 11vw, 190px);
+  --btn-size: clamp(7.5px, 0.75vw, 10px);
+  --btn-h: clamp(20px, 1.7vw, 28px);
+  --btn-px: clamp(0.3rem, 0.6vw, 0.5rem);
+  --layer-gap: clamp(2px, 0.4vw, 4px);
 }
 
-/* Mapa no celular/tablet: o zoom por pinça substitui os botões +/- do NavigationControl, e a barra
-   de câmera (3D/girar/inclinar) já cobre a bússola; assim nada disputa o canto com a legenda. */
-@media (max-width: 1023.98px) and (pointer: coarse) {
-  .maplibregl-ctrl-bottom-right .maplibregl-ctrl-group { display: none; }
+/* Botões de zoom do mapa: o grupo (3 botões) tem a mesma altura do cartão de logos (130 px). */
+.maplibregl-map .maplibregl-ctrl-bottom-right .maplibregl-ctrl {
+  margin: 0 8px 8px 0;
+}
+.maplibregl-ctrl-bottom-right .maplibregl-ctrl-group button {
+  width: 43px;
+  height: 42.67px;
+}
+.maplibregl-ctrl-bottom-right
+  .maplibregl-ctrl-group
+  button
+  .maplibregl-ctrl-icon {
+  background-size: 26px 26px;
 }
 
-/* Desktop: botões de zoom do mapa menores (24 px, margem 8), acompanhando a linha de câmera e a logo GPEa
-   (MapControls.tsx) -- o topo do zoom fica a 8 + 3 x 24 = 80 px da base, onde a logo e a legenda se apoiam. */
-@media (min-width: 1024px), (pointer: fine) {
-  .maplibregl-map .maplibregl-ctrl-bottom-right .maplibregl-ctrl { margin: 0 8px 8px 0; }
-  .maplibregl-ctrl-bottom-right .maplibregl-ctrl-group button { width: 24px; height: 24px; }
-  .maplibregl-ctrl-bottom-right .maplibregl-ctrl-group button .maplibregl-ctrl-icon { background-size: 18px 18px; }
+/* Mapa fixo (Danos Físicos, mapa por cota): o desenho do mapa não recebe mouse nem toque, então não arrasta, não gira
+   e não dá zoom por gesto, roda ou duplo clique; os botões de zoom (.maplibregl-ctrl) continuam clicáveis e a página
+   rola normalmente por cima do mapa. */
+.mapa-fixo .maplibregl-canvas-container,
+.mapa-fixo .maplibregl-canvas {
+  pointer-events: none !important;
 }

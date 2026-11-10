@@ -1,12 +1,12 @@
-import { MetodologiaContent } from "@/app/metodologia/MetodologiaContent";
-import { getMetodologiaPageData } from "@/app/metodologia/get-data";
-import { RouteModal } from "@/components/RouteModal";
+import { MetodologiaContent } from "@/app/metodologia/MetodologiaContent"
+import { getMetodologiaPageData } from "@/app/metodologia/get-data"
+import { RouteModal } from "@/components/RouteModal"
 
 export default function MetodologiaModal() {
-  const { dadosClimada } = getMetodologiaPageData();
+  const { dadosClimada } = getMetodologiaPageData()
   return (
-    <RouteModal hrefNovaGuia="/metodologia">
+    <RouteModal>
       <MetodologiaContent dadosClimada={dadosClimada} />
     </RouteModal>
-  );
+  )
 }

@@ -1,20 +1,21 @@
 "use client";
 
+import Link from "next/link";
 import { SETOR_LABEL, SETOR_COLORS, fmtBRL } from "./helpers";
 import { CotaBarChart } from "./charts";
 import { KpiRow, Section, DataTable, Note } from "./ui";
 import type { DanosCtx } from "./ctx";
 
 export function ClimadaPorCota({ ctx }: { ctx: DanosCtx }) {
-  const { atualCota, climadaSetores, cotaAtiva, cotasDisponiveis, dadosCotas, foraRasterTotal, maxTotalCota, munClimadaAtivo, setAba, totalCota, totalRp10 } = ctx;
+  const { atualCota, climadaSetores, cotaAtiva, cotasDisponiveis, dadosCotas, foraRasterTotal, maxTotalCota, munClimadaAtivo, totalCota, totalRp10 } = ctx;
   if (!dadosCotas || !atualCota || !cotaAtiva) return null;
   return (
         <>
         <Section id="c-resumo" num="1" title={`Resumo: ${munClimadaAtivo}`}>
           <Note type="warning">
             <strong>Protótipo exploratório</strong>, não uma métrica oficial do painel. Mede{" "}
-            <strong>destruição de patrimônio</strong> (estoque), diferente da aba{" "}
-            <button onClick={() => setAba("dala")} className="underline underline-offset-2 font-bold">Danos Operacionais</button>{" "}
+            <strong>destruição de patrimônio</strong> (estoque), diferente da página{" "}
+            <Link href="/perdas-operacionais" className="underline underline-offset-2 font-bold">Perdas Operacionais</Link>{" "}
             (fluxo, DaLA): os dois números não devem ser somados.{" "}
             <strong>Calibração herdada de Porto Alegre</strong> (fator{" "}
             {dadosCotas.premissas.poa_calibration_factor.toString().replace(".", ",")}), sem perda

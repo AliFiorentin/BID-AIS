@@ -1,7 +1,8 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import type { MapRef } from "react-map-gl/maplibre";
-import { INFRAESTRUTURA_CONFIG, INFRA_TAMANHOS_MB } from "@/lib/constants";
+import { INFRAESTRUTURA_CONFIG, INFRA_TAMANHOS_MB, MUNICIPIO_VIEW } from "@/lib/constants";
 import { scenarioSlug, countRuasUnicas, getRuasListPOA, countRuasUnicasPOA, getRotas, getLen } from "@/lib/geo-utils";
+import { AVISO_MAIO_2024_MAIS_50, AVISO_MANCHA_PADRAO } from "@/lib/avisos";
 import type { InfraFC, InfraPainelMetricas, PopupInfo } from "@/hooks/dashboard/types";
 import { usePermalink } from "@/hooks/dashboard/usePermalink";
 import { lerEstadoDaURL, usePermalinkEstado, CAMADAS_PADRAO } from "@/hooks/dashboard/permalinkEstado";
@@ -69,7 +70,30 @@ export function useDashboard() {
 
   const [tabAtiva, setTabAtiva] = useState<string>(inicial.tab ?? "resumo");
   const [showMancha, setShowMancha] = useState<boolean>(inicial.mancha ?? true);
-  const [showLegenda, setShowLegenda] = useState<boolean>(false);
+  const [showLegenda, setShowLegenda] = useState<boolean>(true);
+  const [avisoMancha, setAvisoMancha] = useState<string | null>(null);
+  const avisoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [resetSeq, setResetSeq] = useState<number>(0);
+
+  const mostrarAvisoMancha = useCallback((msg: string) => {
+    if (avisoTimerRef.current) clearTimeout(avisoTimerRef.current);
+    setAvisoMancha(msg);
+    avisoTimerRef.current = setTimeout(() => setAvisoMancha(null), 10000);
+  }, []);
+
+  const avisoDoCenario = useCallback((cen: string) => {
+    if (cen === "Cenário Maio 2024 + 50%") return AVISO_MAIO_2024_MAIS_50;
+    return AVISO_MANCHA_PADRAO;
+  }, []);
+
+  const selecionarCenario = useCallback((cen: string) => {
+    setCenario(cen);
+    if (cen === "Cenário Maio 2024 + 50%") {
+      mostrarAvisoMancha(AVISO_MAIO_2024_MAIS_50);
+    } else {
+      setAvisoMancha(null);
+    }
+  }, [mostrarAvisoMancha]);
   const [showHeatmapEmpresas, setShowHeatmapEmpresas] = useState<boolean>(inicial.heatEmpresas ?? false);
   const [showHeatmapSaude, setShowHeatmapSaude] = useState<boolean>(inicial.heatSaude ?? false);
   const [showHeatmapEducacao, setShowHeatmapEducacao] = useState<boolean>(inicial.heatEducacao ?? false);
@@ -209,13 +233,50 @@ export function useDashboard() {
     danoFisicoEmpresas: dano.danoFisicoEmpresas,
     danoFisicoEducacao: dano.danoFisicoEducacao,
     danoFisicoSaude: dano.danoFisicoSaude,
-    baseInfra, atingidosInfra, setPopupInfo,
+    baseInfra, atingidosInfra, setPopupInfo, setTabAtiva, setShowPainelAnalise,
   });
+
+  const reiniciar = useCallback(() => {
+    setMunicipio("Visão Geral RS");
+    setCenario("(nenhum)");
+    setCamadas(CAMADAS_PADRAO);
+    setInfraAtivas([]);
+    setFiltroSetor("(todos)");
+    setFiltroDep("(todas)");
+    setFiltroTipo("(todas)");
+    setShowMancha(true);
+    setShowHeatmapEmpresas(false);
+    setShowHeatmapSaude(false);
+    setShowHeatmapEducacao(false);
+    dano.setShowDanoFisico(false);
+    setShowListaEscolas(false);
+    setShowListaHospitais(false);
+    setShowListaUBS(false);
+    setShowListaAmbulat(false);
+    setShowListaLogradouros(false);
+    setShowListaEixos(false);
+    setPopupInfo(null);
+    setTabAtiva("resumo");
+    setShowPainelAnalise(true);
+    setShowFiltros(true);
+    setShowLegenda(true);
+    setResetSeq(s => s + 1);
+    const v = MUNICIPIO_VIEW["Visão Geral RS"];
+    mapRef.current?.getMap().flyTo({
+      center: v.center,
+      zoom: v.zoom,
+      pitch: 0,
+      bearing: 0,
+      padding: { left: 432, top: 0, right: 0, bottom: 0 },
+      duration: 1500,
+      essential: true,
+    });
+  }, [dano]);
 
   return {
     mapRef, mapReady, setMapReady, headerRef, headerBottom,
     municipio, setMunicipio, renderMunicipio,
-    cenario, setCenario,
+    cenario, setCenario: selecionarCenario,
     camadas,
     infraAtivas,
     filtroSetor, setFiltroSetor,
@@ -225,6 +286,8 @@ export function useDashboard() {
     showFiltros, setShowFiltros,
     showMancha, setShowMancha,
     showLegenda, setShowLegenda,
+    avisoMancha, setAvisoMancha, mostrarAvisoMancha, avisoDoCenario,
+    reiniciar, resetSeq,
     is3D, setIs3D,
     isLoading,
     baseEmpresas, baseEducacao, baseSaude, baseInfra, infraPainel, infraAtg, areaCotaKm2,

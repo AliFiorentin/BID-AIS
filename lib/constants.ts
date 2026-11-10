@@ -13,6 +13,7 @@ export const C = {
 // Painel -- mesmo tom do glass do Painel (AnalysisPanel.tsx), para que todo
 // card se funda visualmente com o painel em vez de destacar um bloco branco.
 export const PANEL_CARD_BG = "rgba(255,255,255,0.55)"
+export const PANEL_TRACK_BG = "rgba(255,255,255,0.45)"
 
 export const COLORS = {
   empresas: "#2563eb",
@@ -168,10 +169,10 @@ export const MUNICIPIO_VIEW: Record<
   { center: [number, number]; zoom: number; pitch?: number; bearing?: number }
 > = {
   "Visão Geral RS": { center: [-53.42428, -30.13891], zoom: 5.8 },
-  "Eldorado do Sul": { center: [-51.33511, -30.00367], zoom: 11.57, pitch: 65, bearing: -12 },
-  Lajeado: { center: [-51.95678, -29.45013], zoom: 12.57, pitch: 65, bearing: -12 },
-  "Porto Alegre": { center: [-51.21824, -30.04355], zoom: 12.56, pitch: 72, bearing: -8.8 },
-  "Rio Grande": { center: [-52.09554, -32.03596], zoom: 12.83, pitch: 65, bearing: -11.9 },
+  "Eldorado do Sul": { center: [-51.33511, -30.00367], zoom: 11.57, pitch: 0, bearing: 0 },
+  Lajeado: { center: [-51.95678, -29.45013], zoom: 12.57, pitch: 0, bearing: 0 },
+  "Porto Alegre": { center: [-51.21824, -30.04355], zoom: 12.56, pitch: 0, bearing: 0 },
+  "Rio Grande": { center: [-52.09554, -32.03596], zoom: 12.83, pitch: 0, bearing: 0 },
 }
 
 // ── Agricultura ──────────────────────────────────────────────────────────────
