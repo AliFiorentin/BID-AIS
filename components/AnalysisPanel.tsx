@@ -106,10 +106,14 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
     avisoDoCenario,
   } = dash
 
-  // Ao entrar no cenário "Todas as cotas", abre a aba "Por cota"; ao sair, volta ao Resumo.
+  // Ao entrar no cenário "Todas as cotas", abre a aba "Por cota" e exibe aviso de 10s no mapa; ao sair, volta ao Resumo.
   React.useEffect(() => {
-    if (cotasAtivo) setTabAtiva("cotas")
-    else if (tabAtiva === "cotas") setTabAtiva("resumo")
+    if (cotasAtivo) {
+      setTabAtiva("cotas")
+      mostrarAvisoMancha(AVISO_COTAS_SIMULACAO)
+    } else if (tabAtiva === "cotas") {
+      setTabAtiva("resumo")
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cotasAtivo])
 
@@ -210,8 +214,10 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
 
             {!isVisaoGeral && isCenarioSimulacao(cenario) && (
               <div
-                className="mt-2 flex items-start gap-1.5 rounded-lg border border-amber-300/80 bg-amber-50/90 px-2.5 py-1.5 text-[10px] leading-snug text-amber-900 shadow-xs"
+                className="mt-2 flex items-start gap-1.5 rounded-lg border border-amber-300/80 bg-amber-50/90 px-2.5 py-1.5 text-[10px] leading-snug text-amber-900 shadow-xs cursor-pointer hover:bg-amber-100/90 transition-colors"
                 role="status"
+                onClick={() => mostrarAvisoMancha(cotasAtivo ? AVISO_COTAS_SIMULACAO : AVISO_SIMULACAO)}
+                title="Clique para exibir aviso de simulação no mapa"
               >
                 <AlertTriangle size={12} className="mt-0.5 shrink-0 text-amber-600" />
                 <span>
@@ -284,7 +290,12 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
                 return (
                   <button
                     key={value}
-                    onClick={() => setTabAtiva(value)}
+                    onClick={() => {
+                      setTabAtiva(value)
+                      if (value === "cotas") {
+                        mostrarAvisoMancha(AVISO_COTAS_SIMULACAO)
+                      }
+                    }}
                     className={`active-press hover-lift flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-[10px] font-bold transition-colors ${
                       isActive
                         ? "border-transparent text-white shadow-sm"

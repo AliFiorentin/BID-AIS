@@ -2,7 +2,13 @@ import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import type { MapRef } from "react-map-gl/maplibre";
 import { INFRAESTRUTURA_CONFIG, INFRA_TAMANHOS_MB, MUNICIPIO_VIEW } from "@/lib/constants";
 import { scenarioSlug, countRuasUnicas, getRuasListPOA, countRuasUnicasPOA, getRotas, getLen } from "@/lib/geo-utils";
-import { AVISO_MAIO_2024_MAIS_50, AVISO_MANCHA_PADRAO } from "@/lib/avisos";
+import {
+  AVISO_MAIO_2024_MAIS_50,
+  AVISO_MANCHA_PADRAO,
+  AVISO_COTAS_SIMULACAO,
+  AVISO_SIMULACAO,
+  isCenarioSimulacao,
+} from "@/lib/avisos";
 import type { InfraFC, InfraPainelMetricas, PopupInfo } from "@/hooks/dashboard/types";
 import { usePermalink } from "@/hooks/dashboard/usePermalink";
 import { lerEstadoDaURL, usePermalinkEstado, CAMADAS_PADRAO } from "@/hooks/dashboard/permalinkEstado";
@@ -82,7 +88,9 @@ export function useDashboard() {
   }, []);
 
   const avisoDoCenario = useCallback((cen: string) => {
+    if (cen === "Todas as cotas") return AVISO_COTAS_SIMULACAO;
     if (cen === "Cenário Maio 2024 + 50%") return AVISO_MAIO_2024_MAIS_50;
+    if (isCenarioSimulacao(cen)) return AVISO_SIMULACAO;
     return AVISO_MANCHA_PADRAO;
   }, []);
 
@@ -90,9 +98,11 @@ export function useDashboard() {
     setCenario(cen);
     if (cen === "Todas as cotas") {
       setTabAtiva("cotas");
-    }
-    if (cen === "Cenário Maio 2024 + 50%") {
+      mostrarAvisoMancha(AVISO_COTAS_SIMULACAO);
+    } else if (cen === "Cenário Maio 2024 + 50%") {
       mostrarAvisoMancha(AVISO_MAIO_2024_MAIS_50);
+    } else if (isCenarioSimulacao(cen)) {
+      mostrarAvisoMancha(AVISO_SIMULACAO);
     } else {
       setAvisoMancha(null);
     }

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from "react"
 import Image from "next/image"
+import { AlertTriangle, X } from "lucide-react"
 
 import {
   C,
@@ -600,30 +601,34 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* ── Aviso metodológico flutuante ── */}
+      {/* ── Aviso flutuante no mapa (10s com auto-dismiss ou fechar manual) ── */}
       {avisoMancha && (
         <div
-          className="absolute inset-x-0 z-20 flex justify-center px-4 print:hidden"
-          style={{ top: headerBottom }}
+          className="pointer-events-none absolute inset-x-0 z-40 flex justify-center px-4 transition-all duration-300 print:hidden"
+          style={{ top: (headerBottom ?? 60) + 10 }}
         >
           <div
-            className="animate-fade-in-up flex max-w-md items-start gap-2 rounded-xl px-3.5 py-2.5 shadow-2xl"
-            style={glassStyle(0.78)}
+            className="animate-fade-in-up pointer-events-auto flex max-w-2xl items-start gap-2.5 rounded-2xl border border-amber-300 bg-[#fffef5]/95 px-4 py-2.5 shadow-xl backdrop-blur-md transition-all"
+            role="status"
           >
-            <span className="mt-0.5 shrink-0 text-sm leading-none">⚠️</span>
-            <p
-              className="text-[11px] leading-snug"
-              style={{ color: C.primary }}
-            >
-              {avisoMancha}
-            </p>
+            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
+            <div className="flex-1 text-xs leading-relaxed text-amber-900">
+              <strong className="font-bold text-amber-950">
+                {avisoMancha.toLowerCase().includes("simulação") ||
+                avisoMancha.toLowerCase().includes("simulacao")
+                  ? "Aviso de Simulação: "
+                  : "Aviso: "}
+              </strong>
+              <span>
+                {avisoMancha.replace(/^(Aviso(\s+de\s+Simula[cç][aã]o)?:\s*)/i, "")}
+              </span>
+            </div>
             <button
               onClick={() => setAvisoMancha(null)}
               aria-label="Fechar aviso"
-              className="shrink-0 rounded p-0.5 transition-colors hover:bg-slate-100"
-              style={{ color: C.muted }}
+              className="shrink-0 rounded-full p-1 text-amber-700/60 transition-colors hover:bg-amber-100 hover:text-amber-900"
             >
-              <span className="text-[13px] leading-none">✕</span>
+              <X size={14} />
             </button>
           </div>
         </div>
