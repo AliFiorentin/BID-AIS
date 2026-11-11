@@ -78,7 +78,21 @@ export function DashboardMap({ dash }: Props) {
         touchPitch={false}
         attributionControl={false}
       >
-        <NavigationControl position="bottom-right" />
+        <NavigationControl
+          position="bottom-right"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            height: 128,
+            width: 44,
+            borderRadius: 6,
+            overflow: "hidden",
+            boxShadow: "0 0 0 2px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "rgba(255, 255, 255, 0.95)",
+            border: "none",
+            margin: "0 8px 8px 0",
+          }}
+        />
 
         <MapControls dash={dash} />
 
