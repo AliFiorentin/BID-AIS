@@ -105,9 +105,10 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
     avisoDoCenario,
   } = dash
 
-  // Ao sair do cenário "Todas as cotas", se estava na aba "cotas", volta ao Resumo.
+  // Ao entrar no cenário "Todas as cotas", abre a aba "Por cota"; ao sair, volta ao Resumo.
   React.useEffect(() => {
-    if (!cotasAtivo && tabAtiva === "cotas") setTabAtiva("resumo")
+    if (cotasAtivo) setTabAtiva("cotas")
+    else if (tabAtiva === "cotas") setTabAtiva("resumo")
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cotasAtivo])
 

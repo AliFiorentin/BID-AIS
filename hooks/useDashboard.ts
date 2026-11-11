@@ -88,6 +88,9 @@ export function useDashboard() {
 
   const selecionarCenario = useCallback((cen: string) => {
     setCenario(cen);
+    if (cen === "Todas as cotas") {
+      setTabAtiva("cotas");
+    }
     if (cen === "Cenário Maio 2024 + 50%") {
       mostrarAvisoMancha(AVISO_MAIO_2024_MAIS_50);
     } else {

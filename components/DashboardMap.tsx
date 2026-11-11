@@ -104,8 +104,8 @@ export function DashboardMap({ dash }: Props) {
 
         <MapControls dash={dash} />
 
-        <PopulacaoLayer dash={dash} />
         <MapAnchors />
+        <PopulacaoLayer dash={dash} />
         <ManchaCotaLayers dash={dash} />
         <AgriculturaLayer dash={dash} />
         <InfraLayers dash={dash} />

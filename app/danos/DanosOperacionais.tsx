@@ -19,6 +19,7 @@ import type { DanosCtx } from "./ctx"
 
 export function DanosOperacionais({ ctx }: { ctx: DanosCtx }) {
   const {
+    CENARIOS_VISAO_GERAL,
     dados,
     dadosClimada,
     dadosEscalados,
@@ -282,14 +283,22 @@ export function DanosOperacionais({ ctx }: { ctx: DanosCtx }) {
           <p className="mb-4 text-[11px] font-black tracking-wider text-[#2f6a83] uppercase">
             Total por duração (cenário principal de cada município)
           </p>
-          <SensibChart dados={dados} diasSelecionado={dias} />
+          <SensibChart
+            dados={dados}
+            diasSelecionado={dias}
+            cenariosPrincipais={CENARIOS_VISAO_GERAL}
+          />
         </div>
 
         {/* Tabelas por município */}
         {Object.entries(dados).map(([mun, cens]) => {
-          const [cenNome, cenValOrig] = Object.entries(cens).reduce(
-            (acc, cur) => (cur[1].total > acc[1].total ? cur : acc)
-          )
+          const cenPadrao = CENARIOS_VISAO_GERAL[mun]
+          const [cenNome, cenValOrig] =
+            cenPadrao && cens[cenPadrao]
+              ? [cenPadrao, cens[cenPadrao]]
+              : Object.entries(cens).reduce((acc, cur) =>
+                  cur[1].total > acc[1].total ? cur : acc
+                )
           return (
             <div key={mun} className="mt-6">
               <SubTitle>
@@ -335,129 +344,25 @@ export function DanosOperacionais({ ctx }: { ctx: DanosCtx }) {
 
         <Note type="info">
           Empresas, educação e saúde escalam linearmente com a duração. O
-          marcador ◀ indica a duração atualmente selecionada no painel.
-        </Note>
-      </Section>
-
-      {/* ══════════════════════════════════════════════════════════════════════
-            SEÇÃO 4 — NOTAS E RESSALVAS
-        ══════════════════════════════════════════════════════════════════════ */}
-      <Section id="notas" num="4" title="Notas e Ressalvas">
-        <Note type="info">
-          A metodologia completa (curva de recuperação DaLA, fórmulas por
-          componente, parâmetros e fontes) está na{" "}
+          marcador ◀ indica a duração atualmente selecionada no painel. A
+          metodologia completa (curva de recuperação DaLA, fator{" "}
+          <strong>f</strong>, inclusão de Administração Pública CNAE 84 e
+          validação com ICMS) está na{" "}
           <Link
             href="/metodologia#danos"
-            className="font-semibold underline-offset-4 hover:underline"
+            className="font-semibold underline underline-offset-2"
           >
             Seção 9 da Metodologia ↗
-          </Link>
-          , e as limitações por cenário, metodologia e município estão na{" "}
+          </Link>{" "}
+          e as limitações detalhadas estão na{" "}
           <Link
             href="/metodologia#limitacoes"
-            className="font-semibold underline-offset-4 hover:underline"
+            className="font-semibold underline underline-offset-2"
           >
-            Seção 12 da Metodologia ↗
+            Seção 12 (Limitações) ↗
           </Link>
           .
         </Note>
-
-        <SubTitle>O que é o f (fator de interrupção)</SubTitle>
-        <p>
-          O <strong>f</strong> é a{" "}
-          <strong>fração do ano em que a atividade ficou parada</strong>: f =
-          dias efetivos de interrupção ÷ 365. Os dias efetivos seguem a curva de
-          recuperação DaLA (período agudo + período de recuperação × 0,5). Ex.:
-          60 dias efetivos → f = 0,1644, ou seja, ≈ 16,4% de um ano de atividade
-          perdida.
-        </p>
-        <p>
-          Ele multiplica as bases <em>anuais</em>: a perda das{" "}
-          <strong>empresas</strong> é o VAB anual (massa salarial anual ÷
-          participação do trabalho no valor adicionado) × f, e a perda da{" "}
-          <strong>saúde</strong> é a produção SUS anual × f. Educação (custo
-          FUNDEB por aluno e dia de aula) e agricultura (R$/ha por cultura e
-          período do evento) usam outros parâmetros, sem o f.
-        </p>
-
-        <SubTitle>Administração Pública (CNAE 84)</SubTitle>
-        <p>
-          Os estabelecimentos com CNAE 84 (
-          <em>Administração Pública, Defesa e Seguridade Social</em>) são{" "}
-          <strong>incluídos</strong> na estimativa: a interrupção de serviços
-          governamentais representa perdas reais para a sociedade, conforme a
-          metodologia DaLA (CEPAL, 2024).
-        </p>
-        <DataTable
-          rows={[
-            ["Indicador (Porto Alegre / ADA)", "Valor"],
-            ["Estabelecimentos CNAE 84", "51"],
-            ["Participação na massa salarial", "45,3%  (R$ 559,7 mi/mês)"],
-            [
-              "Contribuição ao total (60 dias)",
-              "≈ R$ 1,25 bi de R$ 4,42 bi (28,3%)",
-            ],
-          ]}
-        />
-        <Note type="warning">
-          O labor share de Adm. Pública (88,3%) é elevado, pois o VAB deste
-          setor é predominantemente composto por remunerações. Leitores que
-          desejam excluir o setor público devem subtrair a contribuição do CNAE
-          84 dos valores apresentados.
-        </Note>
-
-        <SubTitle>Por que não usar ICMS como alternativa?</SubTitle>
-        <div className="mt-1 mb-2 space-y-1.5 rounded-lg border border-amber-200 bg-amber-50/60 px-4 py-3 text-[11px] leading-relaxed text-amber-900">
-          <p>
-            A arrecadação de ICMS municipal (SEFAZ-RS) foi avaliada como
-            possível proxy de VAB perdido, seguindo abordagem similar à adotada
-            pela CEPAL (2024) em nível estadual via série ARIMA. A validação
-            cruzada realizada identificou três limitações estruturais que
-            inviabilizam o ICMS como substituto do método RAIS +{" "}
-            <em>labor share</em>:
-          </p>
-          <ul className="list-none space-y-1 pl-1">
-            <li>
-              <strong>1. Domicílio fiscal fora do município atingido.</strong>{" "}
-              Em Lajeado, o shortfall ICMS maio/2024 foi de apenas R$ 8 mil,
-              enquanto nosso VAB estimado implica R$ 1,90 mi de queda de ICMS
-              (razão de 225×). Grandes empregadoras como Tramontina recolhem
-              ICMS na sede em Carlos Barbosa (RS), não em Lajeado, tornando o
-              ICMS municipal completamente dissociado da atividade econômica
-              local.
-            </li>
-            <li>
-              <strong>2. Cobertura setorial parcial.</strong> O ICMS incide
-              sobre circulação de mercadorias e alguns serviços de comunicação e
-              transporte. Serviços em geral, que representam a maior parcela do
-              VAB nas cidades maiores, recolhem ISS ao município, não ICMS ao
-              Estado. Em Porto Alegre, o ICMS capturou apenas R$ 136,8 mi de
-              shortfall frente a R$ 389 mi implicados pelo nosso VAB estimado
-              (razão 2,84×), refletindo que bancos, consultorias e tecnologia
-              estão fora do escopo do ICMS.
-            </li>
-            <li>
-              <strong>3. Timing divergente e efeitos de compensação.</strong> Em
-              Rio Grande, o ICMS de maio/2024 apresentou alta de +43,8% em
-              relação ao baseline, enquanto o evento de cheia afetou
-              principalmente abril/2024 (−41,4%). O movimento positivo em maio
-              reflete provavelmente a refinaria e o porto (atividades não
-              atingidas), gerando ICMS normalmente, além de demanda emergencial
-              de combustíveis. O ICMS municipal, por ser agregado, não permite
-              isolar a parcela gerada por estabelecimentos dentro da mancha de
-              inundação.
-            </li>
-          </ul>
-          <p>
-            O método RAIS + <em>labor share</em> resolve as três limitações:
-            opera no nível do estabelecimento (CNPJ), aplica o teste
-            ponto-em-polígono para isolar apenas firmas dentro da mancha, e
-            cobre todos os setores formais independentemente do tributo
-            recolhido. O ICMS permanece útil apenas como sinal de validação de
-            ordem de grandeza (consistente com Eldorado do Sul, razão 1,12×),
-            não como metodologia de estimação.
-          </p>
-        </div>
       </Section>
     </>
   )

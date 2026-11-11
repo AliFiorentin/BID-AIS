@@ -7,7 +7,7 @@ import { KpiRow, Section, DataTable, Note } from "./ui";
 import type { DanosCtx } from "./ctx";
 
 export function ClimadaPorCota({ ctx }: { ctx: DanosCtx }) {
-  const { atualCota, climadaSetores, cotaAtiva, cotasDisponiveis, dadosCotas, foraRasterTotal, maxTotalCota, munClimadaAtivo, totalCota, totalRp10 } = ctx;
+  const { atualCota, climadaSetores, cotaAtiva, cotasDisponiveis, dadosCotas, maxTotalCota, munClimadaAtivo, totalCota, totalRp10 } = ctx;
   if (!dadosCotas || !atualCota || !cotaAtiva) return null;
   return (
         <>
@@ -19,7 +19,11 @@ export function ClimadaPorCota({ ctx }: { ctx: DanosCtx }) {
             (fluxo, DaLA): os dois números não devem ser somados.{" "}
             <strong>Calibração herdada de Porto Alegre</strong> (fator{" "}
             {dadosCotas.premissas.poa_calibration_factor.toString().replace(".", ",")}), sem perda
-            observada para {munClimadaAtivo}. Ver <a href="#c-limitacoes" className="underline underline-offset-2">Limitações</a>.
+            observada para {munClimadaAtivo}. Ver{" "}
+            <Link href="/metodologia#limitacoes" className="underline underline-offset-2 font-bold">
+              Limitações na Metodologia ↗
+            </Link>
+            .
           </Note>
           <Note type="info">
             Aqui o cenário é a <strong>cota do rio</strong> (profundidade por pixel de ~5 m), não um
@@ -132,66 +136,6 @@ export function ClimadaPorCota({ ctx }: { ctx: DanosCtx }) {
               }),
             ]}
           />
-        </Section>
-
-        <Section id="c-limitacoes" num="4" title="Limitações">
-          <Note type="warning">
-            Resultados de {munClimadaAtivo} são um <strong>protótipo</strong> e carregam as mesmas premissas
-            do de Porto Alegre por RP (valor de reposição, curvas JRC, conteúdo/equipamento; ver{" "}
-            <a href="/metodologia#dano-fisico" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 font-bold">metodologia ↗</a>),
-            mais as limitações específicas abaixo.
-          </Note>
-          <ul className="list-disc list-inside space-y-2 text-sm text-slate-700 mt-3">
-            <li>
-              <strong>Coordenadas repetidas na base oficial.</strong> Muitos estabelecimentos
-              (RAIS/CNES/Censo Escolar, geocodificados) compartilham o mesmo ponto, típico de
-              endereço incompleto ou geocode no centroide de rua/bairro. Em {munClimadaAtivo}:{" "}
-              {climadaSetores.map((st) => {
-                const r = dadosCotas.diagnostico.coordenadas_repetidas[st];
-                return `${SETOR_LABEL[st].toLowerCase()} ${r.n_pontos.toLocaleString("pt-BR")} em ${r.n_coordenadas_unicas.toLocaleString("pt-BR")} coordenadas (maior pilha: ${r.maior_pilha.toLocaleString("pt-BR")})`;
-              }).join("; ")}
-              . A base é mantida como reportada pelo governo, sem filtro: cada pilha entra ou sai da
-              mancha de uma vez e recebe a profundidade de um único pixel, o que gera degraus no
-              dano. Tratar como ordem de grandeza.
-            </li>
-            <li>
-              <strong>Calibração herdada de Porto Alegre.</strong> O fator{" "}
-              {dadosCotas.premissas.poa_calibration_factor.toString().replace(".", ",")} (Empresas e
-              Saúde) foi ancorado no evento de 2024 em Porto Alegre; não há
-              perda observada por cota. A curva JRC crua mostra o limite superior da incerteza
-              (≈2× o valor calibrado). A curva de Educação não é reescalada. A curva de Saúde é
-              sintetizada (ver Porto Alegre).
-            </li>
-            <li>
-              <strong>Sem risco anual esperado (EAI).</strong> Os rasters são indexados por cota,
-              sem período de retorno ou frequência. EAI exigiria a relação cota → probabilidade
-              (série histórica de cotas), ainda não disponível.
-            </li>
-            <li>
-              <strong>Origem dos rasters.</strong> {dadosCotas.premissas.raster_nota}
-            </li>
-            {foraRasterTotal > 0 && (
-              <li>
-                <strong>Pontos fora da grade do raster:</strong>{" "}
-                {climadaSetores.map((st) => `${SETOR_LABEL[st].toLowerCase()} ${dadosCotas.diagnostico.pontos_fora_do_raster[st]}/${dadosCotas.diagnostico.n_pontos[st]}`).join("; ")}.
-                Esses pontos entram com profundidade 0, o que subestima o dano em {munClimadaAtivo}.
-              </li>
-            )}
-            <li>
-              <strong>Pontos já molhados na cota mais baixa</strong> ({dadosCotas.diagnostico.cota_mais_baixa} m):{" "}
-              {climadaSetores.map((st) => `${SETOR_LABEL[st].toLowerCase()} ${dadosCotas.diagnostico.pontos_molhados_na_cota_mais_baixa[st]}`).join("; ")}.
-              Mantidos: cada cota é um cenário próprio.
-            </li>
-            <li>
-              <strong>Máximo acumulado entre cotas.</strong> Alguns rasters (notadamente Lajeado)
-              têm células que ficam mais rasas quando a cota sobe; aplicado o máximo por ponto
-              entre cotas (o dano não diminui com a cota).
-            </li>
-            <li>
-              <strong>Amostragem por pixel de ~5 m</strong> (vizinho mais próximo), mais fina que a
-              da visão por RP de Porto Alegre (~90 m), mas ainda sujeita a erro de geocodificação do ponto.
-            </li>
-          </ul>
         </Section>
         </>
   );

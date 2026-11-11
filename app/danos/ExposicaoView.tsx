@@ -20,7 +20,6 @@ export function ExposicaoView({
   mun,
   cota,
   setAba,
-  diag,
 }: {
   expo: ExposicaoMun
   diag?: CotasData["diagnostico"] | null
@@ -106,6 +105,14 @@ export function ExposicaoView({
           ), que medem outra coisa (produção e serviço interrompidos)
           {mun !== "Porto Alegre" &&
             "; também não se compara ao dano físico de Porto Alegre"}
+          . As limitações detalhadas por cenário, metodologia e município estão
+          na{" "}
+          <Link
+            href="/metodologia#limitacoes"
+            className="font-bold underline underline-offset-2"
+          >
+            Seção 12 da Metodologia (Limitações) ↗
+          </Link>
           .
         </Note>
 
@@ -378,157 +385,7 @@ export function ExposicaoView({
         />
       )}
 
-      <Section
-        id="c-limitacoes"
-        num={expo.detalhe ? "7" : "3"}
-        title="Limitações"
-      >
-        <Note type="warning">
-          Estes números medem a <strong>exposição</strong> a cada cota do rio: o
-          que fica sob água segundo os rasters{" "}
-          {semProf
-            ? "de mancha por cota (sem profundidade)"
-            : "de profundidade"}
-          , cruzado com os dados de empresas (RAIS), escolas (Censo Escolar),
-          saúde (CNES) e agricultura (MapBiomas). Não usam o modelo CLIMADA nem
-          curva de dano, e não substituem as Perdas Operacionais (DaLA). Leia os
-          limites abaixo antes de usar qualquer valor:
-        </Note>
-        <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-slate-700">
-          <li>
-            <strong>Exposição, não dano.</strong> Todo ponto{" "}
-            {semProf ? "dentro da mancha" : "com profundidade > 0"} conta com
-            100% do seu valor de reposição. Não há curva de dano nem calibração
-            para {mun}; o dano real fica entre zero e este valor.
-          </li>
-          <li>
-            <strong>Valor de reposição é estimativa</strong> (CUB/RS × área por
-            proxy: 9 m² por pessoa, salas por matrícula; ver metodologia), não
-            cadastro de valor de mercado.
-          </li>
-          <li>
-            <strong>Coordenadas repetidas (geocodificação).</strong>{" "}
-            {diag ? (
-              <>
-                Em {mun}:{" "}
-                {(["empresas", "saude", "educacao"] as const).map((k, i) => {
-                  const r = diag.coordenadas_repetidas[k]
-                  return (
-                    <span key={k}>
-                      {i > 0 ? "; " : ""}
-                      {
-                        {
-                          empresas: "empresas",
-                          saude: "saúde",
-                          educacao: "educação",
-                        }[k]
-                      }{" "}
-                      {fmtN(r.n_pontos)} em {fmtN(r.n_coordenadas_unicas)}{" "}
-                      coordenadas (maior pilha: {fmtN(r.maior_pilha)})
-                    </span>
-                  )
-                })}
-                .
-              </>
-            ) : (
-              "Muitos estabelecimentos compartilham a mesma coordenada."
-            )}{" "}
-            {expo.detalhe?.maior_pilha?.empresas &&
-              (() => {
-                const e = expo.detalhe.maior_pilha.empresas
-                return (
-                  <>
-                    A maior pilha de empresas reúne {fmtN(e.n_pontos)}{" "}
-                    estabelecimentos de {fmtN(e.ruas_distintas)} ruas e{" "}
-                    {fmtN(e.bairros_distintos)} bairros num único ponto, o que
-                    indica o geocodificador caindo num ponto padrão e não um
-                    endereço real.{" "}
-                  </>
-                )
-              })()}
-            A base é mantida como reportada, sem filtro nem correção. Efeito:
-            cada pilha entra de uma vez, com{" "}
-            {semProf ? "a situação" : "a profundidade"} de um único pixel de
-            {semProf ? " ~1 m" : " ~5 m"}, o que gera degraus no valor atingido.{" "}
-            {expo.detalhe?.maior_pilha &&
-              (() => {
-                const pil = expo.detalhe.maior_pilha
-                const partes = (["empresas", "saude", "educacao"] as const)
-                  .filter((k) => pil[k]?.cota_entrada && pil[k].n_pontos > 1)
-                  .map(
-                    (k) =>
-                      `${{ empresas: "empresas", saude: "saúde", educacao: "educação" }[k]}: ${fmtN(pil[k].n_pontos)} pontos entram na cota ${pil[k].cota_entrada} m (valor exposto de ${fmtBRL(pil[k].valor_exposto_antes_brl ?? 0)} para ${fmtBRL(pil[k].valor_exposto_na_entrada_brl ?? 0)})`
-                  )
-                if (partes.length)
-                  return (
-                    <>
-                      Neste município, a maior pilha de cada setor molha de uma
-                      vez: {partes.join("; ")}.
-                    </>
-                  )
-                return (
-                  <>
-                    Neste município, a maior pilha de cada setor não é molhada
-                    em nenhuma cota dos rasters, então não causa degrau.
-                  </>
-                )
-              })()}
-          </li>
-          {diag &&
-            Object.values(diag.pontos_fora_do_raster).some((v) => v > 0) && (
-              <li>
-                <strong>Pontos fora da grade do raster</strong> entram com
-                profundidade 0 (subestima):{" "}
-                {(["empresas", "saude", "educacao"] as const)
-                  .filter((k) => diag.pontos_fora_do_raster[k] > 0)
-                  .map(
-                    (k) =>
-                      `${fmtN(diag.pontos_fora_do_raster[k])} de ${fmtN(diag.n_pontos[k])} ${{ empresas: "empresas", saude: "unidades de saúde", educacao: "escolas" }[k]}`
-                  )
-                  .join(", ")}
-                . O mesmo vale para a área agrícola fora da grade.
-              </li>
-            )}
-          <li>
-            <strong>Agricultura:</strong> área, não valor. Usa o MapBiomas{" "}
-            {expo.detalhe?.ano_agricultura ?? 2024} sobreposto à grade do
-            raster; a área de cada pixel é calculada pela latitude, e bordas de
-            polígono podem ter erro de até um pixel. A área total de cada
-            cultura é a soma geodésica dos polígonos, e a área fora da grade
-            conta como seca.
-          </li>
-          <li>
-            <strong>Setores não disjuntos:</strong> as fontes são distintas
-            (RAIS, CNES, Censo Escolar), e estabelecimentos de saúde e educação
-            aparecem em mais de uma delas; a soma dos três setores não é de
-            ativos disjuntos.
-          </li>
-          <li>
-            <strong>Rasters não monotônicos entre cotas:</strong> aplicado o
-            máximo acumulado por ponto (e por pixel, na agricultura). Amostragem
-            por pixel de {semProf ? "~1 m" : "~5 m"} (vizinho mais próximo).
-          </li>
-          {semProf && (
-            <>
-              <li>
-                <strong>Sem profundidade.</strong> As manchas de {mun} são
-                máscaras binárias (molhado/seco) do pico de 21/05/2024 e de
-                cotas menores (1,00 a 2,62 m), união das bacias hidrográficas;
-                não há altura da água, então não há curva de dano, faixas de
-                profundidade nem profundidade média.
-              </li>
-              <li>
-                <strong>Cotas irregulares:</strong> a série é 1,00 / 1,50 / 2,00
-                / 2,50 / 2,62 m (a última é o pico, só 0,12 m acima da
-                anterior). A referência altimétrica da cota ainda precisa ser
-                confirmada com o autor dos rasters.
-              </li>
-            </>
-          )}
-        </ul>
-      </Section>
-
-      <Section id="c-mapa" num={expo.detalhe ? "8" : "4"} title="Mapa por cota">
+      <Section id="c-mapa" num={expo.detalhe ? "7" : "3"} title="Mapa por cota">
         <p>
           A água avança sozinha em loop (pause ou arraste a cota para
           controlar). A frente de avanço, em azul-claro, mostra o que está

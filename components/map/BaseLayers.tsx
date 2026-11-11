@@ -38,6 +38,7 @@ export function PopulacaoLayer({ dash }: { dash: DashboardState }) {
         <Layer
           id="veu-base-fill"
           type="fill"
+          beforeId="anchor-mancha"
           paint={{ "fill-color": "#eef3f4", "fill-opacity": 0.62 }}
         />
       </Source>
@@ -60,6 +61,7 @@ export function PopulacaoLayer({ dash }: { dash: DashboardState }) {
           <Layer
             id="populacao-raster"
             type="raster"
+            beforeId="anchor-mancha"
             paint={{ "raster-opacity": 0.65, "raster-resampling": "nearest" }}
           />
         </Source>

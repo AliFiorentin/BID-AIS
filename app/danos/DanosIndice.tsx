@@ -17,7 +17,7 @@ export function DanosIndice({ ctx }: { ctx: DanosCtx }) {
                   ["#resumo", "1. Resumo Geral"],
                   ["#cenarios", "2. Análise por Cenário"],
                   ["#sensib", "3. Sensibilidade por Duração"],
-                  ["#notas", "4. Notas e Ressalvas"],
+                  ["/metodologia#limitacoes", "Limitações (Metodologia) ↗"],
                 ]
               : semCurva
                 ? cotaAtivo
@@ -33,13 +33,10 @@ export function DanosIndice({ ctx }: { ctx: DanosCtx }) {
                           ]
                         : []),
                       [
-                        "#c-limitacoes",
-                        expo?.detalhe ? "7. Limitações" : "3. Limitações",
-                      ],
-                      [
                         "#c-mapa",
-                        expo?.detalhe ? "8. Mapa por cota" : "4. Mapa por cota",
+                        expo?.detalhe ? "7. Mapa por cota" : "3. Mapa por cota",
                       ],
+                      ["/metodologia#limitacoes", "Limitações (Metodologia) ↗"],
                     ]
                   : [
                       ["#c-resumo", "1. Resumo"],
@@ -48,14 +45,14 @@ export function DanosIndice({ ctx }: { ctx: DanosCtx }) {
                       ["#c-projecao", "4. Projeção 2025→2050"],
                       ["#c-comparativo", "5. Comparativo por RP"],
                       ["#c-medidas", "6. Medidas de Adaptação"],
-                      ["#c-limitacoes", "7. Limitações"],
+                      ["/metodologia#limitacoes", "Limitações (Metodologia) ↗"],
                     ]
                 : cotaAtivo
                   ? [
                       ["#c-resumo", "1. Resumo"],
                       ["#c-curva", "2. Dano por Cota"],
                       ["#c-tabela", "3. Tabela por Cota"],
-                      ["#c-limitacoes", "4. Limitações"],
+                      ["/metodologia#limitacoes", "Limitações (Metodologia) ↗"],
                     ]
                   : ([
                       ["#c-resumo", "1. Resumo"],
@@ -63,7 +60,7 @@ export function DanosIndice({ ctx }: { ctx: DanosCtx }) {
                       ["#c-projecao", "3. Projeção 2025→2050"],
                       ["#c-comparativo", "4. Comparativo por RP"],
                       ["#c-medidas", "5. Medidas de Adaptação"],
-                      ["#c-limitacoes", "6. Limitações"],
+                      ["/metodologia#limitacoes", "Limitações (Metodologia) ↗"],
                     ] as [string, string][])
             ).map(([href, label]) => (
               <li key={href}>

@@ -181,11 +181,11 @@ export default function Dashboard() {
       {/* ── Mapa (fundo) ─────────────────────────────────────────────── */}
       <DashboardMap dash={dash} />
 
-      {/* ── Cartão de logos institucionais: alinhado ao grupo de zoom (130 px), à esquerda dele, na base ── */}
-      <div className="pointer-events-none absolute right-[62px] bottom-[40px] z-10 print:hidden">
+      {/* ── Cartão de logos institucionais: alinhado ao grupo de zoom (128 px + 2 px anel), à esquerda dele, na base ── */}
+      <div className="pointer-events-none absolute right-[61px] bottom-[8px] z-10 print:hidden">
         <div
-          className="flex h-[130px] w-[196px] flex-col items-center justify-center gap-2 rounded-md bg-white/90 px-2.5 py-2 shadow-sm"
-          style={{ border: "2px solid rgba(0,0,0,0.1)" }}
+          className="flex h-[128px] w-[195px] flex-col items-center justify-center gap-2 rounded-[4px] bg-white/95 px-2.5 py-2"
+          style={{ boxShadow: "0 0 0 2px rgba(0,0,0,0.1)" }}
         >
           <div className="flex w-full items-center justify-center gap-2 border-b border-black/10 pb-1.5">
             <Image
@@ -294,11 +294,11 @@ export default function Dashboard() {
         onFocus={() => {
           legendaInteragiu.current = true
         }}
-        className="absolute right-2 bottom-[178px] z-10 flex w-[250px] flex-col justify-end print:hidden"
+        className="absolute right-[6px] bottom-[146px] z-10 flex w-[252px] flex-col justify-end print:hidden"
         style={{
           maxHeight: filtrosVisiveis
             ? "calc(100vh - 320px)"
-            : `calc(100vh - ${178 + headerBottom + 44}px)`,
+            : `calc(100vh - ${146 + headerBottom + 44}px)`,
         }}
       >
         <div

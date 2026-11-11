@@ -3,10 +3,10 @@ import React from "react"
 import { escalaAgradavel, fmtCompacto } from "./helpers"
 
 const W = 680
-const H = 260
+const H = 264
 const PL = 56 // margem esquerda (eixo)
-const PR = 20
-const PT = 18
+const PR = 24
+const PT = 22
 const PB = 44 // margem inferior (rótulos)
 const AREA_H = H - PT - PB
 const AREA_W = W - PL - PR
@@ -15,6 +15,12 @@ export interface SerieGrafico {
   nome: string
   cor: string
   valores: number[]
+}
+
+function fmtCotaLabel(cat: string): string {
+  const n = Number(cat)
+  if (!Number.isFinite(n)) return cat
+  return n.toFixed(2).replace(".", ",")
 }
 
 function Eixo({ max, fmt }: { max: number; fmt: (v: number) => string }) {
@@ -116,6 +122,10 @@ export function GraficoBarrasEmpilhadas({
         {categorias.map((cat, i) => {
           const x = PL + passo * i + (passo - larg) / 2
           let acima = 0
+          const mostraRotulo =
+            !muitos ||
+            (i % 2 === 0 && i < categorias.length - 2) ||
+            i === categorias.length - 1
           return (
             <g key={cat}>
               {series.map((s) => {
@@ -131,11 +141,11 @@ export function GraficoBarrasEmpilhadas({
                     height={Math.max(h, 0)}
                     fill={s.cor}
                   >
-                    <title>{`${s.nome}, cota ${cat} m: ${fmt(s.valores[i])}`}</title>
+                    <title>{`${s.nome}, cota ${fmtCotaLabel(cat)} m: ${fmt(s.valores[i])}`}</title>
                   </rect>
                 )
               })}
-              {(!muitos || i % 2 === 0 || i === categorias.length - 1) && (
+              {totais[i] > 0 && mostraRotulo && (
                 <text
                   x={x + larg / 2}
                   y={PT + AREA_H - acima - 5}
@@ -147,17 +157,19 @@ export function GraficoBarrasEmpilhadas({
                   {fmt(totais[i])}
                 </text>
               )}
-              <text
-                x={x + larg / 2}
-                y={H - PB + 16}
-                textAnchor="middle"
-                fontSize={muitos ? 8.5 : 10.5}
-                fontWeight={700}
-                fill="#475569"
-              >
-                {cat}
-                {muitos ? "" : " m"}
-              </text>
+              {mostraRotulo && (
+                <text
+                  x={x + larg / 2}
+                  y={H - PB + 16}
+                  textAnchor="middle"
+                  fontSize={muitos ? 8.5 : 10.5}
+                  fontWeight={700}
+                  fill="#475569"
+                >
+                  {fmtCotaLabel(cat)}
+                  {muitos ? "" : " m"}
+                </text>
+              )}
             </g>
           )
         })}
@@ -167,7 +179,7 @@ export function GraficoBarrasEmpilhadas({
   )
 }
 
-/** Linhas: uma por série, valores em % (0 a 100) ao longo das categorias (cotas). */
+/** Linhas: uma por série, valores em % ao longo das categorias (cotas), com escala dinâmica e anticolisão nos rótulos finais. */
 export function GraficoLinhas({
   titulo,
   categorias,
@@ -177,10 +189,50 @@ export function GraficoLinhas({
   categorias: string[]
   series: SerieGrafico[]
 }) {
+  const maxVal = Math.max(...series.flatMap((s) => s.valores), 1)
+  const escBruta = escalaAgradavel(Math.min(maxVal, 100))
+  const maxEixo = Math.min(escBruta.max, 100)
   const px = (i: number) =>
-    PL + 20 + (i * (AREA_W - 64)) / Math.max(categorias.length - 1, 1)
-  const py = (v: number) => PT + AREA_H - (Math.min(v, 100) / 100) * AREA_H
+    PL + 20 + (i * (AREA_W - 68)) / Math.max(categorias.length - 1, 1)
+  const py = (v: number) =>
+    PT + AREA_H - (Math.min(v, maxEixo) / maxEixo) * AREA_H
   const muitos = categorias.length > 10
+  const fmtEixoPct = (v: number) =>
+    maxEixo < 10
+      ? `${v.toFixed(1).replace(/\.0$/, "").replace(".", ",")}%`
+      : `${v.toFixed(0)}%`
+  const fmtValorPct = (v: number) =>
+    v > 0 && v < 10
+      ? `${v.toFixed(1).replace(".", ",")}%`
+      : `${v.toFixed(0)}%`
+
+  // Anticolisão vertical para os rótulos à direita da última cota
+  const finais = series
+    .map((s, idx) => {
+      const v = s.valores[s.valores.length - 1] ?? 0
+      return { idx, y: py(v) + 4 }
+    })
+    .sort((a, b) => a.y - b.y)
+  const minSep = 11
+  for (let k = 1; k < finais.length; k++) {
+    if (finais[k].y - finais[k - 1].y < minSep) {
+      finais[k].y = finais[k - 1].y + minSep
+    }
+  }
+  const yMaxLabel = PT + AREA_H + 4
+  if (finais.length > 0 && finais[finais.length - 1].y > yMaxLabel) {
+    finais[finais.length - 1].y = yMaxLabel
+    for (let k = finais.length - 2; k >= 0; k--) {
+      if (finais[k + 1].y - finais[k].y < minSep) {
+        finais[k].y = finais[k + 1].y - minSep
+      }
+    }
+  }
+  const yFinalPorSerie: Record<number, number> = {}
+  finais.forEach((f) => {
+    yFinalPorSerie[f.idx] = f.y
+  })
+
   return (
     <Moldura titulo={titulo}>
       <svg
@@ -189,9 +241,11 @@ export function GraficoLinhas({
         role="img"
         aria-label={titulo}
       >
-        <Eixo max={100} fmt={(v) => `${v}%`} />
+        <Eixo max={maxEixo} fmt={fmtEixoPct} />
         {categorias.map((cat, i) =>
-          !muitos || i % 2 === 0 || i === categorias.length - 1 ? (
+          !muitos ||
+          (i % 2 === 0 && i < categorias.length - 2) ||
+          i === categorias.length - 1 ? (
             <text
               key={cat}
               x={px(i)}
@@ -201,37 +255,40 @@ export function GraficoLinhas({
               fontWeight={700}
               fill="#475569"
             >
-              {cat}
+              {fmtCotaLabel(cat)}
               {muitos ? "" : " m"}
             </text>
           ) : null
         )}
-        {series.map((s) => (
-          <g key={s.nome}>
-            <polyline
-              fill="none"
-              stroke={s.cor}
-              strokeWidth={2.25}
-              strokeLinejoin="round"
-              points={s.valores.map((v, i) => `${px(i)},${py(v)}`).join(" ")}
-            />
-            {s.valores.map((v, i) => (
-              <circle key={i} cx={px(i)} cy={py(v)} r={3} fill={s.cor}>
-                <title>{`${s.nome}, cota ${categorias[i]} m: ${v.toFixed(1).replace(".", ",")}%`}</title>
-              </circle>
-            ))}
-            <text
-              x={px(s.valores.length - 1) + 9}
-              y={py(s.valores[s.valores.length - 1]) + 4}
-              textAnchor="start"
-              fontSize={10}
-              fontWeight={700}
-              fill={s.cor}
-            >
-              {s.valores[s.valores.length - 1].toFixed(0)}%
-            </text>
-          </g>
-        ))}
+        {series.map((s, idx) => {
+          const vFinal = s.valores[s.valores.length - 1] ?? 0
+          return (
+            <g key={s.nome}>
+              <polyline
+                fill="none"
+                stroke={s.cor}
+                strokeWidth={2.25}
+                strokeLinejoin="round"
+                points={s.valores.map((v, i) => `${px(i)},${py(v)}`).join(" ")}
+              />
+              {s.valores.map((v, i) => (
+                <circle key={i} cx={px(i)} cy={py(v)} r={3} fill={s.cor}>
+                  <title>{`${s.nome}, cota ${fmtCotaLabel(categorias[i])} m: ${v.toFixed(1).replace(".", ",")}%`}</title>
+                </circle>
+              ))}
+              <text
+                x={px(s.valores.length - 1) + 8}
+                y={yFinalPorSerie[idx] ?? py(vFinal) + 4}
+                textAnchor="start"
+                fontSize={10}
+                fontWeight={700}
+                fill={s.cor}
+              >
+                {fmtValorPct(vFinal)}
+              </text>
+            </g>
+          )
+        })}
       </svg>
       <Legenda series={series} />
     </Moldura>

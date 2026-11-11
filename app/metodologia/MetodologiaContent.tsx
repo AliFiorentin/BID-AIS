@@ -851,10 +851,10 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
           ]} />
           <Note type="info">
             Estabelecimentos CNAE 84 (Administração Pública) são incluídos no cálculo; ver a
-            nota e as limitações sobre esse ponto na{" "}
-            <a href="/danos#notas" target="_blank" rel="noopener noreferrer"
+            nota detalhada e as limitações sobre esse ponto na{" "}
+            <a href="#limitacoes"
               className="text-[#055071] font-semibold hover:underline underline-offset-4">
-              página de Danos ↗
+              Seção 12: Limitações ↓
             </a>.
           </Note>
 
@@ -1223,10 +1223,10 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
 
           <Note type="warning">
             Premissas explícitas que precisam de validação antes de qualquer uso além de
-            exploração metodológica: ver a lista completa de{" "}
-            <a href="/danos?aba=climada#c-limitacoes" target="_blank" rel="noopener noreferrer"
+            exploração metodológica: ver a lista completa na{" "}
+            <a href="#limitacoes"
               className="font-semibold hover:underline underline-offset-4">
-              Limitações na página de Danos ↗
+              Seção 12: Limitações ↓
             </a>.
           </Note>
 
@@ -1327,10 +1327,11 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
         {/* ══════════════════════════════════════════════════════════════════════
             12. LIMITAÇÕES
         ══════════════════════════════════════════════════════════════════════ */}
-        <Section id="limitacoes" num="12" title="Limitações">
+        <Section id="limitacoes" num="12" title="Limitações e Ressalvas Metodológicas">
           <p>
-            Esta seção reúne as limitações e ressalvas metodológicas dos resultados do painel,
-            organizadas em três eixos: por{" "}
+            Esta seção consolida todas as limitações, premissas e ressalvas metodológicas dos
+            resultados do painel (anteriormente distribuídas entre as páginas de Perdas
+            Operacionais e Danos Físicos), organizadas em três eixos: por{" "}
             <a href="#lim-cenarios" className="font-semibold underline underline-offset-4">
               cenário
             </a>
@@ -1340,7 +1341,7 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
             </a>{" "}
             e por{" "}
             <a href="#lim-municipio" className="font-semibold underline underline-offset-4">
-              município
+              município e geocodificação
             </a>
             .
           </p>
@@ -1374,12 +1375,21 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
           <ul className="ml-1 list-inside list-disc space-y-1.5 text-sm text-slate-700">
             <li>
               Mostra a exposição de empresas, educação, saúde e agricultura em função do nível do
-              rio/lagoa. Em Rio Grande (1,00 a 2,62 m), as máscaras são binárias (molhado/seco, sem
-              profundidade).
+              rio/lagoa. Em Rio Grande (1,00 / 1,50 / 2,00 / 2,50 / 2,62 m — a última é o pico de
+              21/05/2024, só 0,12 m acima da anterior), as manchas são máscaras binárias
+              (molhado/seco, união das bacias hidrográficas, sem profundidade), razão pela qual não
+              há curva de dano, faixas de profundidade nem profundidade média naquele município.
             </li>
             <li>
-              Aplica-se o máximo acumulado entre cotas para garantir monotonicidade (a água de uma
-              cota superior cobre pelo menos o que a cota inferior cobria).
+              Aplica-se o máximo acumulado entre cotas por ponto (e por pixel, na agricultura) para
+              garantir monotonicidade (a água de uma cota superior cobre pelo menos o que a cota
+              inferior cobria), corrigindo células que ficam mais rasas entre cotas consecutivas nos
+              rasters brutos. Amostragem por vizinho mais próximo (~5 m em Lajeado, Porto Alegre e
+              Eldorado do Sul; ~1 m nas máscaras binárias de Rio Grande).
+            </li>
+            <li>
+              Sem período de retorno ou frequência associada a cada cota, não há risco anual
+              esperado (EAI) nem projeção 2050 na visão por cota.
             </li>
           </ul>
 
@@ -1388,37 +1398,158 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
           <SubTitle nested>Perdas Operacionais (DaLA · Seção 9)</SubTitle>
           <ul className="ml-1 list-inside list-disc space-y-1.5 text-sm text-slate-700">
             <li>
-              Mede interrupção de <em>fluxo</em> (produção e serviços não realizados), não
-              destruição de <em>estoque</em> (prédios e equipamentos). Não deve ser somado à
-              exposição por cota nem ao dano físico (CLIMADA).
+              <strong>Fluxo vs. estoque:</strong> mede interrupção de <em>fluxo</em> (produção e
+              serviços não realizados), não destruição de <em>estoque</em> (prédios e equipamentos).
+              Não deve ser somado à exposição por cota nem ao dano físico (CLIMADA).
             </li>
             <li>
-              Considera apenas vínculos formais da RAIS 2023; o setor informal não está
-              representado. A Administração Pública (CNAE 84) está incluída com <em>labor share</em>{" "}
-              de 88,3%.
+              <strong>Fator de interrupção (<em>f</em>):</strong> representa a fração do ano em que a
+              atividade ficou parada (<Math tex="f = d_{\text{ef}} / 365" />, onde{" "}
+              <Math tex="d_{\text{ef}} = d_a + 0{,}5 \times d_r" />). Ex.: 60 dias efetivos →{" "}
+              <Math tex="f = 0{,}1644" /> (≈ 16,4% de um ano de atividade perdida). Multiplica as
+              bases anuais de Empresas (VAB anual) e Saúde (produção SUS anual); Educação (custo
+              FUNDEB por aluno/dia de fechamento real <Math tex="d_a" />) e Agricultura (R$/ha fixo
+              no estágio da cultura) não utilizam <Math tex="f" />.
             </li>
             <li>
-              Na educação, o custo unitário diário (VAAT-MIN/200) é aplicado a todas as matrículas
-              atingidas (inclusive rede privada) e duplicado para somar serviço não prestado e
-              reposição obrigatória (LDB Art. 24, I).
+              <strong>Setor formal e Educação:</strong> considera apenas vínculos formais da RAIS
+              2023; o setor informal não está representado. Na educação, o custo unitário diário
+              (VAAT-MIN/200) é aplicado a todas as matrículas atingidas (inclusive rede privada) e
+              duplicado para somar serviço não prestado e reposição obrigatória (LDB Art. 24, I).
             </li>
           </ul>
 
-          <SubTitle nested>Danos Físicos: Exposição por Cota e CLIMADA (Seção 10)</SubTitle>
+          <SubTitle nested>Administração Pública (CNAE 84) nas Perdas Operacionais</SubTitle>
+          <p>
+            Os estabelecimentos com CNAE 84 (
+            <em>Administração Pública, Defesa e Seguridade Social</em>) são{" "}
+            <strong>incluídos</strong> na estimativa de Perdas Operacionais: a interrupção de
+            serviços governamentais representa perdas reais para a sociedade, conforme a metodologia
+            DaLA (CEPAL, 2024).
+          </p>
+          <DataTable
+            rows={[
+              ["Indicador (Porto Alegre / Cenário ADA)", "Valor"],
+              ["Estabelecimentos CNAE 84", "51"],
+              ["Participação na massa salarial atingida", "45,3% (R$ 559,7 mi/mês)"],
+              ["Contribuição ao total (60 dias efetivos)", "≈ R$ 1,25 bi de R$ 4,42 bi (28,3%)"],
+            ]}
+          />
+          <Note type="warning">
+            O <em>labor share</em> de Administração Pública (88,3%) é elevado, pois o VAB deste
+            setor nas Contas Nacionais é predominantemente composto por remunerações. Leitores que
+            desejam avaliar apenas o setor privado devem subtrair a contribuição do CNAE 84 dos
+            valores apresentados.
+          </Note>
+
+          <SubTitle nested>Por que não usar ICMS como alternativa nas Perdas Operacionais?</SubTitle>
+          <div className="mt-1 mb-2 space-y-1.5 rounded-lg border border-amber-200 bg-amber-50/60 px-4 py-3 text-[11px] leading-relaxed text-amber-900">
+            <p>
+              A arrecadação de ICMS municipal (SEFAZ-RS) foi avaliada como possível proxy de VAB
+              perdido, seguindo abordagem similar à adotada pela CEPAL (2024) em nível estadual via
+              série ARIMA. A validação cruzada realizada identificou três limitações estruturais que
+              inviabilizam o ICMS como substituto do método RAIS + <em>labor share</em> em escala
+              municipal:
+            </p>
+            <ul className="list-none space-y-1 pl-1">
+              <li>
+                <strong>1. Domicílio fiscal fora do município atingido.</strong> Em Lajeado, o{" "}
+                <em>shortfall</em> de ICMS em maio/2024 foi de apenas R$ 8 mil, enquanto nosso VAB
+                estimado implica R$ 1,90 mi de queda de ICMS (razão de 225×). Grandes empregadoras
+                como a Tramontina recolhem ICMS na sede em Carlos Barbosa (RS), não em Lajeado,
+                tornando o ICMS municipal dissociado da atividade econômica local.
+              </li>
+              <li>
+                <strong>2. Cobertura setorial parcial.</strong> O ICMS incide sobre circulação de
+                mercadorias e alguns serviços de comunicação e transporte. Serviços em geral, que
+                representam a maior parcela do VAB nas cidades maiores, recolhem ISS ao município,
+                não ICMS ao Estado. Em Porto Alegre, o ICMS capturou apenas R$ 136,8 mi de{" "}
+                <em>shortfall</em> frente a R$ 389 mi implicados pelo VAB estimado (razão 2,84×),
+                refletindo que bancos, consultorias e tecnologia estão fora do escopo do ICMS.
+              </li>
+              <li>
+                <strong>3. Timing divergente e efeitos de compensação.</strong> Em Rio Grande, o ICMS
+                de maio/2024 apresentou alta de +43,8% em relação ao baseline, enquanto o evento de
+                cheia afetou principalmente abril/2024 (−41,4%). O movimento positivo em maio reflete
+                provavelmente a refinaria e o porto (atividades não atingidas), além de demanda
+                emergencial de combustíveis. O ICMS municipal, por ser agregado, não permite isolar a
+                parcela gerada por estabelecimentos dentro da mancha de inundação.
+              </li>
+            </ul>
+            <p>
+              O método RAIS + <em>labor share</em> resolve as três limitações: opera no nível do
+              estabelecimento (CNPJ), aplica o teste ponto-em-polígono para isolar apenas firmas
+              dentro da mancha e cobre todos os setores formais independentemente do tributo
+              recolhido. O ICMS permanece útil apenas como sinal de validação de ordem de grandeza
+              (consistente com Eldorado do Sul, razão 1,12×), não como metodologia de estimação.
+            </p>
+          </div>
+
+          <SubTitle nested>Danos Físicos: Exposição por Cota e Protótipo CLIMADA (Seção 10)</SubTitle>
           <ul className="ml-1 list-inside list-disc space-y-1.5 text-sm text-slate-700">
             <li>
               <strong>Exposição por cota é um teto, não dano:</strong> todo ponto atingido entra com
               100% do seu valor de reposição estimado (CUB/RS × área por proxy de porte ×
-              multiplicador de conteúdo). O dano real fica entre zero e esse valor.
+              multiplicador de conteúdo). Não há curva de dano nem calibração empírica para Lajeado,
+              Eldorado do Sul e Rio Grande; o dano real fica entre zero e esse valor.
+            </li>
+            <li>
+              <strong>Curva de Saúde sintetizada a partir da base JRC:</strong> o modelo CLIMADA não
+              possui curva nativa para unidades de saúde (apenas Schools, Residential e Companies),
+              e a base JRC (Huizinga et al., 2017) não discrimina hospitais entre suas 6 categorias.
+              A curva utilizada é a média ponto a ponto das curvas brutas JRC de <em>Commerce</em> e{" "}
+              <em>Industry</em>, recalibrada pelo mesmo fator empírico de Empresas (tratar como
+              ilustrativa, não calibrada).
+            </li>
+            <li>
+              <strong>Proxy de ocupação de 9 m²/pessoa (Empresas e Saúde):</strong> padrão de
+              escritório da administração pública federal (Projeto Racionaliza), já que RAIS e CNES
+              não informam área construída. Tende a subestimar indústrias, galpões e estabelecimentos
+              capital-intensivos com poucos vínculos (ex.: postos de combustível) e pode superestimar
+              atividades intensivas em mão de obra com baixo patrimônio físico.
+            </li>
+            <li>
+              <strong>Categorias do CUB/RS e multiplicadores de conteúdo:</strong> o CUB
+              (Sinduscon-RS) não possui categoria específica para escolas ou unidades de saúde;
+              adota-se PP 4-N (Prédio Popular) como aproximação institucional simples. Os
+              multiplicadores de conteúdo/equipamento (50% Residencial/Educação, 100% Comercial,
+              150% Industrial e 125% Saúde) vêm de Huizinga et al. (2017, Tabela 3-26), na ausência
+              de levantamento nacional público.
+            </li>
+            <li>
+              <strong>Área por sala e hipóteses de turnos na Educação:</strong> a área construída por
+              sala deriva de um único projeto padrão FNDE (6 salas, incluindo administração, cozinha
+              e pátio coberto, mas sem quadra coberta). Assume-se funcionamento em 2 turnos para
+              todas as etapas e turmas cheias no teto legal: escolas de turno único/integral ou com
+              turmas menores que o teto legal têm o número de salas (e o valor de reposição)
+              subestimado.
+            </li>
+            <li>
+              <strong>Tratamento setorial nas Empresas e piso mínimo de porte:</strong>{" "}
+              estabelecimentos com CNAE industrial (05–39) usam custo de construção (GI) e curva de
+              dano industriais próprios; comércio, serviços, agropecuária e administração pública
+              seguem sob tratamento comercial genérico. Além disso, todo ponto recebe porte mínimo =
+              1 (afetando &lt; 0,1% de Empresas e Educação, e ~3,4% dos pontos do CNES sem leitos nem
+              profissionais informados).
+            </li>
+            <li>
+              <strong>Teto de ~36% nas curvas recalibradas (Empresas e Saúde) e calibração por cota:</strong>{" "}
+              a recalibração empírica para Porto Alegre multiplica a curva JRC bruta por ~0,36
+              (ancorada no RP200), comprimindo o teto máximo de destruição para ~36% mesmo em
+              lâminas extremas (enquanto Educação chega a 100%). Na visão CLIMADA por cota, a curva
+              JRC crua é exibida em paralelo como limite superior da incerteza (≈ 2× a 2,8× o valor
+              recalibrado).
+            </li>
+            <li>
+              <strong>Agricultura por cota medida em área (ha), sem valor de reposição:</strong>{" "}
+              polígonos do MapBiomas são sobrepostos à grade do raster (área por pixel calculada pela
+              latitude; soma geodésica para a área total da cultura), pois não há conceito de custo
+              construtivo de reposição para lavouras na metodologia CLIMADA.
             </li>
             <li>
               <strong>Setores não disjuntos:</strong> estabelecimentos privados de saúde e educação
-              podem constar simultaneamente na RAIS e no CNES/Censo Escolar.
-            </li>
-            <li>
-              <strong>Protótipo CLIMADA (Porto Alegre):</strong> utiliza curvas JRC recalibradas pelo
-              fator empírico de Porto Alegre (teto de ~36% para Empresas e Saúde) e amostragem por
-              vizinho mais próximo.
+              podem constar simultaneamente na RAIS e no CNES/Censo Escolar, de modo que a soma dos
+              três setores não representa ativos estritamente disjuntos.
             </li>
           </ul>
 
@@ -1426,16 +1557,28 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
           <ul className="ml-1 list-inside list-disc space-y-1.5 text-sm text-slate-700">
             <li>
               <strong>Pilhas de geocodificação (coordenadas repetidas):</strong> quando o endereço
-              cadastral na RAIS ou no Censo Escolar é incompleto, o geocodificador aloca múltiplos
-              estabelecimentos num único ponto padrão (centroide de rua, CEP ou município). Isso faz
-              com que centenas de estabelecimentos entrem ou saiam da mancha de uma só vez, gerando
-              degraus nas curvas de exposição por cota. No mapa e na aba Empresas, essas pilhas são
-              sinalizadas com aviso específico.
+              cadastral na RAIS, no CNES ou no Censo Escolar é incompleto, o geocodificador aloca
+              múltiplos estabelecimentos num único ponto padrão (centroide de rua, CEP ou
+              município), reunindo dezenas de ruas e bairros na mesma coordenada. A base oficial é
+              mantida sem filtro: cada pilha entra ou sai da mancha de uma só vez e recebe a
+              profundidade de um único pixel (~5 m por cota ou ~90 m por RP), gerando degraus nas
+              curvas de exposição e dano. No mapa e na aba Empresas, essas pilhas são sinalizadas
+              com aviso específico.
             </li>
             <li>
-              <strong>Cobertura dos rasters de cota:</strong> em Eldorado do Sul, a porção oeste do
-              município fica fora da grade do raster de Porto Alegre e entra com profundidade zero,
-              subestimando a exposição por cota naquela área.
+              <strong>Pontos fora da grade do raster e pontos molhados na cota mínima:</strong>{" "}
+              ativos localizados fora dos limites geográficos do raster (especialmente na porção
+              oeste de Eldorado do Sul, que utiliza a grade do Guaíba de Porto Alegre, e em áreas
+              rurais) recebem profundidade zero, subestimando a exposição. Inversamente, pontos cujas
+              coordenadas caem sobre o leito do rio ou lagoa já aparecem molhados na cota mais baixa
+              da série e são mantidos porque cada cota constitui um cenário próprio.
+            </li>
+            <li>
+              <strong>Resolução espacial dos rasters:</strong> a amostragem por vizinho mais próximo
+              opera em ~90 m/pixel nos cenários de Período de Retorno (CLIMADA/UNU-EHS em Porto
+              Alegre), ~5 m/pixel nos rasters de profundidade por cota (Lajeado, Porto Alegre e
+              Eldorado do Sul) e ~1 m/pixel nas máscaras binárias de Rio Grande, podendo super ou
+              subestimar a lâmina em pontos próximos às bordas da mancha.
             </li>
             <li>
               <strong>Datas de referência das bases:</strong> RAIS (2023), Censo Escolar (2024),

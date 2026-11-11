@@ -1,5 +1,6 @@
 "use client"
 
+import { cenarioLabel } from "@/lib/constants"
 import type {
   CenarioDanos,
   DanosData,
@@ -16,6 +17,13 @@ import {
   fmtCompacto,
 } from "./helpers"
 import type { DiasOpcao } from "./helpers"
+
+const CENARIOS_PRINCIPAIS_PADRAO: Record<string, string> = {
+  "Eldorado do Sul": "Cenario ADA",
+  Lajeado: "Cenario 27m",
+  "Porto Alegre": "Climada Evento 2024",
+  "Rio Grande": "Cenario Maio 2024",
+}
 
 // ─── Gráficos SVG — Danos Operacionais ──────────────────────────────────────────
 
@@ -56,6 +64,25 @@ function linhasMunicipio(mun: string): string[] {
   return resto.length === 0 ? [mun] : [primeira, resto.join(" ")]
 }
 
+/** Rótulo curto do cenário quebrado em até 2 linhas para nunca truncar "+ 50%" ou "UNU/EHS". */
+function linhasCenario(cen: string): string[] {
+  const limpo = cenarioLabel(cen).replace(/^Cenário\s*/i, "").trim()
+  if (limpo.length <= 11) return [limpo]
+  if (limpo.includes(" + ")) {
+    const [a, b] = limpo.split(" + ")
+    return [a, `+ ${b}`]
+  }
+  if (limpo.includes(" - ")) {
+    const [a, b] = limpo.split(" - ")
+    return [`${a} -`, b]
+  }
+  const palavras = limpo.split(" ")
+  if (palavras.length >= 2) {
+    return [palavras[0], palavras.slice(1).join(" ")]
+  }
+  return [limpo]
+}
+
 export function TotaisBarChart({
   todosCenarios,
   maxTotal,
@@ -63,21 +90,22 @@ export function TotaisBarChart({
   todosCenarios: { mun: string; cen: string; v: CenarioDanos }[]
   maxTotal: number
 }) {
-  const barW = 48
-  const gap = 12
+  const barW = 52
+  const gap = 14
   const chartH = 140
+  const pT = 16
   const pL = 60
-  const pB = 64
-  const W = pL + todosCenarios.length * (barW + gap) - gap + 10
+  const pB = 72
+  const W = pL + todosCenarios.length * (barW + gap) - gap + 12
   const esc = escalaAgradavel(maxTotal)
 
   return (
     <svg
-      viewBox={`0 0 ${W} ${chartH + pB}`}
+      viewBox={`0 0 ${W} ${pT + chartH + pB}`}
       className="w-full overflow-visible"
     >
       {esc.ticks.map((val, i) => {
-        const y = chartH - (val / esc.max) * chartH + 4
+        const y = pT + chartH - (val / esc.max) * chartH
         return (
           <g key={i}>
             <line
@@ -103,9 +131,10 @@ export function TotaisBarChart({
       {todosCenarios.map(({ mun, cen, v }, i) => {
         const barH = Math.max((v.total / esc.max) * chartH, 2)
         const x = pL + i * (barW + gap)
-        const y = chartH - barH + 4
+        const y = pT + chartH - barH
         const color = MUN_COLORS[mun] ?? "#055071"
-        const label = cen.replace(/Cenario\s*/i, "").substring(0, 12)
+        const munLines = linhasMunicipio(mun)
+        const cenLines = linhasCenario(cen)
         return (
           <g key={i}>
             <rect
@@ -129,13 +158,13 @@ export function TotaisBarChart({
             </text>
             <text
               x={x + barW / 2}
-              y={chartH + 16}
+              y={pT + chartH + 14}
               textAnchor="middle"
               fontSize="7.5"
               fill="#374151"
               fontWeight="bold"
             >
-              {linhasMunicipio(mun).map((l, li) => (
+              {munLines.map((l, li) => (
                 <tspan key={li} x={x + barW / 2} dy={li === 0 ? 0 : 9}>
                   {l}
                 </tspan>
@@ -143,12 +172,16 @@ export function TotaisBarChart({
             </text>
             <text
               x={x + barW / 2}
-              y={chartH + 16 + 9 * linhasMunicipio(mun).length + 3}
+              y={pT + chartH + 14 + 9 * munLines.length + 2}
               textAnchor="middle"
               fontSize="6.5"
               fill="#6b7280"
             >
-              {label}
+              {cenLines.map((l, li) => (
+                <tspan key={li} x={x + barW / 2} dy={li === 0 ? 0 : 8}>
+                  {l}
+                </tspan>
+              ))}
             </text>
           </g>
         )
@@ -160,15 +193,21 @@ export function TotaisBarChart({
 export function SensibChart({
   dados,
   diasSelecionado,
+  cenariosPrincipais = CENARIOS_PRINCIPAIS_PADRAO,
 }: {
   dados: DanosData
   diasSelecionado: DiasOpcao
+  cenariosPrincipais?: Record<string, string>
 }) {
   const municipios = Object.entries(dados).map(([mun, cens]) => {
-    const cenValOrig = Object.values(cens).reduce((a, b) =>
-      b.total > a.total ? b : a
-    )
-    return { mun, cenValOrig }
+    const fixo = cenariosPrincipais[mun]
+    const entry =
+      fixo && cens[fixo]
+        ? ([fixo, cens[fixo]] as [string, CenarioDanos])
+        : Object.entries(cens).reduce((a, b) =>
+            b[1].total > a[1].total ? b : a
+          )
+    return { mun, cenNome: entry[0], cenValOrig: entry[1] }
   })
 
   const allVals = municipios.flatMap(({ cenValOrig }) =>
@@ -177,23 +216,24 @@ export function SensibChart({
   const maxVal = Math.max(...allVals, 1)
   const esc = escalaAgradavel(maxVal)
 
-  const bW = 20
-  const bGap = 4
-  const gGap = 24
+  const bW = 22
+  const bGap = 5
+  const gGap = 26
   const gW = DIAS_OPCOES.length * bW + (DIAS_OPCOES.length - 1) * bGap
   const chartH = 120
+  const pT = 16
   const pL = 55
-  const pB = 48
-  const W = pL + municipios.length * (gW + gGap) - gGap + 10
+  const pB = 56
+  const W = pL + municipios.length * (gW + gGap) - gGap + 12
 
   return (
     <div>
       <svg
-        viewBox={`0 0 ${W} ${chartH + pB}`}
+        viewBox={`0 0 ${W} ${pT + chartH + pB}`}
         className="w-full overflow-visible"
       >
         {esc.ticks.map((val, i) => {
-          const y = chartH - (val / esc.max) * chartH + 4
+          const y = pT + chartH - (val / esc.max) * chartH
           return (
             <g key={i}>
               <line
@@ -216,15 +256,16 @@ export function SensibChart({
             </g>
           )
         })}
-        {municipios.map(({ mun, cenValOrig }, gi) => {
+        {municipios.map(({ mun, cenNome, cenValOrig }, gi) => {
           const gx = pL + gi * (gW + gGap)
+          const subLabel = cenarioLabel(cenNome).replace(/^Cenário\s*/i, "")
           return (
             <g key={mun}>
               {DIAS_OPCOES.map((d, di) => {
                 const sc = scaleTo(cenValOrig, d)
                 const barH = Math.max((sc.total / esc.max) * chartH, 1)
                 const bx = gx + di * (bW + bGap)
-                const by = chartH - barH + 4
+                const by = pT + chartH - barH
                 const isSel = d === diasSelecionado
                 const color = MUN_COLORS[mun] ?? "#055071"
                 return (
@@ -244,7 +285,7 @@ export function SensibChart({
                         x={bx + bW / 2}
                         y={by - 4}
                         textAnchor="middle"
-                        fontSize="6.5"
+                        fontSize="7"
                         fill={color}
                         fontWeight="bold"
                       >
@@ -256,13 +297,22 @@ export function SensibChart({
               })}
               <text
                 x={gx + gW / 2}
-                y={chartH + 16}
+                y={pT + chartH + 14}
                 textAnchor="middle"
                 fontSize="7.5"
                 fill="#374151"
                 fontWeight="bold"
               >
                 {mun}
+              </text>
+              <text
+                x={gx + gW / 2}
+                y={pT + chartH + 24}
+                textAnchor="middle"
+                fontSize="6.5"
+                fill="#6b7280"
+              >
+                {subLabel}
               </text>
             </g>
           )
@@ -330,6 +380,7 @@ export function RpBarChart({
   const barW = 56
   const gap = 14
   const chartH = 150
+  const pT = 16
   const pL = 54
   const pB = 24
   const W = pL + rpsDisponiveis.length * (barW + gap) - gap + 10
@@ -337,11 +388,11 @@ export function RpBarChart({
 
   return (
     <svg
-      viewBox={`0 0 ${W} ${chartH + pB}`}
+      viewBox={`0 0 ${W} ${pT + chartH + pB}`}
       className="w-full overflow-visible"
     >
       {esc.ticks.map((val, i) => {
-        const y = chartH - (val / esc.max) * chartH + 4
+        const y = pT + chartH - (val / esc.max) * chartH
         return (
           <g key={i}>
             <line
@@ -367,7 +418,7 @@ export function RpBarChart({
       {rpsDisponiveis.map((r, i) => {
         const d = resultados[r]
         const x = pL + i * (barW + gap)
-        let yTop = chartH + 4
+        let yTop = pT + chartH
         const segs = setores.map((s) => {
           const h = Math.max(
             (d[s].dano_fisico_total_brl / esc.max) * chartH,
@@ -394,7 +445,7 @@ export function RpBarChart({
             ))}
             <rect
               x={x}
-              y={chartH - Math.max((total / esc.max) * chartH, 1) + 4}
+              y={pT + chartH - Math.max((total / esc.max) * chartH, 1)}
               width={barW}
               height={Math.max((total / esc.max) * chartH, 1)}
               fill="none"
@@ -414,7 +465,7 @@ export function RpBarChart({
             </text>
             <text
               x={x + barW / 2}
-              y={chartH + 18}
+              y={pT + chartH + 16}
               textAnchor="middle"
               fontSize="9"
               fill={r === rpAtivo ? "#b45309" : "#6b7280"}
@@ -445,6 +496,7 @@ export function CotaBarChart({
   const barW = 26
   const gap = 8
   const chartH = 150
+  const pT = 16
   const pL = 54
   const pB = 24
   const W = pL + cotas.length * (barW + gap) - gap + 10
@@ -452,11 +504,11 @@ export function CotaBarChart({
 
   return (
     <svg
-      viewBox={`0 0 ${W} ${chartH + pB}`}
+      viewBox={`0 0 ${W} ${pT + chartH + pB}`}
       className="w-full overflow-visible"
     >
       {esc.ticks.map((val, i) => {
-        const y = chartH - (val / esc.max) * chartH + 4
+        const y = pT + chartH - (val / esc.max) * chartH
         return (
           <g key={i}>
             <line
@@ -482,7 +534,7 @@ export function CotaBarChart({
       {cotas.map((c, i) => {
         const d = resultados[c]
         const x = pL + i * (barW + gap)
-        let yTop = chartH + 4
+        let yTop = pT + chartH
         const segs = setores.map((st) => {
           const v = d[st].dano_fisico_brl_poa
           const h = Math.max((v / esc.max) * chartH, v > 0 ? 1 : 0)
@@ -493,7 +545,7 @@ export function CotaBarChart({
           (sum, k) => sum + d[k].dano_fisico_brl_jrc_crua,
           0
         )
-        const yCrua = chartH + 4 - (crua / esc.max) * chartH
+        const yCrua = pT + chartH - (crua / esc.max) * chartH
         const ativa = c === cotaAtiva
         return (
           <g key={c} opacity={ativa ? 1 : 0.6}>
@@ -521,7 +573,7 @@ export function CotaBarChart({
                 x={x - 2}
                 y={yCrua - 2}
                 width={barW + 4}
-                height={chartH + 4 - yCrua + 2}
+                height={pT + chartH - yCrua + 2}
                 fill="none"
                 stroke="#d97706"
                 strokeWidth="2"
@@ -530,7 +582,7 @@ export function CotaBarChart({
             )}
             <text
               x={x + barW / 2}
-              y={chartH + 18}
+              y={pT + chartH + 16}
               textAnchor="middle"
               fontSize="8"
               fill={ativa ? "#b45309" : "#6b7280"}

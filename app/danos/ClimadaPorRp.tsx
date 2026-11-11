@@ -21,7 +21,10 @@ export function ClimadaPorRp({ ctx }: { ctx: DanosCtx }) {
             <strong>destruição de patrimônio</strong> (estoque: prédio + equipamento), diferente
             da página <Link href="/perdas-operacionais" className="underline underline-offset-2 font-bold">Perdas Operacionais</Link>{" "}
             (fluxo: produção/serviço não realizado, metodologia DaLA). Os dois números não devem
-            ser somados. Ver <a href="#c-limitacoes" className="underline underline-offset-2">Limitações</a>{" "}
+            ser somados. Ver{" "}
+            <Link href="/metodologia#limitacoes" className="underline underline-offset-2 font-bold">
+              Limitações na Metodologia ↗
+            </Link>{" "}
             antes de usar qualquer valor abaixo para tomada de decisão.
           </Note>
           <Note type="info">
@@ -343,102 +346,6 @@ export function ClimadaPorRp({ ctx }: { ctx: DanosCtx }) {
           </ul>
         </Section>
         )}
-
-        <Section id="c-limitacoes" num="6" title="Limitações">
-          <Note type="warning">
-            Estes números são um <strong>protótipo</strong> para explorar a viabilidade de aplicar a
-            metodologia CLIMADA/CCDR (destruição de estoque) em cima dos nossos próprios dados
-            (RAIS/Censo Escolar/CNES). Não substituem os Danos Operacionais (DaLA) da aba principal,
-            e carregam premissas explícitas que precisam de validação antes de qualquer
-            uso além de exploração metodológica: ver{" "}
-            <a href="/metodologia#dano-fisico" target="_blank" rel="noopener noreferrer"
-              className="underline underline-offset-2 font-bold">
-              metodologia completa ↗
-            </a>:
-          </Note>
-          <ul className="list-disc list-inside space-y-2 text-sm text-slate-700 mt-3">
-            <li>
-              <strong>A curva de Saúde foi criada a partir dos dados brutos do CLIMADA</strong>{" "}
-              (a base JRC, Huizinga et al. 2017, que o CLIMADA usa), não é uma saída real do
-              modelo: o CLIMADA não modela saúde (só Schools, Residential e Companies), e a
-              própria base JRC não tem categoria de saúde/hospital entre suas 6 categorias
-              (Residential, Commercial, Industry, Transport, Infrastructure, Agriculture). A curva
-              aqui é a média ponto a ponto das curvas cruas JRC de Commerce e Industry, recalibrada
-              pelo mesmo fator empírico de Empresas. Tratar como ilustrativa, não calibrada.
-            </li>
-            <li>
-              <strong>9 m²/pessoa é um padrão de ocupação de escritório</strong> (administração
-              pública federal, ver <a href="/metodologia#dano-fisico" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Metodologia</a>),
-              não a área real de cada estabelecimento (esse dado não existe no RAIS/CNES). Tende a
-              subestimar indústrias e galpões (que ocupam mais m²/pessoa que escritório) e pode não
-              refletir comércio de rua ou varejo pequeno. O uso do número de vínculos como proxy de
-              porte também assume valor proporcional a funcionários, o que subestima
-              estabelecimentos capital-intensivos com pouca gente (posto de combustível, galpão
-              automatizado) e pode superestimar os intensivos em mão de obra com pouco patrimônio
-              físico.
-            </li>
-            <li>
-              <strong>O CUB não tem categoria &ldquo;escolar&rdquo; nem &ldquo;saúde&rdquo;.</strong> PP 4-N (Prédio
-              Popular) é a aproximação mais próxima de prédio público/institucional simples
-              disponível no Sinduscon-RS, não uma categoria feita para isso.
-            </li>
-            <li>
-              <strong>Os multiplicadores de conteúdo/equipamento</strong> (ver{" "}
-              <a href="/metodologia#dano-fisico" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Metodologia</a>)
-              usam as categorias JRC mais próximas disponíveis (Commercial, Industrial,
-              Residential), não uma medição brasileira de conteúdo por tipo de estabelecimento,
-              que não existe publicamente.
-            </li>
-            <li>
-              <strong>A área por sala</strong> vem de um único projeto padrão (FNDE, 6 salas)
-              aplicado a todas as escolas, sem captar diferenças de padrão construtivo (por
-              exemplo, escola técnica versus infantil). Já inclui administração, cozinha e pátio
-              coberto, mas não inclui quadra coberta (escolas com ginásio coberto ficam
-              subestimadas) nem área externa aberta e descoberta.
-            </li>
-            <li>
-              <strong>Dois turnos é assumido para todas as etapas</strong>, inclusive Médio/EJA
-              (que às vezes funcionam num turno único, período integral ou noturno): escolas
-              que fogem desse padrão terão o número de salas <em>subestimado</em> (a fórmula
-              divide a matrícula por 2 turnos mesmo quando a escola roda só 1, calculando menos
-              salas do que ela realmente tem). A lotação do Ensino Fundamental é uma média
-              ponderada por ano (o dado de origem não discrimina série), e a lotação do Ensino
-              Médio também é usada para Profissional e EJA por falta de norma específica
-              encontrada; Educação Especial usa a lotação do Fundamental pelo mesmo motivo.
-              Além disso, a fórmula assume que toda turma está cheia no teto legal. Escolas
-              reais costumam operar com turmas menores que esse teto, o que também tende a
-              subestimar o número real de salas.
-            </li>
-            <li>
-              <strong>Estabelecimentos industriais</strong> (CNAE 05-39, {dadosClimada.premissas.n_empresas_industria} de{" "}
-              {dadosClimada.premissas.n_empresas_total.toLocaleString("pt-BR")} empresas de {munClimadaAtivo}) usam custo
-              de construção e curva de dano próprios (categoria industrial); o restante (comércio,
-              serviços, agropecuária e administração pública) segue todo sob o mesmo tratamento
-              comercial genérico, mesmo cobrindo setores heterogêneos entre si.
-            </li>
-            <li>
-              <strong>Todo porte tem piso mínimo de 1</strong> (nenhum ponto fica com valor zero).
-              Isso afeta menos de 0,1% dos pontos de Empresas e Educação, mas 3,4% dos pontos de
-              Saúde (236 de 7.022, sem leitos nem profissionais registrados) recebem um valor de
-              reposição mínimo mesmo sem nenhum dado de porte, inflando levemente a exposição
-              total do setor.
-            </li>
-            <li>
-              <strong>As curvas de Empresas e Saúde têm um teto de ~36% de dano físico</strong>,
-              mesmo em profundidades extremas: a recalibração para Porto Alegre (ver{" "}
-              <a href="/metodologia#dano-fisico" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Metodologia</a>)
-              multiplica a curva JRC bruta inteira pelo fator empírico de 0,36, o que comprime
-              também o teto da curva (a curva de Educação, que não passou por essa recalibração,
-              chega a 100%). Em uma inundação muito mais severa que o evento de referência de 2024,
-              isso pode subestimar o dano de pontos atingidos por lâminas d&apos;água extremas nesses
-              dois setores.
-            </li>
-            <li>
-              <strong>Amostragem de profundidade por vizinho mais próximo</strong> (raster ~90 m/pixel):
-              pode super ou subestimar a profundidade real em pontos próximos de bordas de quadra.
-            </li>
-          </ul>
-        </Section>
 
         </>
   );

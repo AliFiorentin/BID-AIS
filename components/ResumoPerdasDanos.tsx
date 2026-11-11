@@ -6,8 +6,10 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { TrendingDown, Waves } from "lucide-react"
 import { MUNICIPIOS, PIORES_CENARIOS, PANEL_CARD_BG, C } from "@/lib/constants"
 import { compactoBr, findCenarioData, slugify } from "@/lib/geo-utils"
+import { scaleTo } from "@/app/danos/helpers"
 import type { DanosData, ExposicaoMun, CenarioDanos } from "@/app/danos/types"
 
+const DIAS_PADRAO = 30
 const PRIMARY = C.primary
 const BRAND_GRADIENT = "linear-gradient(135deg, #055071 0%, #0a6e9a 100%)"
 
@@ -145,14 +147,14 @@ export function ResumoPerdasDanos({
     )
   }
 
-  // Perdas operacionais para o cenário atual (ou soma dos piores cenários na Visão Geral)
+  // Perdas operacionais para o cenário atual (ou soma dos piores cenários na Visão Geral), escaladas para 30 dias efetivos
   let opEntry: CenarioDanos | null = null
   if (danosOp) {
     if (isVisaoGeral) {
       const acc: CenarioDanos = {
-        dias_agudo: 30,
-        dias_efetivos: 60,
-        f_interrup: 0.164384,
+        dias_agudo: DIAS_PADRAO,
+        dias_efetivos: DIAS_PADRAO,
+        f_interrup: DIAS_PADRAO / 365,
         empresas_vab: 0,
         educacao_perdas: 0,
         educacao_custo_adicional: 0,
@@ -162,7 +164,8 @@ export function ResumoPerdasDanos({
       }
       MUNICIPIOS.forEach((m) => {
         const cen = PIORES_CENARIOS[m]
-        const d = cen && danosOp[m] ? findCenarioData(danosOp[m], cen) : null
+        const raw = cen && danosOp[m] ? findCenarioData(danosOp[m], cen) : null
+        const d = raw ? scaleTo(raw, DIAS_PADRAO) : null
         if (d) {
           acc.empresas_vab += d.empresas_vab
           acc.educacao_perdas += d.educacao_perdas
@@ -180,9 +183,10 @@ export function ResumoPerdasDanos({
           mostraImpacto && cenario !== "(nenhum)"
             ? cenario
             : PIORES_CENARIOS[municipio]
-        opEntry =
+        const raw =
           (cenBusca ? findCenarioData(mMap, cenBusca) : null) ??
           findCenarioData(mMap, PIORES_CENARIOS[municipio])
+        opEntry = raw ? scaleTo(raw, DIAS_PADRAO) : null
       }
     }
   }
