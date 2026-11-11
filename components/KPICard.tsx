@@ -1,5 +1,6 @@
 import React from "react"
 import { C, PANEL_CARD_BG } from "@/lib/constants"
+import { MetricInfoPopover } from "@/components/MetricInfoPopover"
 
 interface KPICardMetric {
   titulo?: string
@@ -12,9 +13,24 @@ interface KPICardProps {
   titulo: string
   cor?: string
   extra?: React.ReactNode
+  infoKey?: string
   principal: KPICardMetric
   secundarios?: KPICardMetric[]
   children?: React.ReactNode
+}
+
+function detectInfoKey(titulo: string): string | undefined {
+  const t = titulo.toLowerCase()
+  if (t.includes("vab")) return "empresas_vab"
+  if (t.includes("massa")) return "massa_salarial"
+  if (t.includes("empresa") || t.includes("empregado")) return "empresas_vab"
+  if (t.includes("docente") || t.includes("escola") || t.includes("matrícula") || t.includes("educa")) return "educacao"
+  if (t.includes("saúde") || t.includes("leito") || t.includes("hospital") || t.includes("ubs")) return "saude"
+  if (t.includes("agrícola") || t.includes("cultura") || t.includes("safra")) return "agricultura"
+  if (t.includes("área")) return "area_atingida"
+  if (t.includes("quadra") || t.includes("edifica") || t.includes("infraestrutura")) return "edificacoes"
+  if (t.includes("popula")) return "populacao"
+  return undefined
 }
 
 /**
@@ -25,10 +41,12 @@ export function KPICard({
   titulo,
   cor,
   extra,
+  infoKey,
   principal,
   secundarios,
   children,
 }: KPICardProps) {
+  const resolvedInfoKey = infoKey || detectInfoKey(titulo)
   return (
     <div
       className="hover-lift overflow-hidden rounded-lg print:break-inside-avoid"
@@ -51,7 +69,10 @@ export function KPICard({
             {titulo}
           </span>
         </div>
-        {extra}
+        <div className="flex items-center gap-1">
+          {extra}
+          {resolvedInfoKey && <MetricInfoPopover metricKey={resolvedInfoKey} title={titulo} />}
+        </div>
       </div>
       <div
         className="flex flex-col gap-2 px-3 py-2.5"

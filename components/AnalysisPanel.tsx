@@ -33,6 +33,7 @@ import { CotasPanel } from "@/components/tabs/CotasPanel"
 import { popAtingidaNaCota } from "@/hooks/useCotaRaster"
 import { findCenarioData } from "@/lib/geo-utils"
 import { rotuloPopulacao, AVISO_COTAS_SIMULACAO } from "@/lib/avisos"
+import { MetricInfoPopover } from "@/components/MetricInfoPopover"
 import type { DashboardState } from "@/hooks/useDashboard"
 
 interface AnalysisPanelProps {
@@ -321,8 +322,11 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
                     <div className="min-w-0 flex-1">
                       <div className="flex items-end justify-between gap-1">
                         <div className="min-w-0">
-                          <div className="mb-0.5 text-[8.5px] leading-none font-bold tracking-wider text-purple-500 uppercase">
-                            Pop. Total
+                          <div className="mb-0.5 flex items-center gap-1">
+                            <span className="text-[8.5px] leading-none font-bold tracking-wider text-purple-500 uppercase">
+                              Pop. Total
+                            </span>
+                            <MetricInfoPopover metricKey="populacao" title="População Residente" corIcone="#a855f7" iconSize={10} />
                           </div>
                           <div className="flex items-baseline gap-0.5">
                             <span className="text-xs font-black text-purple-800 tabular-nums">

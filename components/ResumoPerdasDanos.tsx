@@ -7,6 +7,7 @@ import { TrendingDown, Waves } from "lucide-react"
 import { MUNICIPIOS, PIORES_CENARIOS, COTAS_CENARIO, PANEL_CARD_BG, C } from "@/lib/constants"
 import { compactoBr, findCenarioData, slugify } from "@/lib/geo-utils"
 import { scaleTo } from "@/app/danos/helpers"
+import { MetricInfoPopover } from "@/components/MetricInfoPopover"
 import type { DanosData, ExposicaoMun, CenarioDanos } from "@/app/danos/types"
 import type { DetalheCotaValores } from "@/lib/cotas-types"
 
@@ -41,6 +42,9 @@ function Cartao({
   linhas,
   ajuda,
   href,
+  extraHeader,
+  seletor,
+  faixaSensibilidade,
 }: {
   titulo: string
   icone: React.ReactNode
@@ -49,6 +53,9 @@ function Cartao({
   linhas: { rotulo: string; valor: string }[]
   ajuda: string
   href: string
+  extraHeader?: React.ReactNode
+  seletor?: React.ReactNode
+  faixaSensibilidade?: string
 }) {
   return (
     <Link
@@ -59,38 +66,58 @@ function Cartao({
       aria-label={`${titulo}: ${rotuloValor} ${valor}`}
     >
       <div
-        className="flex items-center gap-1.5 px-2.5 py-[5px]"
+        className="flex items-center justify-between gap-1 px-2.5 py-[5px]"
         style={{ background: BRAND_GRADIENT }}
       >
-        <span className="text-white">{icone}</span>
-        <span className="truncate text-[9px] font-black tracking-wide text-white uppercase">
-          {titulo}
-        </span>
-      </div>
-      <div
-        className="flex-1 px-2.5 py-2"
-        style={{ backgroundColor: PANEL_CARD_BG }}
-      >
-        <div className="text-[9px] font-bold tracking-wide text-slate-500 uppercase">
-          {rotuloValor}
+        <div className="flex items-center gap-1.5 min-w-0">
+          <span className="text-white">{icone}</span>
+          <span className="truncate text-[9px] font-black tracking-wide text-white uppercase">
+            {titulo}
+          </span>
         </div>
         <div
-          className="text-[17px] leading-tight font-black whitespace-nowrap tabular-nums"
-          style={{ color: PRIMARY }}
+          className="flex items-center gap-1 shrink-0"
+          onClick={(e) => {
+            e.stopPropagation()
+          }}
         >
-          {valor}
+          {extraHeader}
         </div>
-        <dl className="mt-1 flex flex-col gap-0.5 border-t border-slate-200/80 pt-1">
-          {linhas.map((l) => (
-            <div
-              key={l.rotulo}
-              className="flex items-baseline justify-between gap-1.5 text-[9px] whitespace-nowrap tabular-nums"
-            >
-              <dt className="text-slate-500">{l.rotulo}</dt>
-              <dd className="font-bold text-slate-700">{l.valor}</dd>
+      </div>
+      <div
+        className="flex-1 px-2.5 py-2 flex flex-col justify-between"
+        style={{ backgroundColor: PANEL_CARD_BG }}
+      >
+        <div>
+          <div className="flex items-center justify-between gap-1">
+            <div className="text-[9px] font-bold tracking-wide text-slate-500 uppercase">
+              {rotuloValor}
             </div>
-          ))}
-        </dl>
+            {seletor}
+          </div>
+          <div
+            className="text-[17px] leading-tight font-black whitespace-nowrap tabular-nums mt-0.5"
+            style={{ color: PRIMARY }}
+          >
+            {valor}
+          </div>
+          <dl className="mt-1 flex flex-col gap-0.5 border-t border-slate-200/80 pt-1">
+            {linhas.map((l) => (
+              <div
+                key={l.rotulo}
+                className="flex items-baseline justify-between gap-1.5 text-[9px] whitespace-nowrap tabular-nums"
+              >
+                <dt className="text-slate-500">{l.rotulo}</dt>
+                <dd className="font-bold text-slate-700">{l.valor}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+        {faixaSensibilidade && (
+          <div className="mt-1.5 pt-1 border-t border-slate-200/60 flex items-center justify-between text-[8px] font-medium text-slate-500">
+            <span className="truncate">{faixaSensibilidade}</span>
+          </div>
+        )}
       </div>
     </Link>
   )
@@ -111,6 +138,7 @@ export function ResumoPerdasDanos({
   cotaValores?: DetalheCotaValores | null
   cotaAtual?: number | null
 }) {
+  const [diasOp, setDiasOp] = useState<number>(DIAS_PADRAO)
   const [danosOp, setDanosOp] = useState<DanosData | null>(cacheOperacionais)
   const [fisicosCenarios, setFisicosCenarios] = useState<DanosFisicosCenarios | null>(cacheFisicosCenarios)
   const [exposicaoMap, setExposicaoMap] = useState<
@@ -172,35 +200,45 @@ export function ResumoPerdasDanos({
     )
   }
 
-  // Perdas operacionais para o cenário atual (ou soma dos piores cenários na Visão Geral), escaladas para 30 dias efetivos
+  // Perdas operacionais para o cenário atual (ou soma dos piores cenários na Visão Geral), escaladas para diasOp
   let opEntry: CenarioDanos | null = null
+  let opMinTotal = 0
+  let opMaxTotal = 0
   if (danosOp) {
     if (isVisaoGeral) {
-      const acc: CenarioDanos = {
-        dias_agudo: DIAS_PADRAO,
-        dias_efetivos: DIAS_PADRAO,
-        f_interrup: DIAS_PADRAO / 365,
-        empresas_vab: 0,
-        educacao_perdas: 0,
-        educacao_custo_adicional: 0,
-        saude_producao: 0,
-        agricultura_perdas: 0,
-        total: 0,
-      }
-      MUNICIPIOS.forEach((m) => {
-        const cen = PIORES_CENARIOS[m]
-        const raw = cen && danosOp[m] ? findCenarioData(danosOp[m], cen) : null
-        const d = raw ? scaleTo(raw, DIAS_PADRAO) : null
-        if (d) {
-          acc.empresas_vab += d.empresas_vab
-          acc.educacao_perdas += d.educacao_perdas
-          acc.educacao_custo_adicional += d.educacao_custo_adicional
-          acc.saude_producao += d.saude_producao
-          acc.agricultura_perdas += d.agricultura_perdas
-          acc.total += d.total
+      const buildAcc = (targetDias: number) => {
+        const acc: CenarioDanos = {
+          dias_agudo: targetDias,
+          dias_efetivos: targetDias,
+          f_interrup: targetDias / 365,
+          empresas_vab: 0,
+          educacao_perdas: 0,
+          educacao_custo_adicional: 0,
+          saude_producao: 0,
+          agricultura_perdas: 0,
+          total: 0,
         }
-      })
-      if (acc.total > 0) opEntry = acc
+        MUNICIPIOS.forEach((m) => {
+          const cen = PIORES_CENARIOS[m]
+          const raw = cen && danosOp[m] ? findCenarioData(danosOp[m], cen) : null
+          const d = raw ? scaleTo(raw, targetDias) : null
+          if (d) {
+            acc.empresas_vab += d.empresas_vab
+            acc.educacao_perdas += d.educacao_perdas
+            acc.educacao_custo_adicional += d.educacao_custo_adicional
+            acc.saude_producao += d.saude_producao
+            acc.agricultura_perdas += d.agricultura_perdas
+            acc.total += d.total
+          }
+        })
+        return acc
+      }
+      const acc = buildAcc(diasOp)
+      if (acc.total > 0) {
+        opEntry = acc
+        opMinTotal = buildAcc(30).total
+        opMaxTotal = buildAcc(60).total
+      }
     } else {
       const mMap = danosOp[municipio]
       if (mMap) {
@@ -211,7 +249,11 @@ export function ResumoPerdasDanos({
         const raw =
           (cenBusca ? findCenarioData(mMap, cenBusca) : null) ??
           findCenarioData(mMap, PIORES_CENARIOS[municipio])
-        opEntry = raw ? scaleTo(raw, DIAS_PADRAO) : null
+        if (raw) {
+          opEntry = scaleTo(raw, diasOp)
+          opMinTotal = scaleTo(raw, 30).total
+          opMaxTotal = scaleTo(raw, 60).total
+        }
       }
     }
   }
@@ -298,6 +340,36 @@ export function ResumoPerdasDanos({
   const expTotal = expEmp + expEdu + expSau
   if (cotaValores === undefined && isVisaoGeral && isCotas) rotuloExp = "Exposição (picos)"
 
+  const seletorDias = (
+    <div
+      className="inline-flex rounded-md p-0.5 bg-slate-200/80 text-[8.5px] font-bold"
+      onClick={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      }}
+    >
+      {[30, 45, 60].map((d) => (
+        <button
+          key={d}
+          type="button"
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            setDiasOp(d)
+          }}
+          className={`px-1.5 py-0.5 rounded transition-all ${
+            diasOp === d
+              ? "bg-white text-[#055071] shadow-xs font-black"
+              : "text-slate-600 hover:text-slate-900"
+          }`}
+          title={`Escalar perdas para ${d} dias efetivos`}
+        >
+          {d}d
+        </button>
+      ))}
+    </div>
+  )
+
   return (
     <div className="flex flex-col gap-1">
       <div className="grid grid-cols-2 gap-2">
@@ -305,7 +377,7 @@ export function ResumoPerdasDanos({
           <Cartao
             titulo="Perdas Operacionais"
             icone={<TrendingDown size={11} strokeWidth={2.5} />}
-            rotuloValor={`Total (${opEntry.dias_agudo} dias)`}
+            rotuloValor={`Total (${diasOp}d ef.)`}
             valor={fmtBRL(opEntry.total)}
             linhas={[
               { rotulo: "Empresas", valor: fmtBRL(opEntry.empresas_vab) },
@@ -323,6 +395,9 @@ export function ResumoPerdasDanos({
             ]}
             ajuda="DaLA: produção e serviços interrompidos. Clique para abrir Perdas Operacionais."
             href="/perdas-operacionais"
+            extraHeader={<MetricInfoPopover metricKey="perdas_operacionais" title="Perdas Operacionais (DaLA)" />}
+            seletor={seletorDias}
+            faixaSensibilidade={`Faixa (30–60d): ${fmtBRL(opMinTotal)} – ${fmtBRL(opMaxTotal)}`}
           />
         )}
         <Cartao
@@ -337,6 +412,12 @@ export function ResumoPerdasDanos({
           ]}
           ajuda="Valor de reposição exposto (CLIMADA / por cota). Clique para abrir Danos Físicos."
           href="/danos-fisicos"
+          extraHeader={<MetricInfoPopover metricKey="danos_fisicos" title="Danos Físicos e Exposição" />}
+          faixaSensibilidade={
+            expTotal > 0
+              ? `Faixa CUB (±10%): ${fmtBRL(expTotal * 0.9)} – ${fmtBRL(expTotal * 1.1)}`
+              : undefined
+          }
         />
       </div>
     </div>

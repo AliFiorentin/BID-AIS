@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useRef } from "react"
+import { useRef } from "react"
 import Map, { NavigationControl } from "react-map-gl/maplibre"
 import { setWorkerUrl } from "maplibre-gl"
 import "maplibre-gl/dist/maplibre-gl.css"
@@ -29,7 +29,6 @@ interface Props {
 export function DashboardMap({ dash }: Props) {
   const {
     mapRef,
-    mapReady,
     setMapReady,
     renderMunicipio,
     cursor,

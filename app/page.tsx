@@ -18,6 +18,8 @@ import { DashboardMap } from "@/components/DashboardMap"
 import { LegendItem } from "@/components/LegendItem"
 import { useDashboard } from "@/hooks/useDashboard"
 import { AnalysisPanel } from "@/components/AnalysisPanel"
+import { CenariosComparatorModal } from "@/components/CenariosComparatorModal"
+import { ScenarioCompareMap } from "@/components/map/ScenarioCompareMap"
 import { DashboardHeader } from "@/components/DashboardHeader"
 import { FiltersPanel } from "@/components/FiltersPanel"
 import { CotaControle } from "@/components/CotaControle"
@@ -670,6 +672,21 @@ export default function Dashboard() {
       <FiltersPanel dash={dash} />
 
       <AnalysisPanel dash={dash} />
+
+      {dash.modoComparacaoMapa && (
+        <ScenarioCompareMap
+          municipio={dash.municipio}
+          onClose={() => dash.setModoComparacaoMapa(false)}
+          isFullScreen={true}
+        />
+      )}
+
+      <CenariosComparatorModal
+        isOpen={dash.showComparador}
+        onClose={() => dash.setShowComparador(false)}
+        municipioAtual={dash.municipio}
+        onOpenMapFullScreen={() => dash.setModoComparacaoMapa(true)}
+      />
     </main>
   )
 }

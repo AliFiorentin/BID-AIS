@@ -1,5 +1,6 @@
 import React from "react"
 import { C, PANEL_CARD_BG } from "@/lib/constants"
+import { MetricInfoPopover } from "@/components/MetricInfoPopover"
 
 interface KPIRowProps {
   titulo: string
@@ -8,9 +9,25 @@ interface KPIRowProps {
   delta?: string
   cor?: string
   extra?: React.ReactNode
+  infoKey?: string
 }
 
-export function KPIRow({ titulo, valor, sub, delta, cor, extra }: KPIRowProps) {
+function detectInfoKey(titulo: string): string | undefined {
+  const t = titulo.toLowerCase()
+  if (t.includes("vab")) return "empresas_vab"
+  if (t.includes("massa")) return "massa_salarial"
+  if (t.includes("empresa") || t.includes("empregado")) return "empresas_vab"
+  if (t.includes("docente") || t.includes("escola") || t.includes("matrícula") || t.includes("profissiona")) return "educacao"
+  if (t.includes("saúde") || t.includes("leito") || t.includes("hospital") || t.includes("ubs")) return "saude"
+  if (t.includes("agrícola") || t.includes("cultura") || t.includes("safra")) return "agricultura"
+  if (t.includes("área")) return "area_atingida"
+  if (t.includes("quadra") || t.includes("edifica")) return "edificacoes"
+  if (t.includes("popula")) return "populacao"
+  return undefined
+}
+
+export function KPIRow({ titulo, valor, sub, delta, cor, extra, infoKey }: KPIRowProps) {
+  const resolvedInfoKey = infoKey || detectInfoKey(titulo)
   return (
     <div
       className="hover-lift overflow-hidden rounded-lg print:break-inside-avoid"
@@ -35,7 +52,10 @@ export function KPIRow({ titulo, valor, sub, delta, cor, extra }: KPIRowProps) {
             {titulo}
           </span>
         </div>
-        {extra}
+        <div className="flex items-center gap-1">
+          {extra}
+          {resolvedInfoKey && <MetricInfoPopover metricKey={resolvedInfoKey} title={titulo} />}
+        </div>
       </div>
       <div
         className="flex items-center justify-between gap-3 px-3 py-2"

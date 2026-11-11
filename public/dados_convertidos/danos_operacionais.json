@@ -44,9 +44,9 @@
       "empresas_vab": 188522923.49,
       "educacao_perdas": 9242398.6,
       "educacao_custo_adicional": 9242398.6,
-      "saude_producao": 0.0,
+      "saude_producao": 172417.46,
       "agricultura_perdas": 522130.0,
-      "total": 207529850.68
+      "total": 207702268.15
     },
     "Simulação 27m": {
       "dias_agudo": 30,
@@ -79,9 +79,9 @@
       "empresas_vab": 459586749.29,
       "educacao_perdas": 32144209.96,
       "educacao_custo_adicional": 32144209.96,
-      "saude_producao": 0.0,
+      "saude_producao": 9225786.95,
       "agricultura_perdas": 5788870.0,
-      "total": 529664039.21
+      "total": 538889826.16
     },
     "Simulação Maio 2024": {
       "dias_agudo": 30,

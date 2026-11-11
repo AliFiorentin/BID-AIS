@@ -5,6 +5,7 @@ import { TabsContent } from "@/components/ui/tabs";
 import { FitHeight } from "@/components/FitHeight";
 import { DonutChart } from "@/components/ui/donut-chart";
 import { ResumoPerdasDanos } from "@/components/ResumoPerdasDanos";
+import { MetricInfoPopover } from "@/components/MetricInfoPopover";
 import { COLORS, MUNICIPIOS, PIORES_CENARIOS, CENARIO_PERIODO, IMPACTO_AGRICOLA, PANEL_CARD_BG, C, AREA_VISAO_GERAL_LABEL, AREA_VISAO_GERAL_CENARIO } from "@/lib/constants";
 import { compactoBr, scenarioSlug, findCenarioData } from "@/lib/geo-utils";
 import type { DashboardState } from "@/hooks/useDashboard";
@@ -52,11 +53,12 @@ interface Props {
 }
 
 function MiniStatCard({
-  icon, titulo, cor, atingido, base, mostraImpacto, prefixo, sufixo, casas = 0,
+  icon, titulo, cor, atingido, base, mostraImpacto, prefixo, sufixo, casas = 0, infoKey,
 }: {
   icon: React.ReactNode; titulo: string; cor: string;
   atingido: number; base: number; mostraImpacto: boolean;
   prefixo?: string; sufixo?: string; casas?: number;
+  infoKey?: string;
 }) {
   const pct = base > 0 ? (atingido / base) * 100 : 0;
   const valor = mostraImpacto ? atingido : base;
@@ -80,7 +82,10 @@ function MiniStatCard({
           centerContent={<div className="w-full h-full flex items-center justify-center" style={{ color: cor }}>{icon}</div>}
         />
         <div className="min-w-0 flex-1">
-          <div className="font-bold uppercase tracking-wide leading-tight" style={{ color: C.muted, fontSize: FONT_LABEL }}>{titulo}</div>
+          <div className="flex items-center justify-between">
+            <div className="font-bold uppercase tracking-wide leading-tight truncate" style={{ color: C.muted, fontSize: FONT_LABEL }}>{titulo}</div>
+            {infoKey && <MetricInfoPopover metricKey={infoKey} title={titulo} corIcone="rgba(100,116,139,0.7)" iconSize={10} />}
+          </div>
           <div className="font-black leading-tight tabular-nums mt-0.5 whitespace-nowrap" style={{ color: C.dark, fontSize: FONT_VALOR }}>
             {fmt(valor)}
           </div>
@@ -195,6 +200,7 @@ export function ResumoTab({ dash }: Props) {
           atingido={metricasEmp.impacto.emp}
           base={metricasEmp.base.emp}
           mostraImpacto={mostraImpacto}
+          infoKey="empresas_vab"
         />
         <MiniStatCard
           icon={<Building2 strokeWidth={2.5} className="w-[45%] h-[45%]" />}
@@ -203,6 +209,7 @@ export function ResumoTab({ dash }: Props) {
           atingido={metricasEmp.impacto.estab}
           base={metricasEmp.base.estab}
           mostraImpacto={mostraImpacto}
+          infoKey="empresas_vab"
         />
         <MiniStatCard
           icon={<DollarSign strokeWidth={2.5} className="w-[45%] h-[45%]" />}
@@ -213,6 +220,7 @@ export function ResumoTab({ dash }: Props) {
           mostraImpacto={mostraImpacto}
           prefixo="R$ "
           casas={1}
+          infoKey="massa_salarial"
         />
         <MiniStatCard
           icon={<GraduationCap strokeWidth={2.5} className="w-[45%] h-[45%]" />}
@@ -221,6 +229,7 @@ export function ResumoTab({ dash }: Props) {
           atingido={metricasEdu.impacto.escolas}
           base={metricasEdu.base.escolas}
           mostraImpacto={mostraImpacto}
+          infoKey="educacao"
         />
         <MiniStatCard
           icon={<HeartPulse strokeWidth={2.5} className="w-[45%] h-[45%]" />}
@@ -229,6 +238,7 @@ export function ResumoTab({ dash }: Props) {
           atingido={metricasSau.impacto.unidades}
           base={metricasSau.base.unidades}
           mostraImpacto={mostraImpacto}
+          infoKey="saude"
         />
         <MiniStatCard
           icon={<Stethoscope strokeWidth={2.5} className="w-[45%] h-[45%]" />}
@@ -237,6 +247,7 @@ export function ResumoTab({ dash }: Props) {
           atingido={staffAtg}
           base={staffBase}
           mostraImpacto={mostraImpacto}
+          infoKey="saude"
         />
         <MiniStatCard
           icon={<Wrench strokeWidth={2.5} className="w-[45%] h-[45%]" />}
@@ -245,6 +256,7 @@ export function ResumoTab({ dash }: Props) {
           atingido={edifAtg}
           base={edifBase}
           mostraImpacto={mostraImpacto}
+          infoKey="edificacoes"
         />
         <MiniStatCard
           icon={<Map strokeWidth={2.5} className="w-[45%] h-[45%]" />}
@@ -255,14 +267,18 @@ export function ResumoTab({ dash }: Props) {
           mostraImpacto={mostraImpacto}
           sufixo=" km²"
           casas={1}
+          infoKey="area_atingida"
         />
       </div>
 
       {temAgri && (
         <div className="rounded-lg overflow-hidden print:break-inside-avoid" style={{ border: "1px solid rgba(5,80,113,0.15)", marginTop: CARD_GAP }}>
-          <div className="flex items-center gap-1.5" style={{ ...PANEL_HDR, paddingInline: "0.75rem", paddingBlock: "6px" }}>
-            <Sprout size={13} strokeWidth={2.5} className="text-white shrink-0" />
-            <span className="font-black uppercase tracking-wider text-white" style={{ fontSize: FONT_LABEL }}>Área Agrícola</span>
+          <div className="flex items-center justify-between" style={{ ...PANEL_HDR, paddingInline: "0.75rem", paddingBlock: "6px" }}>
+            <div className="flex items-center gap-1.5">
+              <Sprout size={13} strokeWidth={2.5} className="text-white shrink-0" />
+              <span className="font-black uppercase tracking-wider text-white" style={{ fontSize: FONT_LABEL }}>Área Agrícola</span>
+            </div>
+            <MetricInfoPopover metricKey="agricultura" title="Área Agrícola" />
           </div>
           <div className="flex items-center" style={{ backgroundColor: PANEL_CARD_BG, gap: CARD_GAP, padding: CARD_PAD }}>
             <DonutChart

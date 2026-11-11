@@ -56,6 +56,8 @@ export function useDashboard() {
 
   const [showPainelAnalise, setShowPainelAnalise] = useState<boolean>(true);
   const [showFiltros, setShowFiltros] = useState<boolean>(true);
+  const [showComparador, setShowComparador] = useState<boolean>(false);
+  const [modoComparacaoMapa, setModoComparacaoMapa] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Abaixo de lg o painel de análise vira bottom sheet e nasce recolhido para o mapa ocupar a
@@ -297,6 +299,8 @@ export function useDashboard() {
     filtroTipo, setFiltroTipo,
     showPainelAnalise, setShowPainelAnalise,
     showFiltros, setShowFiltros,
+    showComparador, setShowComparador,
+    modoComparacaoMapa, setModoComparacaoMapa,
     showMancha, setShowMancha,
     showLegenda, setShowLegenda,
     avisoMancha, setAvisoMancha, mostrarAvisoMancha, avisoDoCenario,
