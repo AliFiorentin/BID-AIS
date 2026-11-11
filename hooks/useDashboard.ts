@@ -84,7 +84,7 @@ export function useDashboard() {
   const mostrarAvisoMancha = useCallback((msg: string) => {
     if (avisoTimerRef.current) clearTimeout(avisoTimerRef.current);
     setAvisoMancha(msg);
-    avisoTimerRef.current = setTimeout(() => setAvisoMancha(null), 10000);
+    avisoTimerRef.current = setTimeout(() => setAvisoMancha(null), 8000);
   }, []);
 
   const avisoDoCenario = useCallback((cen: string) => {

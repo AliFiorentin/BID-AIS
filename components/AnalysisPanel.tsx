@@ -13,7 +13,6 @@ import {
   Users,
   Waves,
   Info,
-  AlertTriangle,
 } from "lucide-react"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 import {
@@ -33,7 +32,7 @@ import { InfraTab } from "@/components/tabs/InfraTab"
 import { CotasPanel } from "@/components/tabs/CotasPanel"
 import { popAtingidaNaCota } from "@/hooks/useCotaRaster"
 import { findCenarioData } from "@/lib/geo-utils"
-import { rotuloPopulacao, isCenarioSimulacao, AVISO_SIMULACAO, AVISO_COTAS_SIMULACAO } from "@/lib/avisos"
+import { rotuloPopulacao, AVISO_COTAS_SIMULACAO } from "@/lib/avisos"
 import type { DashboardState } from "@/hooks/useDashboard"
 
 interface AnalysisPanelProps {
@@ -211,21 +210,6 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
                   ? " · Piores Cenários"
                   : ` · ${cenarioLabel(cenario)}`)}
             </p>
-
-            {!isVisaoGeral && isCenarioSimulacao(cenario) && (
-              <div
-                className="mt-2 flex items-start gap-1.5 rounded-lg border border-amber-300/80 bg-amber-50/90 px-2.5 py-1.5 text-[10px] leading-snug text-amber-900 shadow-xs cursor-pointer hover:bg-amber-100/90 transition-colors"
-                role="status"
-                onClick={() => mostrarAvisoMancha(cotasAtivo ? AVISO_COTAS_SIMULACAO : AVISO_SIMULACAO)}
-                title="Clique para exibir aviso de simulação no mapa"
-              >
-                <AlertTriangle size={12} className="mt-0.5 shrink-0 text-amber-600" />
-                <span>
-                  <strong className="font-bold">Aviso de Simulação:</strong>{" "}
-                  {cotasAtivo ? AVISO_COTAS_SIMULACAO : AVISO_SIMULACAO}
-                </span>
-              </div>
-            )}
           </div>
 
           <Tabs
