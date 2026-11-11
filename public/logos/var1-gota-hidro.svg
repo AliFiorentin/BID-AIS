@@ -1,0 +1,53 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#055071"/>
+      <stop offset="100%" stop-color="#022a3d"/>
+    </linearGradient>
+    <linearGradient id="wave1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2da8cc"/>
+      <stop offset="100%" stop-color="#5eead4"/>
+    </linearGradient>
+    <linearGradient id="wave2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#cffafe" stop-opacity="0.8"/>
+    </linearGradient>
+    <linearGradient id="dropGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#0284c7" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="shadow1" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Fundo Squircle Suave -->
+  <rect x="16" y="16" width="480" height="480" rx="104" fill="url(#bg1)"/>
+  <rect x="16" y="16" width="480" height="480" rx="104" fill="none" stroke="#ffffff" stroke-opacity="0.12" stroke-width="3"/>
+
+  <!-- Halo de profundidade -->
+  <circle cx="256" cy="270" r="150" fill="url(#dropGlow)"/>
+
+  <!-- Estrutura da Gota / Bacia Hidrográfica com Curvas de Nível -->
+  <g filter="url(#shadow1)">
+    <!-- Contorno externo da Gota Mestre -->
+    <path d="M256,68 C256,68 128,216 128,312 C128,382.7 185.3,440 256,440 C326.7,440 384,382.7 384,312 C384,216 256,68 256,68 Z" 
+          fill="none" stroke="#2da8cc" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.4"/>
+
+    <!-- Lâmina d'água 1 (Nível Base / Rio) -->
+    <path d="M142,328 C176,308 214,342 256,324 C298,306 338,338 370,320 C377.5,336.5 380,351.5 376,368 C354,414 308,440 256,440 C204,440 158,414 136,368 C134,354 137,340 142,328 Z" 
+          fill="url(#wave1)" fill-opacity="0.95"/>
+
+    <!-- Lâmina d'água 2 (Elevação / Cota Intermediária) -->
+    <path d="M156,280 C188,258 222,290 256,274 C290,258 324,286 356,270 C364,288 368,302 366,322 C338,338 298,306 256,324 C214,342 176,308 146,328 C148,311 151,295 156,280 Z" 
+          fill="url(#wave2)"/>
+
+    <!-- Crista da Onda Superior (Impacto Hidrodinâmico) -->
+    <path d="M182,230 C206,212 232,236 256,224 C280,212 306,232 330,220" 
+          fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round"/>
+
+    <!-- Pulso Central (Ponto Focal de Dados / AIS) -->
+    <circle cx="256" cy="154" r="16" fill="#38bdf8"/>
+    <circle cx="256" cy="154" r="8" fill="#ffffff"/>
+  </g>
+</svg>

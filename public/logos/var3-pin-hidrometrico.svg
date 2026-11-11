@@ -1,0 +1,52 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#055071"/>
+      <stop offset="100%" stop-color="#022a3d"/>
+    </linearGradient>
+    <linearGradient id="pinBody" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2da8cc"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <linearGradient id="amberAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <filter id="shadow3" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Fundo Squircle -->
+  <rect x="16" y="16" width="480" height="480" rx="104" fill="url(#bg3)"/>
+  <rect x="16" y="16" width="480" height="480" rx="104" fill="none" stroke="#ffffff" stroke-opacity="0.12" stroke-width="3"/>
+
+  <!-- Ondas Construtivas de Inundação na Base (Efeito Radar / Cotas) -->
+  <g>
+    <!-- Onda Externa -->
+    <ellipse cx="256" cy="405" rx="170" ry="32" fill="none" stroke="#2da8cc" stroke-width="6" stroke-opacity="0.3"/>
+    <!-- Onda Intermediária -->
+    <ellipse cx="256" cy="405" rx="125" ry="24" fill="none" stroke="#38bdf8" stroke-width="8" stroke-opacity="0.55"/>
+    <!-- Onda Interna / Ponto de Impacto -->
+    <ellipse cx="256" cy="405" rx="75" ry="16" fill="none" stroke="#ffffff" stroke-width="9" stroke-opacity="0.9"/>
+  </g>
+
+  <!-- Marcador Hidrométrico Flutuante (Pin Estilizado) -->
+  <g filter="url(#shadow3)">
+    <!-- Corpo Principal do Marcador -->
+    <path d="M256,92 C184,92 142,148 142,212 C142,298 256,398 256,398 C256,398 370,298 370,212 C370,148 328,92 256,92 Z" 
+          fill="url(#pinBody)"/>
+    
+    <!-- Contorno Luminoso -->
+    <path d="M256,92 C184,92 142,148 142,212 C142,298 256,398 256,398 C256,398 370,298 370,212 C370,148 328,92 256,92 Z" 
+          fill="none" stroke="#ffffff" stroke-width="6" stroke-opacity="0.4"/>
+
+    <!-- Anel Central Translúcido -->
+    <circle cx="256" cy="208" r="54" fill="#055071" fill-opacity="0.95" stroke="#ffffff" stroke-width="6"/>
+
+    <!-- Gota de Nível D'água Central em Âmbar/Dourado (Símbolo de Risco/Monitoramento) -->
+    <path d="M256,176 C256,176 234,204 234,220 C234,232.1 243.9,242 256,242 C268.1,242 278,232.1 278,220 C278,204 256,176 256,176 Z" 
+          fill="url(#amberAccent)"/>
+    <circle cx="261" cy="214" r="3.5" fill="#ffffff" fill-opacity="0.8"/>
+  </g>
+</svg>

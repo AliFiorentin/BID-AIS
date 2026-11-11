@@ -1,0 +1,63 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a4661"/>
+      <stop offset="100%" stop-color="#041f2c"/>
+    </linearGradient>
+    <linearGradient id="rsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14749c"/>
+      <stop offset="100%" stop-color="#08425b"/>
+    </linearGradient>
+    <linearGradient id="waterFlow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#2dd4bf"/>
+      <stop offset="100%" stop-color="#a5f3fc"/>
+    </linearGradient>
+    <filter id="shadow2" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Fundo Squircle -->
+  <rect x="16" y="16" width="480" height="480" rx="104" fill="url(#bg2)"/>
+  <rect x="16" y="16" width="480" height="480" rx="104" fill="none" stroke="#ffffff" stroke-opacity="0.1" stroke-width="3"/>
+
+  <!-- Silhueta Estilizada do RS com Bacia Hidrográfica -->
+  <g filter="url(#shadow2)">
+    <!-- Contorno Poligonal Suave do RS -->
+    <path d="M128,154 L276,118 L380,172 L404,268 L368,368 L308,426 L238,432 L164,388 L104,296 L128,154 Z" 
+          fill="url(#rsGrad)" stroke="#2da8cc" stroke-width="4" stroke-opacity="0.5"/>
+
+    <!-- Linhas de Grade de Sensoriamento / Satélite -->
+    <path d="M110,240 L398,240" stroke="#ffffff" stroke-opacity="0.1" stroke-width="2" stroke-dasharray="6,6"/>
+    <path d="M140,320 L370,320" stroke="#ffffff" stroke-opacity="0.1" stroke-width="2" stroke-dasharray="6,6"/>
+    <path d="M256,125 L256,430" stroke="#ffffff" stroke-opacity="0.1" stroke-width="2" stroke-dasharray="6,6"/>
+
+    <!-- Lagoa dos Patos & Bacia do Guaíba Iluminada -->
+    <path d="M280,188 C265,220 285,250 275,290 C265,330 280,360 290,400" 
+          fill="none" stroke="url(#waterFlow)" stroke-width="18" stroke-linecap="round"/>
+
+    <!-- Ondas Dinâmicas de Cheia / Inundação Cruzando o Território -->
+    <path d="M140,270 C190,245 240,295 300,265 C340,245 370,260 400,250" 
+          fill="none" stroke="#ffffff" stroke-width="12" stroke-linecap="round" stroke-opacity="0.95"/>
+    <path d="M160,316 C205,296 250,336 305,310 C345,292 365,304 388,298" 
+          fill="none" stroke="#38bdf8" stroke-width="10" stroke-linecap="round" stroke-opacity="0.8"/>
+
+    <!-- Pontos dos 4 Municípios Centrais do Estudo -->
+    <!-- Porto Alegre / Guaíba -->
+    <circle cx="275" cy="235" r="9" fill="#f59e0b"/>
+    <circle cx="275" cy="235" r="4" fill="#ffffff"/>
+
+    <!-- Lajeado / Taquari -->
+    <circle cx="240" cy="195" r="7" fill="#38bdf8"/>
+    <circle cx="240" cy="195" r="3" fill="#ffffff"/>
+
+    <!-- Eldorado do Sul -->
+    <circle cx="258" cy="245" r="7" fill="#38bdf8"/>
+    <circle cx="258" cy="245" r="3" fill="#ffffff"/>
+
+    <!-- Rio Grande / Costa Sul -->
+    <circle cx="295" cy="385" r="8" fill="#38bdf8"/>
+    <circle cx="295" cy="385" r="3.5" fill="#ffffff"/>
+  </g>
+</svg>

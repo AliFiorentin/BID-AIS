@@ -1,25 +1,49 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="bg4" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#055071"/>
-      <stop offset="100%" stop-color="#0a6e9a"/>
+      <stop offset="100%" stop-color="#022a3d"/>
     </linearGradient>
-    <linearGradient id="pinGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#f9a03c"/>
-      <stop offset="100%" stop-color="#e2761b"/>
+    <linearGradient id="bidCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
     </linearGradient>
+    <linearGradient id="waveGrad4" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e0f2fe"/>
+    </linearGradient>
+    <filter id="shadow4" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
   </defs>
 
-  <!-- Fundo -->
-  <rect x="0" y="0" width="512" height="512" rx="112" fill="url(#bg)"/>
+  <!-- Fundo Squircle -->
+  <rect x="16" y="16" width="480" height="480" rx="104" fill="url(#bg4)"/>
+  <rect x="16" y="16" width="480" height="480" rx="104" fill="none" stroke="#ffffff" stroke-opacity="0.12" stroke-width="3"/>
 
-  <!-- Ondas concêntricas (impacto localizado) -->
-  <path d="M152,424 A104,52 0 0 0 360,424" fill="none" stroke="#ffffff" stroke-opacity="0.55" stroke-width="16" stroke-linecap="round"/>
-  <path d="M112,440 A152,76 0 0 0 400,440" fill="none" stroke="#ffffff" stroke-opacity="0.32" stroke-width="14" stroke-linecap="round"/>
-  <path d="M80,454 A192,96 0 0 0 432,454" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="12" stroke-linecap="round"/>
+  <!-- Emblema Central: Curvas do BID + Ondas de Cheia + Barras de Impacto -->
+  <g filter="url(#shadow4)" transform="translate(256, 256)">
+    <!-- Círculo Base / Globo Dinâmico -->
+    <circle cx="0" cy="0" r="160" fill="none" stroke="#2da8cc" stroke-width="6" stroke-opacity="0.35"/>
 
-  <!-- Pin de localização -->
-  <path d="M256,132 C194,132 158,178 158,228 C158,298 256,396 256,396 C256,396 354,298 354,228 C354,178 318,132 256,132 Z" fill="url(#pinGrad)"/>
-  <circle cx="256" cy="226" r="42" fill="#ffffff"/>
-  <circle cx="256" cy="226" r="19" fill="#e2761b"/>
+    <!-- Arco Superior Estilizado (Curva Global do BID) -->
+    <path d="M-130,-70 C-110,-140 20,-170 110,-100 C140,-75 155,-40 160,0 C130,-40 70,-90 -10,-80 C-70,-70 -110,-40 -130,-70 Z" 
+          fill="url(#bidCyan)"/>
+
+    <!-- Lâmina d'água / Onda Central de Inundação -->
+    <path d="M-155,20 C-90,-20 -20,60 50,10 C100,-25 135,10 158,35 C145,95 95,145 20,158 C-30,120 -80,100 -120,110 C-145,85 -155,55 -155,20 Z" 
+          fill="url(#waveGrad4)" fill-opacity="0.95"/>
+
+    <!-- Três Barras Métricas Verticais (Representando Impacto: Pessoas, Ativos, Economia) -->
+    <!-- Barra 1: Social / População -->
+    <rect x="-65" y="-15" width="22" height="90" rx="11" fill="#055071" stroke="#ffffff" stroke-width="3"/>
+    <!-- Barra 2: Infraestrutura / Ativos -->
+    <rect x="-11" y="-50" width="22" height="125" rx="11" fill="#0a6e9a" stroke="#ffffff" stroke-width="3"/>
+    <!-- Barra 3: Economia / VAB -->
+    <rect x="43" y="-30" width="22" height="105" rx="11" fill="#2da8cc" stroke="#ffffff" stroke-width="3"/>
+
+    <!-- Crista de Onda Dinâmica Frontal -->
+    <path d="M-135,70 C-80,45 -20,100 45,65 C95,35 130,60 145,80" 
+          fill="none" stroke="#38bdf8" stroke-width="7" stroke-linecap="round"/>
+  </g>
 </svg>
