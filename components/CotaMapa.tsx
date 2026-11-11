@@ -22,6 +22,14 @@ export function CotaMapa({
   slug: string
   cotaInicial?: string
 }) {
+  const municipio =
+    slug === "rio_grande"
+      ? "Rio Grande"
+      : slug === "lajeado"
+        ? "Lajeado"
+        : slug === "eldorado_do_sul"
+          ? "Eldorado do Sul"
+          : "Porto Alegre"
   const raster = useCotaRaster(slug, { cotaInicial })
   const { meta, erro, cota, setTocando, pronta } = raster
   const raiz = useRef<HTMLDivElement>(null)
@@ -106,6 +114,7 @@ export function CotaMapa({
       </div>
       <CotaControle
         raster={raster}
+        municipio={municipio}
         className="border-t border-[#b3cdd8] px-4 py-3"
       />
     </div>

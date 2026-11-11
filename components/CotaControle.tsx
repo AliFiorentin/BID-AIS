@@ -1,16 +1,19 @@
 "use client"
 import React from "react"
 import type { CotaRaster } from "@/hooks/useCotaRaster"
+import { fonteCotas } from "@/lib/constants"
 
 const fmt = (v: number) => v.toFixed(2).replace(".", ",")
 
 /** Cota atual + play/pause + slider. Usado na página de Danos e no cenário "Todas as cotas". */
 export function CotaControle({
   raster,
+  municipio,
   className = "",
   vertical = false,
 }: {
   raster: CotaRaster
+  municipio?: string
   className?: string
   vertical?: boolean
 }) {
@@ -36,6 +39,18 @@ export function CotaControle({
           <div className="text-[9px] font-bold text-slate-500">
             {pronta ? "metros" : "carregando…"}
           </div>
+          {municipio && (
+            <div
+              className="mt-0.5 rounded px-1 py-0.2 text-[8px] font-black uppercase tracking-wider text-white"
+              style={{
+                backgroundColor:
+                  fonteCotas(municipio) === "CIEX" ? "#0a6e9a" : "#055071",
+              }}
+              title={`Fonte das cotas: ${fonteCotas(municipio)}`}
+            >
+              {fonteCotas(municipio)}
+            </div>
+          )}
         </div>
         <button
           type="button"
@@ -77,9 +92,20 @@ export function CotaControle({
   }
   return (
     <div className={`flex items-center gap-3 sm:gap-4 ${className}`}>
-      <div className="w-20 shrink-0 text-center">
-        <div className="text-[10px] font-bold tracking-wide text-slate-500 uppercase">
-          Cota
+      <div className="w-24 shrink-0 text-center">
+        <div className="text-[10px] font-bold tracking-wide text-slate-500 uppercase flex items-center justify-center gap-1">
+          <span>Cota</span>
+          {municipio && (
+            <span
+              className="rounded px-1 py-0.2 text-[8px] font-black text-white"
+              style={{
+                backgroundColor:
+                  fonteCotas(municipio) === "CIEX" ? "#0a6e9a" : "#055071",
+              }}
+            >
+              {fonteCotas(municipio)}
+            </span>
+          )}
         </div>
         <div className="text-xl font-black text-[#055071] tabular-nums">
           {fmt(cota)} m

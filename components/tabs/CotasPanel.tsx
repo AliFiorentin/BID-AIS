@@ -6,6 +6,7 @@ import { FitHeight } from "@/components/FitHeight";
 import { ResumoPerdasDanos } from "@/components/ResumoPerdasDanos";
 import type { CotaRaster } from "@/hooks/useCotaRaster";
 import type { DetalheCotaMun, DetalheCotaValores } from "@/lib/cotas-types";
+import { fonteCotas } from "@/lib/constants";
 
 // Painel do cenário "Todas as cotas": valores (do que fica sob água) na cota atual do slider.
 // Os valores vêm de climada_cota_detalhe_{slug}.json, que tem uma entrada por cota-raster; entre
@@ -220,9 +221,15 @@ export function CotasPanel({
                 </div>
               </div>
             )}
-            <div className="flex items-start gap-1 text-[8.5px] leading-tight text-slate-500 px-0.5">
-              <Coins size={9} className="shrink-0 mt-px" />
-              Exposição (valor de reposição sob água), não dano. Valores da cota-raster {fmtCota(parseFloat(chave!))} m. Ver página de Danos.
+            <div className="flex flex-col gap-0.5 text-[8.5px] leading-tight text-slate-500 px-0.5 pt-1 border-t border-slate-200/60">
+              <div className="flex items-start gap-1">
+                <Coins size={9} className="shrink-0 mt-px text-slate-400" />
+                <span>Exposição física na cota {fmtCota(parseFloat(chave!))} m (valor de reposição sob água).</span>
+              </div>
+              <div className="flex items-center justify-between font-bold text-slate-500">
+                <span>Fonte das cotas: <strong className="text-[#055071] font-black">{fonteCotas(municipio)}</strong></span>
+                <span className="text-[8px] text-slate-400">Ver Danos</span>
+              </div>
             </div>
           </div>
         )}

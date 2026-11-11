@@ -118,7 +118,7 @@ export function DanosToolbar({ ctx }: { ctx: DanosCtx }) {
                     >
                       Cota
                     </span>
-                    <div className="flex gap-1">
+                    <div className="flex gap-1 items-center">
                       {cotasPerdasDisponiveis.map((c) => (
                         <button
                           key={c}
@@ -132,6 +132,9 @@ export function DanosToolbar({ ctx }: { ctx: DanosCtx }) {
                           {c.replace(".", ",")}m
                         </button>
                       ))}
+                      <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-[9.5px] font-bold text-slate-500 shrink-0 ml-1">
+                        Fonte: <strong className="text-[#055071]">{munPerdasAtivo === "Rio Grande" ? "CIEX" : "IPH"}</strong>
+                      </span>
                     </div>
                   </div>
                 )}
@@ -273,7 +276,7 @@ export function DanosToolbar({ ctx }: { ctx: DanosCtx }) {
                     Cota (m)
                   </span>
                 </div>
-                <div className="flex flex-wrap gap-1.5">
+                <div className="flex flex-wrap items-center gap-1.5">
                   {cotasDisponiveis.map((c) => (
                     <button
                       key={c}
@@ -287,6 +290,9 @@ export function DanosToolbar({ ctx }: { ctx: DanosCtx }) {
                       {c.replace(".", ",")}
                     </button>
                   ))}
+                  <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-[9.5px] font-bold text-slate-500 shrink-0 ml-1">
+                    Fonte: <strong className="text-[#055071]">{munClimadaAtivo === "Rio Grande" ? "CIEX" : "IPH"}</strong>
+                  </span>
                 </div>
               </>
             ) : (

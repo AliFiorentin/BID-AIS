@@ -121,6 +121,17 @@ export const MUNICIPIOS = [
 export const COTAS_CENARIO = "Todas as cotas"
 export const COTAS_MUNICIPIOS = ["Lajeado", "Porto Alegre", "Eldorado do Sul", "Rio Grande"]
 
+/** Fonte institucional dos modelos e rasters hidrométricos por cota */
+export const FONTE_COTAS: Record<string, "IPH" | "CIEX"> = {
+  "Porto Alegre": "IPH",
+  "Eldorado do Sul": "IPH",
+  Lajeado: "IPH",
+  "Rio Grande": "CIEX",
+}
+
+export const fonteCotas = (mun: string): "IPH" | "CIEX" =>
+  FONTE_COTAS[mun] ?? (mun === "Rio Grande" ? "CIEX" : "IPH")
+
 export const CENARIOS_CONFIG: Record<string, string[]> = {
   "Eldorado do Sul": ["Cenário ADA", COTAS_CENARIO],
   Lajeado: ["Cenário 27m", "Cenário 30m", COTAS_CENARIO],

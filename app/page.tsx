@@ -651,6 +651,7 @@ export default function Dashboard() {
           ) : (
             <CotaControle
               raster={cotaRaster}
+              municipio={municipio}
               vertical
               className="h-full"
             />

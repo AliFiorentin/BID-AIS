@@ -12,6 +12,17 @@ export function ClimadaPorCota({ ctx }: { ctx: DanosCtx }) {
   return (
         <>
         <Section id="c-resumo" num="1" title={`Resumo: ${munClimadaAtivo}`}>
+          <div className="flex flex-wrap items-center gap-2 mb-3">
+            <span className="rounded-md border border-[#055071]/30 bg-[#055071]/10 px-2 py-0.5 text-xs font-bold text-[#055071]">
+              Cota Ativa: {cotaAtiva.replace(".", ",")} m
+            </span>
+            <span className="rounded-md border border-slate-200 bg-white px-2 py-0.5 text-xs font-bold text-slate-700 shadow-xs">
+              Fonte das cotas:{" "}
+              <strong className="text-[#055071]">
+                {munClimadaAtivo === "Rio Grande" ? "CIEX" : "IPH"}
+              </strong>
+            </span>
+          </div>
           <Note type="warning">
             <strong>Protótipo exploratório</strong>, não uma métrica oficial do painel. Mede{" "}
             <strong>destruição de patrimônio</strong> (estoque), diferente da página{" "}

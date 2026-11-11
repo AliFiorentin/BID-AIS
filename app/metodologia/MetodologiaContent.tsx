@@ -984,10 +984,11 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
             período de retorno, não há risco anual esperado (EAI) nem projeção 2050 nesta visão.
           </p>
           <DataTable rows={[
-            ["Município", "Rasters de profundidade", "Cotas", "Observação"],
-            ["Lajeado", "Rio Taquari", "18,45 a 34,45 m (passo 1 m)", "Altitude ortométrica; a régua do posto seria o raster + 0,55 m (hipótese do parecer do SGB, não confirmada pelo autor dos rasters)"],
-            ["Porto Alegre", "Guaíba", "1,75 a 6,00 m (passo 0,25 m)", "Mesmo raster dos dois municípios; a cota é o rótulo do raster, sem conversão para a régua"],
-            ["Eldorado do Sul", "Guaíba (mesmo de Porto Alegre)", "1,75 a 6,00 m (passo 0,25 m)", "A parte oeste do município fica fora da grade (profundidade 0, subestima)"],
+            ["Município", "Fonte das Cotas", "Rasters de profundidade", "Cotas", "Observação"],
+            ["Porto Alegre", "IPH", "Guaíba", "1,75 a 6,00 m (passo 0,25 m)", "Mesmo raster de Porto Alegre e Eldorado do Sul; cota altimétrica do lago Guaíba"],
+            ["Eldorado do Sul", "IPH", "Guaíba (mesmo de Porto Alegre)", "1,75 a 6,00 m (passo 0,25 m)", "A parte oeste do município fica fora da grade (profundidade 0, subestima)"],
+            ["Lajeado", "IPH", "Rio Taquari", "18,45 a 34,45 m (passo 1 m)", "Altitude ortométrica no Rio Taquari; régua do posto com compensação de datum"],
+            ["Rio Grande", "CIEX", "Canal de Rio Grande / Bacias 1-5 e 7", "1,00 a 2,62 m (5 cotas)", "Máscaras hidrodinâmicas do pico de 21/05/2024 e evolução estuarina"],
           ]} />
 
           <SubTitle>Cálculo</SubTitle>
@@ -1593,6 +1594,15 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
         ══════════════════════════════════════════════════════════════════════ */}
         <Section id="fontes" num="13" title="Fontes e Referências">
           <div className="space-y-4">
+
+            <RefBlock title="Modelagem Hidrodinâmica e Fontes das Cotas">
+              <RefItem href="https://www.ufrgs.br/iph/"
+                label="IPH/UFRGS: Instituto de Pesquisas Hidráulicas (Fonte das Cotas de Porto Alegre, Eldorado do Sul e Lajeado)"
+                desc="Modelagem hidrodinâmica bidimensional (2D) e rasters de lâmina d'água por cota altimétrica do lago Guaíba (1,75 a 6,00 m, amostrados para Porto Alegre e Eldorado do Sul) e do Rio Taquari (18,45 a 34,45 m para Lajeado). Fonte oficial dos rasters hidrométricos por cota desses três municípios." />
+              <RefItem href="https://ciex.org.br/"
+                label="CIEX/FURG — GPEA: Centro Interinstitucional de Eventos Extremos (Fonte das Cotas de Rio Grande)"
+                desc="Modelagem hidrodinâmica costeira e rasters de alagamento por cota (1,00 a 2,62 m, união das bacias 1 a 5 e 7) do pico de 21/05/2024 para o município de Rio Grande." />
+            </RefBlock>
 
             <RefBlock title="Manchas de Inundação e Contexto">
               <RefItem href="https://mup.rs.gov.br/"
