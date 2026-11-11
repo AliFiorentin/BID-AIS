@@ -106,10 +106,12 @@ export function useScenarioData({
         });
 
         const manchaRSPromise = fetch("/dados_convertidos/mancha_rs_enchente_2024.geojson", { signal }).then(r => r.ok ? r.json() : null);
+        const limiteRSPromise = fetch("/dados_convertidos/limite_rs.geojson", { signal }).then(r => r.ok ? r.json() : null);
 
         Promise.all([
           ...fetchPromises,
           manchaRSPromise,
+          limiteRSPromise,
           new Promise(res => setTimeout(res, 300))
         ]).then((values) => {
           if (signal.aborted) return;
@@ -119,8 +121,10 @@ export function useScenarioData({
           setBaseAgriStats(null); setAtingidosAgriStats(null); setConabStats(null);
           setBaseInfra({}); setInfraAtivas([]);
 
-          const manchaData = values[values.length - 2];
+          const limiteData = values[values.length - 2];
+          const manchaData = values[values.length - 3];
           setManchaRS(manchaData as FC);
+          setLimitePA(limiteData as FC);
           setBaseEmpresas(mergeGeoJSON(bEmp)); setBaseEducacao(mergeGeoJSON(bEdu)); setBaseSaude(mergeGeoJSON(bSau));
           setAtingidosEmpresas(mergeGeoJSON(aEmp)); setAtingidosEducacao(mergeGeoJSON(aEdu)); setAtingidosSaude(mergeGeoJSON(aSau));
           setAllMunAgriStats(agriStats);

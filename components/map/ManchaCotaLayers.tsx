@@ -119,18 +119,37 @@ export function ManchaCotaLayers({ dash }: { dash: DashboardState }) {
         <CotaCanvasLayer raster={cotaRaster} beforeId="anchor-infra" opacity={dash.opacidadeCota ?? 0.55} />
       )}
 
-      {/* 2. Limite, Agricultura, Infraestrutura */}
+      {/* 2. Limite Municipal (Cidades) ou Limite Estadual (Visão Geral RS) */}
       {limitePA && (
         <Source id="limite-poa" type="geojson" data={limitePA}>
+          {isVisaoGeral && (
+            <Layer
+              id="limite-rs-casing"
+              type="line"
+              paint={{
+                "line-color": "#ffffff",
+                "line-width": 4.5,
+                "line-opacity": 0.65,
+              }}
+            />
+          )}
           <Layer
             id="limite-poa-line"
             type="line"
-            paint={{
-              "line-color": "#055071",
-              "line-width": 2,
-              "line-opacity": 0.7,
-              "line-dasharray": [4, 3],
-            }}
+            paint={
+              isVisaoGeral
+                ? {
+                    "line-color": "#055071",
+                    "line-width": 2.2,
+                    "line-opacity": 0.9,
+                  }
+                : {
+                    "line-color": "#055071",
+                    "line-width": 2,
+                    "line-opacity": 0.7,
+                    "line-dasharray": [4, 3],
+                  }
+            }
           />
         </Source>
       )}
