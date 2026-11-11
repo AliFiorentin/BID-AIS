@@ -816,10 +816,10 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
           <Note type="info">
             A análise de sensibilidade do painel permite testar d<sub>ef</sub> = 30, 45 ou 60
             dias para todos os cenários: ver{" "}
-            <a href="/danos" target="_blank" rel="noopener noreferrer"
+            <Link href="/perdas-operacionais"
               className="text-[#055071] font-semibold hover:underline underline-offset-4">
-              página de Danos Operacionais ↗
-            </a>.
+              página de Perdas Operacionais ↗
+            </Link>.
           </Note>
 
           <SubTitle>Componente 1 · Empresas: Perda de VAB</SubTitle>
@@ -1052,10 +1052,10 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
             <strong>destruição de patrimônio</strong> (estoque: prédio + equipamento), diferente
             da metodologia DaLA acima, que mede perdas de fluxo (Seção 9). Resultados, comparativo
             por período de retorno e limitações completas na{" "}
-            <a href="/danos?aba=climada" target="_blank" rel="noopener noreferrer"
+            <Link href="/danos-fisicos"
               className="font-semibold hover:underline underline-offset-4">
-              página de Danos, aba Danos Físicos ↗
-            </a>.
+              página de Danos Físicos ↗
+            </Link>.
           </Note>
 
           <SubTitle>Curvas de Dano (Profundidade → MDD)</SubTitle>

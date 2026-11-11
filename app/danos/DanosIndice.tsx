@@ -22,19 +22,20 @@ export function DanosIndice({ ctx }: { ctx: DanosCtx }) {
               : semCurva
                 ? cotaAtivo
                   ? [
-                      ["#c-resumo", "1. Resumo"],
-                      ["#c-tabela", "2. Valor exposto por cota"],
+                      ["#c-como-ler", "1. Como ler os resultados"],
+                      ["#c-resumo", "2. Resumo"],
+                      ["#c-tabela", "3. Valor exposto por cota"],
                       ...(expo?.detalhe
                         ? [
-                            ["#c-empresas", "3. Empresas"],
-                            ["#c-saude", "4. Saúde"],
-                            ["#c-educacao", "5. Educação"],
-                            ["#c-agricultura", "6. Agricultura"],
+                            ["#c-empresas", "4. Empresas"],
+                            ["#c-saude", "5. Saúde"],
+                            ["#c-educacao", "6. Educação"],
+                            ["#c-agricultura", "7. Agricultura"],
                           ]
                         : []),
                       [
                         "#c-mapa",
-                        expo?.detalhe ? "7. Mapa por cota" : "3. Mapa por cota",
+                        expo?.detalhe ? "8. Mapa por cota" : "4. Mapa por cota",
                       ],
                       ["/metodologia#limitacoes", "Limitações (Metodologia) ↗"],
                     ]

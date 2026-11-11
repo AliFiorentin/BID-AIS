@@ -23,7 +23,6 @@ export function DanosClient(props: DanosProps) {
   const ctx = useDanosContext(props)
   const {
     aba,
-    setAba,
     semCurva,
     expo,
     dadosCotas,
@@ -69,7 +68,6 @@ export function DanosClient(props: DanosProps) {
               diag={dadosCotas?.diagnostico}
               mun={munClimadaAtivo}
               cota={cota}
-              setAba={setAba}
             />
           ) : cotaAtivo && dadosCotas && atualCota && cotaAtiva ? (
             <ClimadaPorCota ctx={ctx} />

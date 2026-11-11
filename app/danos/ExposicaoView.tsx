@@ -19,7 +19,6 @@ export function ExposicaoView({
   expo,
   mun,
   cota,
-  setAba,
 }: {
   expo: ExposicaoMun
   diag?: CotasData["diagnostico"] | null
@@ -78,31 +77,31 @@ export function ExposicaoView({
 
   return (
     <>
-      <Section id="c-resumo" num="1" title="Resumo">
+      {/* ═══ 1. COMO LER OS RESULTADOS ═══ */}
+      <Section id="c-como-ler" num="1" title="Como ler os resultados">
+        <p>
+          Esta página apresenta <strong>o que fica sob a água</strong> em cada
+          cota do rio ou lagoa e quanto vale, em reais, esse patrimônio em risco
+          no município de {mun}. A série de cotas avaliadas varia de {vc(cotaMin)}{" "}
+          a {vc(cotaMax)} m{semProf ? " (onde a última representa o pico de 21/05/2024)" : ""}.
+        </p>
+
         <Note type="warning">
           <strong>Este indicador é exposição, não dano.</strong> Sem curva de
           dano (JRC) não há como converter a profundidade da água em fração
-          destruída, e não há perda observada para calibrar. Por isso o painel
+          destruída, e não há perda observada para calibrar em {mun}. Por isso o painel
           mostra o <strong>valor exposto atingido</strong>: o valor de reposição
           de tudo o que fica sob água. Ele é o <strong>teto</strong> do dano
           (equivale a perda total de tudo que molha), não uma estimativa dele, e{" "}
-          <strong>não deve ser somado</strong> às Perdas Operacionais (
-          {setAba ? (
-            <Link
-              href="/perdas-operacionais"
-              className="font-bold underline underline-offset-2"
-            >
-              DaLA
-            </Link>
-          ) : (
-            <Link
-              href="/perdas-operacionais"
-              className="font-bold underline underline-offset-2"
-            >
-              DaLA
-            </Link>
-          )}
-          ), que medem outra coisa (produção e serviço interrompidos)
+          <strong>não deve ser somado</strong> às{" "}
+          <Link
+            href="/perdas-operacionais"
+            className="font-bold underline underline-offset-2"
+          >
+            Perdas Operacionais (DaLA)
+          </Link>
+          , que medem outra coisa: a produção e os serviços interrompidos durante
+          e após o evento
           {mun !== "Porto Alegre" &&
             "; também não se compara ao dano físico de Porto Alegre"}
           . As limitações detalhadas por cenário, metodologia e município estão
@@ -116,6 +115,49 @@ export function ExposicaoView({
           .
         </Note>
 
+        <div className="my-4 rounded-xl border border-[#b3cdd8] bg-white px-4 py-3 text-sm text-slate-700 shadow-sm">
+          <p className="mb-2 text-[10px] font-black tracking-wider text-[#2f6a83] uppercase">
+            Como interpretar as métricas desta página
+          </p>
+          <ul className="list-inside list-disc space-y-1.5">
+            <li>
+              <strong>Como é calculado:</strong> cada empresa, escola ou unidade
+              de saúde é um ponto com um valor de reposição estimado. O ponto
+              conta como <em>atingido</em> quando{" "}
+              {semProf
+                ? "está dentro da mancha daquela cota"
+                : "a profundidade do raster naquela cota é maior que 0"}
+              ; o valor exposto atingido é a soma desses valores. Não há fração
+              de dano: o ponto entra com 100% do valor ou não entra.
+            </li>
+            <li>
+              <strong>Os percentuais:</strong> &ldquo;% da exposição
+              total&rdquo; e &ldquo;% do setor&rdquo; comparam o valor atingido
+              com o patrimônio de todos os pontos do município (atingidos ou
+              não). Cada cota é um cenário independente; os valores crescem com
+              a cota porque o máximo é acumulado (a água de uma cota maior cobre
+              pelo menos o que a menor cobria).
+            </li>
+            <li>
+              <strong>Os dados por categoria</strong> (empresas, saúde,
+              educação) somam os atributos dos pontos atingidos: empregados e
+              massa salarial (RAIS), leitos e profissionais (CNES), matrículas e
+              docentes (Censo Escolar). A agricultura é medida em hectares sob
+              água, sem valor em R$.
+            </li>
+            <li>
+              <strong>Ordem de grandeza, não precisão:</strong> muitos
+              estabelecimentos compartilham a mesma coordenada cadastral, então o
+              valor sobe em degraus (cada pilha entra de uma vez), e o valor de
+              reposição é estimado. Use os números para comparar cotas e setores,
+              não como perda financeira a ser ressarcida.
+            </li>
+          </ul>
+        </div>
+      </Section>
+
+      {/* ═══ 2. RESUMO ═══ */}
+      <Section id="c-resumo" num="2" title="Resumo">
         <div className="my-4 rounded-xl border border-[#b3cdd8] bg-white px-4 py-3 text-sm text-slate-700 shadow-sm">
           <p className="mb-2 text-[10px] font-black tracking-wider text-[#2f6a83] uppercase">
             Principais resultados · {mun}
@@ -180,45 +222,6 @@ export function ExposicaoView({
           </ul>
         </div>
 
-        <div className="my-4 rounded-xl border border-[#b3cdd8] bg-white px-4 py-3 text-sm text-slate-700 shadow-sm">
-          <p className="mb-2 text-[10px] font-black tracking-wider text-[#2f6a83] uppercase">
-            Como ler os resultados
-          </p>
-          <ul className="list-inside list-disc space-y-1.5">
-            <li>
-              <strong>Como é calculado:</strong> cada empresa, escola ou unidade
-              de saúde é um ponto com um valor de reposição estimado. O ponto
-              conta como <em>atingido</em> quando{" "}
-              {semProf
-                ? "está dentro da mancha daquela cota"
-                : "a profundidade do raster naquela cota é maior que 0"}
-              ; o valor exposto atingido é a soma desses valores. Não há fração
-              de dano: o ponto entra com 100% do valor ou não entra.
-            </li>
-            <li>
-              <strong>Os percentuais:</strong> &ldquo;% da exposição
-              total&rdquo; e &ldquo;% do setor&rdquo; comparam o valor atingido
-              com o patrimônio de todos os pontos do município (atingidos ou
-              não). Cada cota é um cenário independente; os valores crescem com
-              a cota porque o máximo é acumulado (a água de uma cota maior cobre
-              pelo menos o que a menor cobria).
-            </li>
-            <li>
-              <strong>Os dados por categoria</strong> (empresas, saúde,
-              educação) somam os atributos dos pontos atingidos: empregados e
-              massa salarial (RAIS), leitos e profissionais (CNES), matrículas e
-              docentes (Censo Escolar). A agricultura é medida em hectares sob
-              água, sem valor em R$.
-            </li>
-            <li>
-              <strong>Ordem de grandeza, não precisão:</strong> muitos
-              estabelecimentos compartilham a mesma coordenada, então o valor
-              sobe em degraus (cada pilha entra de uma vez), e o valor de
-              reposição é estimado. Use os números para comparar cotas e
-              setores, não como perda a ser paga.
-            </li>
-          </ul>
-        </div>
         <div className="my-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="overflow-hidden rounded-xl border border-[#b3cdd8] bg-white shadow-sm">
             <div className="px-4 py-3" style={{ backgroundColor: "#055071" }}>
@@ -287,7 +290,7 @@ export function ExposicaoView({
 
       <Section
         id="c-tabela"
-        num="2"
+        num="3"
         title="Valor exposto atingido por cota do rio"
       >
         <p>
@@ -380,12 +383,12 @@ export function ExposicaoView({
           det={expo.detalhe}
           cota={cotaAtiva}
           mun={mun}
-          numInicial={3}
+          numInicial={4}
           exposicaoCota={atual}
         />
       )}
 
-      <Section id="c-mapa" num={expo.detalhe ? "7" : "3"} title="Mapa por cota">
+      <Section id="c-mapa" num={expo.detalhe ? "8" : "4"} title="Mapa por cota">
         <p>
           A água avança sozinha em loop (pause ou arraste a cota para
           controlar). A frente de avanço, em azul-claro, mostra o que está
