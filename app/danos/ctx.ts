@@ -43,7 +43,7 @@ export function useDanosContext({
   const [rp, setRp] = useState("RP200")
   // Município e visão da aba CLIMADA: por período de retorno (RP) ou por cota do rio.
   const [munClimada, setMunClimada] = useState("Porto Alegre")
-  const [visao, setVisao] = useState<"rp" | "cota">("cota")
+  const [visao, setVisao] = useState<"rp" | "cota">("rp")
   const [cota, setCota] = useState("29.45")
 
   // Permalink: ?dias=45&mun=Lajeado&visao=rp&rp=RP100&cota=27.45. Só o que difere do padrão vai
@@ -83,7 +83,7 @@ export function useDanosContext({
     def("mun", clim && munClimada !== "Porto Alegre", munClimada)
     def(
       "visao",
-      clim && munClimada === "Porto Alegre" && visao !== "cota",
+      clim && munClimada === "Porto Alegre" && visao !== "rp",
       visao
     )
     def(

@@ -115,6 +115,12 @@ export function ExposicaoView({
           .
         </Note>
 
+        {mun === "Porto Alegre" && (
+          <Note type="warning">
+            <strong>Importante — Premissa do modelo por cota de Porto Alegre:</strong> A série hidrodinâmica por cota do Guaíba (1,75 a 6,00 m) modela a topografia considerando o sistema de proteção (Muro da Mauá, diques e comportas) operante, o que restringe o alagamento na simulação às ilhas e faixa ribeirinha desprotegida (444 empresas atingidas no pico, R$ 381 Mi). No entanto, no evento real de maio/2024 (Cenário ADA), com o colapso e vazamento de comportas e casas de bombas, a mancha observada atingiu <strong>8.692 empresas e R$ 10,44 Bilhões</strong> de patrimônio exposto. Para a estimativa oficial de dano físico calculada com curvas de vulnerabilidade (MDD), consulte a aba <strong>CLIMADA (RP)</strong> (R$ 1,65 Bi a R$ 2,06 Bi).
+          </Note>
+        )}
+
         <div className="my-4 rounded-xl border border-[#b3cdd8] bg-white px-4 py-3 text-sm text-slate-700 shadow-sm">
           <p className="mb-2 text-[10px] font-black tracking-wider text-[#2f6a83] uppercase">
             Como interpretar as métricas desta página

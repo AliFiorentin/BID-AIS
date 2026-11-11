@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react"
 import Link from "next/link"
 import { Skeleton } from "@/components/ui/skeleton"
 import { TrendingDown, Waves } from "lucide-react"
-import { MUNICIPIOS, PIORES_CENARIOS, PANEL_CARD_BG, C } from "@/lib/constants"
+import { MUNICIPIOS, PIORES_CENARIOS, COTAS_CENARIO, PANEL_CARD_BG, C } from "@/lib/constants"
 import { compactoBr, findCenarioData, slugify } from "@/lib/geo-utils"
 import { scaleTo } from "@/app/danos/helpers"
 import type { DanosData, ExposicaoMun, CenarioDanos } from "@/app/danos/types"
@@ -13,7 +13,19 @@ const DIAS_PADRAO = 30
 const PRIMARY = C.primary
 const BRAND_GRADIENT = "linear-gradient(135deg, #055071 0%, #0a6e9a 100%)"
 
+type CenarioFisico = {
+  empresas_atingidas: number
+  educacao_atingidas: number
+  saude_atingidas: number
+  empresas_valor_brl: number
+  educacao_valor_brl: number
+  saude_valor_brl: number
+  total: number
+}
+type DanosFisicosCenarios = Record<string, Record<string, CenarioFisico>>
+
 let cacheOperacionais: DanosData | null = null
+let cacheFisicosCenarios: DanosFisicosCenarios | null = null
 const cacheExposicao: Record<string, ExposicaoMun | null> = {}
 
 function fmtBRL(n: number): string {
@@ -95,19 +107,20 @@ export function ResumoPerdasDanos({
   mostraImpacto: boolean
 }) {
   const [danosOp, setDanosOp] = useState<DanosData | null>(cacheOperacionais)
+  const [fisicosCenarios, setFisicosCenarios] = useState<DanosFisicosCenarios | null>(cacheFisicosCenarios)
   const [exposicaoMap, setExposicaoMap] = useState<
     Record<string, ExposicaoMun | null>
   >({ ...cacheExposicao })
   const munsRequeridos = isVisaoGeral ? MUNICIPIOS : [municipio]
   const faltamExp = munsRequeridos.filter((m) => !(m in exposicaoMap))
-  const carregando = !danosOp || faltamExp.length > 0
+  const carregando = !danosOp || !fisicosCenarios || faltamExp.length > 0
 
   useEffect(() => {
     let ativo = true
     const munsAlvo = isVisaoGeral ? MUNICIPIOS : [municipio]
     const faltam = munsAlvo.filter((m) => !(m in cacheExposicao))
 
-    if (cacheOperacionais && faltam.length === 0) {
+    if (cacheOperacionais && cacheFisicosCenarios && faltam.length === 0) {
       return
     }
 
@@ -117,19 +130,26 @@ export function ResumoPerdasDanos({
         : fetch("/dados_convertidos/danos_operacionais.json")
             .then((r) => (r.ok ? r.json() : {}))
             .catch(() => ({})),
+      cacheFisicosCenarios
+        ? Promise.resolve(cacheFisicosCenarios)
+        : fetch("/dados_convertidos/danos_fisicos_cenarios.json")
+            .then((r) => (r.ok ? r.json() : {}))
+            .catch(() => ({})),
       ...faltam.map((m) =>
         fetch(`/dados_convertidos/climada_exposicao_${slugify(m)}.json`)
           .then((r) => (r.ok ? r.json() : null))
           .then((d) => ({ m, d }))
           .catch(() => ({ m, d: null }))
       ),
-    ]).then(([op, ...exps]) => {
+    ]).then(([op, fis, ...exps]) => {
       cacheOperacionais = op as DanosData
+      cacheFisicosCenarios = fis as DanosFisicosCenarios
       exps.forEach(({ m, d }: { m: string; d: ExposicaoMun | null }) => {
         cacheExposicao[m] = d
       })
       if (!ativo) return
       setDanosOp(cacheOperacionais)
+      setFisicosCenarios(cacheFisicosCenarios)
       setExposicaoMap({ ...cacheExposicao })
     })
 
@@ -195,29 +215,73 @@ export function ResumoPerdasDanos({
   let expEmp = 0
   let expEdu = 0
   let expSau = 0
-  let rotuloExp = mostraImpacto ? "Exposição (pico)" : "Exposição (total)"
-  const muns = isVisaoGeral ? MUNICIPIOS : [municipio]
-  muns.forEach((m) => {
-    const exp = exposicaoMap[m]
-    if (!exp?.por_cota) return
-    const cotasKeys = Object.keys(exp.por_cota).sort(
-      (a, b) => parseFloat(a) - parseFloat(b)
-    )
-    const ultima = cotasKeys[cotasKeys.length - 1]
-    const c = ultima ? exp.por_cota[ultima] : undefined
-    if (!c) return
-    if (mostraImpacto) {
-      expEmp += c.empresas?.valor_exposto_atingido_brl ?? 0
-      expEdu += c.educacao?.valor_exposto_atingido_brl ?? 0
-      expSau += c.saude?.valor_exposto_atingido_brl ?? 0
+  let rotuloExp = "Exposição (cenário)"
+
+  const isCotas = cenario === COTAS_CENARIO
+
+  if (!mostraImpacto) {
+    rotuloExp = "Exposição (total)"
+    const muns = isVisaoGeral ? MUNICIPIOS : [municipio]
+    muns.forEach((m) => {
+      const exp = exposicaoMap[m]
+      if (!exp?.por_cota) return
+      const cotasKeys = Object.keys(exp.por_cota).sort(
+        (a, b) => parseFloat(a) - parseFloat(b)
+      )
+      const ultima = cotasKeys[cotasKeys.length - 1]
+      const c = ultima ? exp.por_cota[ultima] : undefined
+      if (c) {
+        expEmp += c.empresas?.exposicao_total_brl ?? 0
+        expEdu += c.educacao?.exposicao_total_brl ?? 0
+        expSau += c.saude?.exposicao_total_brl ?? 0
+      }
+    })
+  } else if (isCotas) {
+    rotuloExp = isVisaoGeral ? "Exposição (picos)" : "Exposição (pico)"
+    const muns = isVisaoGeral ? MUNICIPIOS : [municipio]
+    muns.forEach((m) => {
+      const exp = exposicaoMap[m]
+      if (!exp?.por_cota) return
+      const cotasKeys = Object.keys(exp.por_cota).sort(
+        (a, b) => parseFloat(a) - parseFloat(b)
+      )
+      const ultima = cotasKeys[cotasKeys.length - 1]
+      const c = ultima ? exp.por_cota[ultima] : undefined
+      if (c) {
+        expEmp += c.empresas?.valor_exposto_atingido_brl ?? 0
+        expEdu += c.educacao?.valor_exposto_atingido_brl ?? 0
+        expSau += c.saude?.valor_exposto_atingido_brl ?? 0
+      }
+    })
+  } else if (fisicosCenarios) {
+    rotuloExp = isVisaoGeral ? "Exposição (cenários)" : "Exposição (cenário)"
+    if (isVisaoGeral) {
+      MUNICIPIOS.forEach((m) => {
+        const cen = PIORES_CENARIOS[m]
+        const d = cen && fisicosCenarios[m] ? findCenarioData(fisicosCenarios[m], cen) : null
+        if (d) {
+          expEmp += d.empresas_valor_brl
+          expEdu += d.educacao_valor_brl
+          expSau += d.saude_valor_brl
+        }
+      })
     } else {
-      expEmp += c.empresas?.exposicao_total_brl ?? 0
-      expEdu += c.educacao?.exposicao_total_brl ?? 0
-      expSau += c.saude?.exposicao_total_brl ?? 0
+      const mMap = fisicosCenarios[municipio]
+      if (mMap) {
+        const cenBusca = cenario !== "(nenhum)" ? cenario : PIORES_CENARIOS[municipio]
+        const d =
+          (cenBusca ? findCenarioData(mMap, cenBusca) : null) ??
+          findCenarioData(mMap, PIORES_CENARIOS[municipio])
+        if (d) {
+          expEmp = d.empresas_valor_brl
+          expEdu = d.educacao_valor_brl
+          expSau = d.saude_valor_brl
+        }
+      }
     }
-  })
+  }
   const expTotal = expEmp + expEdu + expSau
-  if (isVisaoGeral) rotuloExp = "Exposição (picos)"
+  if (isVisaoGeral && isCotas) rotuloExp = "Exposição (picos)"
 
   return (
     <div className="flex flex-col gap-1">
