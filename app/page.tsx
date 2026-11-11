@@ -662,6 +662,8 @@ export default function Dashboard() {
               municipio={municipio}
               vertical
               className="h-full"
+              opacidade={dash.opacidadeCota}
+              onOpacidadeChange={dash.setOpacidadeCota}
             />
           )}
         </div>

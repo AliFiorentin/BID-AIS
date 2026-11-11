@@ -134,7 +134,7 @@ export function useDashboard() {
     useMapCamera({ mapRef, headerRef, municipio, showPainelAnalise, permalinkView, setIs3D });
 
   const cotas = useCotas(municipio, cenario);
-  const { cotasAtivo, cotaRaster, cotaDetalhe, cotaPausada, nCotasAtingidas } = cotas;
+  const { cotasAtivo, cotaRaster, cotaDetalhe, cotaPausada, nCotasAtingidas, opacidadeCota, setOpacidadeCota } = cotas;
 
   const { popData, areaData, manchaDuracaoClimada } = useStaticData();
 
@@ -325,7 +325,7 @@ export function useDashboard() {
     danoFisicoEducacao: dano.danoFisicoEducacao,
     danoFisicoSaude: dano.danoFisicoSaude,
     manchaDuracaoClimada,
-    cotasAtivo, cotaRaster, cotaDetalhe,
+    cotasAtivo, cotaRaster, cotaDetalhe, opacidadeCota, setOpacidadeCota,
     showListaEscolas, setShowListaEscolas,
     showListaHospitais, setShowListaHospitais,
     showListaUBS, setShowListaUBS,

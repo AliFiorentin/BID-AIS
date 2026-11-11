@@ -12,6 +12,7 @@ import { slugify } from "@/lib/geo-utils";
 export function useCotas(municipio: string, cenario: string) {
   const cotasAtivo = COTAS_MUNICIPIOS.includes(municipio) && cenario === COTAS_CENARIO;
   const [cotaDetalhe, setCotaDetalhe] = useState<DetalheCotaMun | null>(null);
+  const [opacidadeCota, setOpacidadeCota] = useState<number>(0.55);
   // Cota de entrada de cada ponto (5 m, igual à aba "Por cota"); sem ele cai na amostragem do raster reduzido.
   const [cotaPontos, setCotaPontos] = useState<CotaPontos | null>(null);
   // Os dois arquivos do painel já foram buscados (com ou sem sucesso): a água só começa a avançar depois.
@@ -67,7 +68,7 @@ export function useCotas(municipio: string, cenario: string) {
     ? cotaRaster.meta.cotas.filter(c => c <= cotaRaster.cota! + 1e-6).length
     : 0;
 
-  return { cotasAtivo, cotaRaster, cotaDetalhe, cotaPontos, cotaPausada, nCotasAtingidas };
+  return { cotasAtivo, cotaRaster, cotaDetalhe, cotaPontos, cotaPausada, nCotasAtingidas, opacidadeCota, setOpacidadeCota };
 }
 
 type Setor = "empresas" | "educacao" | "saude";

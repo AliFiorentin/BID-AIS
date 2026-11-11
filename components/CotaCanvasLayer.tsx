@@ -11,7 +11,7 @@ type FonteCanvas = { play?: () => void; pause?: () => void }
  * nem criar Blob URL a cada quadro. O react-map-gl não tipa `<Source type="canvas">`, então a
  * fonte/camada são gerenciadas direto no mapa. Deve ser renderizado dentro de <Map>.
  */
-export function CotaCanvasLayer({ raster, beforeId, opacity = 0.92 }: { raster: CotaRaster; beforeId?: string; opacity?: number }) {
+export function CotaCanvasLayer({ raster, beforeId, opacity = 0.55 }: { raster: CotaRaster; beforeId?: string; opacity?: number }) {
   const { current: mapRef } = useMap()
   const { meta, canvasId, frame } = raster
   const pronto = !!meta && !!canvasId && frame > 0
@@ -89,6 +89,19 @@ export function CotaCanvasLayer({ raster, beforeId, opacity = 0.92 }: { raster: 
     const r1 = requestAnimationFrame(() => { r2 = requestAnimationFrame(() => fonte.pause?.()) })
     return () => { cancelAnimationFrame(r1); cancelAnimationFrame(r2) }
   }, [frame, pronto, sourceId, mapRef])
+
+  // Atualiza a opacidade no MapLibre dinamicamente quando a prop mudar
+  useEffect(() => {
+    const map = mapRef?.getMap()
+    if (!map || !layerId) return
+    try {
+      if (map.getLayer(layerId)) {
+        map.setPaintProperty(layerId, "raster-opacity", opacity)
+      }
+    } catch {
+      // Ignora erro se estilo estiver recarregando
+    }
+  }, [mapRef, layerId, opacity])
 
   return null
 }
