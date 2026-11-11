@@ -283,9 +283,9 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="w-[95vw] max-w-[1440px] h-[92vh] max-h-[96vh] overflow-hidden flex flex-col p-0 gap-0 sm:rounded-2xl">
+      <DialogContent className="w-[95vw] max-w-[1440px] h-[88vh] max-h-[880px] overflow-hidden flex flex-col p-0 gap-0 sm:rounded-2xl shadow-2xl">
         {/* Header */}
-        <DialogHeader className="p-4 bg-gradient-to-r from-[#055071] to-[#0a6e9a] text-white">
+        <DialogHeader className="shrink-0 p-4 bg-gradient-to-r from-[#055071] to-[#0a6e9a] text-white">
           <div className="flex items-center justify-between pr-8">
             <div className="flex items-center gap-2">
               <div className="p-1.5 rounded-lg bg-white/10 backdrop-blur-sm">
@@ -414,14 +414,14 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
         </DialogHeader>
 
         {/* Content */}
-        <div className={`flex-1 p-4 flex flex-col ${viewMode === "mapa" ? "overflow-hidden" : "overflow-y-auto gap-4"}`}>
+        <div className={`min-h-0 flex-1 p-4 flex flex-col ${viewMode === "mapa" ? "overflow-hidden" : "overflow-y-auto gap-4"}`}>
           {cenariosList.length <= 1 ? (
             <div className="p-6 text-center text-slate-500 rounded-lg border border-slate-200 bg-slate-50">
               <p className="font-bold text-sm text-slate-700">Apenas um cenário cadastrado para {selectedMun}.</p>
               <p className="text-xs mt-1">Selecione Porto Alegre, Lajeado ou Rio Grande para comparar diferentes simulações hidrodinâmicas.</p>
             </div>
           ) : viewMode === "mapa" ? (
-            <div className="flex-1 min-h-[520px] w-full rounded-xl overflow-hidden relative shadow-inner border border-slate-200">
+            <div className="flex-1 min-h-0 h-full w-full rounded-xl overflow-hidden relative shadow-inner border border-slate-200">
               <ScenarioCompareMap
                 municipio={selectedMun}
                 cenarioA={cenarioA}
@@ -509,80 +509,86 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
               </div>
 
               {/* Tabela Detalhada */}
-              <div className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
-                <div className="grid grid-cols-12 gap-2 py-2 px-3 bg-slate-100 text-[10px] font-bold text-slate-600 uppercase tracking-wider">
-                  <div className="col-span-4">Dimensão / Métrica</div>
-                  <div className="col-span-3 text-right">Cenário A ({cenarioLabel(cenarioA)})</div>
-                  <div className="col-span-3 text-right">Cenário B ({cenarioLabel(cenarioB)})</div>
-                  <div className="col-span-2 text-right">Diferença (B - A)</div>
-                </div>
-
-                {metricsA && metricsB && (
-                  <div className="divide-y divide-slate-100">
-                    {/* Território & População */}
-                    <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                      Território e População
+              <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden mb-2">
+                <div className="overflow-x-auto">
+                  <div className="min-w-[560px]">
+                    <div className="grid grid-cols-12 gap-2 py-2 px-3 bg-slate-100 text-[10px] font-bold text-slate-600 uppercase tracking-wider sticky top-0 z-10 border-b border-slate-200">
+                      <div className="col-span-4">Dimensão / Métrica</div>
+                      <div className="col-span-3 text-right">Cenário A ({cenarioLabel(cenarioA)})</div>
+                      <div className="col-span-3 text-right">Cenário B ({cenarioLabel(cenarioB)})</div>
+                      <div className="col-span-2 text-right">Diferença (B - A)</div>
                     </div>
-                    {renderRow("População Atingida", <Users size={12} />, metricsA.pop, metricsB.pop, false, " hab")}
-                    {renderRow("Área Inundada", <MapPin size={12} />, metricsA.area, metricsB.area, false, " km²")}
 
-                    {/* Empresas */}
-                    <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                      Empresas e Atividade Econômica
-                    </div>
-                    {renderRow("Empresas Atingidas", <Building2 size={12} />, metricsA.empAtg, metricsB.empAtg)}
-                    {renderRow("Perda de VAB (DaLA)", <TrendingDown size={12} />, metricsA.vabEmp, metricsB.vabEmp, true)}
-
-                    {/* Educação */}
-                    <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                      Educação
-                    </div>
-                    {renderRow("Escolas Atingidas", <GraduationCap size={12} />, metricsA.eduAtg, metricsB.eduAtg)}
-                    {renderRow("Perdas Operacionais Educação", <TrendingDown size={12} />, metricsA.eduPerdas, metricsB.eduPerdas, true)}
-
-                    {/* Saúde */}
-                    <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                      Saúde
-                    </div>
-                    {renderRow("Unidades de Saúde", <HeartPulse size={12} />, metricsA.sauAtg, metricsB.sauAtg)}
-                    {renderRow("Perda de Produção SUS", <TrendingDown size={12} />, metricsA.sauProd, metricsB.sauProd, true)}
-
-                    {/* Agricultura */}
-                    {(metricsA.agrPerdas > 0 || metricsB.agrPerdas > 0) && (
-                      <>
+                    {metricsA && metricsB && (
+                      <div className="divide-y divide-slate-100">
+                        {/* Território & População */}
                         <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                          Agricultura
+                          Território e População
                         </div>
-                        {renderRow("Prejuízo Agrícola", <Sprout size={12} />, metricsA.agrPerdas, metricsB.agrPerdas, true)}
-                      </>
-                    )}
+                        {renderRow("População Atingida", <Users size={12} />, metricsA.pop, metricsB.pop, false, " hab")}
+                        {renderRow("Área Inundada", <MapPin size={12} />, metricsA.area, metricsB.area, false, " km²")}
 
-                    {/* Totais Finais */}
-                    <div className="px-3 py-1 bg-cyan-50/70 text-[10px] font-bold text-cyan-900 uppercase tracking-wider">
-                      Impacto Consolidado
-                    </div>
-                    {renderRow("Total Perdas Operacionais", <TrendingDown size={12} />, metricsA.totalOp, metricsB.totalOp, true)}
-                    {renderRow("Total Danos Físicos", <Waves size={12} />, metricsA.totalFis, metricsB.totalFis, true)}
-                    {renderRow(
-                      "Impacto Geral Combinado",
-                      <GitCompare size={12} />,
-                      metricsA.totalOp + metricsA.totalFis,
-                      metricsB.totalOp + metricsB.totalFis,
-                      true
+                        {/* Empresas */}
+                        <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                          Empresas e Atividade Econômica
+                        </div>
+                        {renderRow("Empresas Atingidas", <Building2 size={12} />, metricsA.empAtg, metricsB.empAtg)}
+                        {renderRow("Perda de VAB (DaLA)", <TrendingDown size={12} />, metricsA.vabEmp, metricsB.vabEmp, true)}
+
+                        {/* Educação */}
+                        <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                          Educação
+                        </div>
+                        {renderRow("Escolas Atingidas", <GraduationCap size={12} />, metricsA.eduAtg, metricsB.eduAtg)}
+                        {renderRow("Perdas Operacionais Educação", <TrendingDown size={12} />, metricsA.eduPerdas, metricsB.eduPerdas, true)}
+
+                        {/* Saúde */}
+                        <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                          Saúde
+                        </div>
+                        {renderRow("Unidades de Saúde", <HeartPulse size={12} />, metricsA.sauAtg, metricsB.sauAtg)}
+                        {renderRow("Perda de Produção SUS", <TrendingDown size={12} />, metricsA.sauProd, metricsB.sauProd, true)}
+
+                        {/* Agricultura */}
+                        {(metricsA.agrPerdas > 0 || metricsB.agrPerdas > 0) && (
+                          <>
+                            <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                              Agricultura
+                            </div>
+                            {renderRow("Prejuízo Agrícola", <Sprout size={12} />, metricsA.agrPerdas, metricsB.agrPerdas, true)}
+                          </>
+                        )}
+
+                        {/* Totais Finais */}
+                        <div className="px-3 py-1 bg-cyan-50/70 text-[10px] font-bold text-cyan-900 uppercase tracking-wider">
+                          Impacto Consolidado
+                        </div>
+                        {renderRow("Total Perdas Operacionais", <TrendingDown size={12} />, metricsA.totalOp, metricsB.totalOp, true)}
+                        {renderRow("Total Danos Físicos", <Waves size={12} />, metricsA.totalFis, metricsB.totalFis, true)}
+                        {renderRow(
+                          "Impacto Geral Combinado",
+                          <GitCompare size={12} />,
+                          metricsA.totalOp + metricsA.totalFis,
+                          metricsB.totalOp + metricsB.totalFis,
+                          true
+                        )}
+                      </div>
                     )}
                   </div>
-                )}
+                </div>
               </div>
             </>
           )}
         </div>
 
         {/* Footer */}
-        <div className="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
-          <span>* As perdas operacionais seguem metodologia DaLA (30 dias base); danos físicos representam custo de reposição CLIMADA/CUB-RS.</span>
+        <div className="shrink-0 p-3 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
+          <span className="text-[11px] leading-tight">
+            * As perdas operacionais seguem metodologia DaLA (30 dias base); danos físicos representam custo de reposição CLIMADA/CUB-RS.
+          </span>
           <button
             onClick={onClose}
-            className="px-3 py-1.5 rounded-md text-xs font-semibold bg-slate-200 hover:bg-slate-300 text-slate-700 transition-colors"
+            className="px-3.5 py-1.5 rounded-md text-xs font-semibold bg-slate-200 hover:bg-slate-300 text-slate-700 transition-colors shrink-0"
           >
             Fechar
           </button>
