@@ -9,7 +9,7 @@ export interface DetalheCotaValores {
   empresas: { n: number; empregados: number; massa_salarial_brl: number; salario_medio_brl: number; valor_exposto_brl: number; setores: DetalheGrupoCota[] }
   saude: { n: number; leitos: number; profissionais: number; valor_exposto_brl: number; tipos: DetalheGrupoCota[] }
   educacao: { n: number; matriculas: number; docentes: number; valor_exposto_brl: number; dependencias: DetalheGrupoCota[] }
-  agricultura?: { area_ha: number; culturas: Record<string, number> }
+  agricultura?: { area_ha: number; culturas: Record<string, number>; valor_estimado_brl?: number }
 }
 /** Saída de pipeline/climada_cota_pontos.py (cota_pontos.json): cota de entrada de cada ponto das bases. */
 export interface CotaPontos {

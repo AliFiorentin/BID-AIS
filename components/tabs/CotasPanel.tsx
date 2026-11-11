@@ -6,7 +6,7 @@ import { FitHeight } from "@/components/FitHeight";
 import { ResumoPerdasDanos } from "@/components/ResumoPerdasDanos";
 import type { CotaRaster } from "@/hooks/useCotaRaster";
 import type { DetalheCotaMun, DetalheCotaValores } from "@/lib/cotas-types";
-import { fonteCotas } from "@/lib/constants";
+import { fonteCotas, IMPACTO_AGRICOLA } from "@/lib/constants";
 
 // Painel do cenário "Todas as cotas": valores (do que fica sob água) na cota atual do slider.
 // Os valores vêm de climada_cota_detalhe_{slug}.json, que tem uma entrada por cota-raster; entre
@@ -243,23 +243,40 @@ export function CotasPanel({
                 1
               )}
             </div>
-            {v.agricultura && (
-              <div
-                className="rounded-lg border bg-white/70 px-2.5 py-1.5 flex items-center justify-between shrink-0"
-                style={{ borderColor: "#4d9e3a55" }}
-              >
-                <div className="flex items-center gap-1 font-black text-xs" style={{ color: "#4d9e3a" }}>
-                  <Sprout size={12} strokeWidth={2.5} />
-                  Agricultura
+            {v.agricultura && (() => {
+              const coefsAgri = IMPACTO_AGRICOLA["maio_2024"] ?? {};
+              const cults = v.agricultura.culturas ?? {};
+              const valorAgri = v.agricultura.valor_estimado_brl ?? (
+                Object.keys(cults).length > 0
+                  ? Object.entries(cults).reduce(
+                      (sum, [cultura, ha]) => sum + (ha ?? 0) * (coefsAgri[cultura]?.coef ?? 1100),
+                      0
+                    )
+                  : (v.agricultura.area_ha ?? 0) * 1100
+              );
+              const topCult = Object.entries(cults)
+                .filter(([_, ha]) => ha > 0)
+                .sort((a, b) => b[1] - a[1])[0];
+              const principalStr = topCult
+                ? `${topCult[0] === "Outras Lavouras Temporárias" ? "Outras" : topCult[0]} (${fmtN(topCult[1])} ha)`
+                : "Nenhuma";
+
+              return (
+                <div>
+                  {card(
+                    "Agricultura",
+                    <Sprout size={12} strokeWidth={2.5} />,
+                    "#4d9e3a",
+                    [
+                      ["Área atingida", `${fmtN(v.agricultura.area_ha)} ha`],
+                      ["Principal", principalStr],
+                    ],
+                    valorAgri,
+                    2
+                  )}
                 </div>
-                <div className="text-[11px] text-slate-600">
-                  Área atingida{" "}
-                  <span className="font-black text-slate-800 tabular-nums">
-                    {fmtN(v.agricultura.area_ha)} ha
-                  </span>
-                </div>
-              </div>
-            )}
+              );
+            })()}
             <div className="flex flex-col gap-0.5 text-[8.5px] leading-tight text-slate-500 px-0.5 pt-1 border-t border-slate-200/60">
               <div className="flex items-start gap-1">
                 <Coins size={9} className="shrink-0 mt-px text-slate-400" />
