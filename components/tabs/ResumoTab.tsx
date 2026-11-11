@@ -4,6 +4,7 @@ import { Users, Building2, GraduationCap, HeartPulse, Stethoscope, Wrench, Dolla
 import { TabsContent } from "@/components/ui/tabs";
 import { FitHeight } from "@/components/FitHeight";
 import { DonutChart } from "@/components/ui/donut-chart";
+import { ResumoPerdasDanos } from "@/components/ResumoPerdasDanos";
 import { COLORS, MUNICIPIOS, PIORES_CENARIOS, CENARIO_PERIODO, IMPACTO_AGRICOLA, PANEL_CARD_BG, C, AREA_VISAO_GERAL_LABEL, AREA_VISAO_GERAL_CENARIO } from "@/lib/constants";
 import { compactoBr, scenarioSlug, findCenarioData } from "@/lib/geo-utils";
 import type { DashboardState } from "@/hooks/useDashboard";
@@ -178,6 +179,14 @@ export function ResumoTab({ dash }: Props) {
   return (
     <TabsContent value="resumo" className="flex-1 min-h-0 flex flex-col overflow-hidden mt-2 pb-2">
       <FitHeight min={0.6} max={1}>
+      <div style={{ marginBottom: CARD_GAP }}>
+        <ResumoPerdasDanos
+          municipio={municipio}
+          cenario={cenario}
+          isVisaoGeral={isVisaoGeral}
+          mostraImpacto={mostraImpacto}
+        />
+      </div>
       <div className="grid grid-cols-2" style={{ gap: CARD_GAP }}>
         <MiniStatCard
           icon={<Users strokeWidth={2.5} className="w-[45%] h-[45%]" />}

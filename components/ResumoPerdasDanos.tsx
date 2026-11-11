@@ -46,23 +46,23 @@ function Cartao({
       aria-label={`${titulo}: ${rotuloValor} ${valor}`}
     >
       <div
-        className="flex items-center gap-1.5 px-2.5 py-1"
+        className="flex items-center gap-1.5 px-2.5 py-[5px]"
         style={{ background: BRAND_GRADIENT }}
       >
         <span className="text-white">{icone}</span>
-        <span className="truncate text-[8.5px] font-black tracking-wide text-white uppercase">
+        <span className="truncate text-[9px] font-black tracking-wide text-white uppercase">
           {titulo}
         </span>
       </div>
       <div
-        className="flex-1 px-2.5 py-1.5"
+        className="flex-1 px-2.5 py-2"
         style={{ backgroundColor: PANEL_CARD_BG }}
       >
-        <div className="text-[8.5px] font-bold tracking-wide text-slate-500 uppercase">
+        <div className="text-[9px] font-bold tracking-wide text-slate-500 uppercase">
           {rotuloValor}
         </div>
         <div
-          className="text-sm leading-tight font-black whitespace-nowrap tabular-nums"
+          className="text-[17px] leading-tight font-black whitespace-nowrap tabular-nums"
           style={{ color: PRIMARY }}
         >
           {valor}
@@ -71,7 +71,7 @@ function Cartao({
           {linhas.map((l) => (
             <div
               key={l.rotulo}
-              className="flex items-baseline justify-between gap-1.5 text-[8.5px] whitespace-nowrap tabular-nums"
+              className="flex items-baseline justify-between gap-1.5 text-[9px] whitespace-nowrap tabular-nums"
             >
               <dt className="text-slate-500">{l.rotulo}</dt>
               <dd className="font-bold text-slate-700">{l.valor}</dd>
@@ -140,7 +140,7 @@ export function ResumoPerdasDanos({
 
   if (carregando) {
     return (
-      <div className="mb-1.5 grid grid-cols-2 gap-1.5" aria-busy="true">
+      <div className="grid grid-cols-2 gap-2" aria-busy="true">
         <Skeleton className="h-28 rounded-lg" />
         <Skeleton className="h-28 rounded-lg" />
       </div>
@@ -220,8 +220,8 @@ export function ResumoPerdasDanos({
   if (isVisaoGeral) rotuloExp = "Exposição (picos)"
 
   return (
-    <div className="mb-1.5 flex flex-col gap-1">
-      <div className="grid grid-cols-2 gap-1.5">
+    <div className="flex flex-col gap-1">
+      <div className="grid grid-cols-2 gap-2">
         {opEntry && (
           <Cartao
             titulo="Perdas Operacionais"
