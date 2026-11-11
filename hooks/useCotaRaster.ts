@@ -20,8 +20,8 @@ export interface CotaMeta {
   area_por_cota_km2?: number[]
 }
 
-export const COR_FRENTE: [number, number, number] = [96, 200, 240]
-export const COR_ALAGADO: [number, number, number] = [16, 84, 168]
+export const COR_FRENTE: [number, number, number] = [55, 140, 195]
+export const COR_ALAGADO: [number, number, number] = [31, 119, 180]
 const DURACAO_MS = 14000
 const PAUSA_FIM_MS = 1800
 
@@ -223,7 +223,7 @@ export function useCotaRaster(slug: string | null, opts: { cotaInicial?: string;
         const st = passos[k]
         const a = (c - (t - st)) / st // abaixo de t - st o pixel ainda está seco
         if (a <= 0) continue
-        px32[i] = ((Math.round(255 * (0.4 + 0.6 * a)) << 24) | frenteRgb) >>> 0
+        px32[i] = ((Math.round(255 * (0.80 + 0.20 * a)) << 24) | frenteRgb) >>> 0
       }
       ctx.putImageData(img, 0, 0)
       setCanvasId((atual) => atual ?? cv.id)

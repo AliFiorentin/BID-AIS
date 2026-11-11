@@ -11,7 +11,7 @@ type FonteCanvas = { play?: () => void; pause?: () => void }
  * nem criar Blob URL a cada quadro. O react-map-gl não tipa `<Source type="canvas">`, então a
  * fonte/camada são gerenciadas direto no mapa. Deve ser renderizado dentro de <Map>.
  */
-export function CotaCanvasLayer({ raster, beforeId, opacity = 0.82 }: { raster: CotaRaster; beforeId?: string; opacity?: number }) {
+export function CotaCanvasLayer({ raster, beforeId, opacity = 0.92 }: { raster: CotaRaster; beforeId?: string; opacity?: number }) {
   const { current: mapRef } = useMap()
   const { meta, canvasId, frame } = raster
   const pronto = !!meta && !!canvasId && frame > 0

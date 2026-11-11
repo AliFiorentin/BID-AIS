@@ -116,7 +116,7 @@ export function ManchaCotaLayers({ dash }: { dash: DashboardState }) {
 
       {/* Cenário "Todas as cotas": água avançando conforme o slider (fonte canvas; ver CotaCanvasLayer). */}
       {cotasAtivo && !isTransitioning && showMancha && (
-        <CotaCanvasLayer raster={cotaRaster} beforeId="anchor-infra" />
+        <CotaCanvasLayer raster={cotaRaster} beforeId="anchor-infra" opacity={0.92} />
       )}
 
       {/* 2. Limite, Agricultura, Infraestrutura */}
