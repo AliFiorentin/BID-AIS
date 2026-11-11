@@ -283,7 +283,7 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-4xl max-h-[92vh] overflow-hidden flex flex-col p-0 gap-0">
+      <DialogContent className="w-[95vw] max-w-[1440px] h-[92vh] max-h-[96vh] overflow-hidden flex flex-col p-0 gap-0 sm:rounded-2xl">
         {/* Header */}
         <DialogHeader className="p-4 bg-gradient-to-r from-[#055071] to-[#0a6e9a] text-white">
           <div className="flex items-center justify-between pr-8">
@@ -414,18 +414,20 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
         </DialogHeader>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+        <div className={`flex-1 p-4 flex flex-col ${viewMode === "mapa" ? "overflow-hidden" : "overflow-y-auto gap-4"}`}>
           {cenariosList.length <= 1 ? (
             <div className="p-6 text-center text-slate-500 rounded-lg border border-slate-200 bg-slate-50">
               <p className="font-bold text-sm text-slate-700">Apenas um cenário cadastrado para {selectedMun}.</p>
               <p className="text-xs mt-1">Selecione Porto Alegre, Lajeado ou Rio Grande para comparar diferentes simulações hidrodinâmicas.</p>
             </div>
           ) : viewMode === "mapa" ? (
-            <div className="h-[520px] w-full rounded-xl overflow-hidden relative shadow-inner border border-slate-200">
+            <div className="flex-1 min-h-[520px] w-full rounded-xl overflow-hidden relative shadow-inner border border-slate-200">
               <ScenarioCompareMap
                 municipio={selectedMun}
-                cenarioAInicial={cenarioA}
-                cenarioBInicial={cenarioB}
+                cenarioA={cenarioA}
+                cenarioB={cenarioB}
+                onCenarioAChange={setChosenA}
+                onCenarioBChange={setChosenB}
                 isFullScreen={false}
               />
             </div>
