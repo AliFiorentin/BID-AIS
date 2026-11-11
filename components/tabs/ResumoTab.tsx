@@ -13,17 +13,18 @@ const COR_AGRICULTURA = "#6B8E23";
 const COR_AREA = "#0891b2";
 const COR_TRILHA = "#e2e8f0";
 
-// Escala fluida com a altura da tela (vh) -- em telas baixas (notebook 14")
-// os cards encolhem o suficiente pra caber sem rolagem; em telas altas usam
-// o tamanho máximo. min/max escolhidos pra nunca ficar ilegível nem
-// desproporcional. O DonutChart precisa do `style` de largura/altura (não só
-// className) pra vencer o `size`/`strokeWidth` default do componente.
-const DONUT_MINI = "clamp(26px, 5vh, 52px)";
-const DONUT_AGRI = "clamp(32px, 6.5vh, 58px)";
-const CARD_PAD = "clamp(0.2rem, 1.3vh, 0.625rem)";
-const CARD_GAP = "clamp(0.2rem, 1vh, 0.625rem)";
-const FONT_LABEL = "clamp(7px, 1.05vh, 9.5px)";
-const FONT_VALOR = "clamp(12px, 2.1vh, 18px)";
+// Tamanhos fixos (padrão CIEX): o ajuste à altura da tela é feito só pelo
+// <FitHeight>, que encolhe o bloco inteiro quando não cabe. Antes os cards
+// usavam clamp(…vh…) E o FitHeight ampliava até 1,25× — escala dupla que
+// deixava os KPIs desproporcionais ao KPI de população e às abas. O
+// DonutChart precisa do `style` de largura/altura (não só className) pra
+// vencer o `size`/`strokeWidth` default do componente.
+const DONUT_MINI = "42px";
+const DONUT_AGRI = "52px";
+const CARD_PAD = "8px 10px";
+const CARD_GAP = "8px";
+const FONT_LABEL = "9px";
+const FONT_VALOR = "17px";
 
 interface Props {
   dash: Pick<
@@ -79,7 +80,7 @@ function MiniStatCard({
         />
         <div className="min-w-0 flex-1">
           <div className="font-bold uppercase tracking-wide leading-tight" style={{ color: C.muted, fontSize: FONT_LABEL }}>{titulo}</div>
-          <div className="font-black leading-tight tabular-nums mt-0.5" style={{ color: C.dark, fontSize: FONT_VALOR }}>
+          <div className="font-black leading-tight tabular-nums mt-0.5 whitespace-nowrap" style={{ color: C.dark, fontSize: FONT_VALOR }}>
             {fmt(valor)}
           </div>
           {mostraImpacto ? (
@@ -175,8 +176,8 @@ export function ResumoTab({ dash }: Props) {
   const agriPct = agriBase > 0 ? (agriAtg / agriBase) * 100 : 0;
 
   return (
-    <TabsContent value="resumo" className="flex-1 flex flex-col overflow-hidden mt-3 pb-2">
-      <FitHeight>
+    <TabsContent value="resumo" className="flex-1 min-h-0 flex flex-col overflow-hidden mt-2 pb-2">
+      <FitHeight min={0.6} max={1}>
       <div className="grid grid-cols-2" style={{ gap: CARD_GAP }}>
         <MiniStatCard
           icon={<Users strokeWidth={2.5} className="w-[45%] h-[45%]" />}
@@ -250,7 +251,7 @@ export function ResumoTab({ dash }: Props) {
 
       {temAgri && (
         <div className="rounded-lg overflow-hidden print:break-inside-avoid" style={{ border: "1px solid rgba(5,80,113,0.15)", marginTop: CARD_GAP }}>
-          <div className="flex items-center gap-1.5" style={{ ...PANEL_HDR, paddingInline: "0.75rem", paddingBlock: CARD_PAD }}>
+          <div className="flex items-center gap-1.5" style={{ ...PANEL_HDR, paddingInline: "0.75rem", paddingBlock: "6px" }}>
             <Sprout size={13} strokeWidth={2.5} className="text-white shrink-0" />
             <span className="font-black uppercase tracking-wider text-white" style={{ fontSize: FONT_LABEL }}>Área Agrícola</span>
           </div>
