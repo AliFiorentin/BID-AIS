@@ -18,6 +18,8 @@ import { DashboardMap } from "@/components/DashboardMap"
 import { LegendItem } from "@/components/LegendItem"
 import { useDashboard } from "@/hooks/useDashboard"
 import { AnalysisPanel } from "@/components/AnalysisPanel"
+import { CenariosComparatorModal } from "@/components/CenariosComparatorModal"
+import { ScenarioCompareMap } from "@/components/map/ScenarioCompareMap"
 import { DashboardHeader } from "@/components/DashboardHeader"
 import { FiltersPanel } from "@/components/FiltersPanel"
 import { CotaControle } from "@/components/CotaControle"
@@ -183,10 +185,10 @@ export default function Dashboard() {
       {/* ── Mapa (fundo) ─────────────────────────────────────────────── */}
       <DashboardMap dash={dash} />
 
-      {/* ── Cartão de logos institucionais: alinhado ao grupo de zoom (128 px + 2 px anel), à esquerda dele, na base ── */}
-      <div className="pointer-events-none absolute right-[61px] bottom-[8px] z-10 print:hidden">
+      {/* ── Cartão de logos institucionais: alinhado ao grupo de zoom (128 px), à esquerda dele, na base ── */}
+      <div className="pointer-events-none absolute right-[62px] bottom-[8px] z-10 print:hidden">
         <div
-          className="flex h-[128px] w-[195px] flex-col items-center justify-center gap-2 rounded-[4px] bg-white/95 px-2.5 py-2"
+          className="flex h-[128px] w-[195px] flex-col items-center justify-center gap-2 rounded-[6px] bg-white/95 px-2.5 py-2 shadow-sm"
           style={{ boxShadow: "0 0 0 2px rgba(0,0,0,0.1)" }}
         >
           <div className="flex w-full items-center justify-center border-b border-black/10 pb-2 pt-0.5">
@@ -660,6 +662,8 @@ export default function Dashboard() {
               municipio={municipio}
               vertical
               className="h-full"
+              opacidade={dash.opacidadeCota}
+              onOpacidadeChange={dash.setOpacidadeCota}
             />
           )}
         </div>
@@ -670,6 +674,21 @@ export default function Dashboard() {
       <FiltersPanel dash={dash} />
 
       <AnalysisPanel dash={dash} />
+
+      {dash.modoComparacaoMapa && (
+        <ScenarioCompareMap
+          municipio={dash.municipio}
+          onClose={() => dash.setModoComparacaoMapa(false)}
+          isFullScreen={true}
+        />
+      )}
+
+      <CenariosComparatorModal
+        isOpen={dash.showComparador}
+        onClose={() => dash.setShowComparador(false)}
+        municipioAtual={dash.municipio}
+        onOpenMapFullScreen={() => dash.setModoComparacaoMapa(true)}
+      />
     </main>
   )
 }

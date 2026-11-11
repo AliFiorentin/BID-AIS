@@ -14,6 +14,7 @@ import {
   Waves,
   BookOpen,
   RotateCcw,
+  GitCompare,
 } from "lucide-react"
 import {
   Select,
@@ -206,13 +207,24 @@ export function DashboardHeader({ dash }: DashboardHeaderProps) {
         </Link>
         <Link
           href="/metodologia"
-          className={`${NAV_LINK_CLASS} min-[2000px]:col-span-2`}
+          className={NAV_LINK_CLASS}
           style={NAV_LINK_STYLE}
           title="Ver metodologia do painel"
         >
           <BookOpen size={11} strokeWidth={2.5} />
           Metodologia
         </Link>
+        <button
+          type="button"
+          onClick={() => dash.setShowComparador(true)}
+          className={`${NAV_LINK_CLASS} cursor-pointer`}
+          style={NAV_LINK_STYLE}
+          title="Comparar dois cenários lado a lado"
+        >
+          <GitCompare size={11} strokeWidth={2.5} />
+          <span className="min-[2000px]:hidden">Comparar</span>
+          <span className="max-[1999px]:hidden">Comparar Cenários</span>
+        </button>
       </div>
 
       {/* Município */}

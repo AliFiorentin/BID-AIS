@@ -5,17 +5,21 @@ import { fonteCotas } from "@/lib/constants"
 
 const fmt = (v: number) => v.toFixed(2).replace(".", ",")
 
-/** Cota atual + play/pause + slider. Usado na página de Danos e no cenário "Todas as cotas". */
+/** Cota atual + play/pause + slider + opacidade. Usado na página de Danos e no cenário "Todas as cotas". */
 export function CotaControle({
   raster,
   municipio,
   className = "",
   vertical = false,
+  opacidade = 0.55,
+  onOpacidadeChange,
 }: {
   raster: CotaRaster
   municipio?: string
   className?: string
   vertical?: boolean
+  opacidade?: number
+  onOpacidadeChange?: (op: number) => void
 }) {
   const { cota, minimo, maximo, passo, tocando, setTocando, setCota, pronta } =
     raster
@@ -87,6 +91,23 @@ export function CotaControle({
         <div className="text-[9px] font-bold text-slate-500 tabular-nums">
           {fmt(minimo)}
         </div>
+        {onOpacidadeChange && (
+          <button
+            type="button"
+            onClick={() => {
+              const niveis = [0.35, 0.55, 0.75, 0.90]
+              const atual = opacidade ?? 0.55
+              const idx = niveis.findIndex((n) => Math.abs(n - atual) < 0.05)
+              const proximo = niveis[(idx + 1) % niveis.length]
+              onOpacidadeChange(proximo)
+            }}
+            className="mt-1 flex flex-col items-center gap-0.5 rounded px-1.5 py-1 text-[8.5px] font-bold text-slate-600 hover:text-[#055071] bg-slate-100 hover:bg-slate-200/80 transition-colors border border-slate-200/70 shadow-xs"
+            title={`Opacidade da mancha: ${Math.round((opacidade ?? 0.55) * 100)}% (clique para alternar 35%, 55%, 75%, 90%)`}
+          >
+            <span className="text-[10px] leading-none">💧</span>
+            <span className="tabular-nums">{Math.round((opacidade ?? 0.55) * 100)}%</span>
+          </button>
+        )}
       </div>
     )
   }
@@ -142,6 +163,23 @@ export function CotaControle({
         aria-label="Cota do rio"
         aria-valuetext={`cota ${fmt(cota)} metros`}
       />
+      {onOpacidadeChange && (
+        <button
+          type="button"
+          onClick={() => {
+            const niveis = [0.35, 0.55, 0.75, 0.90]
+            const atual = opacidade ?? 0.55
+            const idx = niveis.findIndex((n) => Math.abs(n - atual) < 0.05)
+            const proximo = niveis[(idx + 1) % niveis.length]
+            onOpacidadeChange(proximo)
+          }}
+          className="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-bold text-slate-600 hover:text-[#055071] bg-slate-100 hover:bg-slate-200/80 transition-colors border border-slate-200/70 shrink-0"
+          title={`Opacidade da mancha: ${Math.round((opacidade ?? 0.55) * 100)}% (clique para alternar 35%, 55%, 75%, 90%)`}
+        >
+          <span>💧</span>
+          <span className="tabular-nums">{Math.round((opacidade ?? 0.55) * 100)}%</span>
+        </button>
+      )}
     </div>
   )
 }

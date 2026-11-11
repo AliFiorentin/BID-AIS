@@ -255,7 +255,7 @@ export function CotasPanel({
                   : (v.agricultura.area_ha ?? 0) * 1100
               );
               const topCult = Object.entries(cults)
-                .filter(([_, ha]) => ha > 0)
+                .filter(([, ha]) => ha > 0)
                 .sort((a, b) => b[1] - a[1])[0];
               const principalStr = topCult
                 ? `${topCult[0] === "Outras Lavouras Temporárias" ? "Outras" : topCult[0]} (${fmtN(topCult[1])} ha)`

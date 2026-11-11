@@ -56,6 +56,8 @@ export function useDashboard() {
 
   const [showPainelAnalise, setShowPainelAnalise] = useState<boolean>(true);
   const [showFiltros, setShowFiltros] = useState<boolean>(true);
+  const [showComparador, setShowComparador] = useState<boolean>(false);
+  const [modoComparacaoMapa, setModoComparacaoMapa] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Abaixo de lg o painel de análise vira bottom sheet e nasce recolhido para o mapa ocupar a
@@ -132,7 +134,7 @@ export function useDashboard() {
     useMapCamera({ mapRef, headerRef, municipio, showPainelAnalise, permalinkView, setIs3D });
 
   const cotas = useCotas(municipio, cenario);
-  const { cotasAtivo, cotaRaster, cotaDetalhe, cotaPausada, nCotasAtingidas } = cotas;
+  const { cotasAtivo, cotaRaster, cotaDetalhe, cotaPausada, nCotasAtingidas, opacidadeCota, setOpacidadeCota } = cotas;
 
   const { popData, areaData, manchaDuracaoClimada } = useStaticData();
 
@@ -297,6 +299,8 @@ export function useDashboard() {
     filtroTipo, setFiltroTipo,
     showPainelAnalise, setShowPainelAnalise,
     showFiltros, setShowFiltros,
+    showComparador, setShowComparador,
+    modoComparacaoMapa, setModoComparacaoMapa,
     showMancha, setShowMancha,
     showLegenda, setShowLegenda,
     avisoMancha, setAvisoMancha, mostrarAvisoMancha, avisoDoCenario,
@@ -321,7 +325,7 @@ export function useDashboard() {
     danoFisicoEducacao: dano.danoFisicoEducacao,
     danoFisicoSaude: dano.danoFisicoSaude,
     manchaDuracaoClimada,
-    cotasAtivo, cotaRaster, cotaDetalhe,
+    cotasAtivo, cotaRaster, cotaDetalhe, opacidadeCota, setOpacidadeCota,
     showListaEscolas, setShowListaEscolas,
     showListaHospitais, setShowListaHospitais,
     showListaUBS, setShowListaUBS,
