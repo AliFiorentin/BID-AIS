@@ -1,7 +1,8 @@
 "use client"
 
-import { DIAS_OPCOES, RP_ANOS, RP_PROBABILIDADE } from "./helpers"
+import { DIAS_OPCOES, RP_ANOS } from "./helpers"
 import type { DanosCtx } from "./ctx"
+import { CENARIO_FISICO_LABELS } from "./ctx"
 
 const PRIMARY = "#055071"
 
@@ -9,10 +10,8 @@ export function DanosToolbar({ ctx }: { ctx: DanosCtx }) {
   const {
     aba,
     cotaAtiva,
-    cotaAtivo,
     cotasDisponiveis,
     dadosClimada,
-    dadosCotas,
     dias,
     munClimadaAtivo,
     munsClimada,
@@ -24,6 +23,19 @@ export function DanosToolbar({ ctx }: { ctx: DanosCtx }) {
     setRp,
     setVisao,
     visao,
+    // Novos campos Danos Físicos (Cenários):
+    cenarioFisicoAtivo,
+    cenariosFisicosDisponiveis,
+    setCenarioFisico,
+    // Novos campos Perdas Operacionais (Cotas):
+    visaoPerdas,
+    setVisaoPerdas,
+    munPerdasAtivo,
+    munsPerdas,
+    setMunPerdas,
+    cotaPerdasAtiva,
+    cotasPerdasDisponiveis,
+    setCotaPerdas,
   } = ctx
 
   return (
@@ -39,51 +51,142 @@ export function DanosToolbar({ ctx }: { ctx: DanosCtx }) {
       <div className="mx-auto flex max-w-[1440px] flex-wrap items-center gap-4 px-6 py-2.5">
         {aba === "dala" ? (
           <>
+            {/* Seletor de Visão em Perdas: Cenário vs Cota */}
+            <div className="flex items-center gap-1.5">
+              <span
+                className="text-[10px] font-black tracking-wider uppercase"
+                style={{ color: PRIMARY }}
+              >
+                Visão
+              </span>
+              <div className="flex gap-1">
+                {(
+                  [
+                    ["cenario", "Por cenário"],
+                    ["cota", "Por cota"],
+                  ] as const
+                ).map(([v, label]) => (
+                  <button
+                    key={v}
+                    onClick={() => setVisaoPerdas(v)}
+                    className={`rounded-full border px-3 py-1 text-[11px] font-black transition-all duration-150 ${
+                      visaoPerdas === v
+                        ? "border-[#055071] bg-[#055071] text-white shadow-sm"
+                        : "border-slate-200 bg-white text-slate-600 hover:border-[#055071] hover:text-[#055071]"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="hidden w-px self-stretch bg-slate-200 sm:block" />
+
+            {/* Quando visão por cota em Perdas: Seletor de município e cota */}
+            {visaoPerdas === "cota" && (
+              <>
+                <div className="flex items-center gap-1.5">
+                  <span
+                    className="text-[10px] font-black tracking-wider uppercase"
+                    style={{ color: PRIMARY }}
+                  >
+                    Município
+                  </span>
+                  {munsPerdas.map((m) => (
+                    <button
+                      key={m}
+                      onClick={() => setMunPerdas(m)}
+                      className={`rounded-full border px-2.5 py-1 text-[11px] font-black transition-all duration-150 ${
+                        munPerdasAtivo === m
+                          ? "border-[#055071] bg-[#055071] text-white shadow-sm"
+                          : "border-slate-200 bg-white text-slate-600 hover:border-[#055071] hover:text-[#055071]"
+                      }`}
+                    >
+                      {m}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="hidden w-px self-stretch bg-slate-200 sm:block" />
+
+                {cotasPerdasDisponiveis.length > 0 && (
+                  <div className="flex items-center gap-1.5 overflow-x-auto max-w-[340px]">
+                    <span
+                      className="text-[10px] font-black tracking-wider uppercase shrink-0"
+                      style={{ color: PRIMARY }}
+                    >
+                      Cota
+                    </span>
+                    <div className="flex gap-1">
+                      {cotasPerdasDisponiveis.map((c) => (
+                        <button
+                          key={c}
+                          onClick={() => setCotaPerdas(c)}
+                          className={`rounded-full border px-2 py-0.5 text-[10.5px] font-bold transition-all duration-150 shrink-0 ${
+                            cotaPerdasAtiva === c
+                              ? "border-[#055071] bg-[#055071] text-white shadow-sm"
+                              : "border-slate-200 bg-white text-slate-600 hover:border-[#055071] hover:text-[#055071]"
+                          }`}
+                        >
+                          {c.replace(".", ",")}m
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="hidden w-px self-stretch bg-slate-200 sm:block" />
+              </>
+            )}
+
+            {/* Duração da interrupção (dias efetivos) */}
             <div className="flex items-center gap-2">
               <span
                 className="text-[10px] font-black tracking-wider uppercase"
                 style={{ color: PRIMARY }}
               >
-                Duração da interrupção
+                Duração
               </span>
-              <span className="text-[9px] text-slate-500">(dias efetivos)</span>
+              <div className="flex gap-1">
+                {DIAS_OPCOES.map((d) => (
+                  <button
+                    key={d}
+                    onClick={() => setDias(d)}
+                    className="rounded-full border px-2.5 py-1 text-[11px] font-black transition-all duration-150"
+                    style={
+                      dias === d
+                        ? {
+                            backgroundColor: PRIMARY,
+                            color: "#fff",
+                            borderColor: PRIMARY,
+                          }
+                        : {
+                            backgroundColor: "#fff",
+                            color: "#64748b",
+                            borderColor: "#e2e8f0",
+                          }
+                    }
+                  >
+                    {d}d
+                  </button>
+                ))}
+              </div>
             </div>
-            <div className="flex gap-1.5">
-              {DIAS_OPCOES.map((d) => (
-                <button
-                  key={d}
-                  onClick={() => setDias(d)}
-                  className="rounded-full border px-3 py-1 text-[11px] font-black transition-all duration-150"
-                  style={
-                    dias === d
-                      ? {
-                          backgroundColor: PRIMARY,
-                          color: "#fff",
-                          borderColor: PRIMARY,
-                        }
-                      : {
-                          backgroundColor: "#fff",
-                          color: "#64748b",
-                          borderColor: "#e2e8f0",
-                        }
-                  }
-                >
-                  {d} dias
-                </button>
-              ))}
-            </div>
+
             <div className="ml-auto flex items-center gap-1.5 whitespace-nowrap">
               <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#16a34a]" />
               <span
                 className="text-[10px] font-medium text-slate-500"
                 title="f = fator de interrupção: fração do ano em que a atividade ficou parada (dias efetivos ÷ 365)."
               >
-                f = {(dias / 365).toFixed(4)} · Todos os resultados atualizados
+                f = {(dias / 365).toFixed(4)} · Atualizado
               </span>
             </div>
           </>
         ) : (
           <>
+            {/* Seletor de Município em Danos Físicos */}
             {munsClimada.length > 1 && (
               <div className="flex items-center gap-1.5">
                 <span
@@ -107,33 +210,60 @@ export function DanosToolbar({ ctx }: { ctx: DanosCtx }) {
                 ))}
               </div>
             )}
-            {dadosClimada && dadosCotas && (
-              <>
-                <div className="hidden w-px self-stretch bg-slate-200 sm:block" />
-                <div className="flex gap-1.5">
-                  {(
-                    [
-                      ["cota", "Por cota"],
-                      ["rp", "CLIMADA (RP)"],
-                    ] as const
-                  ).map(([v, label]) => (
+
+            <div className="hidden w-px self-stretch bg-slate-200 sm:block" />
+
+            {/* Seletor de Visão em Danos Físicos: Cenário vs Cota vs RP */}
+            <div className="flex gap-1.5">
+              {(
+                [
+                  ["cenario", "Por cenário"],
+                  ["cota", "Por cota"],
+                  ...(dadosClimada ? [["rp", "CLIMADA (RP)"]] : []),
+                ] as const
+              ).map(([v, label]) => (
+                <button
+                  key={v}
+                  onClick={() => setVisao(v as "cenario" | "cota" | "rp")}
+                  className={`rounded-full border px-3 py-1 text-[11px] font-black transition-all duration-150 ${
+                    visao === v
+                      ? "border-[#055071] bg-[#055071] text-white shadow-sm"
+                      : "border-slate-200 bg-white text-slate-600 hover:border-[#055071] hover:text-[#055071]"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            <div className="hidden w-px self-stretch bg-slate-200 sm:block" />
+
+            {/* Sub-seletor baseado na visão ativa */}
+            {visao === "cenario" ? (
+              cenariosFisicosDisponiveis.length > 0 && (
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span
+                    className="text-[10px] font-black tracking-wider uppercase"
+                    style={{ color: PRIMARY }}
+                  >
+                    Cenário
+                  </span>
+                  {cenariosFisicosDisponiveis.map((c) => (
                     <button
-                      key={v}
-                      onClick={() => setVisao(v)}
-                      className={`rounded-full border px-3 py-1 text-[11px] font-black transition-all duration-150 ${
-                        visao === v
-                          ? "border-amber-700 bg-amber-700 text-white shadow-sm"
-                          : "border-slate-200 bg-white text-slate-600 hover:border-amber-400 hover:text-amber-800"
+                      key={c}
+                      onClick={() => setCenarioFisico(c)}
+                      className={`rounded-full border px-2.5 py-1 text-[11px] font-bold transition-all duration-150 ${
+                        cenarioFisicoAtivo === c
+                          ? "border-[#055071] bg-[#055071] text-white shadow-sm"
+                          : "border-slate-200 bg-white text-slate-600 hover:border-[#055071] hover:text-[#055071]"
                       }`}
                     >
-                      {label}
+                      {CENARIO_FISICO_LABELS[c] ?? c}
                     </button>
                   ))}
                 </div>
-              </>
-            )}
-            <div className="hidden w-px self-stretch bg-slate-200 sm:block" />
-            {cotaAtivo ? (
+              )
+            ) : visao === "cota" ? (
               <>
                 <div className="flex items-center gap-2">
                   <span
@@ -154,15 +284,9 @@ export function DanosToolbar({ ctx }: { ctx: DanosCtx }) {
                           : "border-slate-200 bg-white text-slate-600 hover:border-[#055071] hover:text-[#055071]"
                       }`}
                     >
-                      {c}
+                      {c.replace(".", ",")}
                     </button>
                   ))}
-                </div>
-                <div className="ml-auto flex items-center gap-1.5">
-                  <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-400" />
-                  <span className="text-[10px] font-medium text-slate-600">
-                    Sem período de retorno: sem EAI
-                  </span>
                 </div>
               </>
             ) : (
@@ -174,31 +298,24 @@ export function DanosToolbar({ ctx }: { ctx: DanosCtx }) {
                   >
                     Período de retorno
                   </span>
-                  <span className="text-[9px] text-slate-500">
-                    (cenário sintético CLIMADA)
-                  </span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {rpsDisponiveis.map((r) => (
                     <button
                       key={r}
                       onClick={() => setRp(r)}
-                      className={`rounded-full border px-3 py-1 text-[11px] font-black transition-all duration-150 ${
+                      className={`rounded-full border px-2.5 py-1 text-[11px] font-black transition-all duration-150 ${
                         rpAtivo === r
-                          ? "border-amber-700 bg-amber-700 text-white shadow-sm"
-                          : "border-slate-200 bg-white text-slate-600 hover:border-amber-400 hover:text-amber-800"
+                          ? "border-[#055071] bg-[#055071] text-white shadow-sm"
+                          : "border-slate-200 bg-white text-slate-600 hover:border-[#055071] hover:text-[#055071]"
                       }`}
-                      title={`Período de retorno de ${RP_ANOS[r]}, ${RP_PROBABILIDADE[r]} de chance/ano de ocorrer`}
                     >
                       {r}
+                      <span className="ml-1 text-[9px] font-normal opacity-80">
+                        ({RP_ANOS[r]}a)
+                      </span>
                     </button>
                   ))}
-                </div>
-                <div className="ml-auto flex items-center gap-1.5">
-                  <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-400" />
-                  <span className="text-[10px] font-medium text-slate-600">
-                    RP200 é a âncora de calibração usada pelo CLIMADA
-                  </span>
                 </div>
               </>
             )}

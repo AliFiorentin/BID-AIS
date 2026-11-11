@@ -18,11 +18,19 @@ const ClimadaPorCota = dynamic(() =>
 const ClimadaPorRp = dynamic(() =>
   import("./ClimadaPorRp").then((m) => m.ClimadaPorRp)
 )
+const DanosFisicosCenariosView = dynamic(() =>
+  import("./DanosFisicosCenariosView").then((m) => m.DanosFisicosCenariosView)
+)
+const PerdasPorCotaView = dynamic(() =>
+  import("./PerdasPorCotaView").then((m) => m.PerdasPorCotaView)
+)
 
 export function DanosClient(props: DanosProps) {
   const ctx = useDanosContext(props)
   const {
     aba,
+    visao,
+    visaoPerdas,
     semCurva,
     expo,
     dadosCotas,
@@ -45,8 +53,8 @@ export function DanosClient(props: DanosProps) {
         titulo={isPerdas ? "Perdas Operacionais" : "Danos Físicos"}
         subtitulo={
           isPerdas
-            ? "Avaliação de Impactos Econômicos Operacionais no Rio Grande do Sul"
-            : "Exposição por Cota do Rio e Modelagem de Risco Físico (CLIMADA)"
+            ? "Avaliação de Impactos Econômicos Operacionais no Rio Grande do Sul (DaLA)"
+            : "Exposição por Cenários de Inundação, Cotas do Rio e Modelagem CLIMADA"
         }
         nota={
           isPerdas
@@ -61,19 +69,31 @@ export function DanosClient(props: DanosProps) {
 
         <main className="min-w-0 flex-1">
           {aba === "dala" ? (
-            <DanosOperacionais ctx={ctx} />
-          ) : semCurva && expo ? (
-            <ExposicaoView
-              expo={expo}
-              diag={dadosCotas?.diagnostico}
-              mun={munClimadaAtivo}
-              cota={cota}
-            />
-          ) : cotaAtivo && dadosCotas && atualCota && cotaAtiva ? (
-            <ClimadaPorCota ctx={ctx} />
+            visaoPerdas === "cota" ? (
+              <PerdasPorCotaView ctx={ctx} />
+            ) : (
+              <DanosOperacionais ctx={ctx} />
+            )
+          ) : visao === "cenario" ? (
+            <DanosFisicosCenariosView ctx={ctx} />
+          ) : visao === "cota" ? (
+            semCurva && expo ? (
+              <ExposicaoView
+                expo={expo}
+                diag={dadosCotas?.diagnostico}
+                mun={munClimadaAtivo}
+                cota={cota}
+              />
+            ) : cotaAtivo && dadosCotas && atualCota && cotaAtiva ? (
+              <ClimadaPorCota ctx={ctx} />
+            ) : (
+              <DanosFisicosCenariosView ctx={ctx} />
+            )
           ) : dadosClimada && atualClimada && rpAtivo ? (
             <ClimadaPorRp ctx={ctx} />
-          ) : null}
+          ) : (
+            <DanosFisicosCenariosView ctx={ctx} />
+          )}
 
           <footer className="mt-12 border-t border-[#b3cdd8] pt-6 text-center print:mt-4">
             <p className="text-[11px] text-[#055071]">

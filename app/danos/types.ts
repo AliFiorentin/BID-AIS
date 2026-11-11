@@ -12,6 +12,34 @@ export interface CenarioDanos {
 }
 export type DanosData = Record<string, Record<string, CenarioDanos>>;
 
+export interface DanosFisicosCenario {
+  empresas_atingidas: number;
+  educacao_atingidas: number;
+  saude_atingidas: number;
+  empresas_valor_brl: number;
+  educacao_valor_brl: number;
+  saude_valor_brl: number;
+  total: number;
+}
+export type DanosFisicosCenariosData = Record<string, Record<string, DanosFisicosCenario>>;
+
+export interface PerdasOperacionaisCota {
+  dias_agudo: number;
+  dias_efetivos: number;
+  f_interrup: number;
+  empresas_vab: number;
+  educacao_perdas: number;
+  educacao_custo_adicional: number;
+  saude_producao: number;
+  agricultura_perdas: number;
+  total: number;
+  empresas_n: number;
+  educacao_n: number;
+  saude_n: number;
+  agricultura_ha: number;
+}
+export type PerdasOperacionaisCotasData = Record<string, Record<string, PerdasOperacionaisCota>>;
+
 // ─── Tipos — CLIMADA (protótipo) ───────────────────────────────────────────────
 export interface SetorResultado {
   setor: string;

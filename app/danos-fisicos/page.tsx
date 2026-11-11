@@ -9,22 +9,6 @@ export const metadata: Metadata = {
 }
 
 export default function DanosFisicosPage() {
-  const {
-    dados,
-    dadosClimada,
-    dadosClimadaMun,
-    dadosCotas,
-    dadosMedidas,
-    dadosExposicao,
-  } = getDanosPageData()
-  return (
-    <FisicosClient
-      dados={dados}
-      dadosClimada={dadosClimada}
-      dadosClimadaMun={dadosClimadaMun}
-      dadosCotas={dadosCotas}
-      dadosMedidas={dadosMedidas}
-      dadosExposicao={dadosExposicao}
-    />
-  )
+  const data = getDanosPageData()
+  return <FisicosClient {...data} />
 }

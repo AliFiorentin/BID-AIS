@@ -1,17 +1,46 @@
 import { readFileSync } from "fs";
 import { join } from "path";
-import type { DanosData, ClimadaData, CotasData, MedidasMun, ExposicaoMun } from "./DanosClient";
+import type {
+  DanosData,
+  ClimadaData,
+  CotasData,
+  MedidasMun,
+  ExposicaoMun,
+  DanosFisicosCenariosData,
+  PerdasOperacionaisCotasData,
+} from "./types";
 
 /**
  * Leitura server-side compartilhada entre a página cheia (app/danos/page.tsx)
  * e a rota interceptada (app/@modal/(.)danos/page.tsx) -- as duas rodam esse
  * mesmo código no servidor, só muda o invólucro visual (página vs modal).
  */
-export function getDanosPageData(): { dados: DanosData; dadosClimada: ClimadaData | null; dadosClimadaMun: Record<string, ClimadaData>; dadosCotas: Record<string, CotasData>; dadosMedidas: Record<string, MedidasMun>; dadosExposicao: Record<string, ExposicaoMun> } {
+export function getDanosPageData(): {
+  dados: DanosData;
+  dadosClimada: ClimadaData | null;
+  dadosClimadaMun: Record<string, ClimadaData>;
+  dadosCotas: Record<string, CotasData>;
+  dadosMedidas: Record<string, MedidasMun>;
+  dadosExposicao: Record<string, ExposicaoMun>;
+  dadosFisicosCenarios: DanosFisicosCenariosData;
+  dadosPerdasCotas: PerdasOperacionaisCotasData;
+} {
   let dados: DanosData = {};
   try {
     const p = join(process.cwd(), "public", "dados_convertidos", "danos_operacionais.json");
     dados = JSON.parse(readFileSync(p, "utf8"));
+  } catch { /* graceful degradation */ }
+
+  let dadosFisicosCenarios: DanosFisicosCenariosData = {};
+  try {
+    const p = join(process.cwd(), "public", "dados_convertidos", "danos_fisicos_cenarios.json");
+    dadosFisicosCenarios = JSON.parse(readFileSync(p, "utf8"));
+  } catch { /* graceful degradation */ }
+
+  let dadosPerdasCotas: PerdasOperacionaisCotasData = {};
+  try {
+    const p = join(process.cwd(), "public", "dados_convertidos", "perdas_operacionais_cotas.json");
+    dadosPerdasCotas = JSON.parse(readFileSync(p, "utf8"));
   } catch { /* graceful degradation */ }
 
   let dadosClimada: ClimadaData | null = null;
@@ -75,5 +104,14 @@ export function getDanosPageData(): { dados: DanosData; dadosClimada: ClimadaDat
     } catch { /* graceful degradation */ }
   }
 
-  return { dados, dadosClimada, dadosClimadaMun, dadosCotas, dadosMedidas, dadosExposicao };
+  return {
+    dados,
+    dadosClimada,
+    dadosClimadaMun,
+    dadosCotas,
+    dadosMedidas,
+    dadosExposicao,
+    dadosFisicosCenarios,
+    dadosPerdasCotas,
+  };
 }
