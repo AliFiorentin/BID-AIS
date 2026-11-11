@@ -3,6 +3,7 @@
 import React from "react";
 import { Building2, GraduationCap, HeartPulse, Sprout, Coins } from "lucide-react";
 import { FitHeight } from "@/components/FitHeight";
+import { ResumoPerdasDanos } from "@/components/ResumoPerdasDanos";
 import type { CotaRaster } from "@/hooks/useCotaRaster";
 import type { DetalheCotaMun, DetalheCotaValores } from "@/lib/cotas-types";
 
@@ -18,11 +19,26 @@ const fmtBRL = (v: number) => {
   return `R$ ${fmtN(v)}`;
 };
 const fmtCota = (v: number) => v.toFixed(2).replace(".", ",");
-const totalExposto = (v: DetalheCotaValores) => v.empresas.valor_exposto_brl + v.saude.valor_exposto_brl + v.educacao.valor_exposto_brl;
+const totalExposto = (v: DetalheCotaValores) =>
+  v.empresas.valor_exposto_brl + v.saude.valor_exposto_brl + v.educacao.valor_exposto_brl;
 
-interface Props { raster: CotaRaster; detalhe: DetalheCotaMun | null; municipio: string }
+interface Props {
+  raster: CotaRaster;
+  detalhe: DetalheCotaMun | null;
+  municipio: string;
+  cenario?: string;
+  isVisaoGeral?: boolean;
+  mostraImpacto?: boolean;
+}
 
-export function CotasPanel({ raster, detalhe, municipio }: Props) {
+export function CotasPanel({
+  raster,
+  detalhe,
+  municipio,
+  cenario = "Todas as cotas",
+  isVisaoGeral = false,
+  mostraImpacto = true,
+}: Props) {
   const { cota, meta } = raster;
   if (!detalhe || !meta || cota === null) {
     return <div className="py-6 text-center text-[11px] text-slate-500">Carregando valores por cota…</div>;
@@ -35,75 +51,182 @@ export function CotasPanel({ raster, detalhe, municipio }: Props) {
   const serie = chaves.map((c) => totalExposto(detalhe.por_cota[c]));
   const maxSerie = Math.max(...serie, 1);
   const cotas = chaves.map(parseFloat);
-  const x0 = cotas[0], x1 = cotas[cotas.length - 1];
+  const x0 = cotas[0],
+    x1 = cotas[cotas.length - 1];
   const px = (c: number) => 4 + ((c - x0) / (x1 - x0 || 1)) * 232;
-  const py = (val: number) => 50 - (val / maxSerie) * 44;
+  const py = (val: number) => 25 - (val / maxSerie) * 22;
   const linha = cotas.map((c, i) => `${px(c).toFixed(1)},${py(serie[i]).toFixed(1)}`).join(" ");
   const xAtual = px(Math.min(Math.max(cota, x0), x1));
 
   // Layout compacto (cabe no painel sem rolagem): empresas em largura total; educação e saúde
   // lado a lado; agricultura em uma linha.
-  const card = (titulo: string, icone: React.ReactNode, cor: string, linhas: [string, string][], valor: number, colunas = 2) => (
-    <div className="rounded-lg border bg-white/70 px-3 py-2 min-w-0 flex flex-col justify-center h-full" style={{ borderColor: cor + "55" }}>
-      {/* Cartões de meia largura (colunas=1): título e valor em linhas separadas, para o valor não encostar na borda. */}
-      <div className={colunas === 2 ? "flex items-center justify-between gap-2" : "flex flex-col items-start gap-0.5"}>
-        <div className="flex items-center gap-1 font-black text-xs shrink-0" style={{ color: cor }}>{icone}{titulo}</div>
-        <div className="font-black text-[13px] whitespace-nowrap tabular-nums text-slate-800">{fmtBRL(valor)}</div>
+  const card = (
+    titulo: string,
+    icone: React.ReactNode,
+    cor: string,
+    linhas: [string, string][],
+    valor: number,
+    colunas = 2
+  ) => (
+    <div
+      className="rounded-lg border bg-white/70 px-2.5 py-1.5 min-w-0 flex flex-col justify-center"
+      style={{ borderColor: cor + "55" }}
+    >
+      <div
+        className={
+          colunas === 2
+            ? "flex items-center justify-between gap-2"
+            : "flex flex-col items-start gap-0.5"
+        }
+      >
+        <div className="flex items-center gap-1 font-black text-xs shrink-0" style={{ color: cor }}>
+          {icone}
+          {titulo}
+        </div>
+        <div className="font-black text-xs whitespace-nowrap tabular-nums text-slate-800">
+          {fmtBRL(valor)}
+        </div>
       </div>
-      <div className={`mt-1 grid gap-x-3 gap-y-1 ${colunas === 2 ? "grid-cols-2" : "grid-cols-1"}`}>
+      <div className={`mt-0.5 grid gap-x-2.5 gap-y-0.5 ${colunas === 2 ? "grid-cols-2" : "grid-cols-1"}`}>
         {linhas.map(([k, val]) => (
-          <div key={k} className="flex justify-between gap-1 text-[11px] leading-snug text-slate-600"><span className="min-w-0 break-words">{k}</span><span className="font-bold tabular-nums text-slate-800 shrink-0">{val}</span></div>
+          <div
+            key={k}
+            className="flex justify-between gap-1 text-[10.5px] leading-snug text-slate-600"
+          >
+            <span className="min-w-0 break-words">{k}</span>
+            <span className="font-bold tabular-nums text-slate-800 shrink-0">{val}</span>
+          </div>
         ))}
       </div>
     </div>
   );
 
   return (
-    <FitHeight className="pb-2"><div className="flex flex-col gap-2">
-      <div className="rounded-lg px-3 py-2 text-white flex flex-col flex-[1.2] min-h-[120px]" style={{ background: "linear-gradient(135deg, #055071 0%, #0a6e9a 100%)" }}>
-        <div className="text-[9px] uppercase tracking-wider font-bold text-white/80">Valor exposto atingido · cota {fmtCota(cota)} m</div>
-        <div className="text-2xl font-black tabular-nums leading-tight">{fmtBRL(total)}</div>
-        <svg viewBox="0 0 240 54" preserveAspectRatio="none" className="w-full flex-1 min-h-9 mt-1" role="img" aria-label="Valor exposto por cota">
-          <polyline points={linha} fill="none" stroke="rgba(255,255,255,0.85)" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
-          <line x1={xAtual} x2={xAtual} y1="2" y2="52" stroke="#fbbf24" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
-        </svg>
-        <div className="flex justify-between text-[8px] text-white/70"><span>{fmtCota(x0)} m</span><span>{fmtCota(x1)} m</span></div>
-      </div>
+    <FitHeight min={0.6} max={1} className="pb-2">
+      <div className="flex flex-col gap-1.5">
+        {/* Cards de Perdas Operacionais e Danos Físicos */}
+        <ResumoPerdasDanos
+          municipio={municipio}
+          cenario={cenario}
+          isVisaoGeral={isVisaoGeral}
+          mostraImpacto={mostraImpacto}
+          cotaValores={v}
+          cotaAtual={cota}
+        />
 
-      {!v ? (
-        <p className="text-[11px] text-slate-500 px-1">Abaixo da menor cota ({fmtCota(x0)} m) ainda não há ponto sob água em {municipio}.</p>
-      ) : (
-        <div className="flex-[3] flex flex-col gap-2">
-          <div className="flex-1">{card("Empresas", <Building2 size={12} strokeWidth={2.5} />, "#055071", [
-            ["Atingidas", `${fmtN(v.empresas.n)}/${fmtN(detalhe.totais.empresas?.n ?? 0)}`],
-            ["Empregados", fmtN(v.empresas.empregados)],
-            ["Massa salarial", fmtBRL(v.empresas.massa_salarial_brl)],
-            ["Salário médio", `R$ ${fmtN(v.empresas.salario_medio_brl)}`],
-          ], v.empresas.valor_exposto_brl)}</div>
-          <div className="grid grid-cols-2 gap-2 flex-1">
-            {card("Educação", <GraduationCap size={12} strokeWidth={2.5} />, "#2da8cc", [
-              ["Escolas", `${fmtN(v.educacao.n)}/${fmtN(detalhe.totais.educacao?.n ?? 0)}`],
-              ["Matrículas", fmtN(v.educacao.matriculas)],
-              ["Docentes", fmtN(v.educacao.docentes)],
-            ], v.educacao.valor_exposto_brl, 1)}
-            {card("Saúde", <HeartPulse size={12} strokeWidth={2.5} />, "#e35d4b", [
-              ["Unidades", `${fmtN(v.saude.n)}/${fmtN(detalhe.totais.saude?.n ?? 0)}`],
-              ["Leitos", fmtN(v.saude.leitos)],
-              ["Profissionais", fmtN(v.saude.profissionais)],
-            ], v.saude.valor_exposto_brl, 1)}
+        {/* Card compacto do valor exposto atingido com curva hidrométrica */}
+        <div
+          className="rounded-lg px-2.5 py-1.5 text-white flex flex-col shrink-0 shadow-sm"
+          style={{ background: "linear-gradient(135deg, #055071 0%, #0a6e9a 100%)" }}
+        >
+          <div className="flex items-baseline justify-between gap-2">
+            <span className="text-[9px] uppercase tracking-wider font-bold text-white/85">
+              Valor exposto atingido · cota {fmtCota(cota)} m
+            </span>
+            <span className="text-base font-black tabular-nums leading-none">
+              {fmtBRL(total)}
+            </span>
           </div>
-          {v.agricultura && (
-            <div className="rounded-lg border bg-white/70 px-3 py-2 flex items-center justify-between shrink-0" style={{ borderColor: "#4d9e3a55" }}>
-              <div className="flex items-center gap-1 font-black text-xs" style={{ color: "#4d9e3a" }}><Sprout size={12} strokeWidth={2.5} />Agricultura</div>
-              <div className="text-[11px] text-slate-600">Área atingida <span className="font-black text-slate-800 tabular-nums">{fmtN(v.agricultura.area_ha)} ha</span></div>
-            </div>
-          )}
-          <div className="flex items-start gap-1 text-[8.5px] leading-tight text-slate-500 px-0.5">
-            <Coins size={9} className="shrink-0 mt-px" />
-            Exposição (valor de reposição sob água), não dano. Valores da cota-raster {fmtCota(parseFloat(chave!))} m. Ver página de Danos.
+          <svg
+            viewBox="0 0 240 28"
+            preserveAspectRatio="none"
+            className="w-full h-5 mt-1"
+            role="img"
+            aria-label="Valor exposto por cota"
+          >
+            <polyline
+              points={linha}
+              fill="none"
+              stroke="rgba(255,255,255,0.85)"
+              strokeWidth="1.5"
+              vectorEffect="non-scaling-stroke"
+            />
+            <line
+              x1={xAtual}
+              x2={xAtual}
+              y1="1"
+              y2="27"
+              stroke="#fbbf24"
+              strokeWidth="1.5"
+              vectorEffect="non-scaling-stroke"
+            />
+          </svg>
+          <div className="flex justify-between text-[7.5px] text-white/70 mt-0.5">
+            <span>{fmtCota(x0)} m</span>
+            <span>{fmtCota(x1)} m</span>
           </div>
         </div>
-      )}
-    </div></FitHeight>
+
+        {!v ? (
+          <p className="text-[11px] text-slate-500 px-1">
+            Abaixo da menor cota ({fmtCota(x0)} m) ainda não há ponto sob água em {municipio}.
+          </p>
+        ) : (
+          <div className="flex flex-col gap-1.5">
+            <div>
+              {card(
+                "Empresas",
+                <Building2 size={12} strokeWidth={2.5} />,
+                "#055071",
+                [
+                  ["Atingidas", `${fmtN(v.empresas.n)}/${fmtN(detalhe.totais.empresas?.n ?? 0)}`],
+                  ["Empregados", fmtN(v.empresas.empregados)],
+                  ["Massa salarial", fmtBRL(v.empresas.massa_salarial_brl)],
+                  ["Salário médio", `R$ ${fmtN(v.empresas.salario_medio_brl)}`],
+                ],
+                v.empresas.valor_exposto_brl
+              )}
+            </div>
+            <div className="grid grid-cols-2 gap-1.5">
+              {card(
+                "Educação",
+                <GraduationCap size={12} strokeWidth={2.5} />,
+                "#2da8cc",
+                [
+                  ["Escolas", `${fmtN(v.educacao.n)}/${fmtN(detalhe.totais.educacao?.n ?? 0)}`],
+                  ["Matrículas", fmtN(v.educacao.matriculas)],
+                  ["Docentes", fmtN(v.educacao.docentes)],
+                ],
+                v.educacao.valor_exposto_brl,
+                1
+              )}
+              {card(
+                "Saúde",
+                <HeartPulse size={12} strokeWidth={2.5} />,
+                "#e35d4b",
+                [
+                  ["Unidades", `${fmtN(v.saude.n)}/${fmtN(detalhe.totais.saude?.n ?? 0)}`],
+                  ["Leitos", fmtN(v.saude.leitos)],
+                  ["Profissionais", fmtN(v.saude.profissionais)],
+                ],
+                v.saude.valor_exposto_brl,
+                1
+              )}
+            </div>
+            {v.agricultura && (
+              <div
+                className="rounded-lg border bg-white/70 px-2.5 py-1.5 flex items-center justify-between shrink-0"
+                style={{ borderColor: "#4d9e3a55" }}
+              >
+                <div className="flex items-center gap-1 font-black text-xs" style={{ color: "#4d9e3a" }}>
+                  <Sprout size={12} strokeWidth={2.5} />
+                  Agricultura
+                </div>
+                <div className="text-[11px] text-slate-600">
+                  Área atingida{" "}
+                  <span className="font-black text-slate-800 tabular-nums">
+                    {fmtN(v.agricultura.area_ha)} ha
+                  </span>
+                </div>
+              </div>
+            )}
+            <div className="flex items-start gap-1 text-[8.5px] leading-tight text-slate-500 px-0.5">
+              <Coins size={9} className="shrink-0 mt-px" />
+              Exposição (valor de reposição sob água), não dano. Valores da cota-raster {fmtCota(parseFloat(chave!))} m. Ver página de Danos.
+            </div>
+          </div>
+        )}
+      </div>
+    </FitHeight>
   );
 }

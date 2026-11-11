@@ -8,6 +8,7 @@ import { MUNICIPIOS, PIORES_CENARIOS, COTAS_CENARIO, PANEL_CARD_BG, C } from "@/
 import { compactoBr, findCenarioData, slugify } from "@/lib/geo-utils"
 import { scaleTo } from "@/app/danos/helpers"
 import type { DanosData, ExposicaoMun, CenarioDanos } from "@/app/danos/types"
+import type { DetalheCotaValores } from "@/lib/cotas-types"
 
 const DIAS_PADRAO = 30
 const PRIMARY = C.primary
@@ -100,11 +101,15 @@ export function ResumoPerdasDanos({
   cenario,
   isVisaoGeral,
   mostraImpacto,
+  cotaValores,
+  cotaAtual,
 }: {
   municipio: string
   cenario: string
   isVisaoGeral: boolean
   mostraImpacto: boolean
+  cotaValores?: DetalheCotaValores | null
+  cotaAtual?: number | null
 }) {
   const [danosOp, setDanosOp] = useState<DanosData | null>(cacheOperacionais)
   const [fisicosCenarios, setFisicosCenarios] = useState<DanosFisicosCenarios | null>(cacheFisicosCenarios)
@@ -219,7 +224,17 @@ export function ResumoPerdasDanos({
 
   const isCotas = cenario === COTAS_CENARIO
 
-  if (!mostraImpacto) {
+  if (cotaValores !== undefined) {
+    rotuloExp =
+      cotaAtual != null
+        ? `Exposição (${cotaAtual.toFixed(2).replace(".", ",")}m)`
+        : "Exposição (cota)"
+    if (cotaValores) {
+      expEmp = cotaValores.empresas.valor_exposto_brl
+      expEdu = cotaValores.educacao.valor_exposto_brl
+      expSau = cotaValores.saude.valor_exposto_brl
+    }
+  } else if (!mostraImpacto) {
     rotuloExp = "Exposição (total)"
     const muns = isVisaoGeral ? MUNICIPIOS : [municipio]
     muns.forEach((m) => {
@@ -281,7 +296,7 @@ export function ResumoPerdasDanos({
     }
   }
   const expTotal = expEmp + expEdu + expSau
-  if (isVisaoGeral && isCotas) rotuloExp = "Exposição (picos)"
+  if (cotaValores === undefined && isVisaoGeral && isCotas) rotuloExp = "Exposição (picos)"
 
   return (
     <div className="flex flex-col gap-1">

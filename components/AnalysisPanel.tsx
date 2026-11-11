@@ -386,6 +386,9 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
                   raster={cotaRaster}
                   detalhe={cotaDetalhe}
                   municipio={municipio}
+                  cenario={cenario}
+                  isVisaoGeral={isVisaoGeral}
+                  mostraImpacto={mostraImpacto}
                 />
               </TabsContent>
             )}
