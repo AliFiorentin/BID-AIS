@@ -68,7 +68,7 @@ function TipCamada({ texto }: { texto: string }) {
   return (
     <span
       aria-hidden="true"
-      className="pointer-events-none absolute top-full left-1/2 z-30 mt-1 hidden -translate-x-1/2 rounded-md bg-slate-900 px-2 py-1 text-[10px] leading-none font-bold whitespace-nowrap text-white shadow-lg group-hover/tip:block"
+      className="pointer-events-none absolute top-full left-1/2 z-40 mt-1.5 hidden -translate-x-1/2 rounded-md bg-slate-900/95 px-2 py-1 text-[10px] leading-none font-bold whitespace-nowrap text-white shadow-xl backdrop-blur-sm group-hover/tip:block"
     >
       {texto}
     </span>
@@ -140,7 +140,7 @@ export function DashboardHeader({ dash }: DashboardHeaderProps) {
   return (
     <header
       ref={headerRef}
-      className="dash-header absolute top-1.5 right-3 left-3 z-20 flex flex-wrap items-center rounded-xl shadow-2xl print:hidden"
+      className="dash-header absolute top-1.5 right-3 left-3 z-30 flex flex-wrap items-center rounded-xl shadow-2xl print:hidden"
       style={{
         ...HEADER_GLASS,
         paddingInline: "0.75rem",

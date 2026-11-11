@@ -72,6 +72,9 @@ export function FiltersPanel({ dash }: FiltersPanelProps) {
   const showPanel = (temCamadaTabular || isCenarioAtivo) && !isVisaoGeral
   const [abertoFiltros, setAbertoFiltros] = React.useState(false)
 
+  // Espaço extra para não sobrepor os tooltips das camadas na barra superior
+  const topFiltros = headerBottom + 26
+
   // O popover nasce aberto (descobribilidade) e se recolhe sozinho uma vez em 6 s,
   // a menos que a pessoa interaja com ele antes. Trocar de município, cenário ou reiniciar reabre.
   const interagiu = React.useRef(false)
@@ -194,8 +197,8 @@ export function FiltersPanel({ dash }: FiltersPanelProps) {
           }}
           className="absolute right-4 z-10 flex w-44 flex-col gap-1.5 overflow-y-auto rounded-xl p-2 shadow-2xl print:hidden [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-track]:bg-transparent"
           style={{
-            top: headerBottom,
-            maxHeight: `calc(100vh - ${headerBottom + 20}px)`,
+            top: topFiltros,
+            maxHeight: `calc(100vh - ${topFiltros + 20}px)`,
             ...glassStyle(0.6),
           }}
         >
@@ -353,7 +356,7 @@ export function FiltersPanel({ dash }: FiltersPanelProps) {
         <button
           onClick={() => setShowFiltros(true)}
           className="active-press hover-lift absolute right-4 z-20 flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-black shadow-2xl focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none print:hidden"
-          style={{ top: headerBottom, ...glassStyle(0.6), color: C.primary }}
+          style={{ top: topFiltros, ...glassStyle(0.6), color: C.primary }}
         >
           <SlidersHorizontal size={12} strokeWidth={2.5} />
           Filtros
