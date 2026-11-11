@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useRef } from "react"
-import Map, { NavigationControl, AttributionControl } from "react-map-gl/maplibre"
+import Map, { NavigationControl } from "react-map-gl/maplibre"
 import { setWorkerUrl } from "maplibre-gl"
 import "maplibre-gl/dist/maplibre-gl.css"
 import type { DashboardState } from "@/hooks/useDashboard"
@@ -45,22 +45,6 @@ export function DashboardMap({ dash }: Props) {
   const mostraDanoFisico =
     showDanoFisico && renderMunicipio === "Porto Alegre" && !isTransitioning
 
-  useEffect(() => {
-    const map = mapRef.current?.getMap()
-    if (!map) return
-    const recolher = () => {
-      map
-        .getContainer()
-        .querySelector(".maplibregl-ctrl-attrib.maplibregl-compact-show")
-        ?.classList.remove("maplibregl-compact-show")
-    }
-    recolher()
-    map.on("resize", recolher)
-    return () => {
-      map.off("resize", recolher)
-    }
-  }, [mapReady, mapRef])
-
   return (
     <div className="absolute inset-0 z-0">
       <Map
@@ -85,12 +69,8 @@ export function DashboardMap({ dash }: Props) {
         cursor={cursor}
         onMouseEnter={() => setCursor("pointer")}
         onMouseLeave={() => setCursor("grab")}
-        onLoad={(e) => {
+        onLoad={() => {
           setMapReady(true)
-          e.target
-            .getContainer()
-            .querySelector(".maplibregl-ctrl-attrib")
-            ?.classList.remove("maplibregl-compact-show")
         }}
         onMoveEnd={dash.handleMapMoveEnd}
         maxPitch={0}
@@ -100,7 +80,6 @@ export function DashboardMap({ dash }: Props) {
         attributionControl={false}
       >
         <NavigationControl position="bottom-right" />
-        <AttributionControl compact position="bottom-left" />
 
         <MapControls dash={dash} />
 
