@@ -158,15 +158,20 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
           </p>
 
           <DataTable rows={[
-            ["Município",       "Cenário",                  "Referência temporal",           "Descrição",                               "Fonte"],
-            ["Eldorado do Sul", "Cenário ADA",              "Maio 2024",                     "Área Diretamente Afetada (extensão máxima registrada)", "MUP / Gov. RS"],
-            ["Lajeado",         "Cenário 27 m",             "Maio 2024, cota 27 m",          "Cota de 27 m no Rio Taquari",             "LabModel"],
-            ["Lajeado",         "Cenário 30 m",             "Maio 2024, cota 30 m",          "Cota de 30 m no Rio Taquari",             "LabModel"],
-            ["Porto Alegre",    "Cenário ADA",              "Maio 2024",                     "Área Diretamente Afetada (extensão máxima registrada)", "MUP / Gov. RS"],
-            ["Porto Alegre",    "Climada - UNU/EHS",        "Maio 2024",                     "Duração da inundação (dias) do evento real, usado na calibração do modelo CLIMADA (vetorizado, duração > 0)", "CLIMADA"],
-            ["Rio Grande",      "Cenário Maio 2024",        "Maio 2024",                     "Extensão modelada para o evento de maio", "CIEX/FURG"],
-            ["Rio Grande",      "Cenário Maio 2024 + 50%",  "Maio 2024, extensão ampliada",  "Extensão hipotética com 50% de área adicional (análise de sensibilidade)", "CIEX/FURG"],
-            ["Rio Grande",      "Cenário Setembro 2023",    "Setembro 2023",                 "Evento de menor magnitude (setembro 2023)", "CIEX/FURG"],
+            ["Município",       "Cenário / Simulação",      "Referência temporal",           "Descrição",                               "Fonte"],
+            ["Eldorado do Sul", "Cenário ADA (Inicial)",    "Maio 2024",                     "Área Diretamente Afetada observada em campo (extensão máxima registrada)", "MUP / Gov. RS"],
+            ["Eldorado do Sul", "Simulação por Cota",       "Série de cotas",                "Simulação gradual de inundação",          "IPH"],
+            ["Lajeado",         "Cenário ADA (Inicial)",    "Maio 2024",                     "Área Diretamente Afetada observada em campo (extensão máxima registrada)", "MUP / Gov. RS"],
+            ["Lajeado",         "Simulação 27m",            "Maio 2024, cota 27 m",          "Modelagem computacional cota 27 m no Rio Taquari", "LabModel"],
+            ["Lajeado",         "Simulação 30m",            "Maio 2024, cota 30 m",          "Modelagem computacional cota 30 m no Rio Taquari", "LabModel"],
+            ["Lajeado",         "Simulação por Cota",       "Série de cotas",                "Simulação gradual de inundação",          "IPH"],
+            ["Porto Alegre",    "Cenário ADA (Inicial)",    "Maio 2024",                     "Área Diretamente Afetada observada em campo com colapso do sistema de proteção", "MUP / Gov. RS"],
+            ["Porto Alegre",    "Simulação Climada Evento 2024", "Maio 2024",                "Simulação hidrodinâmica e duração do evento real", "CLIMADA - UNU/EHS"],
+            ["Porto Alegre",    "Simulação por Cota",       "Série de cotas (1,75 a 6,00 m)","Simulação gradual de inundação no Guaíba", "IPH"],
+            ["Rio Grande",      "Cenário ADA (Inicial)",    "Maio 2024",                     "Área Diretamente Afetada observada em campo (extensão máxima registrada)", "MUP / Gov. RS"],
+            ["Rio Grande",      "Simulação Maio 2024",      "Maio 2024",                     "Extensão modelada computacionalmente para o evento de maio", "CIEX/FURG"],
+            ["Rio Grande",      "Simulação Maio 2024 + 50%","Maio 2024, extensão ampliada",  "Simulação computacional com 50% de área adicional", "CIEX/FURG"],
+            ["Rio Grande",      "Simulação por Cota",       "Série de cotas (1,00 a 2,62 m)","Simulação gradual de inundação na Lagoa dos Patos", "CIEX"],
           ]} />
 
           <SubTitle>Definições-chave</SubTitle>
@@ -1349,16 +1354,20 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
 
           <GroupTitle id="lim-cenarios">A. Por cenário</GroupTitle>
 
-          <SubTitle nested>Cenário ADA (Eldorado do Sul e Porto Alegre)</SubTitle>
+          <SubTitle nested>Cenário ADA (Evento Observado — Todos os Municípios)</SubTitle>
           <ul className="ml-1 list-inside list-disc space-y-1.5 text-sm text-slate-700">
             <li>
-              Polígono de extensão máxima registrada pelo MUP/Gov. RS em maio de 2024: trata todos
-              os pontos no interior como atingidos de forma binária (dentro/fora), sem distinguir
-              lâmina d&apos;água rasa de submersão profunda.
+              Disponível como <strong>Cenário Inicial</strong> em todos os quatro municípios
+              (Eldorado do Sul, Lajeado, Porto Alegre e Rio Grande): delimita a Área Diretamente
+              Afetada oficial registrada pelo MUP e Defesa Civil do Estado do RS durante a enchente de maio de 2024.
             </li>
             <li>
-              Os cenários representam eventos independentes ou recortes alternativos e seus valores
-              não devem ser somados entre si.
+              É o único cenário de evento empírico observado em campo. Trata os pontos no interior como atingidos
+              de forma binária (dentro/fora), sendo a referência empírica oficial.
+            </li>
+            <li>
+              Os demais cenários (&ldquo;Simulação 27m&rdquo;, &ldquo;Simulação 30m&rdquo;, &ldquo;Simulação Climada Evento 2024&rdquo;,
+              &ldquo;Simulação Maio 2024&rdquo;) bem como as visões por cota constituem <strong>simulações numéricas/computacionais</strong>.
             </li>
           </ul>
 

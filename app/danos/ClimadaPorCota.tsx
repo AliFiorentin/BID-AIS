@@ -22,6 +22,9 @@ export function ClimadaPorCota({ ctx }: { ctx: DanosCtx }) {
                 {munClimadaAtivo === "Rio Grande" ? "CIEX" : "IPH"}
               </strong>
             </span>
+            <span className="rounded-md border border-amber-300 bg-amber-50 px-2 py-0.5 text-xs font-bold text-amber-800 shadow-xs">
+              Simulação por Cota
+            </span>
           </div>
           <Note type="warning">
             <strong>Protótipo exploratório</strong>, não uma métrica oficial do painel. Mede{" "}

@@ -68,7 +68,8 @@ export default function Dashboard() {
   } = dash
 
   const mostraDuracaoClimada =
-    renderMunicipio === "Porto Alegre" && cenario === MANCHA_DURACAO_CENARIO
+    renderMunicipio === "Porto Alegre" &&
+    (cenario === MANCHA_DURACAO_CENARIO || cenario === "Climada Evento 2024")
 
   // Legenda: nasce aberta e se recolhe sozinha em 6 s se ninguém mexer, reabrindo ao trocar município/cenário ou reiniciar.
   const legendaInteragiu = useRef(false)

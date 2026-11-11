@@ -26,7 +26,7 @@ export function ManchaCotaLayers({ dash }: { dash: DashboardState }) {
   // lib/constants.ts, MANCHA_DURACAO_CENARIO e pipeline/gerar_mancha_duracao_climada.py).
   const mostraDuracaoClimada =
     renderMunicipio === "Porto Alegre" &&
-    cenario === MANCHA_DURACAO_CENARIO &&
+    (cenario === MANCHA_DURACAO_CENARIO || cenario === "Climada Evento 2024") &&
     !isTransitioning
   const duracaoImgUrl = manchaDuracaoClimada
     ? "/dados_convertidos/porto_alegre/mancha_duracao_climada_evento_2024.webp"

@@ -55,7 +55,14 @@ export function PerdasPorCotaView({ ctx }: { ctx: DanosCtx }) {
               {munPerdasAtivo === "Rio Grande" ? "CIEX" : "IPH"}
             </strong>
           </span>
+          <span className="rounded-md border border-amber-300 bg-amber-50 px-2 py-0.5 text-xs font-bold text-amber-800 shadow-xs">
+            Simulação por Cota
+          </span>
         </div>
+
+        <Note type="warning">
+          <strong>Aviso de Simulação:</strong> As perdas operacionais por cota representam uma modelagem numérica de inundação gradual ({munPerdasAtivo === "Rio Grande" ? "CIEX" : "IPH"}), sujeita a incertezas metodológicas. Para dados consolidados do evento real observado, consulte o <strong>Cenário ADA</strong>.
+        </Note>
 
         <Note type="info">
           <strong>Metodologia DaLA aplicada a Cotas:</strong> As perdas operacionais estimam o fluxo de produção e

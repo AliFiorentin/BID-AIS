@@ -36,18 +36,24 @@ export const MUNS_CLIMADA = [
 export const DEFAULT_CENARIOS_FISICOS: Record<string, string> = {
   "Porto Alegre": "cenario_ada",
   "Eldorado do Sul": "cenario_ada",
-  "Lajeado": "cenario_27m",
-  "Rio Grande": "cenario_maio_2024",
+  "Lajeado": "cenario_ada",
+  "Rio Grande": "cenario_ada",
 }
 
 export const CENARIO_FISICO_LABELS: Record<string, string> = {
   cenario_ada: "Cenário ADA (Maio 2024)",
-  climada_evento_2024: "Climada Evento 2024",
-  cenario_27m: "Cenário 27m",
-  cenario_30m: "Cenário 30m",
-  cenario_maio_2024: "Cenário Maio 2024",
-  cenario_maio_2024_50: "Cenário Maio 2024 + 50%",
-  cenario_setembro_2023: "Cenário Setembro 2023",
+  climada_evento_2024: "Simulação Climada Evento 2024",
+  simulacao_climada_evento_2024: "Simulação Climada Evento 2024",
+  cenario_27m: "Simulação 27m",
+  simulacao_27m: "Simulação 27m",
+  cenario_30m: "Simulação 30m",
+  simulacao_30m: "Simulação 30m",
+  cenario_maio_2024: "Simulação Maio 2024",
+  simulacao_maio_2024: "Simulação Maio 2024",
+  cenario_maio_2024_50: "Simulação Maio 2024 + 50%",
+  simulacao_maio_2024_50: "Simulação Maio 2024 + 50%",
+  cenario_setembro_2023: "Simulação Setembro 2023",
+  simulacao_setembro_2023: "Simulação Setembro 2023",
 }
 
 export function scaleCotaTo(
@@ -168,26 +174,49 @@ export function useDanosContext({
   )
 
   const CENARIOS_VISAO_GERAL: Record<string, string> = {
-    "Eldorado do Sul": "Cenario ADA",
-    Lajeado: "Cenario 27m",
-    "Porto Alegre": "Climada Evento 2024",
-    "Rio Grande": "Cenario Maio 2024",
+    "Eldorado do Sul": "Cenário ADA",
+    Lajeado: "Cenário ADA",
+    "Porto Alegre": "Cenário ADA",
+    "Rio Grande": "Cenário ADA",
   }
 
   const pioresCenarios = Object.entries(dadosEscalados).map(([mun, cens]) => {
     const cenarioFixo = CENARIOS_VISAO_GERAL[mun]
     const entry =
-      cenarioFixo && cens[cenarioFixo]
-        ? ([cenarioFixo, cens[cenarioFixo]] as [string, CenarioDanos])
+      (cenarioFixo && (cens[cenarioFixo] ?? cens["Cenario ADA"]))
+        ? ([cenarioFixo, (cens[cenarioFixo] ?? cens["Cenario ADA"])] as [string, CenarioDanos])
         : Object.entries(cens).reduce((acc, cur) =>
             cur[1].total > acc[1].total ? cur : acc
           )
     return { mun, cenNome: entry[0], cenVal: entry[1] }
   })
 
-  const todosCenarios = Object.entries(dadosEscalados).flatMap(([mun, cens]) =>
-    Object.entries(cens).map(([cen, v]) => ({ mun, cen, v }))
-  )
+  // Deduplica cenários preservando Cenário ADA e preferindo Simulação XXX
+  const todosCenarios = Object.entries(dadosEscalados).flatMap(([mun, cens]) => {
+    const keys = Object.keys(cens)
+    const deduped: { mun: string; cen: string; v: CenarioDanos }[] = []
+    const seen = new Set<string>()
+
+    // ADA primeiro
+    if (cens["Cenário ADA"] || cens["Cenario ADA"]) {
+      deduped.push({ mun, cen: "Cenário ADA", v: cens["Cenário ADA"] ?? cens["Cenario ADA"]! })
+      seen.add("ada")
+    }
+
+    for (const [cen, v] of Object.entries(cens)) {
+      if (cen.toLowerCase().includes("ada")) continue
+      const isSim = cen.startsWith("Simulação ")
+      const norm = cen.replace(/^(Cen[aá]rio|Simula[cç][aã]o)\s+/, "").toLowerCase()
+      if (seen.has(norm)) continue
+      // Se não for Simulação, mas existe versão Simulação na lista, pula esta
+      if (!isSim && keys.some(k => k.startsWith("Simulação ") && k.toLowerCase().includes(norm))) {
+        continue
+      }
+      seen.add(norm)
+      deduped.push({ mun, cen, v })
+    }
+    return deduped
+  })
   const maxTotalDala = Math.max(...todosCenarios.map((c) => c.v.total), 1)
 
   // ── Município ativo da aba Danos Físicos ──
@@ -207,9 +236,16 @@ export function useDanosContext({
     ? munClimada
     : munsClimada[0] ?? "Porto Alegre"
 
-  // Cenários Físicos disponíveis para o município ativo
-  const cenariosFisicosDisponiveis = Object.keys(
-    dadosFisicosCenarios[munClimadaAtivo] ?? {}
+  // Cenários Físicos disponíveis para o município ativo (Cenário ADA primeiro, e preferindo Simulação)
+  const rawCenarios = Object.keys(dadosFisicosCenarios[munClimadaAtivo] ?? {})
+  const filteredCenarios = rawCenarios.filter((k) => {
+    if (k === "cenario_ada") return true
+    if (k.startsWith("cenario_") && rawCenarios.includes(k.replace("cenario_", "simulacao_"))) return false
+    if (k === "climada_evento_2024" && rawCenarios.includes("simulacao_climada_evento_2024")) return false
+    return true
+  })
+  const cenariosFisicosDisponiveis = filteredCenarios.sort((a, b) =>
+    a === "cenario_ada" ? -1 : b === "cenario_ada" ? 1 : a.localeCompare(b)
   )
   const cenarioFisicoAtivo = cenariosFisicosDisponiveis.includes(cenarioFisico)
     ? cenarioFisico

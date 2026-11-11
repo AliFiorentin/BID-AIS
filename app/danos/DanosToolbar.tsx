@@ -327,6 +327,18 @@ export function DanosToolbar({ ctx }: { ctx: DanosCtx }) {
             )}
           </>
         )}
+
+        {/* Badge indicando simulação quando ativo */}
+        {((aba === "dala" && visaoPerdas === "cota") ||
+          (aba === "climada" && (visao === "cota" || visao === "rp" || cenarioFisicoAtivo !== "cenario_ada"))) && (
+          <div
+            className="ml-auto hidden items-center gap-1.5 rounded-full border border-amber-300/80 bg-amber-50/90 px-2.5 py-0.5 text-[10px] font-bold text-amber-800 shadow-xs lg:flex"
+            title="Cenário ou cota computacional modelado numericamente"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse" />
+            <span>Simulação Numérica</span>
+          </div>
+        )}
       </div>
     </div>
   )

@@ -23,6 +23,10 @@
       "Cenario ADA": {
         "pop_atingida": 29404,
         "pct_atingida": 70.1
+      },
+      "Cenário ADA": {
+        "pop_atingida": 29404,
+        "pct_atingida": 70.1
       }
     }
   },
@@ -54,6 +58,22 @@
       "Cenario 30m": {
         "pop_atingida": 6986,
         "pct_atingida": 6.9
+      },
+      "Cenario ADA": {
+        "pop_atingida": 13507,
+        "pct_atingida": 13.4
+      },
+      "Cenário ADA": {
+        "pop_atingida": 13507,
+        "pct_atingida": 13.4
+      },
+      "Simulação 27m": {
+        "pop_atingida": 4931,
+        "pct_atingida": 4.9
+      },
+      "Simulação 30m": {
+        "pop_atingida": 6986,
+        "pct_atingida": 6.9
       }
     }
   },
@@ -79,8 +99,8 @@
     ],
     "cenarios": {
       "Cenario ADA": {
-        "pop_atingida": 148825,
-        "pct_atingida": 11.1
+        "pop_atingida": 165400,
+        "pct_atingida": 12.3
       },
       "Climada RP10": {
         "pop_atingida": 36080,
@@ -111,6 +131,10 @@
         "pct_atingida": 12.3
       },
       "Climada Evento 2024": {
+        "pop_atingida": 165400,
+        "pct_atingida": 12.3
+      },
+      "Cenário ADA": {
         "pop_atingida": 165400,
         "pct_atingida": 12.3
       }
@@ -152,6 +176,26 @@
       "Todas as cotas": {
         "pop_atingida": 22899,
         "pct_atingida": 11.5
+      },
+      "Cenario ADA": {
+        "pop_atingida": 59499,
+        "pct_atingida": 30.0
+      },
+      "Cenário ADA": {
+        "pop_atingida": 59499,
+        "pct_atingida": 30.0
+      },
+      "Simulação Maio 2024": {
+        "pop_atingida": 23012,
+        "pct_atingida": 11.6
+      },
+      "Simulação Maio 2024 + 50%": {
+        "pop_atingida": 80077,
+        "pct_atingida": 40.4
+      },
+      "Simulação Setembro 2023": {
+        "pop_atingida": 7798,
+        "pct_atingida": 3.9
       }
     }
   }

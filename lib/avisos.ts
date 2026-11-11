@@ -40,6 +40,19 @@ export const AVISO_MAIO_2024_MAIS_50 =
 export const AVISO_MANCHA_PADRAO =
   "Extensão da área alagada segundo o cenário selecionado. Nos cenários estáticos (polígono), os indicadores refletem interseção espacial (atingido sim/não); no cenário Todas as cotas, acompanham o nível do rio cota a cota."
 
+export const AVISO_COTAS_SIMULACAO =
+  "O modo Por Cota é uma simulação de inundação gradual baseada em níveis de água estáticos/hidrodinâmicos do rio, sujeita a incertezas de modelagem e relevo."
+
+export const AVISO_SIMULACAO =
+  "Este cenário é uma simulação numérica sujeita a incertezas de modelagem e calibração hidrodinâmica. Para dados do evento real observado em campo, utilize o Cenário ADA."
+
+/** Verifica se o cenário é uma simulação (modelagem numérica, cotas, RP ou sintético). O único cenário observado em campo é o ADA. */
+export function isCenarioSimulacao(cenario: string | null | undefined): boolean {
+  if (!cenario || cenario === "(nenhum)") return false
+  if (cenario === "Cenário ADA" || cenario === "Cenario ADA" || cenario === "cenario_ada") return false
+  return true
+}
+
 /** Defasagem das bases (RAIS 2023, Censo Escolar 2024, CNES abr/2024) frente ao ano do evento. */
 export function AVISO_BASES(ano: number): string {
   const relacao =

@@ -16,10 +16,16 @@ export const scenarioSlug = (mun: string, cen: string) =>
 // area_atingida.json) guardam o rotulo do cenario sem acento ("Cenario ADA"),
 // vindo direto de config.py, enquanto o frontend usa o rotulo acentuado
 // ("Cenário ADA") em CENARIOS_CONFIG/PIORES_CENARIOS -- casa os dois pelo slug.
-export const findCenarioData = <T,>(cenarios: Record<string, T>, cen: string): T | null => {
+export const findCenarioData = <T,>(cenarios: Record<string, T> | null | undefined, cen: string): T | null => {
+  if (!cenarios) return null;
   if (cenarios[cen]) return cenarios[cen];
   const s = slugify(cen);
-  const match = Object.entries(cenarios).find(([k]) => slugify(k) === s);
+  if (cenarios[s]) return cenarios[s];
+  const normS = s.replace(/^(cenario|simulacao)_/, "");
+  const match = Object.entries(cenarios).find(([k]) => {
+    const sk = slugify(k);
+    return sk === s || sk.replace(/^(cenario|simulacao)_/, "") === normS;
+  });
   return match ? match[1] : null;
 };
 

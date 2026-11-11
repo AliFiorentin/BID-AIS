@@ -26,12 +26,12 @@ export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
     )
   }
 
-  // Piores cenários de cada município para o resumo inicial
+  // Piores cenários de cada município para o resumo inicial (Cenário ADA em todos)
   const pioresCenarios = [
     { mun: "Porto Alegre", cen: "cenario_ada", d: dadosFisicosCenarios["Porto Alegre"]?.["cenario_ada"] },
     { mun: "Eldorado do Sul", cen: "cenario_ada", d: dadosFisicosCenarios["Eldorado do Sul"]?.["cenario_ada"] },
-    { mun: "Rio Grande", cen: "cenario_maio_2024", d: dadosFisicosCenarios["Rio Grande"]?.["cenario_maio_2024"] },
-    { mun: "Lajeado", cen: "cenario_27m", d: dadosFisicosCenarios["Lajeado"]?.["cenario_27m"] },
+    { mun: "Rio Grande", cen: "cenario_ada", d: dadosFisicosCenarios["Rio Grande"]?.["cenario_ada"] },
+    { mun: "Lajeado", cen: "cenario_ada", d: dadosFisicosCenarios["Lajeado"]?.["cenario_ada"] },
   ].filter((p) => !!p.d)
 
   const totalGeralRs = pioresCenarios.reduce((acc, cur) => acc + (cur.d?.total ?? 0), 0)
@@ -45,6 +45,18 @@ export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
           reconstruir e repor o patrimônio físico (edificações, maquinários, estoques e equipamentos públicos)
           localizado dentro da mancha de inundação de cada evento. É o limite superior (teto) do dano físico.
         </Note>
+
+        {cenarioFisicoAtivo !== "cenario_ada" && (
+          <div className="my-3 rounded-xl border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900 shadow-sm flex items-start gap-2.5">
+            <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600 mt-0.5" />
+            <div>
+              <p className="font-bold">Aviso de Simulação Numérica ({CENARIO_FISICO_LABELS[cenarioFisicoAtivo] ?? cenarioFisicoAtivo}):</p>
+              <p className="mt-0.5 leading-relaxed text-[11.5px]">
+                Este cenário é uma <strong>modelagem computacional/simulação numérica</strong>, sujeita a incertezas de modelo e calibração hidrodinâmica. Para dados do evento histórico real observado em campo, utilize o <strong>Cenário ADA (Maio 2024)</strong>.
+              </p>
+            </div>
+          </div>
+        )}
 
         {munClimadaAtivo === "Porto Alegre" && (
           <div className="my-4 rounded-xl border border-amber-300 bg-amber-50 p-4 text-xs text-amber-900 shadow-sm flex items-start gap-3">

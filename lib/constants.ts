@@ -134,11 +134,9 @@ export const fonteCotas = (mun: string): "IPH" | "CIEX" =>
 
 export const CENARIOS_CONFIG: Record<string, string[]> = {
   "Eldorado do Sul": ["Cenário ADA", COTAS_CENARIO],
-  Lajeado: ["Cenário 27m", "Cenário 30m", COTAS_CENARIO],
-  // "Cenário ADA" primeiro -- vira o cenário padrão/inicial de Porto Alegre
-  // (cenariosDisp[0] em useScenarioData.ts, quando não há permalink específico).
-  "Porto Alegre": ["Cenário ADA", "Climada Evento 2024", COTAS_CENARIO],
-  "Rio Grande": ["Cenário Maio 2024", "Cenário Maio 2024 + 50%", COTAS_CENARIO],
+  Lajeado: ["Cenário ADA", "Simulação 27m", "Simulação 30m", COTAS_CENARIO],
+  "Porto Alegre": ["Cenário ADA", "Simulação Climada Evento 2024", COTAS_CENARIO],
+  "Rio Grande": ["Cenário ADA", "Simulação Maio 2024", "Simulação Maio 2024 + 50%", COTAS_CENARIO],
 }
 
 export const INFRAESTRUTURA_CONFIG: Record<string, string[]> = {
@@ -227,14 +225,22 @@ export const AGRI_BOUNDS: Record<
 }
 
 export const CENARIO_PERIODO: Record<string, string> = {
+  lajeado___cenario_ada: "maio_2024",
   lajeado___cenario_27m: "maio_2024",
   lajeado___cenario_30m: "maio_2024",
+  lajeado___simulacao_27m: "maio_2024",
+  lajeado___simulacao_30m: "maio_2024",
   eldorado_do_sul___cenario_ada: "maio_2024",
   porto_alegre___cenario_ada: "maio_2024",
   porto_alegre___climada_evento_2024: "maio_2024",
+  porto_alegre___simulacao_climada_evento_2024: "maio_2024",
+  rio_grande___cenario_ada: "maio_2024",
   rio_grande___cenario_maio_2024: "maio_2024",
   rio_grande___cenario_maio_2024_50: "maio_2024",
   rio_grande___cenario_setembro_2023: "setembro_2023",
+  rio_grande___simulacao_maio_2024: "maio_2024",
+  rio_grande___simulacao_maio_2024_50: "maio_2024",
+  rio_grande___simulacao_setembro_2023: "setembro_2023",
 }
 
 export interface ImpactoCoef {
@@ -327,15 +333,24 @@ export const STAFF_LABELS: Record<string, string> = {
 // quebraria o casamento com os arquivos *_ATINGIDOS_<slug>.geojson já
 // publicados pelo pipeline.
 const CENARIO_DISPLAY_LABEL: Record<string, string> = {
-  "Climada Evento 2024": "Climada - UNU/EHS",
+  "Climada Evento 2024": "Simulação Climada Evento 2024",
+  "Simulação Climada Evento 2024": "Simulação Climada Evento 2024",
+  "Cenário 27m": "Simulação 27m",
+  "Cenário 30m": "Simulação 30m",
+  "Cenário Maio 2024": "Simulação Maio 2024",
+  "Cenário Maio 2024 + 50%": "Simulação Maio 2024 + 50%",
+  "Cenário Setembro 2023": "Simulação Setembro 2023",
 }
-export const cenarioLabel = (cen: string): string => CENARIO_DISPLAY_LABEL[cen] ?? cen
+export const cenarioLabel = (cen: string): string => {
+  if (cen === "Cenário ADA" || cen === "Cenario ADA") return "Cenário ADA"
+  return CENARIO_DISPLAY_LABEL[cen] ?? cen
+}
 
 export const PIORES_CENARIOS: Record<string, string> = {
   "Eldorado do Sul": "Cenário ADA",
-  Lajeado: "Cenário 27m",
+  Lajeado: "Cenário ADA",
   "Porto Alegre": "Cenário ADA",
-  "Rio Grande": "Cenário Maio 2024",
+  "Rio Grande": "Cenário ADA",
 }
 
 // Área Atingida na Visão Geral RS usa a mancha estadual única (ADA
@@ -373,6 +388,8 @@ export const DANO_FISICO_COLOR_STOPS: (string | number)[] = [
 // Físico acima; ver pipeline/gerar_mancha_duracao_climada.py). Paleta azul
 // (Blues), deliberadamente distinta das demais (plasma da população,
 // vermelho/laranja dos heatmaps e do Dano Físico).
-export const MANCHA_DURACAO_CENARIO = "Climada Evento 2024"
+export const MANCHA_DURACAO_CENARIO = "Simulação Climada Evento 2024"
+export const isManchaDuracao = (cen: string): boolean =>
+  cen === "Simulação Climada Evento 2024" || cen === "Climada Evento 2024"
 export const MANCHA_DURACAO_GRADIENT_CSS =
   "linear-gradient(to right, #f7fbff, #c6dbef, #6baed6, #2171b5, #08306b)"

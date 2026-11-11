@@ -28,17 +28,44 @@
       "educacao_valor_brl": 15837011.23,
       "saude_valor_brl": 28813158.0,
       "total": 152273462.35
+    },
+    "cenario_ada": {
+      "empresas_atingidas": 835,
+      "educacao_atingidas": 21,
+      "saude_atingidas": 263,
+      "empresas_valor_brl": 463346268.3,
+      "educacao_valor_brl": 116516554.5,
+      "saude_valor_brl": 65148066.72,
+      "total": 645010889.52
+    },
+    "simulacao_27m": {
+      "empresas_atingidas": 153,
+      "educacao_atingidas": 1,
+      "saude_atingidas": 132,
+      "empresas_valor_brl": 55678836.42,
+      "educacao_valor_brl": 14868673.11,
+      "saude_valor_brl": 19653606.72,
+      "total": 90201116.25
+    },
+    "simulacao_30m": {
+      "empresas_atingidas": 294,
+      "educacao_atingidas": 2,
+      "saude_atingidas": 206,
+      "empresas_valor_brl": 107623293.12,
+      "educacao_valor_brl": 15837011.23,
+      "saude_valor_brl": 28813158.0,
+      "total": 152273462.35
     }
   },
   "Porto Alegre": {
     "cenario_ada": {
-      "empresas_atingidas": 8692,
-      "educacao_atingidas": 126,
-      "saude_atingidas": 852,
-      "empresas_valor_brl": 9470904510.6,
-      "educacao_valor_brl": 331932179.72,
-      "saude_valor_brl": 639227492.64,
-      "total": 10442064182.96
+      "empresas_atingidas": 7308,
+      "educacao_atingidas": 139,
+      "saude_atingidas": 1087,
+      "empresas_valor_brl": 5716947135.78,
+      "educacao_valor_brl": 352003388.28,
+      "saude_valor_brl": 517120362.0,
+      "total": 6586070886.06
     },
     "climada_evento_2024": {
       "empresas_atingidas": 7308,
@@ -70,6 +97,42 @@
       "total": 2015750918.61
     },
     "cenario_setembro_2023": {
+      "empresas_atingidas": 112,
+      "educacao_atingidas": 5,
+      "saude_atingidas": 12,
+      "empresas_valor_brl": 49100929.74,
+      "educacao_valor_brl": 19974989.88,
+      "saude_valor_brl": 5641313.04,
+      "total": 74717232.66
+    },
+    "cenario_ada": {
+      "empresas_atingidas": 2177,
+      "educacao_atingidas": 89,
+      "saude_atingidas": 369,
+      "empresas_valor_brl": 1305451936.26,
+      "educacao_valor_brl": 396287683.62,
+      "saude_valor_brl": 363167109.36,
+      "total": 2064906729.24
+    },
+    "simulacao_maio_2024": {
+      "empresas_atingidas": 601,
+      "educacao_atingidas": 18,
+      "saude_atingidas": 66,
+      "empresas_valor_brl": 257878936.08,
+      "educacao_valor_brl": 65654892.21,
+      "saude_valor_brl": 72245202.48,
+      "total": 395779030.77
+    },
+    "simulacao_maio_2024_50": {
+      "empresas_atingidas": 2400,
+      "educacao_atingidas": 96,
+      "saude_atingidas": 394,
+      "empresas_valor_brl": 1343988959.04,
+      "educacao_valor_brl": 284331138.21,
+      "saude_valor_brl": 387430821.36,
+      "total": 2015750918.61
+    },
+    "simulacao_setembro_2023": {
       "empresas_atingidas": 112,
       "educacao_atingidas": 5,
       "saude_atingidas": 12,
