@@ -283,9 +283,9 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="w-[98vw] sm:max-w-none max-w-[1720px] h-[90vh] max-h-[920px] overflow-hidden flex flex-col p-0 gap-0 sm:rounded-2xl shadow-2xl">
+      <DialogContent className="w-[98vw] sm:max-w-none max-w-[1720px] h-[90vh] max-h-[920px] overflow-hidden flex flex-col p-0 gap-0 sm:rounded-2xl shadow-2xl [&>button]:text-white/80 [&>button:hover]:text-white">
         {/* Header com Seletores Únicos e Ações */}
-        <DialogHeader className="shrink-0 p-4 bg-gradient-to-r from-[#055071] to-[#0a6e9a] text-white">
+        <DialogHeader className="shrink-0 p-4 bg-[#055071] text-white">
           <div className="flex items-center justify-between pr-8 flex-wrap gap-2">
             <div className="flex items-center gap-2.5">
               <div className="p-1.5 rounded-lg bg-white/10 backdrop-blur-sm">
