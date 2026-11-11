@@ -28,6 +28,7 @@ interface ScenarioCompareMapProps {
   onCenarioBChange?: (c: string) => void
   onClose?: () => void
   isFullScreen?: boolean
+  showPoints?: boolean
 }
 
 interface MapSideProps {
@@ -215,6 +216,7 @@ function ScenarioCompareMapInner({
   onCenarioBChange,
   onClose,
   isFullScreen = true,
+  showPoints: externalShowPoints,
 }: ScenarioCompareMapProps) {
   const cenariosList = useMemo(() => CENARIOS_CONFIG[municipio] ?? [], [municipio])
 
@@ -243,7 +245,8 @@ function ScenarioCompareMapInner({
     onCenarioBChange?.(val)
   }
 
-  const [showPoints, setShowPoints] = useState(true)
+  const [internalShowPoints, setInternalShowPoints] = useState(true)
+  const showPoints = externalShowPoints !== undefined ? externalShowPoints : internalShowPoints
 
   // Sincronização direta de câmeras via refs WebGL (0 re-renders de React ao arrastar/zoom)
   const mapRefA = useRef<MapRef | null>(null)
@@ -313,67 +316,8 @@ function ScenarioCompareMapInner({
         isFullScreen ? "fixed inset-0 z-40 bg-slate-900" : "rounded-xl border border-slate-200"
       }`}
     >
-      {/* ── BARRA FLUTUANTE SUPERIOR ── */}
-      {!isFullScreen ? (
-        /* Modo Embutido no Modal: Apenas UMA fonte de seleção (no cabeçalho do modal).
-           Aqui mostramos apenas os badges indicativos (Lado A e Lado B) e o controle de pontos. */
-        <div className="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 rounded-xl bg-slate-900/85 px-3.5 py-2 text-white shadow-xl backdrop-blur-md border border-white/15">
-          <div className="flex items-center gap-2.5 flex-wrap">
-            <div className="flex items-center gap-1.5 border-r border-white/20 pr-3">
-              <Layers size={14} className="text-cyan-400" />
-              <span className="text-xs font-black tracking-wide uppercase">
-                Swipe de Cenários · {municipio}
-              </span>
-            </div>
-
-            {/* Badge Lado A (Esquerda / Azul) */}
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/10 border border-white/15">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#055071] border border-white/60 shrink-0" />
-              <span className="text-[10px] font-bold text-white/70 uppercase">Lado A:</span>
-              <span className="text-xs font-semibold text-white max-w-[220px] truncate" title={cenarioLabel(effectiveCenarioA)}>
-                {cenarioLabel(effectiveCenarioA)}
-              </span>
-            </div>
-
-            {/* Badge Lado B (Direita / Vermelho) */}
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/10 border border-white/15">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#c9402e] border border-white/60 shrink-0" />
-              <span className="text-[10px] font-bold text-white/70 uppercase">Lado B:</span>
-              <span className="text-xs font-semibold text-white max-w-[220px] truncate" title={cenarioLabel(effectiveCenarioB)}>
-                {cenarioLabel(effectiveCenarioB)}
-              </span>
-            </div>
-          </div>
-
-          {/* Ações: Alternar Pontos e Fechar */}
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setShowPoints((p) => !p)}
-              className={`px-2.5 py-1 rounded-md text-[10.5px] font-bold border transition-colors ${
-                showPoints
-                  ? "bg-white/20 border-white/30 text-white"
-                  : "bg-white/5 border-white/15 text-white/60 hover:text-white"
-              }`}
-            >
-              {showPoints ? "Ocultar Pontos" : "Exibir Pontos"}
-            </button>
-
-            {onClose && (
-              <button
-                type="button"
-                onClick={onClose}
-                aria-label="Fechar comparador de mapa"
-                className="flex items-center gap-1 rounded-md bg-white/10 hover:bg-white/20 px-2.5 py-1 text-xs font-bold text-white transition-colors border border-white/15"
-              >
-                <X size={13} />
-                <span>Fechar</span>
-              </button>
-            )}
-          </div>
-        </div>
-      ) : (
-        /* Modo Tela Cheia: Quando não há o cabeçalho do diálogo, exibimos os Selects diretamente na barra flutuante */
+      {/* ── BARRA FLUTUANTE SUPERIOR (Apenas no Modo Tela Cheia) ── */}
+      {isFullScreen && (
         <div className="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 rounded-xl bg-slate-900/85 px-3 py-2 text-white shadow-2xl backdrop-blur-md border border-white/15">
           <div className="flex items-center gap-3 flex-wrap">
             <div className="flex items-center gap-1.5 border-r border-white/20 pr-3">
@@ -422,7 +366,7 @@ function ScenarioCompareMapInner({
             {/* Toggle Pontos */}
             <button
               type="button"
-              onClick={() => setShowPoints(!showPoints)}
+              onClick={() => setInternalShowPoints(!showPoints)}
               className={`px-2 py-1 rounded text-[10px] font-bold border transition-colors ${
                 showPoints
                   ? "bg-white/20 border-white/30 text-white"
@@ -442,7 +386,7 @@ function ScenarioCompareMapInner({
               className="flex items-center gap-1 rounded-lg bg-white/10 hover:bg-white/20 px-2 py-1 text-xs font-bold text-white transition-colors border border-white/15"
             >
               <X size={14} />
-              <span>Fechar Comparação</span>
+              <span>Fechar Tela Cheia</span>
             </button>
           )}
         </div>

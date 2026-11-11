@@ -34,9 +34,9 @@ import {
   Sprout,
   Copy,
   Check,
-  Map as MapIcon,
   Table as TableIcon,
   Maximize2,
+  Layers,
 } from "lucide-react"
 
 interface Props {
@@ -114,7 +114,7 @@ export function CenariosComparatorModal({
 }: Props) {
   const mInicial = MUNICIPIOS.includes(municipioAtual) ? municipioAtual : "Porto Alegre"
   const [selectedMun, setSelectedMun] = useState<string>(mInicial)
-  const [viewMode, setViewMode] = useState<"tabela" | "mapa">("tabela")
+  const [showPoints, setShowPoints] = useState(true)
 
   const cenariosList = useMemo(() => {
     return CENARIOS_CONFIG[selectedMun] || []
@@ -283,35 +283,71 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="w-[95vw] max-w-[1440px] h-[88vh] max-h-[880px] overflow-hidden flex flex-col p-0 gap-0 sm:rounded-2xl shadow-2xl">
-        {/* Header */}
+      <DialogContent className="w-[98vw] sm:max-w-none max-w-[1720px] h-[90vh] max-h-[920px] overflow-hidden flex flex-col p-0 gap-0 sm:rounded-2xl shadow-2xl">
+        {/* Header com Seletores Únicos e Ações */}
         <DialogHeader className="shrink-0 p-4 bg-gradient-to-r from-[#055071] to-[#0a6e9a] text-white">
-          <div className="flex items-center justify-between pr-8">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between pr-8 flex-wrap gap-2">
+            <div className="flex items-center gap-2.5">
               <div className="p-1.5 rounded-lg bg-white/10 backdrop-blur-sm">
                 <GitCompare size={18} className="text-white" />
               </div>
               <div>
-                <DialogTitle className="text-base text-white font-bold">
+                <DialogTitle className="text-base text-white font-bold leading-tight">
                   Comparador Lado a Lado de Cenários
                 </DialogTitle>
                 <DialogDescription className="text-xs text-white/80">
-                  Analise as diferenças de impacto socioeconômico e infraestrutura entre dois cenários
+                  Analise métricas socioeconômicas e compare a mancha de inundação lado a lado com swipe interativo
                 </DialogDescription>
               </div>
             </div>
-            <button
-              onClick={copySummary}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-white/15 hover:bg-white/25 text-white transition-colors"
-              title="Copiar resumo comparativo para a área de transferência"
-            >
-              {copied ? <Check size={13} className="text-emerald-300" /> : <Copy size={13} />}
-              <span>{copied ? "Copiado!" : "Copiar"}</span>
-            </button>
+
+            <div className="flex items-center gap-2">
+              {/* Alternar Pontos de Infraestrutura */}
+              <button
+                type="button"
+                onClick={() => setShowPoints((prev) => !prev)}
+                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-semibold border transition-all ${
+                  showPoints
+                    ? "bg-white/20 text-white border-white/35 hover:bg-white/30"
+                    : "bg-white/5 text-white/70 border-white/15 hover:bg-white/15"
+                }`}
+                title={showPoints ? "Ocultar pontos no mapa" : "Exibir pontos de escolas, saúde e empresas"}
+              >
+                <Layers size={13} />
+                <span>{showPoints ? "Pontos Ativos" : "Pontos Ocultos"}</span>
+              </button>
+
+              {/* Copiar Resumo */}
+              <button
+                type="button"
+                onClick={copySummary}
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-semibold bg-white/15 hover:bg-white/25 text-white transition-colors border border-white/15"
+                title="Copiar resumo comparativo para a área de transferência"
+              >
+                {copied ? <Check size={13} className="text-emerald-300" /> : <Copy size={13} />}
+                <span>{copied ? "Copiado!" : "Copiar"}</span>
+              </button>
+
+              {/* Mapa em Tela Cheia */}
+              {onOpenMapFullScreen && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    onClose()
+                    onOpenMapFullScreen()
+                  }}
+                  className="flex items-center gap-1.5 text-xs font-semibold text-white bg-white/15 hover:bg-white/25 px-2.5 py-1.5 rounded-md transition-colors border border-white/20"
+                  title="Abrir mapa de comparação em tela cheia"
+                >
+                  <Maximize2 size={13} />
+                  <span>Tela Cheia</span>
+                </button>
+              )}
+            </div>
           </div>
 
-          {/* Seletores */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-3 pt-3 border-t border-white/20">
+          {/* Seletores Únicos no Cabeçalho */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mt-3 pt-3 border-t border-white/20">
             <div>
               <label className="text-[10px] font-bold tracking-wide uppercase text-white/80">
                 Município
@@ -331,8 +367,9 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
             </div>
 
             <div>
-              <label className="text-[10px] font-bold tracking-wide uppercase text-white/80">
-                Cenário Base (A)
+              <label className="text-[10px] font-bold tracking-wide uppercase text-white/80 flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-full bg-[#055071] border border-white shrink-0" />
+                Cenário Base (Lado A)
               </label>
               <Select value={cenarioA} onValueChange={setChosenA}>
                 <SelectTrigger className="h-8 bg-white/15 border-white/25 text-white text-xs font-semibold">
@@ -349,8 +386,9 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
             </div>
 
             <div>
-              <label className="text-[10px] font-bold tracking-wide uppercase text-white/80">
-                Cenário Comparado (B)
+              <label className="text-[10px] font-bold tracking-wide uppercase text-white/80 flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-full bg-[#c9402e] border border-white shrink-0" />
+                Cenário Comparado (Lado B)
               </label>
               <Select value={cenarioB} onValueChange={setChosenB}>
                 <SelectTrigger className="h-8 bg-white/15 border-white/25 text-white text-xs font-semibold">
@@ -366,216 +404,192 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
               </Select>
             </div>
           </div>
-
-          {/* Alternador de Modo de Visualização: Tabela vs Mapa Swipe */}
-          <div className="flex items-center justify-between pt-2 mt-2 border-t border-white/15">
-            <div className="inline-flex rounded-lg bg-white/15 p-0.5 border border-white/20">
-              <button
-                type="button"
-                onClick={() => setViewMode("tabela")}
-                className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold transition-all ${
-                  viewMode === "tabela"
-                    ? "bg-white text-[#055071] shadow-sm"
-                    : "text-white/80 hover:text-white"
-                }`}
-              >
-                <TableIcon size={13} />
-                <span>Métricas & Danos</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setViewMode("mapa")}
-                className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold transition-all ${
-                  viewMode === "mapa"
-                    ? "bg-white text-[#055071] shadow-sm"
-                    : "text-white/80 hover:text-white"
-                }`}
-              >
-                <MapIcon size={13} />
-                <span>Swipe no Mapa (CompareReveal)</span>
-              </button>
-            </div>
-
-            {onOpenMapFullScreen && (
-              <button
-                type="button"
-                onClick={() => {
-                  onClose()
-                  onOpenMapFullScreen()
-                }}
-                className="flex items-center gap-1 text-[11px] font-semibold text-white/85 hover:text-white bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded-md transition-colors border border-white/15"
-                title="Abrir mapa de comparação em tela cheia"
-              >
-                <Maximize2 size={12} />
-                <span>Mapa em Tela Cheia</span>
-              </button>
-            )}
-          </div>
         </DialogHeader>
 
-        {/* Content */}
-        <div className={`min-h-0 flex-1 p-4 flex flex-col ${viewMode === "mapa" ? "overflow-hidden" : "overflow-y-auto gap-4"}`}>
+        {/* Content - 2 Colunas Lado a Lado: Métricas & Danos (Esquerda) e Mapa com Swipe (Direita) */}
+        <div className="min-h-0 flex-1 p-3 flex flex-col lg:flex-row gap-3 overflow-hidden bg-slate-100/70">
           {cenariosList.length <= 1 ? (
-            <div className="p-6 text-center text-slate-500 rounded-lg border border-slate-200 bg-slate-50">
-              <p className="font-bold text-sm text-slate-700">Apenas um cenário cadastrado para {selectedMun}.</p>
-              <p className="text-xs mt-1">Selecione Porto Alegre, Lajeado ou Rio Grande para comparar diferentes simulações hidrodinâmicas.</p>
-            </div>
-          ) : viewMode === "mapa" ? (
-            <div className="flex-1 min-h-0 h-full w-full rounded-xl overflow-hidden relative shadow-inner border border-slate-200">
-              <ScenarioCompareMap
-                municipio={selectedMun}
-                cenarioA={cenarioA}
-                cenarioB={cenarioB}
-                onCenarioAChange={setChosenA}
-                onCenarioBChange={setChosenB}
-                isFullScreen={false}
-              />
+            <div className="p-8 text-center text-slate-500 rounded-xl border border-slate-200 bg-white w-full h-full flex flex-col items-center justify-center">
+              <p className="font-bold text-base text-slate-700">Apenas um cenário cadastrado para {selectedMun}.</p>
+              <p className="text-xs text-slate-500 mt-1.5 max-w-md">
+                Selecione Porto Alegre, Lajeado ou Rio Grande no seletor acima para comparar diferentes simulações hidrodinâmicas.
+              </p>
             </div>
           ) : (
             <>
-              {/* Cards de Destaque Superior */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {/* Perdas Operacionais Total */}
-                <div className="rounded-xl border border-slate-200 p-3 bg-white shadow-sm flex flex-col justify-between">
-                  <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                    <div className="flex items-center gap-1.5">
-                      <TrendingDown size={14} className="text-cyan-700" />
-                      <span className="text-xs font-bold text-slate-800 uppercase tracking-wide">
-                        Perdas Operacionais (DaLA)
-                      </span>
-                    </div>
-                    {metricsA && metricsB && (
-                      <DeltaBadge
-                        diff={metricsB.totalOp - metricsA.totalOp}
-                        pct={metricsA.totalOp > 0 ? ((metricsB.totalOp - metricsA.totalOp) / metricsA.totalOp) * 100 : 0}
-                      />
-                    )}
+              {/* Coluna Esquerda: Métricas & Danos */}
+              <div className="w-full lg:w-[48%] xl:w-[46%] 2xl:w-[44%] flex flex-col min-h-0 bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+                <div className="shrink-0 px-3.5 py-2 border-b border-slate-100 bg-slate-50/80 flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <TableIcon size={14} className="text-[#055071]" />
+                    <span className="text-xs font-bold text-slate-800 uppercase tracking-wide">
+                      Métricas & Danos
+                    </span>
                   </div>
-                  <div className="grid grid-cols-2 gap-3 pt-2 text-center">
-                    <div>
-                      <span className="text-[10px] text-slate-500 block truncate font-medium">
-                        Cenário A: {cenarioLabel(cenarioA)}
-                      </span>
-                      <span className="text-base font-black text-slate-800">
-                        {metricsA ? fmtBRL(metricsA.totalOp) : "—"}
-                      </span>
-                    </div>
-                    <div className="border-l border-slate-100 pl-3">
-                      <span className="text-[10px] text-slate-500 block truncate font-medium">
-                        Cenário B: {cenarioLabel(cenarioB)}
-                      </span>
-                      <span className="text-base font-black text-cyan-800">
-                        {metricsB ? fmtBRL(metricsB.totalOp) : "—"}
-                      </span>
-                    </div>
-                  </div>
+                  <span className="text-[10.5px] font-semibold text-slate-500 truncate max-w-[260px]">
+                    {cenarioLabel(cenarioA)} <span className="text-slate-400">vs</span> {cenarioLabel(cenarioB)}
+                  </span>
                 </div>
 
-                {/* Danos Físicos Total */}
-                <div className="rounded-xl border border-slate-200 p-3 bg-white shadow-sm flex flex-col justify-between">
-                  <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                    <div className="flex items-center gap-1.5">
-                      <Waves size={14} className="text-blue-700" />
-                      <span className="text-xs font-bold text-slate-800 uppercase tracking-wide">
-                        Danos Físicos (Exposição)
-                      </span>
+                <div className="min-h-0 flex-1 overflow-y-auto p-3 space-y-3">
+                  {/* Cards de Destaque Superior */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {/* Perdas Operacionais Total */}
+                    <div className="rounded-xl border border-slate-200 p-2.5 bg-slate-50/50 shadow-xs flex flex-col justify-between">
+                      <div className="flex items-center justify-between border-b border-slate-100 pb-1.5">
+                        <div className="flex items-center gap-1.5">
+                          <TrendingDown size={13} className="text-cyan-700" />
+                          <span className="text-[11px] font-bold text-slate-800 uppercase tracking-wide">
+                            Perdas DaLA
+                          </span>
+                        </div>
+                        {metricsA && metricsB && (
+                          <DeltaBadge
+                            diff={metricsB.totalOp - metricsA.totalOp}
+                            pct={metricsA.totalOp > 0 ? ((metricsB.totalOp - metricsA.totalOp) / metricsA.totalOp) * 100 : 0}
+                          />
+                        )}
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 pt-1.5 text-center">
+                        <div>
+                          <span className="text-[9.5px] text-slate-500 block truncate font-medium">
+                            A: {cenarioLabel(cenarioA)}
+                          </span>
+                          <span className="text-sm font-black text-slate-800">
+                            {metricsA ? fmtBRL(metricsA.totalOp) : "—"}
+                          </span>
+                        </div>
+                        <div className="border-l border-slate-200 pl-2">
+                          <span className="text-[9.5px] text-slate-500 block truncate font-medium">
+                            B: {cenarioLabel(cenarioB)}
+                          </span>
+                          <span className="text-sm font-black text-cyan-800">
+                            {metricsB ? fmtBRL(metricsB.totalOp) : "—"}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    {metricsA && metricsB && (
-                      <DeltaBadge
-                        diff={metricsB.totalFis - metricsA.totalFis}
-                        pct={metricsA.totalFis > 0 ? ((metricsB.totalFis - metricsA.totalFis) / metricsA.totalFis) * 100 : 0}
-                      />
-                    )}
+
+                    {/* Danos Físicos Total */}
+                    <div className="rounded-xl border border-slate-200 p-2.5 bg-slate-50/50 shadow-xs flex flex-col justify-between">
+                      <div className="flex items-center justify-between border-b border-slate-100 pb-1.5">
+                        <div className="flex items-center gap-1.5">
+                          <Waves size={13} className="text-blue-700" />
+                          <span className="text-[11px] font-bold text-slate-800 uppercase tracking-wide">
+                            Danos Físicos
+                          </span>
+                        </div>
+                        {metricsA && metricsB && (
+                          <DeltaBadge
+                            diff={metricsB.totalFis - metricsA.totalFis}
+                            pct={metricsA.totalFis > 0 ? ((metricsB.totalFis - metricsA.totalFis) / metricsA.totalFis) * 100 : 0}
+                          />
+                        )}
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 pt-1.5 text-center">
+                        <div>
+                          <span className="text-[9.5px] text-slate-500 block truncate font-medium">
+                            A: {cenarioLabel(cenarioA)}
+                          </span>
+                          <span className="text-sm font-black text-slate-800">
+                            {metricsA ? fmtBRL(metricsA.totalFis) : "—"}
+                          </span>
+                        </div>
+                        <div className="border-l border-slate-200 pl-2">
+                          <span className="text-[9.5px] text-slate-500 block truncate font-medium">
+                            B: {cenarioLabel(cenarioB)}
+                          </span>
+                          <span className="text-sm font-black text-blue-800">
+                            {metricsB ? fmtBRL(metricsB.totalFis) : "—"}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-3 pt-2 text-center">
-                    <div>
-                      <span className="text-[10px] text-slate-500 block truncate font-medium">
-                        Cenário A: {cenarioLabel(cenarioA)}
-                      </span>
-                      <span className="text-base font-black text-slate-800">
-                        {metricsA ? fmtBRL(metricsA.totalFis) : "—"}
-                      </span>
-                    </div>
-                    <div className="border-l border-slate-100 pl-3">
-                      <span className="text-[10px] text-slate-500 block truncate font-medium">
-                        Cenário B: {cenarioLabel(cenarioB)}
-                      </span>
-                      <span className="text-base font-black text-blue-800">
-                        {metricsB ? fmtBRL(metricsB.totalFis) : "—"}
-                      </span>
+
+                  {/* Tabela Detalhada com cabeçalho sticky */}
+                  <div className="rounded-xl border border-slate-200 bg-white shadow-xs overflow-hidden">
+                    <div className="overflow-x-auto">
+                      <div className="min-w-[480px]">
+                        <div className="grid grid-cols-12 gap-2 py-2 px-3 bg-slate-100 text-[10px] font-bold text-slate-600 uppercase tracking-wider sticky top-0 z-10 border-b border-slate-200">
+                          <div className="col-span-4">Dimensão / Métrica</div>
+                          <div className="col-span-3 text-right">Lado A ({cenarioLabel(cenarioA)})</div>
+                          <div className="col-span-3 text-right">Lado B ({cenarioLabel(cenarioB)})</div>
+                          <div className="col-span-2 text-right">Diferença</div>
+                        </div>
+
+                        {metricsA && metricsB && (
+                          <div className="divide-y divide-slate-100">
+                            {/* Território & População */}
+                            <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                              Território e População
+                            </div>
+                            {renderRow("População Atingida", <Users size={12} />, metricsA.pop, metricsB.pop, false, " hab")}
+                            {renderRow("Área Inundada", <MapPin size={12} />, metricsA.area, metricsB.area, false, " km²")}
+
+                            {/* Empresas */}
+                            <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                              Empresas e Atividade Econômica
+                            </div>
+                            {renderRow("Empresas Atingidas", <Building2 size={12} />, metricsA.empAtg, metricsB.empAtg)}
+                            {renderRow("Perda de VAB (DaLA)", <TrendingDown size={12} />, metricsA.vabEmp, metricsB.vabEmp, true)}
+
+                            {/* Educação */}
+                            <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                              Educação
+                            </div>
+                            {renderRow("Escolas Atingidas", <GraduationCap size={12} />, metricsA.eduAtg, metricsB.eduAtg)}
+                            {renderRow("Perdas Operacionais", <TrendingDown size={12} />, metricsA.eduPerdas, metricsB.eduPerdas, true)}
+
+                            {/* Saúde */}
+                            <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                              Saúde
+                            </div>
+                            {renderRow("Unidades de Saúde", <HeartPulse size={12} />, metricsA.sauAtg, metricsB.sauAtg)}
+                            {renderRow("Perda Produção SUS", <TrendingDown size={12} />, metricsA.sauProd, metricsB.sauProd, true)}
+
+                            {/* Agricultura */}
+                            {(metricsA.agrPerdas > 0 || metricsB.agrPerdas > 0) && (
+                              <>
+                                <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                  Agricultura
+                                </div>
+                                {renderRow("Prejuízo Agrícola", <Sprout size={12} />, metricsA.agrPerdas, metricsB.agrPerdas, true)}
+                              </>
+                            )}
+
+                            {/* Totais Finais */}
+                            <div className="px-3 py-1 bg-cyan-50/70 text-[10px] font-bold text-cyan-900 uppercase tracking-wider">
+                              Impacto Consolidado
+                            </div>
+                            {renderRow("Total Perdas Operacionais", <TrendingDown size={12} />, metricsA.totalOp, metricsB.totalOp, true)}
+                            {renderRow("Total Danos Físicos", <Waves size={12} />, metricsA.totalFis, metricsB.totalFis, true)}
+                            {renderRow(
+                              "Impacto Geral Combinado",
+                              <GitCompare size={12} />,
+                              metricsA.totalOp + metricsA.totalFis,
+                              metricsB.totalOp + metricsB.totalFis,
+                              true
+                            )}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Tabela Detalhada */}
-              <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden mb-2">
-                <div className="overflow-x-auto">
-                  <div className="min-w-[560px]">
-                    <div className="grid grid-cols-12 gap-2 py-2 px-3 bg-slate-100 text-[10px] font-bold text-slate-600 uppercase tracking-wider sticky top-0 z-10 border-b border-slate-200">
-                      <div className="col-span-4">Dimensão / Métrica</div>
-                      <div className="col-span-3 text-right">Cenário A ({cenarioLabel(cenarioA)})</div>
-                      <div className="col-span-3 text-right">Cenário B ({cenarioLabel(cenarioB)})</div>
-                      <div className="col-span-2 text-right">Diferença (B - A)</div>
-                    </div>
-
-                    {metricsA && metricsB && (
-                      <div className="divide-y divide-slate-100">
-                        {/* Território & População */}
-                        <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                          Território e População
-                        </div>
-                        {renderRow("População Atingida", <Users size={12} />, metricsA.pop, metricsB.pop, false, " hab")}
-                        {renderRow("Área Inundada", <MapPin size={12} />, metricsA.area, metricsB.area, false, " km²")}
-
-                        {/* Empresas */}
-                        <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                          Empresas e Atividade Econômica
-                        </div>
-                        {renderRow("Empresas Atingidas", <Building2 size={12} />, metricsA.empAtg, metricsB.empAtg)}
-                        {renderRow("Perda de VAB (DaLA)", <TrendingDown size={12} />, metricsA.vabEmp, metricsB.vabEmp, true)}
-
-                        {/* Educação */}
-                        <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                          Educação
-                        </div>
-                        {renderRow("Escolas Atingidas", <GraduationCap size={12} />, metricsA.eduAtg, metricsB.eduAtg)}
-                        {renderRow("Perdas Operacionais Educação", <TrendingDown size={12} />, metricsA.eduPerdas, metricsB.eduPerdas, true)}
-
-                        {/* Saúde */}
-                        <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                          Saúde
-                        </div>
-                        {renderRow("Unidades de Saúde", <HeartPulse size={12} />, metricsA.sauAtg, metricsB.sauAtg)}
-                        {renderRow("Perda de Produção SUS", <TrendingDown size={12} />, metricsA.sauProd, metricsB.sauProd, true)}
-
-                        {/* Agricultura */}
-                        {(metricsA.agrPerdas > 0 || metricsB.agrPerdas > 0) && (
-                          <>
-                            <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                              Agricultura
-                            </div>
-                            {renderRow("Prejuízo Agrícola", <Sprout size={12} />, metricsA.agrPerdas, metricsB.agrPerdas, true)}
-                          </>
-                        )}
-
-                        {/* Totais Finais */}
-                        <div className="px-3 py-1 bg-cyan-50/70 text-[10px] font-bold text-cyan-900 uppercase tracking-wider">
-                          Impacto Consolidado
-                        </div>
-                        {renderRow("Total Perdas Operacionais", <TrendingDown size={12} />, metricsA.totalOp, metricsB.totalOp, true)}
-                        {renderRow("Total Danos Físicos", <Waves size={12} />, metricsA.totalFis, metricsB.totalFis, true)}
-                        {renderRow(
-                          "Impacto Geral Combinado",
-                          <GitCompare size={12} />,
-                          metricsA.totalOp + metricsA.totalFis,
-                          metricsB.totalOp + metricsB.totalFis,
-                          true
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </div>
+              {/* Coluna Direita: Mapa com Swipe (CompareReveal) */}
+              <div className="w-full lg:w-[52%] xl:w-[54%] 2xl:w-[56%] flex flex-col min-h-0 rounded-xl border border-slate-200 shadow-xs overflow-hidden relative bg-slate-900">
+                <ScenarioCompareMap
+                  municipio={selectedMun}
+                  cenarioA={cenarioA}
+                  cenarioB={cenarioB}
+                  onCenarioAChange={setChosenA}
+                  onCenarioBChange={setChosenB}
+                  isFullScreen={false}
+                  showPoints={showPoints}
+                />
               </div>
             </>
           )}
