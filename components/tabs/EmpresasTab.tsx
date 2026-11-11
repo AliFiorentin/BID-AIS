@@ -1,10 +1,8 @@
 import React, { useMemo } from "react"
-import Link from "next/link"
 import { TabsContent } from "@/components/ui/tabs"
 import { DonutChart } from "@/components/ui/donut-chart"
 import { C, COLORS, DONUT_COLORS, PANEL_CARD_BG } from "@/lib/constants"
-import { compactoBr, inteiroBr, calcPct, formatName, formatoBr } from "@/lib/geo-utils"
-import { detectarPilha, pontosNaPilha } from "@/lib/pilhas"
+import { compactoBr, inteiroBr, calcPct, formatName } from "@/lib/geo-utils"
 import { KPIRow } from "@/components/KPIRow"
 import type { DashboardState } from "@/hooks/useDashboard"
 
@@ -36,21 +34,9 @@ export function EmpresasTab({ dash }: Props) {
     setoresEmpregadosChart,
     metricasEmp,
     mostraImpacto,
-    baseEmpresas,
-    atingidosEmpresas,
     filtroSetor,
     setFiltroSetor,
   } = dash
-
-  const pilhaInfo = useMemo(() => {
-    const featsBase = baseEmpresas?.features ?? []
-    const pilha = detectarPilha(featsBase)
-    if (!pilha) return null
-    const nAtg = mostraImpacto
-      ? pontosNaPilha(atingidosEmpresas?.features ?? [], pilha)
-      : 0
-    return { pilha, nAtg }
-  }, [baseEmpresas, atingidosEmpresas, mostraImpacto])
 
   const { donutData, total, totalAtg, setorColorMap } = useMemo(() => {
     const colorMap: Record<string, string> = {}
@@ -82,41 +68,6 @@ export function EmpresasTab({ dash }: Props) {
       value="empresas"
       className="mt-3 flex-1 overflow-y-auto pr-2 pb-2 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-track]:bg-transparent"
     >
-      {pilhaInfo && (
-        <div
-          role="note"
-          className="mb-2.5 rounded-lg border border-amber-300/80 bg-amber-50/90 px-2.5 py-2 text-[10px] leading-snug text-amber-950"
-        >
-          <strong>Geocodificação aproximada:</strong>{" "}
-          {formatoBr(pilhaInfo.pilha.n)} estabelecimentos
-          {pilhaInfo.pilha.ceps > 0
-            ? ` (de ${formatoBr(pilhaInfo.pilha.ceps)} CEPs diferentes)`
-            : ""}{" "}
-          caíram num mesmo ponto padrão da cidade quando o endereço não foi
-          localizado
-          {mostraImpacto ? (
-            pilhaInfo.nAtg > 0 ? (
-              <>
-                {" "}
-                — neste cenário esse ponto está na mancha e responde por{" "}
-                <strong>
-                  {formatoBr(pilhaInfo.nAtg)} dos atingidos
-                </strong>
-              </>
-            ) : (
-              <> — neste cenário esse ponto ficou fora da mancha</>
-            )
-          ) : null}
-          .{" "}
-          <Link
-            href="/metodologia#limitacoes"
-            className="font-semibold underline hover:no-underline"
-          >
-            Entenda na Metodologia →
-          </Link>
-        </div>
-      )}
-
       {setoresChart.length > 0 && (
         <div
           className="mb-3 overflow-hidden rounded-lg"
