@@ -187,33 +187,18 @@ export default function Dashboard() {
           className="flex h-[128px] w-[195px] flex-col items-center justify-center gap-2 rounded-[4px] bg-white/95 px-2.5 py-2"
           style={{ boxShadow: "0 0 0 2px rgba(0,0,0,0.1)" }}
         >
-          <div className="flex w-full items-center justify-center gap-2 border-b border-black/10 pb-1.5">
-            <Image
-              src="/BID.webp"
-              alt="BID"
-              width={84}
-              height={32}
-              className="object-contain"
-              style={{
-                width: "auto",
-                height: "auto",
-                maxWidth: "82px",
-                maxHeight: "34px",
-              }}
-              onError={(e) => (e.currentTarget.style.display = "none")}
-            />
-            <div className="h-7 w-px bg-black/10" />
+          <div className="flex w-full items-center justify-center border-b border-black/10 pb-2 pt-0.5">
             <Image
               src="/GPEA.webp"
               alt="GPEa"
-              width={84}
-              height={32}
+              width={140}
+              height={44}
               className="object-contain"
               style={{
                 width: "auto",
                 height: "auto",
-                maxWidth: "82px",
-                maxHeight: "34px",
+                maxWidth: "148px",
+                maxHeight: "44px",
               }}
               onError={(e) => (e.currentTarget.style.display = "none")}
             />

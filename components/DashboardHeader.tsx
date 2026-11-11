@@ -156,14 +156,16 @@ export function DashboardHeader({ dash }: DashboardHeaderProps) {
           paddingRight: "var(--section-gap)",
         }}
       >
-        <Image
-          src="/icon.svg"
-          alt="BID · GPEa"
-          width={48}
-          height={48}
-          className="shrink-0 rounded-lg object-contain"
-          style={{ height: "calc(var(--logo-h) * 1.4)", width: "auto" }}
-        />
+        <div className="flex shrink-0 items-center justify-center rounded-lg bg-white/95 px-2 py-0.5 shadow-sm">
+          <Image
+            src="/BID.webp"
+            alt="BID"
+            width={72}
+            height={28}
+            className="shrink-0 object-contain"
+            style={{ height: "var(--logo-h)", width: "auto" }}
+          />
+        </div>
         <div className="flex min-w-0 flex-col justify-center">
           <h1
             className="leading-tight font-black whitespace-nowrap text-white"
