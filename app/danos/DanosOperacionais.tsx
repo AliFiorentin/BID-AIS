@@ -161,7 +161,13 @@ export function DanosOperacionais({ ctx }: { ctx: DanosCtx }) {
         <DiasBadge dias={dias} />
         <Note type="info">{AVISO_MAIO_2024_MAIS_50}</Note>
 
-        {Object.entries(dadosEscalados).map(([mun, cens]) => (
+        {(["Porto Alegre", "Eldorado do Sul", "Lajeado", "Rio Grande"] as const).map((mun) => {
+          const cens = dadosEscalados[mun]
+          if (!cens) return null
+          const sortedCens = Object.entries(cens).sort(([a], [b]) =>
+            a.toLowerCase().includes("ada") ? -1 : b.toLowerCase().includes("ada") ? 1 : a.localeCompare(b)
+          )
+          return (
           <div key={mun} className="mt-6">
             <div className="mb-3 flex items-center gap-2">
               <div
@@ -174,18 +180,27 @@ export function DanosOperacionais({ ctx }: { ctx: DanosCtx }) {
             <div
               className="grid gap-4"
               style={{
-                gridTemplateColumns: `repeat(${Math.min(Object.keys(cens).length, 2)}, 1fr)`,
+                gridTemplateColumns: `repeat(${Math.min(sortedCens.length, 2)}, 1fr)`,
               }}
             >
-              {Object.entries(cens).map(([cen, v]) => (
+              {sortedCens.map(([cen, v]) => {
+                const isSimulacao = !cen.toLowerCase().includes("ada")
+                return (
                 <div
                   key={cen}
                   className="overflow-hidden rounded-xl border border-[#b3cdd8] bg-white shadow-sm"
                 >
                   <div className="flex items-baseline justify-between border-b border-[#b3cdd8] bg-[#f0f7fa] px-4 py-2.5">
-                    <p className="text-[11px] font-black tracking-wide text-[#055071] uppercase">
-                      {cenarioLabel(cen)}
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-[11px] font-black tracking-wide text-[#055071] uppercase">
+                        {cenarioLabel(cen)}
+                      </p>
+                      {isSimulacao && (
+                        <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[9px] font-bold text-amber-800 border border-amber-200" title="Modelagem computacional / simulação numérica">
+                          Simulação
+                        </span>
+                      )}
+                    </div>
                     <p
                       className="font-mono text-[9px] text-slate-600"
                       title="f = fator de interrupção: fração do ano em que a atividade ficou parada (dias efetivos ÷ 365)."
@@ -257,10 +272,12 @@ export function DanosOperacionais({ ctx }: { ctx: DanosCtx }) {
                     </div>
                   </div>
                 </div>
-              ))}
+                )
+              })}
             </div>
           </div>
-        ))}
+          )
+        })}
       </Section>
 
       {/* ══════════════════════════════════════════════════════════════════════
@@ -291,7 +308,9 @@ export function DanosOperacionais({ ctx }: { ctx: DanosCtx }) {
         </div>
 
         {/* Tabelas por município */}
-        {Object.entries(dados).map(([mun, cens]) => {
+        {(["Porto Alegre", "Eldorado do Sul", "Lajeado", "Rio Grande"] as const).map((mun) => {
+          const cens = dados[mun]
+          if (!cens) return null
           const cenPadrao = CENARIOS_VISAO_GERAL[mun]
           const [cenNome, cenValOrig] =
             cenPadrao && cens[cenPadrao]

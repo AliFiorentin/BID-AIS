@@ -67,6 +67,10 @@
       "Cenário ADA": {
         "area_atingida_km2": 111.94,
         "pct_atingida": 22.6
+      },
+      "Simulação Climada Evento 2024": {
+        "area_atingida_km2": 148.27,
+        "pct_atingida": 30.0
       }
     }
   },
@@ -80,10 +84,6 @@
       "Cenario Maio 2024 + 50%": {
         "area_atingida_km2": 59.66,
         "pct_atingida": 2.2
-      },
-      "Cenario Setembro 2023": {
-        "area_atingida_km2": 4.89,
-        "pct_atingida": 0.2
       },
       "ADA Estadual": {
         "area_atingida_km2": 796.26,
@@ -104,10 +104,6 @@
       "Simulação Maio 2024 + 50%": {
         "area_atingida_km2": 59.66,
         "pct_atingida": 2.2
-      },
-      "Simulação Setembro 2023": {
-        "area_atingida_km2": 4.89,
-        "pct_atingida": 0.2
       }
     }
   },

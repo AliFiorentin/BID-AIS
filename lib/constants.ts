@@ -237,10 +237,8 @@ export const CENARIO_PERIODO: Record<string, string> = {
   rio_grande___cenario_ada: "maio_2024",
   rio_grande___cenario_maio_2024: "maio_2024",
   rio_grande___cenario_maio_2024_50: "maio_2024",
-  rio_grande___cenario_setembro_2023: "setembro_2023",
   rio_grande___simulacao_maio_2024: "maio_2024",
   rio_grande___simulacao_maio_2024_50: "maio_2024",
-  rio_grande___simulacao_setembro_2023: "setembro_2023",
 }
 
 export interface ImpactoCoef {
@@ -339,7 +337,6 @@ const CENARIO_DISPLAY_LABEL: Record<string, string> = {
   "Cenário 30m": "Simulação 30m",
   "Cenário Maio 2024": "Simulação Maio 2024",
   "Cenário Maio 2024 + 50%": "Simulação Maio 2024 + 50%",
-  "Cenário Setembro 2023": "Simulação Setembro 2023",
 }
 export const cenarioLabel = (cen: string): string => {
   if (cen === "Cenário ADA" || cen === "Cenario ADA") return "Cenário ADA"

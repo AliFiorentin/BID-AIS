@@ -52,8 +52,6 @@ export const CENARIO_FISICO_LABELS: Record<string, string> = {
   simulacao_maio_2024: "Simulação Maio 2024",
   cenario_maio_2024_50: "Simulação Maio 2024 + 50%",
   simulacao_maio_2024_50: "Simulação Maio 2024 + 50%",
-  cenario_setembro_2023: "Simulação Setembro 2023",
-  simulacao_setembro_2023: "Simulação Setembro 2023",
 }
 
 export function scaleCotaTo(
@@ -180,19 +178,24 @@ export function useDanosContext({
     "Rio Grande": "Cenário ADA",
   }
 
-  const pioresCenarios = Object.entries(dadosEscalados).map(([mun, cens]) => {
-    const cenarioFixo = CENARIOS_VISAO_GERAL[mun]
-    const entry =
-      (cenarioFixo && (cens[cenarioFixo] ?? cens["Cenario ADA"]))
-        ? ([cenarioFixo, (cens[cenarioFixo] ?? cens["Cenario ADA"])] as [string, CenarioDanos])
-        : Object.entries(cens).reduce((acc, cur) =>
-            cur[1].total > acc[1].total ? cur : acc
-          )
-    return { mun, cenNome: entry[0], cenVal: entry[1] }
-  })
+  const pioresCenarios = (["Porto Alegre", "Eldorado do Sul", "Lajeado", "Rio Grande"] as const)
+    .flatMap((mun) => {
+      const cens = dadosEscalados[mun]
+      if (!cens) return []
+      const cenarioFixo = CENARIOS_VISAO_GERAL[mun]
+      const entry =
+        cenarioFixo && (cens[cenarioFixo] ?? cens["Cenario ADA"])
+          ? ([cenarioFixo, cens[cenarioFixo] ?? cens["Cenario ADA"]!] as [string, CenarioDanos])
+          : Object.entries(cens).reduce((acc, cur) =>
+              cur[1].total > acc[1].total ? cur : acc
+            )
+      return [{ mun, cenNome: entry[0], cenVal: entry[1] }]
+    })
 
   // Deduplica cenários preservando Cenário ADA e preferindo Simulação XXX
-  const todosCenarios = Object.entries(dadosEscalados).flatMap(([mun, cens]) => {
+  const todosCenarios = (["Porto Alegre", "Eldorado do Sul", "Lajeado", "Rio Grande"] as const).flatMap((mun) => {
+    const cens = dadosEscalados[mun]
+    if (!cens) return []
     const keys = Object.keys(cens)
     const deduped: { mun: string; cen: string; v: CenarioDanos }[] = []
     const seen = new Set<string>()

@@ -270,24 +270,39 @@ export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
               "Saúde",
               "Total Exposto",
             ],
-            ...Object.entries(dadosFisicosCenarios).flatMap(([mun, cens]) =>
-              Object.entries(cens).map(([cenKey, val]) => [
-                <span key="m" className="font-bold flex items-center gap-1.5">
-                  <span
-                    className="h-2 w-2 rounded-full shrink-0"
-                    style={{ backgroundColor: MUN_COLORS[mun] ?? "#055071" }}
-                  />
-                  {mun}
-                </span>,
-                CENARIO_FISICO_LABELS[cenKey] ?? cenKey,
-                `${fmtN(val.empresas_atingidas)} (${fmtBRL(val.empresas_valor_brl)})`,
-                `${fmtN(val.educacao_atingidas)} (${fmtBRL(val.educacao_valor_brl)})`,
-                `${fmtN(val.saude_atingidas)} (${fmtBRL(val.saude_valor_brl)})`,
-                <strong key="t" className="text-slate-900">
-                  {fmtBRL(val.total)}
-                </strong>,
-              ])
-            ),
+            ...(["Porto Alegre", "Eldorado do Sul", "Lajeado", "Rio Grande"] as const).flatMap((mun) => {
+              const cens = dadosFisicosCenarios[mun]
+              if (!cens) return []
+              const keys = Object.keys(cens).filter((k) => !k.toLowerCase().includes("setembro"))
+              const dedupedKeys = keys.filter((k) => {
+                if (k === "cenario_ada") return true
+                if (k.startsWith("cenario_") && keys.includes(k.replace("cenario_", "simulacao_"))) return false
+                if (k === "climada_evento_2024" && keys.includes("simulacao_climada_evento_2024")) return false
+                return true
+              })
+              const sortedKeys = dedupedKeys.sort((a, b) =>
+                a === "cenario_ada" ? -1 : b === "cenario_ada" ? 1 : a.localeCompare(b)
+              )
+              return sortedKeys.map((cenKey) => {
+                const val = cens[cenKey]
+                return [
+                  <span key="m" className="font-bold flex items-center gap-1.5">
+                    <span
+                      className="h-2 w-2 rounded-full shrink-0"
+                      style={{ backgroundColor: MUN_COLORS[mun] ?? "#055071" }}
+                    />
+                    {mun}
+                  </span>,
+                  CENARIO_FISICO_LABELS[cenKey] ?? cenKey,
+                  `${fmtN(val.empresas_atingidas)} (${fmtBRL(val.empresas_valor_brl)})`,
+                  `${fmtN(val.educacao_atingidas)} (${fmtBRL(val.educacao_valor_brl)})`,
+                  `${fmtN(val.saude_atingidas)} (${fmtBRL(val.saude_valor_brl)})`,
+                  <strong key="t" className="text-slate-900">
+                    {fmtBRL(val.total)}
+                  </strong>,
+                ]
+              })
+            }),
           ]}
         />
 

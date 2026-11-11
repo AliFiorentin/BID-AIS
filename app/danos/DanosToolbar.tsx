@@ -201,7 +201,10 @@ export function DanosToolbar({ ctx }: { ctx: DanosCtx }) {
                 {munsClimada.map((m) => (
                   <button
                     key={m}
-                    onClick={() => setMunClimada(m)}
+                    onClick={() => {
+                      setMunClimada(m)
+                      setCenarioFisico("cenario_ada")
+                    }}
                     className={`rounded-full border px-3 py-1 text-[11px] font-black transition-all duration-150 ${
                       munClimadaAtivo === m
                         ? "border-[#055071] bg-[#055071] text-white shadow-sm"
