@@ -118,15 +118,18 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
   const popCenData = (() => {
     if (popMunData && cotasAtivo) {
       const atg = popAtingidaNaCota(cotaRaster.meta, cotaRaster.cota)
-      return atg === null
-        ? null
-        : {
-            pop_atingida: atg,
-            pct_atingida:
-              popMunData.pop_total > 0
-                ? (100 * atg) / popMunData.pop_total
-                : 0,
-          }
+      if (atg !== null) {
+        return {
+          pop_atingida: atg,
+          pct_atingida:
+            popMunData.pop_total > 0
+              ? (100 * atg) / popMunData.pop_total
+              : 0,
+        }
+      }
+      const fallback = findCenarioData(popMunData.cenarios, cenario)
+      if (fallback) return fallback
+      return null
     }
     if (!popMunData || !cenario || cenario === "(nenhum)") return null
     return findCenarioData(popMunData.cenarios, cenario)

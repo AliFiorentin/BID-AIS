@@ -73,7 +73,7 @@ export function FiltersPanel({ dash }: FiltersPanelProps) {
   const [abertoFiltros, setAbertoFiltros] = React.useState(false)
 
   // Espaço extra para não sobrepor os tooltips das camadas na barra superior
-  const topFiltros = headerBottom + 26
+  const topFiltros = headerBottom + 36
 
   // O popover nasce aberto (descobribilidade) e se recolhe sozinho uma vez em 6 s,
   // a menos que a pessoa interaja com ele antes. Trocar de município, cenário ou reiniciar reabre.
