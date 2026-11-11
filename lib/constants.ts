@@ -124,9 +124,9 @@ export const COTAS_MUNICIPIOS = ["Lajeado", "Porto Alegre", "Eldorado do Sul", "
 export const CENARIOS_CONFIG: Record<string, string[]> = {
   "Eldorado do Sul": ["Cenário ADA", COTAS_CENARIO],
   Lajeado: ["Cenário 27m", "Cenário 30m", COTAS_CENARIO],
-  // "Climada Evento 2024" primeiro -- vira o cenário padrão de Porto Alegre
-  // (cenariosDisp[0] em useDashboard.ts, quando não há permalink específico).
-  "Porto Alegre": ["Climada Evento 2024", "Cenário ADA", COTAS_CENARIO],
+  // "Cenário ADA" primeiro -- vira o cenário padrão/inicial de Porto Alegre
+  // (cenariosDisp[0] em useScenarioData.ts, quando não há permalink específico).
+  "Porto Alegre": ["Cenário ADA", "Climada Evento 2024", COTAS_CENARIO],
   "Rio Grande": ["Cenário Maio 2024", "Cenário Maio 2024 + 50%", COTAS_CENARIO],
 }
 
@@ -323,7 +323,7 @@ export const cenarioLabel = (cen: string): string => CENARIO_DISPLAY_LABEL[cen] 
 export const PIORES_CENARIOS: Record<string, string> = {
   "Eldorado do Sul": "Cenário ADA",
   Lajeado: "Cenário 27m",
-  "Porto Alegre": "Climada Evento 2024",
+  "Porto Alegre": "Cenário ADA",
   "Rio Grande": "Cenário Maio 2024",
 }
 
