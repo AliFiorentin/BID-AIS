@@ -54,10 +54,16 @@ export function CotasPanel({
   const cotas = chaves.map(parseFloat);
   const x0 = cotas[0],
     x1 = cotas[cotas.length - 1];
-  const px = (c: number) => 4 + ((c - x0) / (x1 - x0 || 1)) * 232;
-  const py = (val: number) => 25 - (val / maxSerie) * 22;
+  const px = (c: number) => 6 + ((c - x0) / (x1 - x0 || 1)) * 228;
+  const py = (val: number) => 56 - (val / maxSerie) * 48;
   const linha = cotas.map((c, i) => `${px(c).toFixed(1)},${py(serie[i]).toFixed(1)}`).join(" ");
   const xAtual = px(Math.min(Math.max(cota, x0), x1));
+  const yAtual = py(total);
+  const areaPontos = [
+    `${px(x0).toFixed(1)},56`,
+    ...cotas.map((c, i) => `${px(c).toFixed(1)},${py(serie[i]).toFixed(1)}`),
+    `${px(x1).toFixed(1)},56`,
+  ].join(" ");
 
   // Layout compacto (cabe no painel sem rolagem): empresas em largura total; educação e saúde
   // lado a lado; agricultura em uma linha.
@@ -70,7 +76,7 @@ export function CotasPanel({
     colunas = 2
   ) => (
     <div
-      className="rounded-lg border bg-white/70 px-2.5 py-1.5 min-w-0 flex flex-col justify-center"
+      className="rounded-lg border bg-white/70 px-2.5 py-2 min-w-0 flex flex-col justify-center"
       style={{ borderColor: cor + "55" }}
     >
       <div
@@ -115,46 +121,79 @@ export function CotasPanel({
           cotaAtual={cota}
         />
 
-        {/* Card compacto do valor exposto atingido com curva hidrométrica */}
+        {/* Card do valor exposto atingido com curva hidrométrica */}
         <div
-          className="rounded-lg px-2.5 py-1.5 text-white flex flex-col shrink-0 shadow-sm"
+          className="rounded-xl px-3 py-2 text-white flex flex-col shrink-0 shadow-sm"
           style={{ background: "linear-gradient(135deg, #055071 0%, #0a6e9a 100%)" }}
         >
           <div className="flex items-baseline justify-between gap-2">
-            <span className="text-[9px] uppercase tracking-wider font-bold text-white/85">
+            <span className="text-[9.5px] uppercase tracking-wider font-extrabold text-white/90">
               Valor exposto atingido · cota {fmtCota(cota)} m
             </span>
-            <span className="text-base font-black tabular-nums leading-none">
+            <span className="text-lg font-black tabular-nums leading-none">
               {fmtBRL(total)}
             </span>
           </div>
           <svg
-            viewBox="0 0 240 28"
+            viewBox="0 0 240 64"
             preserveAspectRatio="none"
-            className="w-full h-5 mt-1"
+            className="w-full h-16 sm:h-[72px] mt-1.5"
             role="img"
-            aria-label="Valor exposto por cota"
+            aria-label="Evolução do valor exposto por cota"
           >
+            <defs>
+              <linearGradient id="cotaAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.25" />
+                <stop offset="100%" stopColor="#ffffff" stopOpacity="0.02" />
+              </linearGradient>
+            </defs>
+            {/* Linha base e guias horizontais sutis */}
+            <line x1="6" y1="56" x2="234" y2="56" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
+            <line x1="6" y1="32" x2="234" y2="32" stroke="rgba(255,255,255,0.1)" strokeWidth="1" strokeDasharray="3,3" />
+            <line x1="6" y1="8" x2="234" y2="8" stroke="rgba(255,255,255,0.1)" strokeWidth="1" strokeDasharray="3,3" />
+
+            {/* Área preenchida sob a curva */}
+            <polygon points={areaPontos} fill="url(#cotaAreaGrad)" />
+
+            {/* Curva de transição suave */}
             <polyline
               points={linha}
               fill="none"
-              stroke="rgba(255,255,255,0.85)"
-              strokeWidth="1.5"
+              stroke="#ffffff"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               vectorEffect="non-scaling-stroke"
             />
+
+            {/* Linha vertical da cota atual */}
             <line
               x1={xAtual}
               x2={xAtual}
-              y1="1"
-              y2="27"
+              y1="4"
+              y2="58"
               stroke="#fbbf24"
-              strokeWidth="1.5"
+              strokeWidth="1.75"
+              strokeDasharray="3,2"
               vectorEffect="non-scaling-stroke"
             />
+
+            {/* Marcador na curva na cota atual */}
+            <circle
+              cx={xAtual}
+              cy={yAtual}
+              r="3.5"
+              fill="#fbbf24"
+              stroke="#ffffff"
+              strokeWidth="1.5"
+            />
           </svg>
-          <div className="flex justify-between text-[7.5px] text-white/70 mt-0.5">
-            <span>{fmtCota(x0)} m</span>
-            <span>{fmtCota(x1)} m</span>
+          <div className="flex justify-between items-center text-[8px] text-white/80 mt-1 font-semibold">
+            <span>Mín: <strong>{fmtCota(x0)} m</strong></span>
+            <span className="rounded bg-black/20 px-1.5 py-0.5 text-[8px] font-bold text-amber-300 border border-white/10">
+              Cota {fmtCota(cota)} m · {fmtBRL(total)}
+            </span>
+            <span>Pico: <strong>{fmtCota(x1)} m</strong></span>
           </div>
         </div>
 
