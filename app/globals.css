@@ -64,8 +64,24 @@
   --radius-full: 9999px;
 }
 
+:root,
+html,
+body {
+  color-scheme: light only !important; /* Bloqueia dark mode forçado nos navegadores/SO */
+}
+
+/* Neutraliza qualquer estilo dark que o navegador ou SO tente injetar */
+@media (prefers-color-scheme: dark) {
+  :root,
+  html,
+  body {
+    color-scheme: light only !important;
+    background-color: #ffffff;
+    color: #0f172a;
+  }
+}
+
 :root {
-  color-scheme: only light; /* sem tema escuro: ver `viewport.colorScheme` em layout.tsx */
 
   /* ── Apple HIG Typography Stack (San Francisco) ────────── */
   --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;

@@ -8,10 +8,11 @@ export const metadata = {
     "Painel de monitoramento dos impactos socioeconômicos das enchentes de 2024 no Rio Grande do Sul — projeto BID.",
 }
 
-// Sem tema escuro: força controles nativos (`<input type="range">`, barras de rolagem etc.)
-// para o modo claro mesmo quando o navegador/SO está em dark mode.
+// Bloqueia qualquer tema escuro dos navegadores/SO: força controles nativos,
+// inputs, seletores e scrollbars para o modo claro estrito.
 export const viewport: Viewport = {
   colorScheme: "only light",
+  themeColor: "#055071",
 }
 
 export default function RootLayout({
@@ -25,9 +26,18 @@ export default function RootLayout({
     <html
       lang="pt-BR"
       suppressHydrationWarning
-      className="antialiased font-sans"
+      className="light antialiased font-sans"
+      style={{ colorScheme: "light" }}
     >
-      <body suppressHydrationWarning className="min-h-screen font-sans">
+      <head>
+        <meta name="color-scheme" content="light only" />
+        <meta name="supported-color-schemes" content="light" />
+      </head>
+      <body
+        suppressHydrationWarning
+        className="min-h-screen font-sans bg-white text-slate-900"
+        style={{ colorScheme: "light" }}
+      >
         {children}
         {modal}
       </body>
