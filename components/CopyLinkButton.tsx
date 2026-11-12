@@ -51,7 +51,7 @@ export function CopyLinkButton({
       onClick={copiar}
       title={title}
       aria-label={label ?? title}
-      className={className}
+      className={`active-press transition-all ${className ?? ""}`}
       style={style}
     >
       {copiado ? (

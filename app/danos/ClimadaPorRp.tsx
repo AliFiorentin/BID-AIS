@@ -47,7 +47,7 @@ export function ClimadaPorRp({ ctx }: { ctx: DanosCtx }) {
           </Note>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-5">
-            <div className="bg-white border border-[#b3cdd8] rounded-xl overflow-hidden shadow-sm">
+            <div className="hover-lift bg-white border border-[#b3cdd8]/70 rounded-2xl overflow-hidden shadow-xs">
               <div className="px-4 py-3" style={{ backgroundColor: "#055071" }}>
                 <p className="text-[10px] font-black uppercase tracking-wider text-white/95 mb-0.5">{munClimadaAtivo} · {rpAtivo}</p>
                 <p className="text-2xl font-black text-white leading-none">{fmtBRL(totalAtualClimada)}</p>
@@ -71,7 +71,7 @@ export function ClimadaPorRp({ ctx }: { ctx: DanosCtx }) {
               </div>
             </div>
 
-            <div className="bg-white border border-[#b3cdd8] rounded-xl p-4 shadow-sm">
+            <div className="hover-lift bg-white border border-[#b3cdd8]/70 rounded-2xl p-4 shadow-xs">
               <p className="text-[10px] font-black uppercase tracking-wider text-[#2f6a83] mb-2">Exposição total (patrimônio no raio de risco)</p>
               <p className="text-2xl font-black text-slate-800 leading-none mb-3">{fmtBRL(exposicaoAtualClimada)}</p>
               {climadaSetores.map((s) => (
@@ -109,7 +109,7 @@ export function ClimadaPorRp({ ctx }: { ctx: DanosCtx }) {
               pela probabilidade de cada um. É o mesmo tipo de resultado que o CLIMADA usa
               como indicador principal de risco.
             </p>
-            <div className="bg-white border border-[#b3cdd8] rounded-xl overflow-hidden shadow-sm mt-3">
+            <div className="hover-lift bg-white border border-[#b3cdd8]/70 rounded-2xl overflow-hidden shadow-xs mt-3">
               <div className="px-4 py-3" style={{ backgroundColor: "#055071" }}>
                 <p className="text-[10px] font-black uppercase tracking-wider text-white/95 mb-0.5">{munClimadaAtivo} · todos os setores</p>
                 <p className="text-2xl font-black text-white leading-none">{fmtBRL(eai.total)} / ano</p>

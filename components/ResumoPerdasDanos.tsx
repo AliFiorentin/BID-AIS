@@ -60,8 +60,7 @@ function Cartao({
   return (
     <Link
       href={href}
-      className="hover-lift flex h-full flex-col overflow-hidden rounded-lg shadow-sm transition-shadow"
-      style={{ border: "1px solid rgba(5,80,113,0.15)" }}
+      className="hover-lift flex h-full flex-col overflow-hidden rounded-xl border border-[rgba(5,80,113,0.14)] shadow-xs transition-all"
       title={ajuda}
       aria-label={`${titulo}: ${rotuloValor} ${valor}`}
     >

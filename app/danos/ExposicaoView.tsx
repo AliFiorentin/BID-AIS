@@ -121,7 +121,7 @@ export function ExposicaoView({
           </Note>
         )}
 
-        <div className="my-4 rounded-xl border border-[#b3cdd8] bg-white px-4 py-3 text-sm text-slate-700 shadow-sm">
+        <div className="hover-lift my-4 rounded-2xl border border-[#b3cdd8]/70 bg-white px-5 py-4 text-sm text-slate-700 shadow-xs">
           <p className="mb-2 text-[10px] font-black tracking-wider text-[#2f6a83] uppercase">
             Como interpretar as métricas desta página
           </p>
@@ -164,7 +164,7 @@ export function ExposicaoView({
 
       {/* ═══ 2. RESUMO ═══ */}
       <Section id="c-resumo" num="2" title="Resumo">
-        <div className="my-4 rounded-xl border border-[#b3cdd8] bg-white px-4 py-3 text-sm text-slate-700 shadow-sm">
+        <div className="hover-lift my-4 rounded-2xl border border-[#b3cdd8]/70 bg-white px-5 py-4 text-sm text-slate-700 shadow-xs">
           <p className="mb-2 text-[10px] font-black tracking-wider text-[#2f6a83] uppercase">
             Principais resultados · {mun}
           </p>
@@ -229,7 +229,7 @@ export function ExposicaoView({
         </div>
 
         <div className="my-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="overflow-hidden rounded-xl border border-[#b3cdd8] bg-white shadow-sm">
+          <div className="hover-lift overflow-hidden rounded-2xl border border-[#b3cdd8]/70 bg-white shadow-xs">
             <div className="px-4 py-3" style={{ backgroundColor: "#055071" }}>
               <p className="mb-0.5 text-[10px] font-black tracking-wider text-white/95 uppercase">
                 {titulo}
@@ -267,7 +267,7 @@ export function ExposicaoView({
               ))}
             </div>
           </div>
-          <div className="rounded-xl border border-[#b3cdd8] bg-white p-4 shadow-sm">
+          <div className="hover-lift rounded-2xl border border-[#b3cdd8]/70 bg-white p-4 shadow-xs">
             <p className="mb-2 text-[10px] font-black tracking-wider text-[#2f6a83] uppercase">
               Exposição total (patrimônio no município)
             </p>

@@ -40,13 +40,14 @@ interface AnalysisPanelProps {
   dash: DashboardState
 }
 
-const glassStyle = (opacity = 0.6) =>
+const glassStyle = (opacity = 0.8) =>
   ({
     backgroundColor: `rgba(255,255,255,${opacity})`,
-    backdropFilter: "saturate(180%) blur(20px)",
-    WebkitBackdropFilter: "saturate(180%) blur(20px)",
-    border: "0.5px solid rgba(255,255,255,0.6)",
-    boxShadow: "0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)",
+    backdropFilter: "blur(24px) saturate(190%)",
+    WebkitBackdropFilter: "blur(24px) saturate(190%)",
+    border: "0.5px solid rgba(255,255,255,0.75)",
+    boxShadow:
+      "0 12px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.04), inset 0 0.5px 0 0 rgba(255,255,255,0.9)",
   }) as const
 
 export function AnalysisPanel({ dash }: AnalysisPanelProps) {
@@ -171,11 +172,11 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
           role="region"
           aria-label="Painel de análise"
           className={`absolute bottom-1.5 left-3 z-20 flex w-[420px] flex-col overflow-hidden p-4 shadow-2xl print:static print:flex print:h-auto print:max-h-none print:w-full print:overflow-visible print:border-slate-200 print:shadow-none ${
-            temTrilhoCota ? "rounded-l-xl" : "rounded-xl"
+            temTrilhoCota ? "rounded-l-2xl" : "rounded-2xl"
           }`}
           style={{
             top: headerBottom,
-            ...glassStyle(0.6),
+            ...glassStyle(0.8),
             animation: "panelSlideIn 320ms var(--ease-drawer) both",
           }}
         >
@@ -190,14 +191,14 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
                   <button
                     onClick={() => mostrarAvisoMancha(avisoDoCenario(cenario))}
                     title="Sobre o cenário de inundação"
-                    className="active-press hover-lift flex h-6 w-6 items-center justify-center rounded-md bg-slate-200/80 text-slate-700 hover:bg-slate-300"
+                    className="active-press hover-lift flex h-6 w-6 items-center justify-center rounded-full bg-slate-200/80 text-slate-700 hover:bg-slate-300 active:scale-[0.95] transition-all"
                   >
                     <Info size={12} strokeWidth={2.5} />
                   </button>
                 )}
                 <button
                   onClick={() => setShowPainelAnalise(false)}
-                  className="active-press hover-lift flex h-6 items-center gap-1 rounded-md border border-slate-200/80 bg-white/80 px-2 text-[9px] font-bold text-slate-700 hover:bg-white"
+                  className="active-press hover-lift flex h-6 items-center gap-1 rounded-full border border-slate-200/80 bg-white/80 px-2.5 text-[9px] font-bold text-slate-700 hover:bg-white active:scale-[0.96] transition-all"
                 >
                   <EyeOff size={10} strokeWidth={2.5} />
                   Ocultar
@@ -520,14 +521,14 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
       {!showPainelAnalise && (
         <button
           onClick={() => setShowPainelAnalise(true)}
-          className="active-press hover-lift absolute left-4 z-20 flex h-8 items-center gap-1.5 rounded-xl px-4 text-xs font-black shadow-2xl print:hidden"
+          className="active-press hover-lift absolute left-4 z-20 flex h-9 items-center gap-2 rounded-full px-4 text-xs font-bold shadow-2xl active:scale-[0.97] transition-all duration-150 print:hidden"
           style={{
             top: headerBottom,
-            ...glassStyle(0.6),
+            ...glassStyle(0.8),
             color: C.primary,
           }}
         >
-          <PanelLeft size={12} strokeWidth={2.5} />
+          <PanelLeft size={13} strokeWidth={2.5} />
           Abrir Painel de Análise
         </button>
       )}

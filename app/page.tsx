@@ -185,55 +185,55 @@ export default function Dashboard() {
       {/* ── Mapa (fundo) ─────────────────────────────────────────────── */}
       <DashboardMap dash={dash} />
 
-      {/* ── Cartão de logos institucionais: alinhado ao grupo de zoom (128 px), à esquerda dele, na base ── */}
-      <div className="pointer-events-none absolute right-[62px] bottom-[8px] z-10 print:hidden">
+      {/* ── Cartão de logos institucionais: alinhado ao grupo de zoom (84 px), à esquerda dele, na base ── */}
+      <div className="pointer-events-none absolute right-[44px] bottom-[8px] z-10 print:hidden">
         <div
-          className="flex h-[128px] w-[195px] flex-col items-center justify-center gap-2 rounded-[6px] bg-white/95 px-2.5 py-2 shadow-sm"
-          style={{ boxShadow: "0 0 0 2px rgba(0,0,0,0.1)" }}
+          className="flex h-[84px] w-[140px] flex-col items-center justify-center gap-1 rounded-[6px] bg-white/95 px-2 py-1 shadow-xs"
+          style={{ boxShadow: "0 0 0 1.5px rgba(0,0,0,0.08)" }}
         >
-          <div className="flex w-full items-center justify-center border-b border-black/10 pb-2 pt-0.5">
+          <div className="flex w-full items-center justify-center border-b border-black/10 pb-1">
             <Image
               src="/GPEA.webp"
               alt="GPEa"
-              width={140}
-              height={44}
+              width={105}
+              height={30}
               className="object-contain"
               style={{
                 width: "auto",
                 height: "auto",
-                maxWidth: "148px",
-                maxHeight: "44px",
+                maxWidth: "115px",
+                maxHeight: "28px",
               }}
               onError={(e) => (e.currentTarget.style.display = "none")}
             />
           </div>
-          <div className="flex w-full items-center justify-center gap-3 pt-0.5">
+          <div className="flex w-full items-center justify-center gap-2 pt-0.5">
             <Image
               src="/CIEX2.webp"
               alt="CIEX"
-              width={54}
-              height={54}
+              width={38}
+              height={38}
               className="object-contain"
               style={{
                 width: "auto",
                 height: "auto",
-                maxWidth: "52px",
-                maxHeight: "48px",
+                maxWidth: "38px",
+                maxHeight: "28px",
               }}
               onError={(e) => (e.currentTarget.style.display = "none")}
             />
-            <div className="h-8 w-px bg-black/10" />
+            <div className="h-6 w-px bg-black/10" />
             <Image
               src="/IPH.webp"
               alt="IPH · UFRGS"
-              width={72}
-              height={48}
-              className="rounded-sm object-contain"
+              width={52}
+              height={32}
+              className="rounded-xs object-contain"
               style={{
                 width: "auto",
                 height: "auto",
-                maxWidth: "76px",
-                maxHeight: "46px",
+                maxWidth: "52px",
+                maxHeight: "28px",
               }}
               onError={(e) => (e.currentTarget.style.display = "none")}
             />
@@ -283,31 +283,31 @@ export default function Dashboard() {
         onFocus={() => {
           legendaInteragiu.current = true
         }}
-        className="absolute right-[6px] bottom-[146px] z-10 flex w-[252px] flex-col justify-end print:hidden"
+        className="absolute right-[8px] bottom-[98px] z-10 flex w-[176px] flex-col justify-end print:hidden"
         style={{
           maxHeight: filtrosVisiveis
-            ? "calc(100vh - 320px)"
-            : `calc(100vh - ${146 + headerBottom + 44}px)`,
+            ? "calc(100vh - 280px)"
+            : `calc(100vh - ${98 + (headerBottom ?? 60) + 40}px)`,
         }}
       >
         <div
           className="flex min-h-0 flex-col overflow-hidden rounded-xl"
-          style={glassStyle(0.55)}
+          style={glassStyle(0.6)}
         >
           <button
             onClick={() => setShowLegenda((p) => !p)}
-            className="flex w-full shrink-0 items-center justify-between gap-3 px-2 py-1.5"
+            className="flex w-full shrink-0 items-center justify-between gap-2 px-2 py-1"
             style={{ background: BRAND_GRADIENT }}
           >
-            <span className="text-[8px] font-black tracking-wider text-white uppercase">
+            <span className="text-[7.5px] font-black tracking-wider text-white uppercase">
               Legenda
             </span>
-            <span className="text-white/80" style={{ fontSize: 8 }}>
+            <span className="text-white/80" style={{ fontSize: 7.5 }}>
               {showLegenda ? "▼" : "▲"}
             </span>
           </button>
           {showLegenda && (
-            <div className="flex min-h-0 flex-col gap-2 overflow-y-auto px-2 py-2 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-track]:bg-transparent">
+            <div className="flex min-h-0 flex-col gap-1.5 overflow-y-auto px-2 py-1.5 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-track]:bg-transparent">
               {(() => {
                 const mostraDano =
                   showDanoFisico && renderMunicipio === "Porto Alegre"
@@ -557,11 +557,11 @@ export default function Dashboard() {
                 return secoes.map(({ key, titulo, corpo }, i) => (
                   <div
                     key={key}
-                    className={`flex flex-col gap-1 ${i > 0 ? "border-t pt-2" : ""}`}
+                    className={`flex flex-col gap-0.5 ${i > 0 ? "border-t pt-1" : ""}`}
                     style={{ borderColor: C.border }}
                   >
                     <div
-                      className="text-[8px] font-black tracking-wider uppercase"
+                      className="text-[7px] font-black tracking-wider uppercase"
                       style={{ color: C.muted }}
                     >
                       {titulo}
@@ -577,7 +577,7 @@ export default function Dashboard() {
 
       {/* ── Copyright: base, centralizado na área livre do mapa (entre o painel e o bloco de logos) ── */}
       <div
-        className={`pointer-events-none absolute right-[330px] bottom-4 z-10 flex items-end justify-center transition-[left] duration-300 print:hidden ${
+        className={`pointer-events-none absolute right-[190px] bottom-3 z-10 flex items-end justify-center transition-[left] duration-300 print:hidden ${
           showPainelAnalise
             ? cotasAtivo && cotaRaster.cota !== null
               ? "left-[500px]"
@@ -603,14 +603,14 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* ── Aviso flutuante no mapa (10s com auto-dismiss ou fechar manual) ── */}
+      {/* ── Aviso flutuante no mapa (Alinhado à direita no topo, sem sobrepor painéis/filtros) ── */}
       {avisoMancha && (
         <div
-          className="pointer-events-none absolute inset-x-0 z-40 flex justify-center px-4 transition-all duration-300 print:hidden"
+          className="pointer-events-none absolute right-4 z-40 flex justify-end max-w-[calc(100vw-2rem)] transition-all duration-300 print:hidden"
           style={{ top: (headerBottom ?? 60) + 10 }}
         >
           <div
-            className="animate-fade-in-up pointer-events-auto flex max-w-2xl items-start gap-2.5 rounded-2xl border border-amber-300 bg-[#fffef5]/95 px-4 py-2.5 shadow-xl backdrop-blur-md transition-all"
+            className="animate-fade-in-up pointer-events-auto flex max-w-lg items-start gap-2.5 rounded-2xl border border-amber-300/80 bg-[#fffef5]/95 px-4 py-2.5 shadow-2xl backdrop-blur-xl transition-all"
             role="status"
           >
             <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />

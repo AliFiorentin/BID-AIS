@@ -30,13 +30,14 @@ interface Chip {
   toggle: () => void
 }
 
-const glassStyle = (opacity = 0.6) =>
+const glassStyle = (opacity = 0.8) =>
   ({
     backgroundColor: `rgba(255,255,255,${opacity})`,
-    backdropFilter: "saturate(180%) blur(20px)",
-    WebkitBackdropFilter: "saturate(180%) blur(20px)",
-    border: "0.5px solid rgba(255,255,255,0.6)",
-    boxShadow: "0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)",
+    backdropFilter: "blur(24px) saturate(190%)",
+    WebkitBackdropFilter: "blur(24px) saturate(190%)",
+    border: "0.5px solid rgba(255,255,255,0.75)",
+    boxShadow:
+      "0 12px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.04), inset 0 0.5px 0 0 rgba(255,255,255,0.9)",
   }) as const
 
 export function FiltersPanel({ dash }: FiltersPanelProps) {
@@ -62,6 +63,8 @@ export function FiltersPanel({ dash }: FiltersPanelProps) {
     isCenarioAtivo,
     temCamadaTabular,
     cotasAtivo,
+    cotaRaster,
+    showPainelAnalise,
     setoresUnicos,
     depsUnicas,
     tiposUnicos,
@@ -69,11 +72,28 @@ export function FiltersPanel({ dash }: FiltersPanelProps) {
     resetSeq,
   } = dash
 
-  const showPanel = (temCamadaTabular || isCenarioAtivo) && !isVisaoGeral
+  const showPanel = (temCamadaTabular || isCenarioAtivo || cotasAtivo) && !isVisaoGeral
   const [abertoFiltros, setAbertoFiltros] = React.useState(false)
 
-  // Espaço extra para não sobrepor os tooltips das camadas na barra superior
-  const topFiltros = headerBottom + 36
+  const temTrilhoCota = cotasAtivo && !cotaRaster?.erro && cotaRaster?.cota !== null
+  const temErroCota = cotasAtivo && Boolean(cotaRaster?.erro)
+
+  // O painel principal (AnalysisPanel) tem w-[420px] e fica em left-3 (12px), totalizando 432px de borda direita.
+  // Em cotas ativas com trilho vertical, o CotaControle fica em left-[432px] com w-[68px], totalizando 500px.
+  // Em caso de erro de cota, o CotaControle tem max-w-[140px], totalizando 572px.
+  // Quando o painel de análise está recolhido, o botão 'Painel' fica em left-4 (16px) e tem ~92px de largura.
+  const leftPosition = showPainelAnalise
+    ? temTrilhoCota
+      ? 510
+      : temErroCota
+        ? 582
+        : 442
+    : temTrilhoCota
+      ? 88
+      : 116
+
+  // Alinhado no topo com o painel principal (top: headerBottom)
+  const topPosition = showPainelAnalise ? headerBottom : headerBottom + 12
 
   // O popover nasce aberto (descobribilidade) e se recolhe sozinho uma vez em 6 s,
   // a menos que a pessoa interaja com ele antes. Trocar de município, cenário ou reiniciar reabre.
@@ -161,7 +181,7 @@ export function FiltersPanel({ dash }: FiltersPanelProps) {
       key={c.id}
       onClick={c.toggle}
       aria-pressed={c.on}
-      className="flex h-6 min-w-0 items-center gap-1 rounded-full border px-1.5 text-[9px] font-bold transition-colors duration-150"
+      className="active-press hover-lift flex h-6 min-w-0 items-center gap-1 rounded-full border px-2 text-[9px] font-bold active:scale-[0.96] transition-all duration-150"
       style={{
         backgroundColor: c.on ? `${c.cor}20` : "transparent",
         borderColor: c.on ? c.cor : "#cbd5e1",
@@ -195,11 +215,12 @@ export function FiltersPanel({ dash }: FiltersPanelProps) {
           onFocus={() => {
             interagiu.current = true
           }}
-          className="absolute right-4 z-10 flex w-44 flex-col gap-1.5 overflow-y-auto rounded-xl p-2 shadow-2xl print:hidden [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-track]:bg-transparent"
+          className="absolute z-20 flex w-48 flex-col gap-1.5 overflow-y-auto rounded-2xl p-2.5 shadow-2xl transition-[left,top] duration-300 ease-out print:hidden [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-track]:bg-transparent"
           style={{
-            top: topFiltros,
-            maxHeight: `calc(100vh - ${topFiltros + 20}px)`,
-            ...glassStyle(0.6),
+            top: topPosition,
+            left: leftPosition,
+            maxHeight: `calc(100vh - ${topPosition + 20}px)`,
+            ...glassStyle(0.8),
           }}
         >
           <div
@@ -355,11 +376,24 @@ export function FiltersPanel({ dash }: FiltersPanelProps) {
       {!showFiltros && showPanel && (
         <button
           onClick={() => setShowFiltros(true)}
-          className="active-press hover-lift absolute right-4 z-20 flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-black shadow-2xl focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none print:hidden"
-          style={{ top: topFiltros, ...glassStyle(0.6), color: C.primary }}
+          className="active-press hover-lift absolute z-20 flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold shadow-2xl active:scale-[0.97] transition-[left,top] duration-300 ease-out focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:outline-none print:hidden"
+          style={{
+            top: topPosition,
+            left: leftPosition,
+            ...glassStyle(0.8),
+            color: C.primary,
+          }}
         >
           <SlidersHorizontal size={12} strokeWidth={2.5} />
-          Filtros
+          <span>Filtros</span>
+          {nFiltrosAtivos > 0 && (
+            <span
+              className="ml-0.5 rounded-full px-1.5 py-px text-[10px] text-white font-black"
+              style={{ backgroundColor: C.primary }}
+            >
+              {nFiltrosAtivos}
+            </span>
+          )}
         </button>
       )}
     </>

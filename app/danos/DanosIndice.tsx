@@ -75,7 +75,7 @@ export function DanosIndice({ ctx }: { ctx: DanosCtx }) {
   return (
     <aside className="hidden w-52 shrink-0 lg:block print:hidden">
       <div className="sticky top-[56px] flex flex-col gap-3">
-        <nav className="rounded-xl border border-[#b3cdd8] bg-white p-4 shadow-sm">
+        <nav className="rounded-2xl border border-[#b3cdd8]/60 bg-white/85 p-4 shadow-sm backdrop-blur-xl">
           <p className="mb-2 text-[10px] font-black tracking-wider text-[#055071] uppercase">
             Índice
           </p>
@@ -84,7 +84,7 @@ export function DanosIndice({ ctx }: { ctx: DanosCtx }) {
               <li key={href}>
                 <a
                   href={href}
-                  className="block py-0.5 text-[11px] leading-snug font-medium text-[#055071] underline-offset-4 transition-colors duration-150 hover:underline"
+                  className="block py-1 px-1.5 rounded-lg text-[11px] leading-snug font-medium text-[#055071] transition-all hover:bg-slate-100/70 active:scale-[0.98]"
                 >
                   {label}
                 </a>

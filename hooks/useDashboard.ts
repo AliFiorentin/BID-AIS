@@ -277,15 +277,18 @@ export function useDashboard() {
     setShowLegenda(true);
     setResetSeq(s => s + 1);
     const v = MUNICIPIO_VIEW["Visão Geral RS"];
-    mapRef.current?.getMap().flyTo({
-      center: v.center,
-      zoom: v.zoom,
-      pitch: 0,
-      bearing: 0,
-      padding: { left: 432, top: 0, right: 0, bottom: 0 },
-      duration: 1500,
-      essential: true,
-    });
+    const m = mapRef.current?.getMap?.() ?? mapRef.current;
+    if (m && typeof (m as { flyTo?: (opts: unknown) => void }).flyTo === "function") {
+      (m as { flyTo: (opts: unknown) => void }).flyTo({
+        center: v.center,
+        zoom: v.zoom,
+        pitch: 0,
+        bearing: 0,
+        padding: { left: 432, top: 0, right: 0, bottom: 0 },
+        duration: 1500,
+        essential: true,
+      });
+    }
   }, [dano]);
 
   return {

@@ -9,17 +9,17 @@ export function LegendItem({ cor, label, area }: LegendItemProps) {
     <div className="flex items-center gap-1.5">
       {area ? (
         <div
-          className="h-2.5 w-3 shrink-0 rounded-sm border"
+          className="h-2 w-2.5 shrink-0 rounded-xs border"
           style={{ borderColor: cor, backgroundColor: `${cor}30` }}
         />
       ) : (
         <div
-          className="h-2.5 w-2.5 shrink-0 rounded-full"
+          className="h-2 w-2 shrink-0 rounded-full"
           style={{ backgroundColor: cor }}
         />
       )}
       <span
-        className="min-w-0 truncate text-[9px] leading-tight font-medium text-slate-700"
+        className="min-w-0 truncate text-[8px] leading-tight font-medium text-slate-700"
         title={label}
       >
         {label}

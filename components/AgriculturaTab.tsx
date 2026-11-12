@@ -145,7 +145,7 @@ export function AgriculturaTab({
     <TabsContent value="agricultura" className="flex-1 overflow-y-auto mt-4 pr-2 pb-2 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-thumb]:rounded-full">
       {/* Donut */}
       {pieData.length > 0 && (
-        <div className="rounded-lg overflow-hidden mb-3 print:hidden" style={{ border: "1px solid rgba(5,80,113,0.15)" }}>
+        <div className="rounded-xl overflow-hidden mb-3 shadow-xs print:hidden" style={{ border: "1px solid rgba(5,80,113,0.15)" }}>
           <div className="flex items-center px-2.5 py-1.5" style={PANEL_HDR}>
             <h3 className="text-[10px] font-black uppercase tracking-wider text-white">Área por Cultura</h3>
           </div>
@@ -175,7 +175,7 @@ export function AgriculturaTab({
 
       {/* Card total impacto */}
       {isCenarioAtivo && coefs && impactoTotal > 0 && (
-        <Card size="sm" className="mb-3 border-orange-300 bg-orange-50 print:break-inside-avoid">
+        <Card size="sm" className="mb-3 rounded-2xl border-orange-200/80 bg-orange-50/80 backdrop-blur-md shadow-xs print:break-inside-avoid">
           <CardContent className="p-3">
             <p className="text-[10px] uppercase tracking-wider font-bold mb-0.5 text-orange-700">Prejuízo Agrícola Estimado</p>
             <p className="text-[22px] font-black leading-none text-orange-600">
@@ -232,7 +232,7 @@ export function AgriculturaTab({
 
       {/* Metodologia */}
       {isCenarioAtivo && coefs && (
-        <Card size="sm" className="mt-1 py-0 gap-0 bg-sky-50/60 print:break-inside-avoid">
+        <Card size="sm" className="mt-1 py-0 gap-0 rounded-2xl border-sky-200/80 bg-sky-50/70 backdrop-blur-md shadow-xs print:break-inside-avoid">
           <CardContent className="p-2">
             <p className="text-[10px] font-bold mb-0.5" style={{ color: C.primary }}>Metodologia</p>
             <p className="text-[10px] leading-relaxed text-muted-foreground">

@@ -60,7 +60,7 @@ export function EducacaoTab({ dash }: Props) {
 
         return (
           <>
-            <div className="rounded-lg overflow-hidden mb-3" style={{ border: "1px solid rgba(5,80,113,0.15)" }}>
+            <div className="rounded-xl overflow-hidden mb-3 shadow-xs" style={{ border: "1px solid rgba(5,80,113,0.15)" }}>
               <div className="flex items-center px-2.5 py-1.5" style={PANEL_HDR}>
                 <h3 className="text-[10px] font-black uppercase tracking-wider text-white">Escolas por Dependência</h3>
               </div>
@@ -99,9 +99,9 @@ export function EducacaoTab({ dash }: Props) {
               </div>
             </div>
             {lista.length > 0 && (
-              <Collapsible open={showListaEscolas} onOpenChange={() => setShowListaEscolas(p => !p)} className="mb-2 rounded-lg overflow-hidden">
+              <Collapsible open={showListaEscolas} onOpenChange={() => setShowListaEscolas(p => !p)} className="mb-2 rounded-xl overflow-hidden shadow-xs">
                 <CollapsibleTrigger asChild>
-                  <button className="w-full flex items-center justify-between px-3 py-2 text-[10px] font-bold text-white" style={PANEL_HDR}>
+                  <button className="w-full flex items-center justify-between px-3 py-2 text-[10px] font-bold text-white active:brightness-95 transition-all" style={PANEL_HDR}>
                     <span>Escolas Atingidas ({lista.length})</span>
                     <ChevronDown className={cn("h-3 w-3 transition-transform shrink-0", showListaEscolas && "rotate-180")} />
                   </button>
@@ -125,7 +125,7 @@ export function EducacaoTab({ dash }: Props) {
         <KPIRow titulo="Profissionais" cor={COLORS.educacao} valor={compactoBr(mostraImpacto ? metricasEdu.impacto.prof : metricasEdu.base.prof, 0)} sub={mostraImpacto ? "Atingidos" : "Total"} delta={mostraImpacto ? `de ${compactoBr(metricasEdu.base.prof, 0)} (${calcPct(metricasEdu.impacto.prof, metricasEdu.base.prof)})` : undefined} />
         <KPIRow titulo="Docentes" cor={COLORS.educacao} valor={compactoBr(mostraImpacto ? metricasEdu.impacto.doc : metricasEdu.base.doc, 0)} sub={mostraImpacto ? "Atingidos" : "Total"} delta={mostraImpacto ? `de ${compactoBr(metricasEdu.base.doc, 0)} (${calcPct(metricasEdu.impacto.doc, metricasEdu.base.doc)})` : undefined} />
         {professoresDepChart.length > 0 && (
-          <div className="rounded-lg overflow-hidden -mt-1 mb-1">
+          <div className="rounded-xl overflow-hidden -mt-1 mb-1 shadow-xs">
             <div className="flex items-center px-2.5 py-1.5" style={PANEL_HDR}>
               <span className="text-[10px] font-black uppercase tracking-wider text-white">Professores por Dependência</span>
             </div>
@@ -165,7 +165,7 @@ export function EducacaoTab({ dash }: Props) {
         if (pieData.length === 0) return null;
 
         return (
-          <div className="rounded-lg overflow-hidden mt-3 mb-3" style={{ border: "1px solid rgba(5,80,113,0.15)" }}>
+          <div className="rounded-xl overflow-hidden mt-3 mb-3 shadow-xs" style={{ border: "1px solid rgba(5,80,113,0.15)" }}>
             <div className="flex items-center px-2.5 py-1.5" style={PANEL_HDR}>
               <h3 className="text-[10px] font-black uppercase tracking-wider text-white">Matrículas por Nível</h3>
             </div>

@@ -56,7 +56,7 @@ export function SaudeTab({ dash }: Props) {
 
         return (
           <>
-            <div className="rounded-lg overflow-hidden mb-3 mt-2" style={{ border: "1px solid rgba(5,80,113,0.15)" }}>
+            <div className="rounded-xl overflow-hidden mb-3 mt-2 shadow-xs" style={{ border: "1px solid rgba(5,80,113,0.15)" }}>
               <div className="flex items-center px-2.5 py-1.5" style={PANEL_HDR}>
                 <h3 className="text-[10px] font-black uppercase tracking-wider text-white">Unidades por Tipo</h3>
               </div>
@@ -101,9 +101,9 @@ export function SaudeTab({ dash }: Props) {
                   const lista = feats.map((f: Feature) => { const p = f.properties as Record<string, unknown>; return String(p?.no_fantasia || p?.no_razao_social || "").trim(); }).filter(Boolean).sort((a: string, b: string) => a.localeCompare(b, "pt-BR"));
                   if (lista.length === 0) return null;
                   return (
-                    <Collapsible key={tipoKey} open={cfg.state} onOpenChange={() => cfg.setState(p => !p)} className="rounded-lg overflow-hidden">
+                    <Collapsible key={tipoKey} open={cfg.state} onOpenChange={() => cfg.setState(p => !p)} className="rounded-xl overflow-hidden shadow-xs">
                       <CollapsibleTrigger asChild>
-                        <button className="w-full flex items-center justify-between px-3 py-2 text-[10px] font-bold text-white" style={PANEL_HDR}>
+                        <button className="w-full flex items-center justify-between px-3 py-2 text-[10px] font-bold text-white active:brightness-95 transition-all" style={PANEL_HDR}>
                           <span>{cfg.label} ({lista.length})</span>
                           <ChevronDown className={cn("h-3 w-3 transition-transform shrink-0", cfg.state && "rotate-180")} />
                         </button>

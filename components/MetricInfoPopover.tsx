@@ -64,7 +64,7 @@ export function MetricInfoPopover({
       <PopoverContent
         align="start"
         side="bottom"
-        className="z-50 w-80 max-w-[90vw] rounded-xl border border-slate-200 bg-white p-3.5 shadow-xl text-slate-800"
+        className="z-50 w-84 max-w-[90vw] rounded-2xl border border-white/80 bg-white/95 backdrop-blur-2xl backdrop-saturate-180 p-4 shadow-2xl text-slate-800"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex flex-col gap-2">
@@ -91,7 +91,7 @@ export function MetricInfoPopover({
 
           {/* Fórmula */}
           {finalFormula && (
-            <div className="flex flex-col gap-1 rounded-md bg-slate-50 p-2 border border-slate-100">
+            <div className="flex flex-col gap-1 rounded-xl bg-slate-50/80 p-2.5 border border-slate-200/60">
               <span className="text-[9px] font-bold tracking-wider text-slate-500 uppercase">
                 Fórmula de Cálculo
               </span>

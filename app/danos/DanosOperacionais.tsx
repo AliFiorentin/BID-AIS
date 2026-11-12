@@ -54,7 +54,7 @@ export function DanosOperacionais({ ctx }: { ctx: DanosCtx }) {
           {pioresCenarios.map(({ mun, cenNome, cenVal }) => (
             <div
               key={mun}
-              className="overflow-hidden rounded-xl border border-[#b3cdd8] bg-white shadow-sm"
+              className="hover-lift overflow-hidden rounded-2xl border border-[#b3cdd8]/70 bg-white shadow-xs"
             >
               <div
                 className="px-5 py-3.5"
@@ -188,7 +188,7 @@ export function DanosOperacionais({ ctx }: { ctx: DanosCtx }) {
                 return (
                 <div
                   key={cen}
-                  className="overflow-hidden rounded-xl border border-[#b3cdd8] bg-white shadow-sm"
+                  className="hover-lift overflow-hidden rounded-2xl border border-[#b3cdd8]/70 bg-white shadow-xs"
                 >
                   <div className="flex items-baseline justify-between border-b border-[#b3cdd8] bg-[#f0f7fa] px-4 py-2.5">
                     <div className="flex items-center gap-2">

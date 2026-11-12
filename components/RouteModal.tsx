@@ -26,20 +26,20 @@ export function RouteModal({ children }: { children: React.ReactNode }) {
     <div
       className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto px-4 py-6"
       style={{
-        backgroundColor: "rgba(3,58,82,0.6)",
-        backdropFilter: "blur(6px)",
-        WebkitBackdropFilter: "blur(6px)",
+        backgroundColor: "rgba(3,58,82,0.45)",
+        backdropFilter: "blur(16px) saturate(160%)",
+        WebkitBackdropFilter: "blur(16px) saturate(160%)",
       }}
       onClick={(e) => {
         if (e.target === e.currentTarget) close()
       }}
     >
-      <div className="animate-scale-in relative w-full max-w-[1440px] overflow-hidden rounded-2xl bg-white shadow-2xl">
+      <div className="animate-scale-in relative w-full max-w-[1440px] overflow-hidden rounded-3xl bg-white shadow-2xl border border-white/60">
         <button
           onClick={close}
           aria-label="Fechar"
           title="Fechar (Esc)"
-          className="active-press absolute top-3 right-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md transition-colors hover:bg-slate-100"
+          className="active-press absolute top-3 right-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-md backdrop-blur-md transition-all hover:bg-slate-100 active:scale-95"
           style={{ color: "#055071" }}
         >
           <X size={16} strokeWidth={2.5} />

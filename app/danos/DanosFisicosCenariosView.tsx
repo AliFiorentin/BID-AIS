@@ -87,8 +87,8 @@ export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
             return (
               <div
                 key={mun}
-                className={`overflow-hidden rounded-xl border bg-white shadow-sm transition-all duration-150 ${
-                  ativo ? "border-[#055071] ring-2 ring-[#055071]/30" : "border-[#b3cdd8]"
+                className={`hover-lift overflow-hidden rounded-2xl border bg-white shadow-xs transition-all duration-150 ${
+                  ativo ? "border-[#055071] ring-2 ring-[#055071]/30" : "border-[#b3cdd8]/70"
                 }`}
               >
                 <div
@@ -136,9 +136,9 @@ export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
               <button
                 key={c}
                 onClick={() => setCenarioFisico(c)}
-                className={`rounded-full border px-3 py-1 text-xs font-bold transition-all duration-150 ${
+                className={`active-press hover-lift rounded-full border px-3.5 py-1 text-xs font-semibold active:scale-[0.97] transition-all duration-150 ${
                   cenarioFisicoAtivo === c
-                    ? "border-[#055071] bg-[#055071] text-white shadow-sm"
+                    ? "border-[#055071] bg-[#055071] text-white shadow-xs"
                     : "border-slate-300 bg-white text-slate-600 hover:border-[#055071] hover:text-[#055071]"
                 }`}
               >
@@ -150,7 +150,7 @@ export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
 
         {/* 4 Cards de KPI do Cenário */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
-          <div className="rounded-xl border border-[#055071] bg-gradient-to-br from-[#055071] to-[#0a6e9a] p-4 text-white shadow-sm">
+          <div className="hover-lift rounded-2xl border border-[#055071] bg-gradient-to-br from-[#055071] to-[#0a6e9a] p-4 text-white shadow-xs">
             <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-white/80">
               <Waves size={13} strokeWidth={2.5} /> Total Exposto
             </div>
@@ -165,7 +165,7 @@ export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
             </div>
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="hover-lift rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
             <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#055071]">
               <Building2 size={13} strokeWidth={2.5} /> Empresas
             </div>
@@ -177,7 +177,7 @@ export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
             </div>
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="hover-lift rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
             <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#2da8cc]">
               <GraduationCap size={13} strokeWidth={2.5} /> Educação
             </div>
@@ -189,7 +189,7 @@ export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
             </div>
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="hover-lift rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
             <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#e35d4b]">
               <HeartPulse size={13} strokeWidth={2.5} /> Saúde
             </div>
@@ -203,7 +203,7 @@ export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
         </div>
 
         {/* Barra de composição */}
-        <div className="rounded-xl border border-[#b3cdd8] bg-white p-5 shadow-sm">
+        <div className="rounded-2xl border border-[#b3cdd8]/70 bg-white p-5 shadow-xs">
           <SubTitle>Composição Setorial da Exposição</SubTitle>
           <div className="mt-3 h-4 w-full overflow-hidden rounded-full bg-slate-100 flex">
             <div

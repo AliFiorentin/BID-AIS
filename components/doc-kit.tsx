@@ -50,7 +50,7 @@ export function Section({
     <section id={id} className="mb-10 scroll-mt-20">
       <div className="mb-4 flex items-center gap-2.5">
         <span
-          className="shrink-0 rounded-md px-2.5 py-1 text-xs font-black text-white"
+          className="shrink-0 rounded-full px-3 py-0.5 text-xs font-semibold text-white shadow-xs"
           style={{ backgroundColor: primary }}
         >
           {num}
@@ -164,7 +164,7 @@ export function GeoCard({
   children: React.ReactNode
 }) {
   return (
-    <div className="mt-3 rounded-xl border border-[#b3cdd8] bg-white p-4 shadow-sm">
+    <div className="hover-lift mt-3 rounded-2xl border border-[#b3cdd8]/70 bg-white/90 p-4 shadow-xs backdrop-blur-md">
       <p
         className="mb-0.5 text-[11px] font-black tracking-wider uppercase"
         style={{ color: primary }}
@@ -187,7 +187,7 @@ export function MathBlock({
   primary?: string
 }) {
   return (
-    <div className="my-3 space-y-3 overflow-x-auto rounded-lg border border-[#b3cdd8] bg-[#f0f7fa] px-5 py-4">
+    <div className="my-3 space-y-3 overflow-x-auto rounded-xl border border-[#b3cdd8]/70 bg-slate-50/80 px-5 py-4">
       {exprs.map(({ label, tex }, i) => {
         const html = katex.renderToString(tex, {
           displayMode: true,
@@ -226,12 +226,12 @@ export function DataTable({
 }) {
   const [header, ...body] = rows
   return (
-    <div className="my-3 overflow-x-auto rounded-xl border border-[#b3cdd8] shadow-sm">
+    <div className="my-3 overflow-x-auto rounded-2xl border border-[#b3cdd8]/70 shadow-xs">
       <table className="w-full border-collapse text-[12px]">
         <thead>
           <tr style={{ backgroundColor: primary }} className="text-white">
             {header.map((h, i) => (
-              <th key={i} className="px-3 py-2.5 text-left font-bold">
+              <th key={i} className="px-3.5 py-2.5 text-left font-semibold">
                 {h}
               </th>
             ))}
@@ -241,7 +241,7 @@ export function DataTable({
           {body.map((row, ri) => (
             <tr
               key={ri}
-              className={`border-t border-[#b3cdd8] transition-colors duration-100 ${ri === destaque ? "font-bold" : "hover:bg-[#f0f7fa]"}`}
+              className={`border-t border-[#b3cdd8]/60 transition-colors duration-100 ${ri === destaque ? "font-bold" : "hover:bg-[#f0f7fa]"}`}
               style={
                 ri === destaque
                   ? {
@@ -252,7 +252,7 @@ export function DataTable({
               }
             >
               {row.map((cell, ci) => (
-                <td key={ci} className="px-3 py-2 align-top">
+                <td key={ci} className="px-3.5 py-2 align-top">
                   {cell}
                 </td>
               ))}
@@ -273,21 +273,21 @@ export function Note({
 }) {
   const cfg = {
     warning: {
-      bg: "bg-amber-50",
-      border: "border-amber-300",
+      bg: "bg-amber-50/90",
+      border: "border-amber-400",
       text: "text-amber-900",
       icon: "⚠",
     },
     info: {
-      bg: "bg-[#eff6ff]",
-      border: "border-[#93c5fd]",
+      bg: "bg-[#eff6ff]/90",
+      border: "border-[#60a5fa]",
       text: "text-[#1e40af]",
       icon: "ℹ",
     },
   }[type]
   return (
     <div
-      className={`my-3 rounded-lg border-l-[3px] px-4 py-3 text-[12px] leading-relaxed ${cfg.bg} ${cfg.border} ${cfg.text}`}
+      className={`my-3 rounded-xl border-l-[3.5px] px-4 py-3 text-[12px] leading-relaxed shadow-xs ${cfg.bg} ${cfg.border} ${cfg.text}`}
     >
       <span className="mr-1.5 font-bold">{cfg.icon}</span>
       {children}

@@ -60,7 +60,7 @@ export function CotaControle({
           type="button"
           onClick={() => setTocando((t) => !t)}
           disabled={!pronta}
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#055071] text-sm text-white disabled:opacity-50"
+          className="active-press hover-lift flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#055071] text-sm text-white shadow-sm active:scale-[0.95] transition-all duration-150 disabled:opacity-50"
           aria-label={tocando ? "Pausar" : "Reproduzir"}
           aria-pressed={tocando}
           aria-busy={!pronta}
@@ -136,7 +136,7 @@ export function CotaControle({
         type="button"
         onClick={() => setTocando((t) => !t)}
         disabled={!pronta}
-        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#055071] text-sm text-white disabled:opacity-50"
+        className="active-press hover-lift flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#055071] text-sm text-white shadow-sm active:scale-[0.95] transition-all duration-150 disabled:opacity-50"
         aria-label={tocando ? "Pausar" : "Reproduzir"}
         aria-pressed={tocando}
         aria-busy={!pronta}

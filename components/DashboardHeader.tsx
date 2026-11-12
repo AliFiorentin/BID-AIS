@@ -50,15 +50,16 @@ const HEADER_FLUID = {
 
 const HEADER_GLASS = {
   backgroundImage:
-    "linear-gradient(135deg, rgba(5,80,113,0.84) 0%, rgba(10,110,154,0.84) 100%)",
-  backdropFilter: "saturate(180%) blur(20px)",
-  WebkitBackdropFilter: "saturate(180%) blur(20px)",
-  border: "0.5px solid rgba(255,255,255,0.18)",
-  boxShadow: "0 4px 24px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.08)",
+    "linear-gradient(135deg, rgba(5,80,113,0.85) 0%, rgba(10,110,154,0.85) 100%)",
+  backdropFilter: "blur(24px) saturate(190%)",
+  WebkitBackdropFilter: "blur(24px) saturate(190%)",
+  border: "0.5px solid rgba(255,255,255,0.22)",
+  boxShadow:
+    "0 8px 32px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.08), inset 0 0.5px 0 0 rgba(255,255,255,0.35)",
 } as const
 
 const NAV_LINK_CLASS =
-  "active-press hover-lift flex items-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-2.5 font-black whitespace-nowrap text-white/90 hover:bg-white/20 focus-visible:outline-none"
+  "active-press hover-lift flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-2.5 font-semibold whitespace-nowrap text-white/95 hover:bg-white/20 hover:border-white/35 active:scale-[0.97] transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 shadow-xs"
 const NAV_LINK_STYLE = {
   fontSize: "var(--btn-size)",
   height: "var(--btn-h)",
@@ -141,7 +142,7 @@ export function DashboardHeader({ dash }: DashboardHeaderProps) {
   return (
     <header
       ref={headerRef}
-      className="dash-header absolute top-1.5 right-3 left-3 z-30 flex flex-wrap items-center rounded-xl shadow-2xl print:hidden"
+      className="dash-header absolute top-1.5 right-3 left-3 z-30 flex flex-wrap items-center rounded-2xl shadow-2xl print:hidden"
       style={{
         ...HEADER_GLASS,
         paddingInline: "0.75rem",
@@ -149,12 +150,17 @@ export function DashboardHeader({ dash }: DashboardHeaderProps) {
         gap: "var(--section-gap)",
       }}
     >
-      {/* Ícone do projeto + título e subtítulo */}
-      <div
-        className="flex shrink-0 items-center gap-2.5 border-r"
+      {/* Ícone do projeto + título e subtítulo (Botão para reiniciar seleções e voltar à Visão Geral) */}
+      <button
+        type="button"
+        onClick={reiniciar}
+        title="Reiniciar seleções e voltar para a Visão Geral RS"
+        aria-label="Reiniciar seleções e voltar para a Visão Geral RS"
+        className="flex shrink-0 items-center gap-2.5 border-r border-t-0 border-b-0 border-l-0 text-left cursor-pointer outline-none focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0 select-none appearance-none bg-transparent p-0 m-0 transition-none active:outline-none"
         style={{
           borderColor: "rgba(255,255,255,0.2)",
           paddingRight: "var(--section-gap)",
+          WebkitTapHighlightColor: "transparent",
         }}
       >
         <div className="flex shrink-0 items-center justify-center rounded-lg bg-white/95 px-2 py-0.5 shadow-sm">
@@ -181,7 +187,7 @@ export function DashboardHeader({ dash }: DashboardHeaderProps) {
             {subtitulo}
           </span>
         </div>
-      </div>
+      </button>
 
       {/* Perdas Operacionais / Danos Físicos / Metodologia — empurram o resto para a direita (mr-auto) */}
       <div className="grid shrink-0 grid-cols-2 gap-0.5 max-[1999px]:flex max-[1999px]:flex-row max-[1999px]:gap-1 min-[1260px]:mr-auto">
@@ -303,7 +309,7 @@ export function DashboardHeader({ dash }: DashboardHeaderProps) {
               type="button"
               onClick={reiniciar}
               aria-label="Reiniciar seleções"
-              className="active-press hover-lift flex items-center justify-center rounded-md border border-white/20 text-white/90 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none"
+              className="active-press hover-lift flex items-center justify-center rounded-lg border border-white/20 text-white/90 hover:bg-white/15 active:scale-[0.95] transition-all duration-150 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none"
               style={{
                 backgroundColor: C.field,
                 height: "var(--select-h)",
@@ -336,7 +342,7 @@ export function DashboardHeader({ dash }: DashboardHeaderProps) {
                 <button
                   onClick={() => toggleCamada(id)}
                   aria-pressed={ativo}
-                  className={`active-press hover-lift flex shrink-0 items-center justify-center gap-1 rounded-md border font-black whitespace-nowrap focus-visible:ring-2 focus-visible:ring-[#055071]/40 focus-visible:ring-offset-1 focus-visible:outline-none max-[1259px]:w-full ${ativo ? "border-[#b3cdd8] bg-white text-[#055071]" : "border-white/20 text-white/85 hover:bg-white/10"}`}
+                  className={`active-press hover-lift flex shrink-0 items-center justify-center gap-1 rounded-full border font-semibold whitespace-nowrap active:scale-[0.96] transition-all duration-150 focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none max-[1259px]:w-full ${ativo ? "border-[#b3cdd8] bg-white text-[#055071] shadow-xs" : "border-white/20 text-white/90 hover:bg-white/15"}`}
                   style={{
                     fontSize: "var(--btn-size)",
                     height: "var(--btn-h)",
@@ -359,7 +365,7 @@ export function DashboardHeader({ dash }: DashboardHeaderProps) {
             <DropdownMenu>
               <DropdownMenuTrigger
                 disabled={isVisaoGeral || !possuiInfra}
-                className={`active-press hover-lift flex shrink-0 items-center justify-center gap-1.5 rounded-md border font-black whitespace-nowrap disabled:cursor-not-allowed disabled:opacity-50 max-[1259px]:w-full ${infraAtivo ? "border-[#b3cdd8] bg-white text-[#055071]" : "border-white/20 text-white/85 hover:bg-white/10"}`}
+                className={`active-press hover-lift flex shrink-0 items-center justify-center gap-1.5 rounded-full border font-semibold whitespace-nowrap active:scale-[0.96] transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50 max-[1259px]:w-full ${infraAtivo ? "border-[#b3cdd8] bg-white text-[#055071] shadow-xs" : "border-white/20 text-white/90 hover:bg-white/15"}`}
                 style={{
                   fontSize: "var(--btn-size)",
                   height: "var(--btn-h)",

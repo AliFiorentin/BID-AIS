@@ -65,7 +65,7 @@ function MiniStatCard({
   const fmt = (n: number) => `${prefixo ?? ""}${compactoBr(n, casas)}${sufixo ?? ""}`;
 
   return (
-    <div className="rounded-lg overflow-hidden print:break-inside-avoid" style={{ border: "1px solid rgba(5,80,113,0.15)", backgroundColor: PANEL_CARD_BG }}>
+    <div className="hover-lift rounded-xl overflow-hidden print:break-inside-avoid border border-[rgba(5,80,113,0.14)] shadow-xs" style={{ backgroundColor: PANEL_CARD_BG }}>
       <div className="flex items-center" style={{ gap: CARD_GAP, padding: CARD_PAD }}>
         <DonutChart
           data={[

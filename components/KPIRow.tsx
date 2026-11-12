@@ -30,10 +30,7 @@ export function KPIRow({ titulo, valor, sub, delta, cor, extra, infoKey }: KPIRo
   const resolvedInfoKey = infoKey || detectInfoKey(titulo)
   return (
     <div
-      className="hover-lift overflow-hidden rounded-lg print:break-inside-avoid"
-      style={{
-        border: "1px solid rgba(5,80,113,0.15)",
-      }}
+      className="hover-lift overflow-hidden rounded-xl border border-[rgba(5,80,113,0.14)] shadow-xs print:break-inside-avoid"
     >
       <div
         className="flex items-center justify-between gap-1.5 px-3 py-1"

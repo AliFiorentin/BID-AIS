@@ -49,8 +49,7 @@ export function KPICard({
   const resolvedInfoKey = infoKey || detectInfoKey(titulo)
   return (
     <div
-      className="hover-lift overflow-hidden rounded-lg print:break-inside-avoid"
-      style={{ border: "1px solid rgba(5,80,113,0.15)" }}
+      className="hover-lift overflow-hidden rounded-xl border border-[rgba(5,80,113,0.14)] shadow-[0_2px_8px_rgba(0,0,0,0.03)] print:break-inside-avoid"
     >
       <div
         className="flex items-center justify-between gap-1.5 px-3 py-1.5"

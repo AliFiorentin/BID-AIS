@@ -46,16 +46,16 @@ export function PerdasPorCotaView({ ctx }: { ctx: DanosCtx }) {
       <Section id="resumo-cota" num="1" title={`Perdas Operacionais por Cota: ${munPerdasAtivo}`}>
         <div className="flex flex-wrap items-center gap-2 mb-3">
           <DiasBadge dias={dias} />
-          <span className="rounded-md border border-[#055071]/30 bg-[#055071]/10 px-2 py-0.5 text-xs font-bold text-[#055071]">
+          <span className="rounded-full border border-[#055071]/30 bg-[#055071]/10 px-2.5 py-0.5 text-xs font-semibold text-[#055071]">
             Cota Ativa: {cotaPerdasAtiva.replace(".", ",")} m
           </span>
-          <span className="rounded-md border border-slate-200 bg-white px-2 py-0.5 text-xs font-bold text-slate-700 shadow-xs">
+          <span className="rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-xs font-semibold text-slate-700 shadow-xs">
             Fonte das cotas:{" "}
             <strong className="text-[#055071]">
               {munPerdasAtivo === "Rio Grande" ? "CIEX" : "IPH"}
             </strong>
           </span>
-          <span className="rounded-md border border-amber-300 bg-amber-50 px-2 py-0.5 text-xs font-bold text-amber-800 shadow-xs">
+          <span className="rounded-full border border-amber-300 bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-800 shadow-xs">
             Simulação por Cota
           </span>
         </div>
@@ -82,9 +82,9 @@ export function PerdasPorCotaView({ ctx }: { ctx: DanosCtx }) {
                 <button
                   key={c}
                   onClick={() => setCotaPerdas(c)}
-                  className={`rounded-full border px-2.5 py-1 text-xs font-bold transition-all duration-150 ${
+                  className={`active-press hover-lift rounded-full border px-3 py-1 text-xs font-semibold active:scale-[0.97] transition-all duration-150 ${
                     cotaPerdasAtiva === c
-                      ? "border-[#055071] bg-[#055071] text-white shadow-sm"
+                      ? "border-[#055071] bg-[#055071] text-white shadow-xs"
                       : "border-slate-300 bg-white text-slate-600 hover:border-[#055071] hover:text-[#055071]"
                   }`}
                 >
@@ -97,7 +97,7 @@ export function PerdasPorCotaView({ ctx }: { ctx: DanosCtx }) {
 
         {/* 5 Cards de KPI da Cota Selecionada */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5 mb-6">
-          <div className="rounded-xl border border-[#055071] bg-gradient-to-br from-[#055071] to-[#0a6e9a] p-4 text-white shadow-sm lg:col-span-1">
+          <div className="hover-lift rounded-2xl border border-[#055071] bg-gradient-to-br from-[#055071] to-[#0a6e9a] p-4 text-white shadow-xs lg:col-span-1">
             <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-white/80">
               <TrendingDown size={13} strokeWidth={2.5} /> Total ({dias} dias)
             </div>
@@ -105,7 +105,7 @@ export function PerdasPorCotaView({ ctx }: { ctx: DanosCtx }) {
             <div className="mt-1 text-[10px] text-white/70">Cota {cotaPerdasAtiva.replace(".", ",")} m</div>
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="hover-lift rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
             <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#055071]">
               <Building2 size={13} strokeWidth={2.5} /> Empresas (VAB)
             </div>
@@ -115,19 +115,17 @@ export function PerdasPorCotaView({ ctx }: { ctx: DanosCtx }) {
             </div>
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="hover-lift rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
             <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#2da8cc]">
               <GraduationCap size={13} strokeWidth={2.5} /> Educação
             </div>
-            <div className="mt-2 text-xl font-black text-slate-800">
-              {fmtBRL(v.educacao_perdas + v.educacao_custo_adicional)}
-            </div>
+            <div className="mt-2 text-xl font-black text-slate-800">{fmtBRL(v.educacao_perdas + v.educacao_custo_adicional)}</div>
             <div className="mt-1 text-[11px] text-slate-500">
               <strong>{fmtN(v.educacao_n)}</strong> escolas atingidas
             </div>
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="hover-lift rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
             <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#e35d4b]">
               <HeartPulse size={13} strokeWidth={2.5} /> Saúde (SUS)
             </div>
@@ -137,7 +135,7 @@ export function PerdasPorCotaView({ ctx }: { ctx: DanosCtx }) {
             </div>
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="hover-lift rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
             <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#16a34a]">
               <Sprout size={13} strokeWidth={2.5} /> Agricultura
             </div>

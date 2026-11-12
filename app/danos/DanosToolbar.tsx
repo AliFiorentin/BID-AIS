@@ -42,10 +42,10 @@ export function DanosToolbar({ ctx }: { ctx: DanosCtx }) {
     <div
       role="navigation"
       aria-label="Município, visão e parâmetros"
-      className="sticky top-0 z-30 border-b border-[#b3cdd8] bg-white/90 shadow-sm print:hidden"
+      className="sticky top-0 z-30 border-b border-[#b3cdd8]/60 bg-white/80 shadow-xs print:hidden"
       style={{
-        backdropFilter: "blur(12px)",
-        WebkitBackdropFilter: "blur(12px)",
+        backdropFilter: "blur(20px) saturate(180%)",
+        WebkitBackdropFilter: "blur(20px) saturate(180%)",
       }}
     >
       <div className="mx-auto flex max-w-[1440px] flex-wrap items-center gap-4 px-6 py-2.5">

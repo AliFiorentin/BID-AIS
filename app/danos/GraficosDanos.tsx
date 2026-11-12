@@ -82,7 +82,7 @@ function Moldura({
   children: React.ReactNode
 }) {
   return (
-    <figure className="mt-3 rounded-xl border border-[#b3cdd8] bg-white p-4 shadow-sm">
+    <figure className="mt-3 rounded-2xl border border-white/80 bg-white/90 backdrop-blur-md p-5 shadow-xs hover-lift apple-interactive transition-all">
       <figcaption className="mb-2 text-[11px] font-black tracking-wide text-[#055071] uppercase">
         {titulo}
       </figcaption>

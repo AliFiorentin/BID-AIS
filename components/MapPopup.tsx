@@ -27,17 +27,17 @@ export function MapPopup({ source, properties: p, rp = "RP200" }: Props) {
     const prof = Number(p.profundidade_m_atual ?? 0);
     const valor = Number(p.valor_reposicao_brl ?? 0);
     return (
-      <div className="flex flex-col gap-1.5 p-3 w-56 bg-white rounded-xl shadow-lg border border-slate-100">
+      <div className="flex flex-col gap-1.5 p-3.5 w-60 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-white/60">
         <strong className="text-amber-800 uppercase tracking-wider text-[10px] border-b border-slate-100 pb-1">
           🧪 Dano Físico (CLIMADA) · {DANO_FISICO_SETOR_LABEL[source] ?? source}
         </strong>
         <span className="text-[10px] text-slate-500">{rp} · profundidade estimada {prof.toFixed(2)} m</span>
         <div className="grid grid-cols-2 gap-2 mt-1">
-          <div className="bg-slate-50 p-1.5 rounded border border-slate-100">
+          <div className="bg-slate-50/80 p-1.5 rounded-xl border border-slate-100">
             <span className="block text-[9px] text-slate-500 uppercase font-bold">Valor de reposição</span>
             <span className="text-xs font-black text-slate-800">R$ {compactoBr(valor, 1)}</span>
           </div>
-          <div className="bg-slate-50 p-1.5 rounded border border-slate-100">
+          <div className="bg-slate-50/80 p-1.5 rounded-xl border border-slate-100">
             <span className="block text-[9px] text-slate-500 uppercase font-bold">Dano estimado</span>
             <span className="text-xs font-black text-slate-800">R$ {compactoBr(dano, 1)} ({pct.toFixed(0)}%)</span>
           </div>
@@ -49,15 +49,15 @@ export function MapPopup({ source, properties: p, rp = "RP200" }: Props) {
 
   if (source === "empresas") {
     return (
-      <div className="flex flex-col gap-1.5 p-3 w-56 bg-white rounded-xl shadow-lg border border-slate-100">
+      <div className="flex flex-col gap-1.5 p-3.5 w-60 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-white/60">
         <strong className="text-blue-700 uppercase tracking-wider text-[10px] border-b border-slate-100 pb-1">🏢 Empresa</strong>
         <span className="font-bold text-xs text-slate-800 leading-tight">{formatName(p.CNAE_2 as string)}</span>
         <div className="grid grid-cols-2 gap-2 mt-1">
-          <div className="bg-slate-50 p-1.5 rounded border border-slate-100">
+          <div className="bg-slate-50/80 p-1.5 rounded-xl border border-slate-100">
             <span className="block text-[9px] text-slate-500 uppercase font-bold">Empregados</span>
             <span className="text-xs font-black text-slate-800">{p.Empregados as number}</span>
           </div>
-          <div className="bg-slate-50 p-1.5 rounded border border-slate-100">
+          <div className="bg-slate-50/80 p-1.5 rounded-xl border border-slate-100">
             <span className="block text-[9px] text-slate-500 uppercase font-bold">Massa Sal.</span>
             <span className="text-xs font-black text-slate-800">R$ {compactoBr(p.Massa_Salarial as number, 1)}</span>
           </div>
@@ -68,15 +68,15 @@ export function MapPopup({ source, properties: p, rp = "RP200" }: Props) {
 
   if (source === "educacao") {
     return (
-      <div className="flex flex-col gap-1.5 p-3 w-56 bg-white rounded-xl shadow-lg border border-slate-100">
+      <div className="flex flex-col gap-1.5 p-3.5 w-60 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-white/60">
         <strong className="text-green-700 uppercase tracking-wider text-[10px] border-b border-slate-100 pb-1">🎓 Educação ({normalizeDep(String(p.tp_dependencia || '')) || 'N/A'})</strong>
         <span className="font-bold text-xs text-slate-800 leading-tight">{formatName(p.no_entidade as string)}</span>
         <div className="grid grid-cols-2 gap-2 mt-1">
-          <div className="bg-slate-50 p-1.5 rounded border border-slate-100">
+          <div className="bg-slate-50/80 p-1.5 rounded-xl border border-slate-100">
             <span className="block text-[9px] text-slate-500 uppercase font-bold">Professores</span>
             <span className="text-xs font-black text-slate-800">{p.qtd_prof as number || 0}</span>
           </div>
-          <div className="bg-slate-50 p-1.5 rounded border border-slate-100">
+          <div className="bg-slate-50/80 p-1.5 rounded-xl border border-slate-100">
             <span className="block text-[9px] text-slate-500 uppercase font-bold">Total Alunos</span>
             <span className="text-xs font-black text-slate-800">
               {((p.qtd_matri_inf as number) || 0) + ((p.qtd_matri_fund as number) || 0) + ((p.qtd_matri_med as number) || 0)}
@@ -90,20 +90,20 @@ export function MapPopup({ source, properties: p, rp = "RP200" }: Props) {
   if (source === "saude") {
     const totalProfissionais = STAFF_COLS.reduce((acc, col) => acc + ((p[col] as number) || 0), 0);
     return (
-      <div className="flex flex-col gap-1.5 p-3 w-56 bg-white rounded-xl shadow-lg border border-slate-100">
+      <div className="flex flex-col gap-1.5 p-3.5 w-60 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-white/60">
         <strong className="text-red-700 uppercase tracking-wider text-[10px] border-b border-slate-100 pb-1">🏥 Saúde ({p.co_tipo_estabelecimento as string || 'N/A'})</strong>
         <span className="font-bold text-xs text-slate-800 leading-tight">{formatName((p.no_fantasia as string) || (p.no_razao_social as string))}</span>
 
         <div className="grid grid-cols-2 gap-2 mt-1">
-          <div className="bg-slate-50 p-1.5 rounded border border-slate-100">
+          <div className="bg-slate-50/80 p-1.5 rounded-xl border border-slate-100">
             <span className="block text-[9px] text-slate-500 uppercase font-bold">Médicos</span>
             <span className="text-xs font-black text-slate-800">{(p.staff_medicos as number) || 0}</span>
           </div>
-          <div className="bg-slate-50 p-1.5 rounded border border-slate-100">
+          <div className="bg-slate-50/80 p-1.5 rounded-xl border border-slate-100">
             <span className="block text-[9px] text-slate-500 uppercase font-bold">Enfermagem</span>
             <span className="text-xs font-black text-slate-800">{(p.staff_enfermagem as number) || 0}</span>
           </div>
-          <div className="bg-slate-50 p-1.5 rounded border border-slate-100 col-span-2">
+          <div className="bg-slate-50/80 p-1.5 rounded-xl border border-slate-100 col-span-2">
             <span className="block text-[9px] text-slate-500 uppercase font-bold">Total de Profissionais</span>
             <span className="text-xs font-black text-slate-800">{totalProfissionais}</span>
           </div>
@@ -218,7 +218,7 @@ export function MapPopup({ source, properties: p, rp = "RP200" }: Props) {
     if (!content) return null;
 
     return (
-      <div className="flex flex-col gap-1.5 p-3 w-56 bg-white rounded-xl shadow-lg border border-slate-100">
+      <div className="flex flex-col gap-1.5 p-3.5 w-60 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-white/60">
         <strong className="text-orange-600 uppercase tracking-wider text-[10px] border-b border-slate-100 pb-1">🏗️ Infraestrutura ({displayNome})</strong>
         <div className="max-h-32 overflow-y-auto pr-1 flex flex-col gap-1 mt-1 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-200 [&::-webkit-scrollbar-thumb]:rounded-full">
           {content}

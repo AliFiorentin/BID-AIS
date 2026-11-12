@@ -25,29 +25,36 @@ export default function Erro({ error, reset }: { error: Error & { digest?: strin
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-[#f0f7fa] px-6 text-slate-800">
-      <div className="max-w-xl w-full rounded-2xl border border-[#b3cdd8] bg-white p-6 shadow-sm">
+      <div className="max-w-xl w-full rounded-3xl border border-white/80 bg-white/90 backdrop-blur-2xl p-8 shadow-2xl">
         <h1 className="text-xl font-black text-[#055071]">Não foi possível carregar esta página</h1>
         <p className="mt-2 text-sm text-slate-600">
           {chunk
             ? "Uma parte do código não foi encontrada (provavelmente o painel foi atualizado enquanto esta aba estava aberta). Recarregue a página."
             : "Ocorreu um erro inesperado ao montar a página."}
         </p>
-        <pre className="mt-3 max-h-40 overflow-auto rounded-lg bg-slate-100 p-3 text-[11px] text-slate-700 whitespace-pre-wrap">
+        <pre className="mt-3 max-h-40 overflow-auto rounded-xl bg-slate-100/80 border border-slate-200/60 p-3.5 text-[11px] text-slate-700 whitespace-pre-wrap font-mono">
           {error.name}: {error.message}
           {error.digest ? `\n(digest ${error.digest})` : ""}
         </pre>
-        <div className="mt-4 flex gap-2">
+        <div className="mt-6 flex flex-wrap gap-2.5">
           <button
             type="button"
             onClick={() => { try { sessionStorage.removeItem("bid-recarregou-chunk") } catch { /* ok */ } window.location.reload() }}
-            className="rounded-full bg-[#055071] px-4 py-2 text-sm font-bold text-white"
+            className="rounded-full bg-[#055071] hover:bg-[#06628b] px-5 py-2.5 text-sm font-semibold text-white shadow-xs active:scale-[0.97] transition-all"
           >
             Recarregar
           </button>
-          <button type="button" onClick={reset} className="rounded-full border border-[#b3cdd8] px-4 py-2 text-sm font-bold text-[#055071]">
+          <button
+            type="button"
+            onClick={reset}
+            className="rounded-full border border-[#b3cdd8] bg-white/60 hover:bg-white px-5 py-2.5 text-sm font-semibold text-[#055071] active:scale-[0.97] transition-all"
+          >
             Tentar de novo
           </button>
-          <Link href="/" className="rounded-full border border-[#b3cdd8] px-4 py-2 text-sm font-bold text-[#055071]">
+          <Link
+            href="/"
+            className="rounded-full border border-[#b3cdd8] bg-white/60 hover:bg-white px-5 py-2.5 text-sm font-semibold text-[#055071] active:scale-[0.97] transition-all"
+          >
             Ir ao Dashboard
           </Link>
         </div>

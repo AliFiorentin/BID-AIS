@@ -2,8 +2,6 @@ import Link from "next/link"
 import { TrendingDown, Waves } from "lucide-react"
 import { HeaderLogos } from "@/components/HeaderLogos"
 
-const PRIMARY = "#055071"
-
 export type PaginaDanos = "perdas" | "fisicos"
 
 const PAGINAS: { id: PaginaDanos; href: string; rotulo: string }[] = [
@@ -28,12 +26,9 @@ export function Banner({
 }) {
   const Icone = ativa === "perdas" ? TrendingDown : Waves
   const linkNav =
-    "flex items-center gap-1.5 rounded-full border border-white/20 px-3 py-1 text-[10px] font-bold text-white/80 transition-colors hover:border-white/40 hover:text-white"
+    "active-press hover-lift flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-[11px] font-semibold text-white/95 transition-all duration-150 hover:bg-white/20 hover:border-white/35 active:scale-[0.97] shadow-xs"
   return (
-    <header
-      className="px-6 py-10 text-white print:py-5"
-      style={{ backgroundColor: PRIMARY }}
-    >
+    <header className="bg-gradient-to-br from-[#055071] via-[#075d83] to-[#0a6e9a] px-6 py-10 text-white print:py-5 border-b border-white/10 shadow-lg">
       <div className="mx-auto flex max-w-[1440px] items-start justify-between gap-6">
         <div className="min-w-0">
           <div className="mb-5 flex items-center gap-2 print:hidden">
@@ -68,20 +63,11 @@ export function Banner({
                 key={id}
                 href={href}
                 aria-current={ativa === id ? "page" : undefined}
-                className="rounded-full border px-4 py-1.5 text-[11px] font-black transition-all duration-150"
-                style={
+                className={`active-press hover-lift rounded-full border px-4 py-1.5 text-xs font-semibold active:scale-[0.97] transition-all duration-150 ${
                   ativa === id
-                    ? {
-                        backgroundColor: "#fff",
-                        color: PRIMARY,
-                        borderColor: "#fff",
-                      }
-                    : {
-                        backgroundColor: "rgba(255,255,255,0.08)",
-                        color: "rgba(255,255,255,0.88)",
-                        borderColor: "rgba(255,255,255,0.3)",
-                      }
-                }
+                    ? "bg-white text-[#055071] border-white shadow-sm"
+                    : "bg-white/10 text-white/90 border-white/20 hover:bg-white/20 hover:border-white/35"
+                }`}
               >
                 {rotulo}
               </Link>

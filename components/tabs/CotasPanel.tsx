@@ -76,7 +76,7 @@ export function CotasPanel({
     colunas = 2
   ) => (
     <div
-      className="rounded-lg border bg-white/70 px-2.5 py-2 min-w-0 flex flex-col justify-center"
+      className="hover-lift rounded-xl border bg-white/75 px-3 py-2 min-w-0 flex flex-col justify-center backdrop-blur-md shadow-xs"
       style={{ borderColor: cor + "55" }}
     >
       <div

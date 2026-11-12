@@ -70,7 +70,7 @@ export function EmpresasTab({ dash }: Props) {
     >
       {setoresChart.length > 0 && (
         <div
-          className="mb-3 overflow-hidden rounded-lg"
+          className="mb-3 overflow-hidden rounded-xl shadow-xs transition-all duration-200"
           style={{ border: "1px solid rgba(5,80,113,0.15)" }}
         >
           <div
@@ -83,7 +83,7 @@ export function EmpresasTab({ dash }: Props) {
             {filtroSetor !== "(todos)" && (
               <button
                 onClick={() => setFiltroSetor("(todos)")}
-                className="text-[9px] font-bold text-white/85 hover:text-white"
+                className="rounded-full bg-white/20 px-2 py-0.5 text-[9px] font-bold text-white transition-all hover:bg-white/30 active:scale-[0.97]"
               >
                 ✕ Limpar filtro
               </button>
@@ -126,7 +126,7 @@ export function EmpresasTab({ dash }: Props) {
                     type="button"
                     key={item.setor}
                     onClick={() => toggleSetor(item.setor)}
-                    className={`flex items-center gap-2 rounded px-1 py-0.5 text-left transition-colors ${isSelected ? "bg-[#055071]/15 font-bold" : "hover:bg-slate-200/50"}`}
+                    className={`flex items-center gap-2 rounded-lg px-1.5 py-0.5 text-left transition-all active:scale-[0.98] ${isSelected ? "bg-[#055071]/15 font-bold shadow-xs" : "hover:bg-slate-200/50"}`}
                   >
                     <span
                       className="h-2.5 w-2.5 shrink-0 rounded-sm"
@@ -180,7 +180,7 @@ export function EmpresasTab({ dash }: Props) {
           }
         />
         {setoresEmpregadosChart.length > 0 && (
-          <div className="-mt-1 mb-1 overflow-hidden rounded-lg">
+          <div className="-mt-1 mb-1 overflow-hidden rounded-xl shadow-xs">
             <div className="flex items-center px-2.5 py-1.5" style={PANEL_HDR}>
               <span className="text-[10px] font-black tracking-wider text-white uppercase">
                 Empregados por Setor

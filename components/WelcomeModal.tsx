@@ -12,17 +12,17 @@ export function WelcomeModal() {
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 print:hidden"
-      style={{ backgroundColor: "rgba(5,30,45,0.55)", backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)" }}
+      style={{ backgroundColor: "rgba(5,30,45,0.45)", backdropFilter: "blur(16px) saturate(160%)", WebkitBackdropFilter: "blur(16px) saturate(160%)" }}
       onClick={(e) => { if (e.target === e.currentTarget) setOpen(false); }}
     >
       <div
-        className="relative w-full max-w-[480px] rounded-2xl overflow-hidden movel:overflow-y-auto movel:max-h-[calc(100dvh-2rem)] shadow-2xl"
-        style={{ backgroundColor: "rgba(255,255,255,0.97)", border: "0.5px solid rgba(255,255,255,0.7)", boxShadow: "0 24px 64px rgba(0,0,0,0.28), 0 4px 16px rgba(0,0,0,0.12)" }}
+        className="relative w-full max-w-[480px] rounded-3xl overflow-hidden movel:overflow-y-auto movel:max-h-[calc(100dvh-2rem)] shadow-2xl"
+        style={{ backgroundColor: "rgba(255,255,255,0.97)", border: "0.5px solid rgba(255,255,255,0.7)", boxShadow: "0 24px 64px rgba(0,0,0,0.24), 0 4px 16px rgba(0,0,0,0.08)" }}
       >
         {/* Fechar */}
         <button
           onClick={() => setOpen(false)}
-          className="absolute top-1 right-1 desk:top-3 desk:right-3 z-10 w-11 h-11 desk:w-7 desk:h-7 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-colors duration-150"
+          className="absolute top-2 right-2 desk:top-3 desk:right-3 z-10 w-8 h-8 rounded-full flex items-center justify-center text-white/80 hover:text-white bg-white/10 hover:bg-white/25 active:scale-95 transition-all duration-150"
           aria-label="Fechar"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
@@ -122,7 +122,7 @@ export function WelcomeModal() {
         <div className="px-6 pb-6 flex gap-2.5 flex-wrap">
           <button
             onClick={() => setOpen(false)}
-            className="flex-1 min-w-[120px] h-9 rounded-xl text-[12px] font-black text-white flex items-center justify-center gap-1.5 transition-all duration-150 hover:opacity-90 active:scale-[0.98]"
+            className="flex-1 min-w-[130px] h-10 rounded-full text-[12px] font-semibold text-white flex items-center justify-center gap-1.5 transition-all duration-150 hover:brightness-105 active:scale-[0.97] shadow-sm"
             style={{ background: "linear-gradient(135deg, #055071 0%, #0a6e9a 100%)" }}
           >
             Explorar Impacto
@@ -131,7 +131,7 @@ export function WelcomeModal() {
           <Link
             href="/danos"
             onClick={() => setOpen(false)}
-            className="flex-1 min-w-[100px] h-9 rounded-xl text-[12px] font-black border flex items-center justify-center gap-1.5 transition-all duration-150 hover:bg-slate-50"
+            className="flex-1 min-w-[100px] h-10 rounded-full text-[12px] font-semibold border flex items-center justify-center gap-1.5 transition-all duration-150 hover:bg-slate-50 active:scale-[0.97] bg-white/70"
             style={{ color: "#055071", borderColor: "#b3cdd8" }}
           >
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
@@ -140,7 +140,7 @@ export function WelcomeModal() {
           <Link
             href="/metodologia"
             onClick={() => setOpen(false)}
-            className="flex-1 min-w-[100px] h-9 rounded-xl text-[12px] font-black border flex items-center justify-center gap-1.5 transition-all duration-150 hover:bg-slate-50"
+            className="flex-1 min-w-[100px] h-10 rounded-full text-[12px] font-semibold border flex items-center justify-center gap-1.5 transition-all duration-150 hover:bg-slate-50 active:scale-[0.97] bg-white/70"
             style={{ color: "#055071", borderColor: "#b3cdd8" }}
           >
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
@@ -160,13 +160,13 @@ function FeatureItem({ icon, title, desc }: {
   return (
     <div className="flex gap-3 items-start">
       <div
-        className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
+        className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
         style={{ backgroundColor: "#f0f7fa", border: "1px solid #b3cdd8" }}
       >
         {icon}
       </div>
       <div>
-        <p className="text-[12px] font-black text-slate-800 leading-tight">{title}</p>
+        <p className="text-[12px] font-bold text-slate-800 leading-tight">{title}</p>
         <p className="text-[11px] text-slate-500 leading-relaxed mt-0.5">{desc}</p>
       </div>
     </div>

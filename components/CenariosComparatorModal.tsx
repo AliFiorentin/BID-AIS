@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect, useMemo } from "react"
+import React, { useState, useEffect, useMemo, useCallback } from "react"
 import {
   Dialog,
   DialogContent,
@@ -16,11 +16,12 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import {
+  C,
   MUNICIPIOS,
   CENARIOS_CONFIG,
   cenarioLabel,
 } from "@/lib/constants"
-import { compactoBr, findCenarioData } from "@/lib/geo-utils"
+import { compactoBr, findCenarioData, slugify } from "@/lib/geo-utils"
 import { ScenarioCompareMap } from "@/components/map/ScenarioCompareMap"
 import {
   GitCompare,
@@ -32,15 +33,24 @@ import {
   GraduationCap,
   HeartPulse,
   Sprout,
-  Copy,
-  Check,
   Table as TableIcon,
   Maximize2,
   Layers,
   BarChart3,
   Info,
   ArrowRight,
+  Ruler,
 } from "lucide-react"
+
+const HEADER_GLASS = {
+  backgroundImage:
+    "linear-gradient(135deg, rgba(5,80,113,0.92) 0%, rgba(10,110,154,0.92) 100%)",
+  backdropFilter: "blur(24px) saturate(190%)",
+  WebkitBackdropFilter: "blur(24px) saturate(190%)",
+  borderBottom: "1px solid rgba(255,255,255,0.18)",
+  boxShadow:
+    "0 4px 20px rgba(0,0,0,0.15), inset 0 0.5px 0 0 rgba(255,255,255,0.3)",
+} as const
 
 interface Props {
   isOpen: boolean
@@ -73,6 +83,50 @@ type DanosOpJson = Record<string, Record<string, CenarioOpData>>
 type DanosFisJson = Record<string, Record<string, CenarioFisicoData>>
 type PopJson = Record<string, { pop_total: number; cenarios: Record<string, { pop_atingida: number; pct_atingida: number }> }>
 type AreaJson = Record<string, { area_km2: number; cenarios: Record<string, { area_atingida_km2: number; pct_atingida: number }> }>
+
+type CotaMapaJson = {
+  cotas: number[]
+  bounds: [number, number, number, number]
+  coordinates: [[number, number], [number, number], [number, number], [number, number]]
+  width: number
+  height: number
+  pop_por_cota?: number[]
+  pop_grade?: number
+  area_por_cota_km2?: number[]
+}
+
+type ClimadaCotaJson = {
+  municipio?: string
+  resultados_por_cota?: Record<string, {
+    empresas?: { n_total?: number; n_atingidos?: number; dano_fisico_brl_poa?: number; dano_fisico_brl?: number; exposicao_total_brl?: number }
+    educacao?: { n_total?: number; n_atingidos?: number; dano_fisico_brl_poa?: number; dano_fisico_brl?: number; exposicao_total_brl?: number }
+    saude?: { n_total?: number; n_atingidos?: number; dano_fisico_brl_poa?: number; dano_fisico_brl?: number; exposicao_total_brl?: number }
+  }>
+}
+
+type DetalheCotaJson = {
+  por_cota?: Record<string, {
+    empresas?: { n: number; empregados: number; massa_salarial_brl: number; valor_exposto_brl: number }
+    educacao?: { n: number; matriculas: number; docentes: number; valor_exposto_brl: number }
+    saude?: { n: number; leitos: number; profissionais: number; valor_exposto_brl: number }
+    agricultura?: { area_ha: number }
+  }>
+}
+
+function matchCotaKey<T>(obj: Record<string, T> | undefined | null, cotaNum: number): T | null {
+  if (!obj) return null
+  if (obj[String(cotaNum)]) return obj[String(cotaNum)]
+  if (obj[cotaNum.toFixed(2)]) return obj[cotaNum.toFixed(2)]
+  const keys = Object.keys(obj)
+  const found = keys.find((k) => Math.abs(parseFloat(k) - cotaNum) < 0.001)
+  return found ? obj[found] : null
+}
+
+function formatCotaDisplay(c?: number | null): string {
+  if (c == null) return ""
+  const formatted = c.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 4 })
+  return `Cota ${formatted} m`
+}
 
 function fmtBRL(n: number): string {
   if (n === 0) return "R$ 0"
@@ -109,6 +163,25 @@ function DeltaBadge({ diff, pct }: { diff: number; pct: number }) {
   )
 }
 
+// Cache em memória para os arquivos JSON estáticos (evita refetch ao reabrir modal ou alternar abas)
+interface StaticDataCache {
+  op: DanosOpJson
+  fis: DanosFisJson
+  pop: PopJson
+  area: AreaJson
+  perdasCotas: Record<string, Record<string, CenarioOpData & { empresas_n?: number; educacao_n?: number; saude_n?: number }>> | null
+}
+let globalStaticDataCache: StaticDataCache | null = null
+
+const munCotasCache = new globalThis.Map<
+  string,
+  {
+    mapa: CotaMapaJson | null
+    clim: ClimadaCotaJson | null
+    det: DetalheCotaJson | null
+  }
+>()
+
 export function CenariosComparatorModal({
   isOpen,
   onClose,
@@ -119,9 +192,12 @@ export function CenariosComparatorModal({
   const [selectedMun, setSelectedMun] = useState<string>(mInicial)
   const [showPoints, setShowPoints] = useState(true)
   const [leftTab, setLeftTab] = useState<"graficos" | "tabela">("graficos")
+  const [tipoComparador, setTipoComparador] = useState<"cenarios" | "cotas">("cenarios")
 
+  // Lista de cenários (apenas simulações hidrodinâmicas puras)
   const cenariosList = useMemo(() => {
-    return CENARIOS_CONFIG[selectedMun] || []
+    const list = CENARIOS_CONFIG[selectedMun] || []
+    return list.filter((c) => c !== "Todas as cotas")
   }, [selectedMun])
 
   const [chosenA, setChosenA] = useState<string | null>(null)
@@ -129,126 +205,214 @@ export function CenariosComparatorModal({
   const cenarioA = chosenA && cenariosList.includes(chosenA) ? chosenA : cenariosList[0] || ""
   const cenarioB = chosenB && cenariosList.includes(chosenB) ? chosenB : cenariosList[1] || cenariosList[0] || ""
 
-  // Carregamento de dados
-  const [opData, setOpData] = useState<DanosOpJson | null>(null)
-  const [fisData, setFisData] = useState<DanosFisJson | null>(null)
-  const [popData, setPopData] = useState<PopJson | null>(null)
-  const [areaData, setAreaData] = useState<AreaJson | null>(null)
-  const [copied, setCopied] = useState(false)
+  // Cotas disponíveis
+  const [chosenCotaA, setChosenCotaA] = useState<number | null>(null)
+  const [chosenCotaB, setChosenCotaB] = useState<number | null>(null)
+
+  // Sincroniza município quando o modal é aberto pelo usuário a partir de outro município
+  const [prevSync, setPrevSync] = useState({ isOpen: false, mun: municipioAtual })
+  if (prevSync.isOpen !== isOpen || prevSync.mun !== municipioAtual) {
+    setPrevSync({ isOpen, mun: municipioAtual })
+    if (isOpen && municipioAtual && MUNICIPIOS.includes(municipioAtual) && selectedMun !== municipioAtual) {
+      setSelectedMun(municipioAtual)
+      setChosenA(null)
+      setChosenB(null)
+      setChosenCotaA(null)
+      setChosenCotaB(null)
+    }
+  }
+
+  const handleSelectMun = (mun: string) => {
+    setSelectedMun(mun)
+    setChosenA(null)
+    setChosenB(null)
+    setChosenCotaA(null)
+    setChosenCotaB(null)
+  }
+
+  // Carregamento de dados de cenários
+  const [opData, setOpData] = useState<DanosOpJson | null>(() => globalStaticDataCache?.op ?? null)
+  const [fisData, setFisData] = useState<DanosFisJson | null>(() => globalStaticDataCache?.fis ?? null)
+  const [popData, setPopData] = useState<PopJson | null>(() => globalStaticDataCache?.pop ?? null)
+  const [areaData, setAreaData] = useState<AreaJson | null>(() => globalStaticDataCache?.area ?? null)
+
+  // Carregamento de dados de cotas
+  const [perdasCotasData, setPerdasCotasData] = useState<Record<string, Record<string, CenarioOpData & { empresas_n?: number; educacao_n?: number; saude_n?: number }>> | null>(() => globalStaticDataCache?.perdasCotas ?? null)
+  const [cotaMapaData, setCotaMapaData] = useState<CotaMapaJson | null>(null)
+  const [climadaCotaData, setClimadaCotaData] = useState<ClimadaCotaJson | null>(null)
+  const [detalheCotaData, setDetalheCotaData] = useState<DetalheCotaJson | null>(null)
 
   useEffect(() => {
-    if (!isOpen) return
+    if (!isOpen || globalStaticDataCache) return
     Promise.all([
       fetch("/dados_convertidos/danos_operacionais.json").then((r) => r.json()),
       fetch("/dados_convertidos/danos_fisicos_cenarios.json").then((r) => r.json()),
       fetch("/dados_convertidos/populacao_atingida.json").then((r) => r.json()),
       fetch("/dados_convertidos/area_atingida.json").then((r) => r.json()),
-    ]).then(([op, fis, pop, area]) => {
+      fetch("/dados_convertidos/perdas_operacionais_cotas.json").then((r) => r.ok ? r.json() : null),
+    ]).then(([op, fis, pop, area, perdasCotas]) => {
+      globalStaticDataCache = { op, fis, pop, area, perdasCotas }
       setOpData(op)
       setFisData(fis)
       setPopData(pop)
       setAreaData(area)
+      setPerdasCotasData(perdasCotas)
     }).catch(console.error)
   }, [isOpen])
 
-  // Extrai métricas dos cenários selecionados
-  const metricsA = useMemo(() => {
-    if (!selectedMun || !cenarioA) return null
-    const munOp = opData?.[selectedMun]
-    const munFis = fisData?.[selectedMun]
-    const munPop = popData?.[selectedMun]
-    const munArea = areaData?.[selectedMun]
-
-    const op = findCenarioData(munOp, cenarioA)
-    const fis = findCenarioData(munFis, cenarioA)
-    const pop = findCenarioData(munPop?.cenarios, cenarioA)
-    const area = findCenarioData(munArea?.cenarios, cenarioA)
-
-    return {
-      pop: pop?.pop_atingida ?? 0,
-      popPct: pop?.pct_atingida ?? 0,
-      area: area?.area_atingida_km2 ?? 0,
-      areaPct: area?.pct_atingida ?? 0,
-      empAtg: fis?.empresas_atingidas ?? 0,
-      eduAtg: fis?.educacao_atingidas ?? 0,
-      sauAtg: fis?.saude_atingidas ?? 0,
-      vabEmp: op?.empresas_vab ?? 0,
-      eduPerdas: (op?.educacao_perdas ?? 0) + (op?.educacao_custo_adicional ?? 0),
-      sauProd: op?.saude_producao ?? 0,
-      agrPerdas: op?.agricultura_perdas ?? 0,
-      totalOp: op?.total ?? 0,
-      totalFis: fis?.total ?? 0,
+  // Busca dados de cota ao trocar município
+  useEffect(() => {
+    if (!isOpen || !selectedMun) return
+    const slug = slugify(selectedMun)
+    let cancelled = false
+    const cached = munCotasCache.get(slug)
+    if (cached) {
+      Promise.resolve(cached).then((c) => {
+        if (cancelled) return
+        setCotaMapaData(c.mapa)
+        setClimadaCotaData(c.clim)
+        setDetalheCotaData(c.det)
+      })
+      return () => {
+        cancelled = true
+      }
     }
-  }, [selectedMun, cenarioA, opData, fisData, popData, areaData])
-
-  const metricsB = useMemo(() => {
-    if (!selectedMun || !cenarioB) return null
-    const munOp = opData?.[selectedMun]
-    const munFis = fisData?.[selectedMun]
-    const munPop = popData?.[selectedMun]
-    const munArea = areaData?.[selectedMun]
-
-    const op = findCenarioData(munOp, cenarioB)
-    const fis = findCenarioData(munFis, cenarioB)
-    const pop = findCenarioData(munPop?.cenarios, cenarioB)
-    const area = findCenarioData(munArea?.cenarios, cenarioB)
-
-    return {
-      pop: pop?.pop_atingida ?? 0,
-      popPct: pop?.pct_atingida ?? 0,
-      area: area?.area_atingida_km2 ?? 0,
-      areaPct: area?.pct_atingida ?? 0,
-      empAtg: fis?.empresas_atingidas ?? 0,
-      eduAtg: fis?.educacao_atingidas ?? 0,
-      sauAtg: fis?.saude_atingidas ?? 0,
-      vabEmp: op?.empresas_vab ?? 0,
-      eduPerdas: (op?.educacao_perdas ?? 0) + (op?.educacao_custo_adicional ?? 0),
-      sauProd: op?.saude_producao ?? 0,
-      agrPerdas: op?.agricultura_perdas ?? 0,
-      totalOp: op?.total ?? 0,
-      totalFis: fis?.total ?? 0,
+    Promise.all([
+      fetch(`/dados_convertidos/${slug}/cota_mapa.json`).then((r) => r.ok ? r.json() : null),
+      fetch(`/dados_convertidos/climada_cota_${slug}.json`).then((r) => r.ok ? r.json() : null),
+      fetch(`/dados_convertidos/climada_cota_detalhe_${slug}.json`).then((r) => r.ok ? r.json() : null),
+    ]).then(([mapa, clim, det]) => {
+      if (cancelled) return
+      munCotasCache.set(slug, { mapa, clim, det })
+      setCotaMapaData(mapa)
+      setClimadaCotaData(clim)
+      setDetalheCotaData(det)
+    }).catch(console.error)
+    return () => {
+      cancelled = true
     }
-  }, [selectedMun, cenarioB, opData, fisData, popData, areaData])
+  }, [isOpen, selectedMun])
 
-  const copySummary = () => {
-    if (!metricsA || !metricsB) return
-    const text = `COMPARAÇÃO DE CENÁRIOS — ${selectedMun.toUpperCase()}
-==================================================
-Cenário A: ${cenarioLabel(cenarioA)}
-Cenário B: ${cenarioLabel(cenarioB)}
+  const cotasList = useMemo(() => {
+    return cotaMapaData?.cotas ?? []
+  }, [cotaMapaData])
 
-1. POPULAÇÃO ATINGIDA:
-  - Cenário A: ${metricsA.pop.toLocaleString("pt-BR")} hab (${metricsA.popPct.toFixed(1)}%)
-  - Cenário B: ${metricsB.pop.toLocaleString("pt-BR")} hab (${metricsB.popPct.toFixed(1)}%)
-  - Diferença: ${(metricsB.pop - metricsA.pop).toLocaleString("pt-BR")} hab
+  // Cotas selecionadas com defaults ergonômicos
+  const cotaA = useMemo(() => {
+    if (chosenCotaA != null && cotasList.includes(chosenCotaA)) return chosenCotaA
+    if (cotasList.length === 0) return null
+    const idx = Math.min(Math.floor(cotasList.length * 0.3), cotasList.length - 1)
+    return cotasList[idx]
+  }, [chosenCotaA, cotasList])
 
-2. ÁREA ALAGADA:
-  - Cenário A: ${metricsA.area.toFixed(2)} km²
-  - Cenário B: ${metricsB.area.toFixed(2)} km²
-  - Diferença: ${(metricsB.area - metricsA.area).toFixed(2)} km²
+  const cotaB = useMemo(() => {
+    if (chosenCotaB != null && cotasList.includes(chosenCotaB)) return chosenCotaB
+    if (cotasList.length === 0) return null
+    const idx = Math.min(Math.floor(cotasList.length * 0.8), cotasList.length - 1)
+    return cotasList[idx]
+  }, [chosenCotaB, cotasList])
 
-3. PERDAS OPERACIONAIS (DaLA):
-  - Cenário A: ${fmtBRL(metricsA.totalOp)}
-  - Cenário B: ${fmtBRL(metricsB.totalOp)}
-  - Diferença: ${fmtBRL(metricsB.totalOp - metricsA.totalOp)}
+  // Rótulos dinâmicos para exibição
+  const currentLabelA = tipoComparador === "cotas" ? formatCotaDisplay(cotaA) : cenarioLabel(cenarioA)
+  const currentLabelB = tipoComparador === "cotas" ? formatCotaDisplay(cotaB) : cenarioLabel(cenarioB)
 
-4. DANOS FÍSICOS (CLIMADA / EXPOSIÇÃO):
-  - Cenário A: ${fmtBRL(metricsA.totalFis)}
-  - Cenário B: ${fmtBRL(metricsB.totalFis)}
-  - Diferença: ${fmtBRL(metricsB.totalFis - metricsA.totalFis)}
+  // Extração das métricas (suporta tanto cenários quanto cotas)
+  const computeSide = useCallback(
+    (cenario: string, cotaNum: number | null) => {
+      if (!selectedMun) return null
 
-5. IMPACTO TOTAL (Perdas + Danos Físicos):
-  - Cenário A: ${fmtBRL(metricsA.totalOp + metricsA.totalFis)}
-  - Cenário B: ${fmtBRL(metricsB.totalOp + metricsB.totalFis)}
-  - Diferença: ${fmtBRL((metricsB.totalOp + metricsB.totalFis) - (metricsA.totalOp + metricsA.totalFis))}
-==================================================
-Fonte: Painel BID RS / DaLA / CLIMADA`
+      // Modo 1: Comparação por Cotas
+      if (tipoComparador === "cotas") {
+        if (cotaNum == null || cotasList.length === 0) return null
 
-    navigator.clipboard.writeText(text).then(() => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    })
-  }
+        const idx = cotasList.findIndex((c) => Math.abs(c - cotaNum) < 0.001)
+        const pop = idx >= 0 && cotaMapaData?.pop_por_cota ? cotaMapaData.pop_por_cota[idx] ?? 0 : 0
+        const popTotal = cotaMapaData?.pop_grade ?? 1
+        const popPct = popTotal > 0 ? (pop / popTotal) * 100 : 0
+        const area = idx >= 0 && cotaMapaData?.area_por_cota_km2 ? cotaMapaData.area_por_cota_km2[idx] ?? 0 : 0
+        const areaPct = 0
+
+        const op = matchCotaKey(perdasCotasData?.[selectedMun], cotaNum)
+        const clim = matchCotaKey(climadaCotaData?.resultados_por_cota, cotaNum)
+        const det = matchCotaKey(detalheCotaData?.por_cota, cotaNum)
+
+        const empAtg = det?.empresas?.n ?? clim?.empresas?.n_atingidos ?? op?.empresas_n ?? 0
+        const eduAtg = det?.educacao?.n ?? clim?.educacao?.n_atingidos ?? op?.educacao_n ?? 0
+        const sauAtg = det?.saude?.n ?? clim?.saude?.n_atingidos ?? op?.saude_n ?? 0
+
+        const vabEmp = op?.empresas_vab ?? 0
+        const eduPerdas = (op?.educacao_perdas ?? 0) + (op?.educacao_custo_adicional ?? 0)
+        const sauProd = op?.saude_producao ?? 0
+        const agrPerdas = op?.agricultura_perdas ?? 0
+        const totalOp = op?.total ?? (vabEmp + eduPerdas + sauProd + agrPerdas)
+
+        const totalFis =
+          (clim?.empresas?.dano_fisico_brl_poa ?? clim?.empresas?.dano_fisico_brl ?? clim?.empresas?.exposicao_total_brl ?? 0) +
+          (clim?.educacao?.dano_fisico_brl_poa ?? clim?.educacao?.dano_fisico_brl ?? clim?.educacao?.exposicao_total_brl ?? 0) +
+          (clim?.saude?.dano_fisico_brl_poa ?? clim?.saude?.dano_fisico_brl ?? clim?.saude?.exposicao_total_brl ?? 0)
+
+        return {
+          pop,
+          popPct,
+          area,
+          areaPct,
+          empAtg,
+          eduAtg,
+          sauAtg,
+          vabEmp,
+          eduPerdas,
+          sauProd,
+          agrPerdas,
+          totalOp,
+          totalFis,
+        }
+      }
+
+      // Modo 2: Comparação por Cenários
+      if (!cenario) return null
+      const munOp = opData?.[selectedMun]
+      const munFis = fisData?.[selectedMun]
+      const munPop = popData?.[selectedMun]
+      const munArea = areaData?.[selectedMun]
+
+      const op = findCenarioData(munOp, cenario)
+      const fis = findCenarioData(munFis, cenario)
+      const pop = findCenarioData(munPop?.cenarios, cenario)
+      const area = findCenarioData(munArea?.cenarios, cenario)
+
+      return {
+        pop: pop?.pop_atingida ?? 0,
+        popPct: pop?.pct_atingida ?? 0,
+        area: area?.area_atingida_km2 ?? 0,
+        areaPct: area?.pct_atingida ?? 0,
+        empAtg: fis?.empresas_atingidas ?? 0,
+        eduAtg: fis?.educacao_atingidas ?? 0,
+        sauAtg: fis?.saude_atingidas ?? 0,
+        vabEmp: op?.empresas_vab ?? 0,
+        eduPerdas: (op?.educacao_perdas ?? 0) + (op?.educacao_custo_adicional ?? 0),
+        sauProd: op?.saude_producao ?? 0,
+        agrPerdas: op?.agricultura_perdas ?? 0,
+        totalOp: op?.total ?? 0,
+        totalFis: fis?.total ?? 0,
+      }
+    },
+    [
+      selectedMun,
+      tipoComparador,
+      cotasList,
+      cotaMapaData,
+      perdasCotasData,
+      climadaCotaData,
+      detalheCotaData,
+      opData,
+      fisData,
+      popData,
+      areaData,
+    ]
+  )
+
+  const metricsA = useMemo(() => computeSide(cenarioA, cotaA), [computeSide, cenarioA, cotaA])
+  const metricsB = useMemo(() => computeSide(cenarioB, cotaB), [computeSide, cenarioB, cotaB])
 
   const renderRow = (
     titulo: string,
@@ -358,59 +522,106 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="w-[98vw] sm:max-w-none max-w-[1720px] h-[90vh] max-h-[920px] overflow-hidden flex flex-col p-0 gap-0 sm:rounded-2xl shadow-2xl [&>button]:text-white/80 [&>button:hover]:text-white">
-        {/* Header com Design Executivo e Seletores Centralizados */}
-        <DialogHeader className="shrink-0 px-5 py-3 bg-[#055071] text-white border-b border-[#04405a]">
-          <div className="flex items-center justify-between gap-4 flex-wrap">
-            {/* Bloco Esquerda: Título e Identificação */}
-            <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 shadow-inner">
-                <GitCompare size={18} className="text-cyan-300" />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <DialogTitle className="text-base text-white font-black tracking-tight leading-none">
-                    Comparador de Cenários
-                  </DialogTitle>
-                  <span className="text-[9.5px] uppercase font-black tracking-wider px-2 py-0.5 rounded-full bg-cyan-400/20 text-cyan-200 border border-cyan-400/30">
-                    Lado a Lado
-                  </span>
-                </div>
-                <DialogDescription className="text-xs text-white/75 mt-0.5">
-                  Análise socioeconômica DaLA e espacial comparativa entre simulações
-                </DialogDescription>
-              </div>
+      <DialogContent className="w-[98vw] sm:max-w-none max-w-[1720px] h-[92vh] max-h-[960px] overflow-hidden flex flex-col p-0 gap-0 sm:rounded-3xl shadow-2xl [&>button]:text-white/90 [&>button:hover]:text-white [&>button]:bg-white/10 [&>button:hover]:bg-white/20 [&>button]:border [&>button]:border-white/20 [&>button]:shadow-xs [&>button]:top-2.5 [&>button]:right-3.5 [&>button]:h-7 [&>button]:w-7 [&>button]:backdrop-blur-md">
+        {/* Header no Padrão e Tema do Dashboard RS - Linha Única Sem Logo */}
+        <DialogHeader
+          className="shrink-0 px-3.5 py-2 text-white"
+          style={HEADER_GLASS}
+        >
+          <div className="flex items-center gap-2.5 w-full min-w-0">
+            {/* Título Compacto */}
+            <div className="flex items-center gap-1.5 shrink-0">
+              <GitCompare size={15} className="text-white/80 shrink-0" />
+              <DialogTitle className="leading-none font-black whitespace-nowrap text-white text-xs sm:text-sm">
+                Comparador
+              </DialogTitle>
+              <DialogDescription className="sr-only">
+                Comparador lado a lado de cenários e cotas
+              </DialogDescription>
             </div>
 
-            {/* Bloco Central: Cockpit de Seleção (Município + Lado A vs Lado B) */}
-            <div className="flex items-center gap-2 bg-black/25 px-3 py-1.5 rounded-xl border border-white/15 shadow-inner flex-wrap">
-              {/* Município */}
-              <div className="flex items-center gap-1.5 pr-2.5 border-r border-white/20">
-                <MapPin size={12} className="text-cyan-300 shrink-0" />
-                <span className="text-[10px] font-bold text-white/70 uppercase">Município:</span>
-                <Select value={selectedMun} onValueChange={setSelectedMun}>
-                  <SelectTrigger className="h-7 min-w-[130px] w-auto bg-white/15 hover:bg-white/25 border-white/25 text-white text-xs font-semibold focus:ring-1 focus:ring-cyan-300">
-                    <SelectValue />
+            <div className="h-5 w-px bg-white/20 shrink-0" />
+
+            {/* Alternador de Modo: Cenários vs Cotas */}
+            <div className="inline-flex rounded-full bg-black/20 p-0.5 border border-white/20 h-7 items-center shrink-0">
+              <button
+                type="button"
+                onClick={() => setTipoComparador("cenarios")}
+                className={`flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold active:scale-[0.97] transition-all duration-150 ${
+                  tipoComparador === "cenarios"
+                    ? "bg-white text-[#055071] shadow-xs"
+                    : "text-white/80 hover:text-white hover:bg-white/10"
+                }`}
+              >
+                <Waves size={11} strokeWidth={2.5} />
+                <span>Cenários</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setTipoComparador("cotas")}
+                className={`flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold active:scale-[0.97] transition-all duration-150 ${
+                  tipoComparador === "cotas"
+                    ? "bg-white text-[#055071] shadow-xs"
+                    : "text-white/80 hover:text-white hover:bg-white/10"
+                }`}
+              >
+                <Ruler size={11} strokeWidth={2.5} />
+                <span>Cotas ({cotasList.length})</span>
+              </button>
+            </div>
+
+            {/* Seletor Município */}
+            <Select value={selectedMun} onValueChange={handleSelectMun}>
+              <SelectTrigger
+                aria-label="Município"
+                className="h-7 w-[125px] shrink-0 border-white/20 text-white text-xs font-semibold rounded-xl focus:ring-2 focus:ring-white/40 transition-all"
+                style={{ backgroundColor: `${C.field}cc` }}
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="rounded-xl border-white/40 bg-white/95 backdrop-blur-xl shadow-2xl">
+                {MUNICIPIOS.map((m) => (
+                  <SelectItem key={m} value={m} className="text-xs font-semibold">
+                    {m}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            {/* Seletor Lado A */}
+            <div className="flex items-center gap-1.5 shrink-0">
+              <span className="h-2 w-2 rounded-full bg-[#38bdf8] shrink-0 shadow-2xs" />
+              <span className="text-[10px] font-bold text-sky-200 uppercase tracking-wide shrink-0">Lado A:</span>
+              {tipoComparador === "cotas" ? (
+                <Select
+                  value={cotaA != null ? String(cotaA) : ""}
+                  onValueChange={(v) => setChosenCotaA(parseFloat(v))}
+                >
+                  <SelectTrigger
+                    aria-label="Cota Lado A"
+                    className="h-7 w-[130px] sm:w-[150px] border-sky-400/50 text-white text-xs font-semibold rounded-xl focus:ring-2 focus:ring-sky-300/50 transition-all"
+                    style={{ backgroundColor: `${C.field}cc` }}
+                  >
+                    <SelectValue placeholder="Selecione cota..." />
                   </SelectTrigger>
-                  <SelectContent>
-                    {MUNICIPIOS.map((m) => (
-                      <SelectItem key={m} value={m} className="text-xs font-semibold">
-                        {m}
+                  <SelectContent className="rounded-xl border-white/40 bg-white/95 backdrop-blur-xl shadow-2xl max-h-[300px]">
+                    {cotasList.map((c) => (
+                      <SelectItem key={c} value={String(c)} className="text-xs font-semibold">
+                        {formatCotaDisplay(c)}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
-              </div>
-
-              {/* Lado A (Azul) */}
-              <div className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#38bdf8] border border-white/80 shrink-0 shadow-xs" />
-                <span className="text-[10px] font-bold text-sky-200 uppercase">Lado A:</span>
+              ) : (
                 <Select value={cenarioA} onValueChange={setChosenA}>
-                  <SelectTrigger className="h-7 min-w-[145px] max-w-[210px] bg-white/15 hover:bg-white/25 border-sky-400/40 text-white text-xs font-semibold truncate focus:ring-1 focus:ring-sky-300">
+                  <SelectTrigger
+                    aria-label="Cenário Lado A"
+                    className="h-7 w-[140px] sm:w-[170px] border-sky-400/50 text-white text-xs font-semibold rounded-xl focus:ring-2 focus:ring-sky-300/50 transition-all"
+                    style={{ backgroundColor: `${C.field}cc` }}
+                  >
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="rounded-xl border-white/40 bg-white/95 backdrop-blur-xl shadow-2xl">
                     {cenariosList.map((c) => (
                       <SelectItem key={c} value={c} className="text-xs font-semibold">
                         {cenarioLabel(c)}
@@ -418,56 +629,72 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
                     ))}
                   </SelectContent>
                 </Select>
-              </div>
-
-              {/* Badge VS */}
-              <span className="px-1.5 py-0.5 rounded text-[9.5px] font-black tracking-widest bg-white/20 text-white/90 border border-white/25 uppercase">
-                VS
-              </span>
-
-              {/* Lado B (Vermelho) */}
-              <div className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#f87171] border border-white/80 shrink-0 shadow-xs" />
-                <span className="text-[10px] font-bold text-rose-200 uppercase">Lado B:</span>
-                <Select value={cenarioB} onValueChange={setChosenB}>
-                  <SelectTrigger className="h-7 min-w-[145px] max-w-[210px] bg-white/15 hover:bg-white/25 border-rose-400/40 text-white text-xs font-semibold truncate focus:ring-1 focus:ring-rose-300">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {cenariosList.map((c) => (
-                      <SelectItem key={c} value={c} className="text-xs font-semibold">
-                        {cenarioLabel(c)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              )}
             </div>
 
-            {/* Bloco Direita: Ações Rápidas */}
-            <div className="flex items-center gap-2 pr-6">
+            {/* Badge Central VS */}
+            <span className="text-[9px] font-black tracking-wider text-white/60 uppercase shrink-0">
+              vs
+            </span>
+
+            {/* Seletor Lado B */}
+            <div className="flex items-center gap-1.5 shrink-0">
+              <span className="h-2 w-2 rounded-full bg-[#f87171] shrink-0 shadow-2xs" />
+              <span className="text-[10px] font-bold text-rose-200 uppercase tracking-wide shrink-0">Lado B:</span>
+              {tipoComparador === "cotas" ? (
+                <Select
+                  value={cotaB != null ? String(cotaB) : ""}
+                  onValueChange={(v) => setChosenCotaB(parseFloat(v))}
+                >
+                  <SelectTrigger
+                    aria-label="Cota Lado B"
+                    className="h-7 w-[130px] sm:w-[150px] border-rose-400/50 text-white text-xs font-semibold rounded-xl focus:ring-2 focus:ring-rose-300/50 transition-all"
+                    style={{ backgroundColor: `${C.field}cc` }}
+                  >
+                    <SelectValue placeholder="Selecione cota..." />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-xl border-white/40 bg-white/95 backdrop-blur-xl shadow-2xl max-h-[300px]">
+                    {cotasList.map((c) => (
+                      <SelectItem key={c} value={String(c)} className="text-xs font-semibold">
+                        {formatCotaDisplay(c)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              ) : (
+                <Select value={cenarioB} onValueChange={setChosenB}>
+                  <SelectTrigger
+                    aria-label="Cenário Lado B"
+                    className="h-7 w-[140px] sm:w-[170px] border-rose-400/50 text-white text-xs font-semibold rounded-xl focus:ring-2 focus:ring-rose-300/50 transition-all"
+                    style={{ backgroundColor: `${C.field}cc` }}
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-xl border-white/40 bg-white/95 backdrop-blur-xl shadow-2xl">
+                    {cenariosList.map((c) => (
+                      <SelectItem key={c} value={c} className="text-xs font-semibold">
+                        {cenarioLabel(c)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            </div>
+
+            {/* Ações à Direita */}
+            <div className="flex items-center gap-1.5 pr-11 shrink-0 ml-auto">
               <button
                 type="button"
                 onClick={() => setShowPoints((prev) => !prev)}
-                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold border transition-all ${
+                className={`active-press hover-lift flex items-center gap-1.5 h-7 px-2.5 rounded-full text-xs font-semibold border active:scale-[0.97] transition-all duration-150 ${
                   showPoints
-                    ? "bg-white/20 text-white border-white/35 shadow-sm hover:bg-white/25"
-                    : "bg-white/5 text-white/70 border-white/15 hover:bg-white/15"
+                    ? "border-white bg-white text-[#055071] shadow-xs"
+                    : "border-white/20 bg-white/10 text-white/90 hover:bg-white/20 hover:border-white/35"
                 }`}
                 title={showPoints ? "Ocultar pontos no mapa" : "Exibir pontos de escolas, saúde e empresas"}
               >
-                <Layers size={13} className={showPoints ? "text-cyan-300" : "text-white/60"} />
-                <span>{showPoints ? "Pontos Ativos" : "Pontos Ocultos"}</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={copySummary}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold bg-white/15 hover:bg-white/25 text-white transition-colors border border-white/20 shadow-sm"
-                title="Copiar resumo comparativo para a área de transferência"
-              >
-                {copied ? <Check size={13} className="text-emerald-300" /> : <Copy size={13} />}
-                <span>{copied ? "Copiado!" : "Copiar"}</span>
+                <Layers size={12} strokeWidth={2.5} />
+                <span className="hidden md:inline">{showPoints ? "Pontos" : "Ocultos"}</span>
               </button>
 
               {onOpenMapFullScreen && (
@@ -477,11 +704,11 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
                     onClose()
                     onOpenMapFullScreen()
                   }}
-                  className="flex items-center gap-1.5 text-xs font-bold text-white bg-white/15 hover:bg-white/25 px-2.5 py-1.5 rounded-lg transition-colors border border-white/20 shadow-sm"
+                  className="active-press hover-lift flex items-center gap-1.5 h-7 px-2.5 rounded-full text-xs font-semibold text-white/90 hover:text-white bg-white/10 hover:bg-white/20 hover:border-white/35 active:scale-[0.97] transition-all duration-150 border border-white/20 shadow-xs"
                   title="Abrir mapa de comparação em tela cheia"
                 >
-                  <Maximize2 size={13} />
-                  <span>Tela Cheia</span>
+                  <Maximize2 size={12} strokeWidth={2.5} />
+                  <span className="hidden md:inline">Tela Cheia</span>
                 </button>
               )}
             </div>
@@ -490,12 +717,28 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
 
         {/* Content - 2 Colunas Lado a Lado: Métricas & Danos (Esquerda) e Mapa com Swipe (Direita) */}
         <div className="min-h-0 flex-1 p-3 flex flex-col lg:flex-row gap-3 overflow-hidden bg-slate-100/70">
-          {cenariosList.length <= 1 ? (
+          {tipoComparador === "cenarios" && cenariosList.length <= 1 ? (
             <div className="p-8 text-center text-slate-500 rounded-xl border border-slate-200 bg-white w-full h-full flex flex-col items-center justify-center">
-              <p className="font-bold text-base text-slate-700">Apenas um cenário cadastrado para {selectedMun}.</p>
+              <p className="font-bold text-base text-slate-700">Apenas um cenário hidrodinâmico cadastrado para {selectedMun}.</p>
               <p className="text-xs text-slate-500 mt-1.5 max-w-md">
-                Selecione Porto Alegre, Lajeado ou Rio Grande no seletor acima para comparar diferentes simulações hidrodinâmicas.
+                {cotasList.length > 1
+                  ? "Você pode comparar as cotas hidrométricas do rio para este município no comparador de cotas:"
+                  : "Selecione Porto Alegre, Lajeado ou Rio Grande no seletor acima para comparar diferentes simulações hidrodinâmicas."}
               </p>
+              {cotasList.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => setTipoComparador("cotas")}
+                  className="mt-4 flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold bg-[#055071] hover:bg-[#044460] text-white shadow-xs active:scale-[0.97] transition-all"
+                >
+                  <Ruler size={13} />
+                  <span>Comparar por Cotas ({cotasList.length} cotas disponíveis)</span>
+                </button>
+              )}
+            </div>
+          ) : tipoComparador === "cotas" && cotasList.length <= 1 ? (
+            <div className="p-8 text-center text-slate-500 rounded-xl border border-slate-200 bg-white w-full h-full flex flex-col items-center justify-center">
+              <p className="font-bold text-base text-slate-700">Dados de cotas insuficientes para {selectedMun}.</p>
             </div>
           ) : (
             <>
@@ -512,17 +755,17 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
                         Métricas & Danos
                       </span>
                       <span className="text-[10px] text-slate-500 font-medium">
-                        {cenarioLabel(cenarioA)} vs {cenarioLabel(cenarioB)}
+                        {currentLabelA} vs {currentLabelB}
                       </span>
                     </div>
                   </div>
 
-                  {/* Alternador de visualização: Gráficos & KPIs vs Tabela */}
-                  <div className="inline-flex rounded-lg bg-slate-200/80 p-0.5 border border-slate-300/60 shadow-2xs">
+                  {/* Alternador de visualização: Gráficos & KPIs vs Tabela (Apple Segmented Control) */}
+                  <div className="inline-flex rounded-full bg-slate-200/80 p-1 border border-slate-300/60 shadow-2xs backdrop-blur-sm">
                     <button
                       type="button"
                       onClick={() => setLeftTab("graficos")}
-                      className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold transition-all ${
+                      className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold active:scale-[0.97] transition-all duration-150 ${
                         leftTab === "graficos"
                           ? "bg-white text-[#055071] shadow-xs"
                           : "text-slate-600 hover:text-slate-900"
@@ -534,7 +777,7 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
                     <button
                       type="button"
                       onClick={() => setLeftTab("tabela")}
-                      className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold transition-all ${
+                      className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold active:scale-[0.97] transition-all duration-150 ${
                         leftTab === "tabela"
                           ? "bg-white text-[#055071] shadow-xs"
                           : "text-slate-600 hover:text-slate-900"
@@ -583,7 +826,7 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
                             <div className="rounded-lg bg-white/90 p-2.5 border border-sky-100 shadow-2xs">
                               <div className="flex items-center justify-between">
                                 <span className="text-[10px] font-bold text-sky-950 uppercase">
-                                  Lado A · {cenarioLabel(cenarioA)}
+                                  Lado A · {currentLabelA}
                                 </span>
                                 <span className="h-2 w-2 rounded-full bg-[#055071]" />
                               </div>
@@ -599,7 +842,7 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
                             <div className="rounded-lg bg-white/90 p-2.5 border border-rose-100 shadow-2xs">
                               <div className="flex items-center justify-between">
                                 <span className="text-[10px] font-bold text-rose-950 uppercase">
-                                  Lado B · {cenarioLabel(cenarioB)}
+                                  Lado B · {currentLabelB}
                                 </span>
                                 <span className="h-2 w-2 rounded-full bg-[#c9402e]" />
                               </div>
@@ -787,22 +1030,22 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
                             <p className="text-[11px] leading-relaxed text-slate-600">
                               {(metricsB.totalOp + metricsB.totalFis) < (metricsA.totalOp + metricsA.totalFis) ? (
                                 <>
-                                  O <strong>{cenarioLabel(cenarioB)}</strong> projeta uma redução de{" "}
+                                  O <strong>{currentLabelB}</strong> projeta uma redução de{" "}
                                   <strong className="text-emerald-700">
                                     {Math.abs((((metricsB.totalOp + metricsB.totalFis) - (metricsA.totalOp + metricsA.totalFis)) / (metricsA.totalOp + metricsA.totalFis)) * 100).toFixed(1)}%
                                   </strong>{" "}
-                                  (-{fmtBRL(Math.abs((metricsB.totalOp + metricsB.totalFis) - (metricsA.totalOp + metricsA.totalFis)))}) no impacto econômico total comparado ao {cenarioLabel(cenarioA)}.
+                                  (-{fmtBRL(Math.abs((metricsB.totalOp + metricsB.totalFis) - (metricsA.totalOp + metricsA.totalFis)))}) no impacto econômico total comparado a {currentLabelA}.
                                 </>
                               ) : (metricsB.totalOp + metricsB.totalFis) > (metricsA.totalOp + metricsA.totalFis) ? (
                                 <>
-                                  O <strong>{cenarioLabel(cenarioB)}</strong> projeta um aumento de{" "}
+                                  O <strong>{currentLabelB}</strong> projeta um aumento de{" "}
                                   <strong className="text-rose-700">
                                     {Math.abs((((metricsB.totalOp + metricsB.totalFis) - (metricsA.totalOp + metricsA.totalFis)) / (metricsA.totalOp + metricsA.totalFis)) * 100).toFixed(1)}%
                                   </strong>{" "}
-                                  (+{fmtBRL((metricsB.totalOp + metricsB.totalFis) - (metricsA.totalOp + metricsA.totalFis))}) no impacto econômico total em relação ao {cenarioLabel(cenarioA)}.
+                                  (+{fmtBRL((metricsB.totalOp + metricsB.totalFis) - (metricsA.totalOp + metricsA.totalFis))}) no impacto econômico total em relação a {currentLabelA}.
                                 </>
                               ) : (
-                                <>Os dois cenários apresentam impacto econômico equivalente.</>
+                                <>{tipoComparador === "cotas" ? "Ambas as cotas apresentam impacto econômico equivalente." : "Os dois cenários apresentam impacto econômico equivalente."}</>
                               )}
                             </p>
                           </div>
@@ -828,8 +1071,8 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
                           <div className="min-w-[480px]">
                             <div className="grid grid-cols-12 gap-2 py-2 px-3 bg-slate-100 text-[10px] font-bold text-slate-600 uppercase tracking-wider sticky top-0 z-10 border-b border-slate-200">
                               <div className="col-span-4">Dimensão / Métrica</div>
-                              <div className="col-span-3 text-right">Lado A ({cenarioLabel(cenarioA)})</div>
-                              <div className="col-span-3 text-right">Lado B ({cenarioLabel(cenarioB)})</div>
+                              <div className="col-span-3 text-right">Lado A ({currentLabelA})</div>
+                              <div className="col-span-3 text-right">Lado B ({currentLabelB})</div>
                               <div className="col-span-2 text-right">Diferença</div>
                             </div>
 
@@ -913,25 +1156,18 @@ Fonte: Painel BID RS / DaLA / CLIMADA`
                   cenarioB={cenarioB}
                   onCenarioAChange={setChosenA}
                   onCenarioBChange={setChosenB}
+                  cotaA={cotaA}
+                  cotaB={cotaB}
+                  modo={tipoComparador}
+                  cotasList={cotasList}
+                  onCotaAChange={setChosenCotaA}
+                  onCotaBChange={setChosenCotaB}
                   isFullScreen={false}
                   showPoints={showPoints}
                 />
               </div>
             </>
           )}
-        </div>
-
-        {/* Footer */}
-        <div className="shrink-0 p-3 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
-          <span className="text-[11px] leading-tight">
-            * As perdas operacionais seguem metodologia DaLA (30 dias base); danos físicos representam custo de reposição CLIMADA/CUB-RS.
-          </span>
-          <button
-            onClick={onClose}
-            className="px-3.5 py-1.5 rounded-md text-xs font-semibold bg-slate-200 hover:bg-slate-300 text-slate-700 transition-colors shrink-0"
-          >
-            Fechar
-          </button>
         </div>
       </DialogContent>
     </Dialog>

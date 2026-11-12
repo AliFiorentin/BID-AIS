@@ -13,16 +13,16 @@ export function ClimadaPorCota({ ctx }: { ctx: DanosCtx }) {
         <>
         <Section id="c-resumo" num="1" title={`Resumo: ${munClimadaAtivo}`}>
           <div className="flex flex-wrap items-center gap-2 mb-3">
-            <span className="rounded-md border border-[#055071]/30 bg-[#055071]/10 px-2 py-0.5 text-xs font-bold text-[#055071]">
+            <span className="rounded-full border border-[#055071]/30 bg-[#055071]/10 px-2.5 py-0.5 text-xs font-semibold text-[#055071]">
               Cota Ativa: {cotaAtiva.replace(".", ",")} m
             </span>
-            <span className="rounded-md border border-slate-200 bg-white px-2 py-0.5 text-xs font-bold text-slate-700 shadow-xs">
+            <span className="rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-xs font-semibold text-slate-700 shadow-xs">
               Fonte das cotas:{" "}
               <strong className="text-[#055071]">
                 {munClimadaAtivo === "Rio Grande" ? "CIEX" : "IPH"}
               </strong>
             </span>
-            <span className="rounded-md border border-amber-300 bg-amber-50 px-2 py-0.5 text-xs font-bold text-amber-800 shadow-xs">
+            <span className="rounded-full border border-amber-300 bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-800 shadow-xs">
               Simulação por Cota
             </span>
           </div>
@@ -60,7 +60,7 @@ export function ClimadaPorCota({ ctx }: { ctx: DanosCtx }) {
           )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-5">
-            <div className="bg-white border border-[#b3cdd8] rounded-xl overflow-hidden shadow-sm">
+            <div className="hover-lift bg-white border border-[#b3cdd8]/70 rounded-2xl overflow-hidden shadow-xs">
               <div className="px-4 py-3" style={{ backgroundColor: "#055071" }}>
                 <p className="text-[10px] font-black uppercase tracking-wider text-white/95 mb-0.5">{munClimadaAtivo} · cota {cotaAtiva} m</p>
                 <p className="text-2xl font-black text-white leading-none">{fmtBRL(totalCota(atualCota, "dano_fisico_brl_poa"))}</p>
@@ -88,7 +88,7 @@ export function ClimadaPorCota({ ctx }: { ctx: DanosCtx }) {
               </div>
             </div>
 
-            <div className="bg-white border border-[#b3cdd8] rounded-xl p-4 shadow-sm">
+            <div className="hover-lift bg-white border border-[#b3cdd8]/70 rounded-2xl p-4 shadow-xs">
               <p className="text-[10px] font-black uppercase tracking-wider text-[#2f6a83] mb-2">Exposição total (patrimônio no raio de risco)</p>
               <p className="text-2xl font-black text-slate-800 leading-none mb-3">
                 {fmtBRL(climadaSetores.reduce((sum, st) => sum + atualCota[st].exposicao_total_brl, 0))}
@@ -109,7 +109,7 @@ export function ClimadaPorCota({ ctx }: { ctx: DanosCtx }) {
             (barras empilhadas por setor) e a curva JRC crua como limite superior da incerteza
             (traço). O dano sobe em degraus: ver a limitação sobre coordenadas repetidas.
           </p>
-          <div className="bg-white border border-[#b3cdd8] rounded-xl p-4 shadow-sm my-4">
+          <div className="hover-lift bg-white border border-[#b3cdd8]/70 rounded-2xl p-4 shadow-xs my-4">
             <CotaBarChart
               cotas={cotasDisponiveis}
               resultados={dadosCotas.resultados_por_cota}

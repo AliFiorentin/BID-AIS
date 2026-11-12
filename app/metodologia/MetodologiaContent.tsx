@@ -35,17 +35,18 @@ function fmtBRLPreciso(v: number): string {
 }
 
 export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData | null }) {
+  const linkClass = "active-press hover-lift text-[11px] font-semibold text-white/95 hover:text-white transition-all duration-150 px-3.5 py-1.5 rounded-full border border-white/20 hover:border-white/40 bg-white/10 hover:bg-white/20 active:scale-[0.97] flex items-center gap-1.5 shadow-xs";
   return (
     <div className="min-h-screen bg-[#f0f7fa] text-slate-800 font-sans">
 
       {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <header className="bg-[#055071] text-white px-6 py-10 print:py-5">
+      <header className="bg-gradient-to-br from-[#055071] via-[#075d83] to-[#0a6e9a] text-white px-6 py-10 print:py-5 border-b border-white/10 shadow-lg">
         <div className="max-w-[1440px] mx-auto flex items-start justify-between gap-6">
           <div className="min-w-0">
             <div className="flex items-center gap-2 mb-5 print:hidden flex-wrap">
-              <Link href="/" className="text-[10px] max-lg:text-xs max-lg:min-h-11 font-bold text-white/95 hover:text-white transition-colors px-3 py-1 rounded-full border border-white/20 hover:border-white/40 flex items-center gap-1.5">← Dashboard</Link>
-              <Link href="/perdas-operacionais" className="text-[10px] max-lg:text-xs max-lg:min-h-11 font-bold text-white/95 hover:text-white transition-colors px-3 py-1 rounded-full border border-white/20 hover:border-white/40 flex items-center gap-1.5">Perdas Operacionais →</Link>
-              <Link href="/danos-fisicos" className="text-[10px] max-lg:text-xs max-lg:min-h-11 font-bold text-white/95 hover:text-white transition-colors px-3 py-1 rounded-full border border-white/20 hover:border-white/40 flex items-center gap-1.5">Danos Físicos →</Link>
+              <Link href="/" className={linkClass}>← Dashboard</Link>
+              <Link href="/perdas-operacionais" className={linkClass}>Perdas Operacionais →</Link>
+              <Link href="/danos-fisicos" className={linkClass}>Danos Físicos →</Link>
             </div>
             <p className="mb-2 text-[11px] font-semibold tracking-[0.18em] uppercase opacity-70">
               BID · GPEA · FURG · IPH/UFRGS
@@ -522,7 +523,7 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
             ["Indicador",                  "Descrição"],
             ["Escolas atingidas",          "Estabelecimentos com ponto geocodificado dentro da mancha"],
             ["Matrículas afetadas",        "Soma de todas as matrículas ativas nas escolas atingidas (pré-escola ao EM)"],
-            ["Turmas afetadas",            "Número de turmas em funcionamento nas escolas atingidas"],
+            ["Turmas afetadas (não desagregado)", "Dado bruto do Censo não segregado na base final; utiliza-se a contagem de matrículas e docentes"],
             ["Professores afetados",       "Vínculos de docentes nas escolas atingidas"],
             ["Dependência administrativa", "Federal / Estadual / Municipal / Privada"],
             ["Tipo de atendimento",        "Creche, Pré-escola, EF Anos Iniciais, EF Anos Finais, EM, EJA, Educação Especial"],
@@ -618,7 +619,7 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
             ["Indicador",              "Fórmula"],
             ["Unidades atingidas",     <span key="u"><Math tex={"N_a = \\sum_k \\chi_k"} /> (CNES dentro da mancha)</span>],
             ["Profissionais afetados", <span key="p"><Math tex={"P_a = \\sum_k \\sum_c \\text{staff}_{k,c} \\cdot \\chi_k"} /> (soma por categoria CBO)</span>],
-            ["Leitos expostos",        "Soma de leitos SUS nas unidades atingidas (quando disponível no CNES)"],
+            ["Leitos expostos",        "Soma do total de leitos instalados (CNES LT) nas unidades atingidas"],
           ]} />
 
           <Note type="info">
