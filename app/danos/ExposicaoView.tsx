@@ -117,12 +117,12 @@ export function ExposicaoView({
 
         {mun === "Porto Alegre" && (
           <Note type="warning">
-            <strong>Importante — Premissa do modelo por cota de Porto Alegre:</strong> A série hidrodinâmica por cota do Guaíba (1,75 a 6,00 m) modela a topografia considerando o sistema de proteção (Muro da Mauá, diques e comportas) operante, o que restringe o alagamento na simulação às ilhas e faixa ribeirinha desprotegida (444 empresas atingidas no pico, R$ 381 Mi). No entanto, no evento real de maio/2024 (Cenário ADA), com o colapso e vazamento de comportas e casas de bombas, a mancha observada atingiu <strong>8.692 empresas e R$ 10,44 Bilhões</strong> de patrimônio exposto. Para a estimativa oficial de dano físico calculada com curvas de vulnerabilidade (MDD), consulte a aba <strong>CLIMADA (RP)</strong> (R$ 1,65 Bi a R$ 2,06 Bi).
+            <strong>Importante — Premissa do modelo por cota de Porto Alegre:</strong> A série hidrodinâmica por cota do Guaíba (1,75 a 6,00 m) modela a topografia considerando o sistema de proteção (Muro da Mauá, diques e comportas) operante, o que restringe o alagamento na simulação às ilhas e faixa ribeirinha desprotegida (444 empresas atingidas no pico, R$ 379 Mi). No entanto, no evento real de maio/2024 (Cenário ADA), com o colapso e vazamento de comportas e casas de bombas, a mancha observada atingiu <strong>8.692 empresas e R$ 10,43 Bilhões</strong> de patrimônio exposto. Para a estimativa oficial de dano físico calculada com curvas de vulnerabilidade (MDD), consulte a aba <strong>CLIMADA (RP)</strong> (R$ 1,65 Bi a R$ 2,06 Bi).
           </Note>
         )}
 
         <div className="hover-lift my-4 rounded-2xl border border-[#b3cdd8]/70 bg-white px-5 py-4 text-sm text-slate-700 shadow-xs">
-          <p className="mb-2 text-[10px] font-black tracking-wider text-[#2f6a83] uppercase">
+          <p className="mb-2 text-[11px] font-black tracking-wider text-[#2f6a83] uppercase">
             Como interpretar as métricas desta página
           </p>
           <ul className="list-inside list-disc space-y-1.5">
@@ -165,7 +165,7 @@ export function ExposicaoView({
       {/* ═══ 2. RESUMO ═══ */}
       <Section id="c-resumo" num="2" title="Resumo">
         <div className="hover-lift my-4 rounded-2xl border border-[#b3cdd8]/70 bg-white px-5 py-4 text-sm text-slate-700 shadow-xs">
-          <p className="mb-2 text-[10px] font-black tracking-wider text-[#2f6a83] uppercase">
+          <p className="mb-2 text-[11px] font-black tracking-wider text-[#2f6a83] uppercase">
             Principais resultados · {mun}
           </p>
           <ul className="list-inside list-disc space-y-1.5">
@@ -231,13 +231,13 @@ export function ExposicaoView({
         <div className="my-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="hover-lift overflow-hidden rounded-2xl border border-[#b3cdd8]/70 bg-white shadow-xs">
             <div className="px-4 py-3" style={{ backgroundColor: "#055071" }}>
-              <p className="mb-0.5 text-[10px] font-black tracking-wider text-white/95 uppercase">
+              <p className="mb-0.5 text-[11px] font-black tracking-wider text-white/95 uppercase">
                 {titulo}
               </p>
               <p className="text-2xl leading-none font-black text-white">
                 {fmtBRL(total)}
               </p>
-              <p className="mt-1 font-mono text-[9px] text-white/95">
+              <p className="mt-1 font-mono text-[11px] text-white/95">
                 valor exposto atingido (3 setores) · {fmtPct(total, expTotal)}{" "}
                 da exposição total · teto, não dano
               </p>
@@ -268,7 +268,7 @@ export function ExposicaoView({
             </div>
           </div>
           <div className="hover-lift rounded-2xl border border-[#b3cdd8]/70 bg-white p-4 shadow-xs">
-            <p className="mb-2 text-[10px] font-black tracking-wider text-[#2f6a83] uppercase">
+            <p className="mb-2 text-[11px] font-black tracking-wider text-[#2f6a83] uppercase">
               Exposição total (patrimônio no município)
             </p>
             <p className="mb-3 text-2xl leading-none font-black text-slate-800">

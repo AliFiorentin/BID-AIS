@@ -45,7 +45,7 @@ interface DashboardHeaderProps {
 
 const HEADER_FLUID = {
   titleSize: "clamp(11px, 1.05vw, 15px)",
-  subtitleSize: "clamp(7px, 0.65vw, 9px)",
+  subtitleSize: "clamp(11px, 0.85vw, 12px)",
 }
 
 const HEADER_GLASS = {
@@ -70,7 +70,7 @@ function TipCamada({ texto }: { texto: string }) {
   return (
     <span
       aria-hidden="true"
-      className="pointer-events-none absolute top-full left-1/2 z-40 mt-1.5 hidden -translate-x-1/2 rounded-md bg-slate-900/95 px-2 py-1 text-[10px] leading-none font-bold whitespace-nowrap text-white shadow-xl backdrop-blur-sm group-hover/tip:block"
+      className="pointer-events-none absolute top-full left-1/2 z-40 mt-1.5 hidden -translate-x-1/2 rounded-md bg-slate-900/95 px-2 py-1 text-[11px] leading-none font-bold whitespace-nowrap text-white shadow-xl backdrop-blur-sm group-hover/tip:block"
     >
       {texto}
     </span>
@@ -97,7 +97,7 @@ export function DashboardHeader({ dash }: DashboardHeaderProps) {
 
   const subtitulo =
     renderMunicipio === "Visão Geral RS"
-      ? "Painel de Monitoramento · RS"
+      ? "Painel de Monitoramento · 4 municípios"
       : `${renderMunicipio}, RS`
 
   const camadasBotoes: {
@@ -154,8 +154,8 @@ export function DashboardHeader({ dash }: DashboardHeaderProps) {
       <button
         type="button"
         onClick={reiniciar}
-        title="Reiniciar seleções e voltar para a Visão Geral RS"
-        aria-label="Reiniciar seleções e voltar para a Visão Geral RS"
+        title="Reiniciar seleções e voltar para a Visão Geral"
+        aria-label="Reiniciar seleções e voltar para a Visão Geral"
         className="flex shrink-0 items-center gap-2.5 border-r border-t-0 border-b-0 border-l-0 text-left cursor-pointer outline-none focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0 select-none appearance-none bg-transparent p-0 m-0 transition-none active:outline-none"
         style={{
           borderColor: "rgba(255,255,255,0.2)",
@@ -255,7 +255,7 @@ export function DashboardHeader({ dash }: DashboardHeaderProps) {
           </SelectTrigger>
           <SelectContent position="popper" align="start" sideOffset={4}>
             <SelectItem value="Visão Geral RS" className="font-bold text-[#055071]">
-              Visão Geral RS
+              Visão Geral
             </SelectItem>
             {MUNICIPIOS.map((m) => (
               <SelectItem key={m} value={m}>
@@ -291,7 +291,7 @@ export function DashboardHeader({ dash }: DashboardHeaderProps) {
                 }}
               >
                 <SelectValue
-                  placeholder={isVisaoGeral ? "Piores Cenários" : "(nenhum)"}
+                  placeholder={isVisaoGeral ? "Cenário ADA" : "(nenhum)"}
                 />
               </SelectTrigger>
               <SelectContent position="popper" align="start" sideOffset={4}>
@@ -380,7 +380,7 @@ export function DashboardHeader({ dash }: DashboardHeaderProps) {
                   </span>{" "}
                   {infraAtivas.length > 0 && `(${infraAtivas.length})`}
                 </span>
-                <span className="text-[7px] opacity-70">▼</span>
+                <span className="text-[11px] opacity-70">▼</span>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end">
                 <button

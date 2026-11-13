@@ -131,21 +131,21 @@ export interface ClimadaData {
   eai_anual_esperado: EaiAnualEsperado | null;
 }
 
-// ─── Tipos — CLIMADA por cota do rio (Lajeado, Eldorado do Sul, Porto Alegre) ─────────────────────────────────
+// ─── Tipos — por cota do rio (exposição nos 4 municípios; dano só em Porto Alegre) ─────────────────────────────────
 export interface CotaSetor {
   n_total: number;
   n_atingidos: number;
   profundidade_media_atingidos_m: number;
   profundidade_max_m: number;
   exposicao_total_brl: number;
-  dano_fisico_brl_poa: number;       // curvas com o fator de calibração de Porto Alegre
-  dano_fisico_brl_jrc_crua: number;  // sensibilidade: curva JRC sem recalibração
+  dano_fisico_brl_poa?: number;       // só Porto Alegre (CLIMADA é exclusivo de Porto Alegre): curvas com o fator de calibração
+  dano_fisico_brl_jrc_crua?: number;  // só Porto Alegre: sensibilidade, curva JRC sem recalibração
 }
 export interface CotasData {
   municipio: string;
   premissas: {
     calibracao: string;
-    poa_calibration_factor: number;
+    poa_calibration_factor?: number;
     raster_nota: string;
   };
   diagnostico: {

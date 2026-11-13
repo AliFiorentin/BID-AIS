@@ -64,7 +64,7 @@ export function KPICard({
               style={{ backgroundColor: cor }}
             />
           )}
-          <span className="truncate text-[10px] leading-none font-black tracking-wider text-white uppercase">
+          <span className="truncate text-[11px] leading-none font-black tracking-wider text-white uppercase">
             {titulo}
           </span>
         </div>
@@ -80,14 +80,14 @@ export function KPICard({
         <div className="flex items-center justify-between gap-3">
           <div className="flex min-w-0 flex-col">
             <span
-              className="text-[10px] leading-none"
+              className="text-[11px] leading-none"
               style={{ color: C.muted }}
             >
               {principal.sub}
             </span>
             {principal.delta && (
               <span
-                className="mt-1.5 inline-block w-fit rounded px-1.5 py-0.5 text-[9px] font-semibold"
+                className="mt-1.5 inline-block w-fit rounded px-1.5 py-0.5 text-[11px] font-semibold"
                 style={{
                   backgroundColor: PANEL_CARD_BG,
                   border: `1px solid ${C.border}`,
@@ -117,14 +117,14 @@ export function KPICard({
             <div className="flex min-w-0 flex-col">
               {s.titulo && (
                 <span
-                  className="text-[9px] leading-none font-bold tracking-wide uppercase"
+                  className="text-[11px] leading-none font-bold tracking-wide uppercase"
                   style={{ color: C.primary }}
                 >
                   {s.titulo}
                 </span>
               )}
               <span
-                className="mt-0.5 text-[9.5px] font-semibold"
+                className="mt-0.5 text-[11px] font-semibold"
                 style={{ color: C.muted }}
               >
                 {s.delta ?? s.sub}

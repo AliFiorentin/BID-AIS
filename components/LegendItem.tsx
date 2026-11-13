@@ -19,7 +19,7 @@ export function LegendItem({ cor, label, area }: LegendItemProps) {
         />
       )}
       <span
-        className="min-w-0 truncate text-[8px] leading-tight font-medium text-slate-700"
+        className="min-w-0 truncate text-[11px] leading-tight font-medium text-slate-700"
         title={label}
       >
         {label}

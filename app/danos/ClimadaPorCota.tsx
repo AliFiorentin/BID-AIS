@@ -32,7 +32,7 @@ export function ClimadaPorCota({ ctx }: { ctx: DanosCtx }) {
             <Link href="/perdas-operacionais" className="underline underline-offset-2 font-bold">Perdas Operacionais</Link>{" "}
             (fluxo, DaLA): os dois números não devem ser somados.{" "}
             <strong>Calibração herdada de Porto Alegre</strong> (fator{" "}
-            {dadosCotas.premissas.poa_calibration_factor.toString().replace(".", ",")}), sem perda
+            {(dadosCotas.premissas.poa_calibration_factor ?? 0).toString().replace(".", ",")}), sem perda
             observada para {munClimadaAtivo}. Ver{" "}
             <Link href="/metodologia#limitacoes" className="underline underline-offset-2 font-bold">
               Limitações na Metodologia ↗
@@ -62,16 +62,16 @@ export function ClimadaPorCota({ ctx }: { ctx: DanosCtx }) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-5">
             <div className="hover-lift bg-white border border-[#b3cdd8]/70 rounded-2xl overflow-hidden shadow-xs">
               <div className="px-4 py-3" style={{ backgroundColor: "#055071" }}>
-                <p className="text-[10px] font-black uppercase tracking-wider text-white/95 mb-0.5">{munClimadaAtivo} · cota {cotaAtiva} m</p>
+                <p className="text-[11px] font-black uppercase tracking-wider text-white/95 mb-0.5">{munClimadaAtivo} · cota {cotaAtiva} m</p>
                 <p className="text-2xl font-black text-white leading-none">{fmtBRL(totalCota(atualCota, "dano_fisico_brl_poa"))}</p>
-                <p className="text-[9px] text-white/95 font-mono mt-1">
+                <p className="text-[11px] text-white/95 font-mono mt-1">
                   dano físico estimado (3 setores) · incerteza até {fmtBRL(totalCota(atualCota, "dano_fisico_brl_jrc_crua"))} (curva JRC crua)
                 </p>
               </div>
               <div className="px-4 pt-3 pb-1">
                 <div className="flex h-2 rounded-full overflow-hidden bg-slate-100">
                   {climadaSetores.map((st) => (
-                    <div key={st} style={{ width: `${(atualCota[st].dano_fisico_brl_poa / (totalCota(atualCota, "dano_fisico_brl_poa") || 1)) * 100}%`, backgroundColor: SETOR_COLORS[st] }} />
+                    <div key={st} style={{ width: `${((atualCota[st].dano_fisico_brl_poa ?? 0) / (totalCota(atualCota, "dano_fisico_brl_poa") || 1)) * 100}%`, backgroundColor: SETOR_COLORS[st] }} />
                   ))}
                 </div>
               </div>
@@ -80,8 +80,8 @@ export function ClimadaPorCota({ ctx }: { ctx: DanosCtx }) {
                   <KpiRow
                     key={st}
                     label={SETOR_LABEL[st]}
-                    value={fmtBRL(atualCota[st].dano_fisico_brl_poa)}
-                    sub={`${atualCota[st].exposicao_total_brl ? ((atualCota[st].dano_fisico_brl_poa / atualCota[st].exposicao_total_brl) * 100).toFixed(1) : "0.0"}% da exposição`}
+                    value={fmtBRL(atualCota[st].dano_fisico_brl_poa ?? 0)}
+                    sub={`${atualCota[st].exposicao_total_brl ? (((atualCota[st].dano_fisico_brl_poa ?? 0) / atualCota[st].exposicao_total_brl) * 100).toFixed(1) : "0.0"}% da exposição`}
                     color={SETOR_COLORS[st]}
                   />
                 ))}
@@ -89,7 +89,7 @@ export function ClimadaPorCota({ ctx }: { ctx: DanosCtx }) {
             </div>
 
             <div className="hover-lift bg-white border border-[#b3cdd8]/70 rounded-2xl p-4 shadow-xs">
-              <p className="text-[10px] font-black uppercase tracking-wider text-[#2f6a83] mb-2">Exposição total (patrimônio no raio de risco)</p>
+              <p className="text-[11px] font-black uppercase tracking-wider text-[#2f6a83] mb-2">Exposição total (patrimônio no raio de risco)</p>
               <p className="text-2xl font-black text-slate-800 leading-none mb-3">
                 {fmtBRL(climadaSetores.reduce((sum, st) => sum + atualCota[st].exposicao_total_brl, 0))}
               </p>

@@ -5,7 +5,7 @@ import {
   MUNICIPIOS, CENARIOS_CONFIG, AGRI_BOUNDS, AGRI_ANO_BASE, PIORES_CENARIOS, COTAS_CENARIO, INFRAESTRUTURA_CONFIG, INFRA_TAMANHOS_MB,
 } from "@/lib/constants";
 import { slugify, scenarioSlug, mergeGeoJSON } from "@/lib/geo-utils";
-import type { InfraStatsEntry, InfraFC, FC, AgriStats, ConabStats, PopupInfo } from "./types";
+import type { InfraStatsEntry, InfraFC, FC, AgriStats, PopupInfo } from "./types";
 
 interface Args {
   municipio: string;
@@ -49,7 +49,6 @@ export function useScenarioData({
   const [atingidosAgriStats, setAtingidosAgriStats] = useState<AgriStats>(null);
   const [baseAgriGeo, setBaseAgriGeo] = useState<FC>(null);
   const [atingidosAgriGeo, setAtingidosAgriGeo] = useState<FC>(null);
-  const [conabStats, setConabStats] = useState<ConabStats>(null);
   const [allMunAgriStats, setAllMunAgriStats] = useState<Record<string, Record<string, number>> | null>(null);
   const [allMunAgriAtingidosStats, setAllMunAgriAtingidosStats] = useState<Record<string, Record<string, number>> | null>(null);
   const [allMunInfraStats, setAllMunInfraStats] = useState<Record<string, Record<string, InfraStatsEntry>> | null>(null);
@@ -118,7 +117,7 @@ export function useScenarioData({
 
           setRenderMunicipio("Visão Geral RS");
           setAtingidosInfra({}); setCenario("(nenhum)");
-          setBaseAgriStats(null); setAtingidosAgriStats(null); setConabStats(null);
+          setBaseAgriStats(null); setAtingidosAgriStats(null);
           setBaseInfra({}); setInfraAtivas([]);
 
           const limiteData = values[values.length - 2];
@@ -195,7 +194,7 @@ export function useScenarioData({
       // nesse meio-tempo -- resetar aqui jogaria fora esse trabalho.
       //
       // O mesmo vale para o que pertence ao efeito de cenario (atingidos de
-      // agricultura, stats do cenario, CONAB): este callback e' assincrono e
+      // agricultura, stats do cenario): este callback e' assincrono e
       // roda DEPOIS do efeito de cenario ter buscado esses dados. Zerar aqui
       // apagava a agricultura atingida sem ninguem re-buscar -- em Porto
       // Alegre, onde as bases sao as mais pesadas, isso acontecia sempre e a
@@ -222,7 +221,7 @@ export function useScenarioData({
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setManchaCenario(null); setAtingidosEmpresas(null); setAtingidosEducacao(null); setAtingidosSaude(null);
       setAtingidosInfra(prev => Object.keys(prev).length === 0 ? prev : {});
-      setAtingidosAgriStats(null); setConabStats(null); setAtingidosAgriGeo(null);
+      setAtingidosAgriStats(null); setAtingidosAgriGeo(null);
       return;
     }
 
@@ -253,11 +252,6 @@ export function useScenarioData({
         .then(d => { if (!signal.aborted) setAtingidosAgriStats(d); })
         .catch(e => { if ((e as Error).name !== 'AbortError') console.error(e); });
 
-      fetch(`/dados_convertidos/${munSlug}/cenarios/conab_stats_${sSlug}.json`, { signal })
-        .then(r => r.ok ? r.json() : null)
-        .then(d => { if (!signal.aborted) setConabStats(d); })
-        .catch(e => { if ((e as Error).name !== 'AbortError') console.error(e); });
-
       fetch(`/dados_convertidos/${munSlug}/cenarios/agricultura_ATINGIDOS_${sSlug}.geojson`, { signal })
         .then(r => r.ok ? r.json() : null)
         .then(d => { if (!signal.aborted) setAtingidosAgriGeo(d); })
@@ -273,7 +267,7 @@ export function useScenarioData({
     atingidosEducacao, setAtingidosEducacao,
     atingidosSaude, setAtingidosSaude,
     manchaCenario, manchaRS, limitePA,
-    baseAgriStats, atingidosAgriStats, setAtingidosAgriStats, conabStats,
+    baseAgriStats, atingidosAgriStats, setAtingidosAgriStats,
     baseAgriGeo, atingidosAgriGeo,
     allMunAgriStats, allMunAgriAtingidosStats, allMunInfraStats,
   };

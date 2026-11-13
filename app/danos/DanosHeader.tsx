@@ -24,7 +24,7 @@ export function DanosHeader() {
               Perdas Econômicas e Dano Físico Estimado: Enchentes no Rio Grande do Sul
             </p>
             <p className="text-[11px] opacity-75 mt-3 font-mono">
-              Metodologia DaLA (CEPAL/BID), Maio 2024 e Setembro 2023 · Danos Físicos por cota, Porto Alegre, Lajeado, Eldorado do Sul e Rio Grande
+              Metodologia DaLA (CEPAL/BID), Maio 2024 · Danos Físicos por cota, Porto Alegre, Lajeado, Eldorado do Sul e Rio Grande
             </p>
           </div>
           <HeaderLogos />

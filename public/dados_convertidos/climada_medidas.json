@@ -1,9 +1,9 @@
 {
   "Porto Alegre": {
     "base": {
-      "eai_brl": 229041744.35,
-      "eai_sem_cauda_brl": 76298695.94,
-      "eai_2050_brl": 480784832.06,
+      "eai_brl": 228280973.44,
+      "eai_sem_cauda_brl": 76007248.69,
+      "eai_2050_brl": 479103582.01,
       "rps": [
         "RP10",
         "RP20",
@@ -21,15 +21,15 @@
         "mecanismo": "dano zero em eventos de RP ≤ 100; dano inteiro acima",
         "fonte": "Cenário de projeto (sem parâmetro empírico)",
         "fonte_url": null,
-        "eai_evitado_brl": 211762141.19,
+        "eai_evitado_brl": 211079011.16,
         "pct_evitado": 92.5,
-        "eai_evitado_sem_cauda_brl": 59019092.77,
+        "eai_evitado_sem_cauda_brl": 58805286.41,
         "pct_evitado_sem_cauda": 77.4,
-        "eai_2050_evitado_brl": 423751375.34,
+        "eai_2050_evitado_brl": 422326714.73,
         "evitado_por_setor_brl": {
           "empresas": 191212745.14,
-          "educacao": 15354329.33,
-          "saude": 5195066.72
+          "educacao": 14682851.52,
+          "saude": 5183414.5
         },
         "custo_beneficio": {
           "custo_brl": 2300000000.0,
@@ -41,8 +41,8 @@
             "educacao",
             "saude"
           ],
-          "beneficio_vp_brl": 4010592935.34,
-          "beneficio_vp_sem_cauda_brl": 1544738866.78,
+          "beneficio_vp_brl": 3997358034.77,
+          "beneficio_vp_sem_cauda_brl": 1539080636.09,
           "bc": 1.74,
           "bc_sem_cauda": 0.67
         }
@@ -53,15 +53,15 @@
         "mecanismo": "dano zero em eventos de RP ≤ 20; dano inteiro acima",
         "fonte": "Cenário de projeto (sem parâmetro empírico)",
         "fonte_url": null,
-        "eai_evitado_brl": 174518789.61,
+        "eai_evitado_brl": 173979463.66,
         "pct_evitado": 76.2,
-        "eai_evitado_sem_cauda_brl": 21775741.2,
-        "pct_evitado_sem_cauda": 28.5,
-        "eai_2050_evitado_brl": 294198521.6,
+        "eai_evitado_sem_cauda_brl": 21705738.91,
+        "pct_evitado_sem_cauda": 28.6,
+        "eai_2050_evitado_brl": 293284406.83,
         "evitado_por_setor_brl": {
           "empresas": 157888618.34,
-          "educacao": 12151960.31,
-          "saude": 4478210.96
+          "educacao": 11620093.14,
+          "saude": 4470752.18
         },
         "custo_beneficio": {
           "custo_brl": 624000000.0,
@@ -73,9 +73,9 @@
             "educacao",
             "saude"
           ],
-          "beneficio_vp_brl": 3021836510.81,
-          "beneficio_vp_sem_cauda_brl": 555982442.24,
-          "bc": 4.84,
+          "beneficio_vp_brl": 3012472528.83,
+          "beneficio_vp_sem_cauda_brl": 554195130.16,
+          "bc": 4.83,
           "bc_sem_cauda": 0.89
         }
       },
@@ -86,7 +86,7 @@
         "fonte": "Kreibich et al. (2005), Flood loss reduction of private households due to building precautionary measures. Natural Hazards and Earth System Sciences 5, 117-126",
         "fonte_url": "https://nhess.copernicus.org/articles/5/117/2005/",
         "eai_evitado_brl": 49557768.18,
-        "pct_evitado": 21.6,
+        "pct_evitado": 21.7,
         "eai_evitado_sem_cauda_brl": 16372677.13,
         "pct_evitado_sem_cauda": 21.5,
         "eai_2050_evitado_brl": 103735471.75,
@@ -118,15 +118,15 @@
         "mecanismo": "−28% no dano de conteúdo: dano × 0,86 (Empresas), 0,91 (Educação), 0,84 (Saúde)",
         "fonte": "Kreibich et al. (2007), Flood precaution of companies and their ability to cope with the flood in August 2002 in Saxony, Germany. Water Resources Research 43, W03408",
         "fonte_url": "https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2005WR004691",
-        "eai_evitado_brl": 31358297.92,
+        "eai_evitado_brl": 31286414.45,
         "pct_evitado": 13.7,
-        "eai_evitado_sem_cauda_brl": 10405994.77,
-        "pct_evitado_sem_cauda": 13.6,
-        "eai_2050_evitado_brl": 65737724.71,
+        "eai_evitado_sem_cauda_brl": 10378247.79,
+        "pct_evitado_sem_cauda": 13.7,
+        "eai_2050_evitado_brl": 65578488.75,
         "evitado_por_setor_brl": {
           "empresas": 28908698.11,
-          "educacao": 1587510.47,
-          "saude": 862089.34
+          "educacao": 1517822.46,
+          "saude": 859893.88
         },
         "custo_beneficio": {
           "custo_brl": 47175000.0,
@@ -138,10 +138,10 @@
             "educacao",
             "saude"
           ],
-          "beneficio_vp_brl": 609285615.82,
-          "beneficio_vp_sem_cauda_brl": 271035708.59,
-          "bc": 12.92,
-          "bc_sem_cauda": 5.75
+          "beneficio_vp_brl": 607844932.22,
+          "beneficio_vp_sem_cauda_brl": 270307555.95,
+          "bc": 12.88,
+          "bc_sem_cauda": 5.73
         }
       },
       {
@@ -150,18 +150,18 @@
         "mecanismo": "−45% do dano onde a profundidade é ≤ 1 m; sem efeito acima (3 setores)",
         "fonte": "Kreibich et al. (2015), A review of damage-reducing measures to manage fluvial flood risks in a changing climate. Mitigation and Adaptation Strategies for Global Change 20, 967-989",
         "fonte_url": "https://link.springer.com/article/10.1007/s11027-014-9629-5",
-        "eai_evitado_brl": 33772344.51,
-        "pct_evitado": 14.7,
-        "eai_evitado_sem_cauda_brl": 9529868.84,
+        "eai_evitado_brl": 33685005.38,
+        "pct_evitado": 14.8,
+        "eai_evitado_sem_cauda_brl": 9506665.73,
         "pct_evitado_sem_cauda": 12.5,
-        "eai_2050_evitado_brl": 67459320.8,
+        "eai_2050_evitado_brl": 67284169.47,
         "evitado_por_setor_brl": {
           "empresas": 30503623.63,
-          "educacao": 1962152.04,
-          "saude": 1306568.84
+          "educacao": 1878317.88,
+          "saude": 1303063.87
         },
         "custo_beneficio": {
-          "custo_brl": 355502844.0,
+          "custo_brl": 351752814.0,
           "custo_descricao": "US$ 45 mil por edificação (dry floodproofing), contando uma edificação por coordenada atingida no RP500",
           "custo_fonte": "Aerts (2018), A Review of Cost Estimates for Flood Adaptation. Water 10(11), 1646",
           "custo_fonte_url": "https://doi.org/10.3390/w10111646",
@@ -170,9 +170,9 @@
             "educacao",
             "saude"
           ],
-          "beneficio_vp_brl": 638992978.83,
-          "beneficio_vp_sem_cauda_brl": 247627166.28,
-          "bc": 1.8,
+          "beneficio_vp_brl": 637336896.73,
+          "beneficio_vp_sem_cauda_brl": 247006483.64,
+          "bc": 1.81,
           "bc_sem_cauda": 0.7
         }
       },
@@ -182,18 +182,18 @@
         "mecanismo": "60% do valor dos pontos mais profundos no RP100 (0,5% de Empresas e Saúde, 4% de Educação)",
         "fonte": "Cenário de projeto (sem parâmetro empírico)",
         "fonte_url": null,
-        "eai_evitado_brl": 41473205.88,
-        "pct_evitado": 18.1,
-        "eai_evitado_sem_cauda_brl": 9005275.24,
-        "pct_evitado_sem_cauda": 11.8,
-        "eai_2050_evitado_brl": 77133006.4,
+        "eai_evitado_brl": 41052145.4,
+        "pct_evitado": 18.0,
+        "eai_evitado_sem_cauda_brl": 8868014.95,
+        "pct_evitado_sem_cauda": 11.7,
+        "eai_2050_evitado_brl": 76257027.68,
         "evitado_por_setor_brl": {
           "empresas": 31233657.69,
-          "educacao": 9387889.56,
-          "saude": 851658.63
+          "educacao": 8973527.81,
+          "saude": 844959.9
         },
         "custo_beneficio": {
-          "custo_brl": 221643112.62,
+          "custo_brl": 219017206.3,
           "custo_descricao": "60% do valor de reposição dos pontos relocados (refazer o ativo em outro lugar)",
           "custo_fonte": "Valor de reposição do próprio modelo (CUB/RS, Sinduscon-RS)",
           "custo_fonte_url": null,
@@ -202,8 +202,8 @@
             "educacao",
             "saude"
           ],
-          "beneficio_vp_brl": 755297253.86,
-          "beneficio_vp_sem_cauda_brl": 231141296.01,
+          "beneficio_vp_brl": 747150679.55,
+          "beneficio_vp_sem_cauda_brl": 227576336.65,
           "bc": 3.41,
           "bc_sem_cauda": 1.04
         }

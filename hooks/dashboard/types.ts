@@ -64,7 +64,6 @@ export interface ManchaDuracaoClimada {
 export type FC = FeatureCollection | null;
 export type InfraFC = Record<string, FeatureCollection>;
 export type AgriStats = Record<string, number> | null;
-export type ConabStats = { soja: { area_ha: number }; arroz: { area_ha: number } } | null;
 
 export interface PopupInfo {
   lngLat: [number, number];

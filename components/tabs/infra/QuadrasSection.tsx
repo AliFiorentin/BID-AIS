@@ -29,7 +29,7 @@ export function QuadrasSection({ ocultoNoMapa, dash }: Props) {
       <div>
         <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg mb-2" style={PANEL_HDR}>
           <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: cor }} />
-          <h3 className="text-[10px] font-black uppercase tracking-wider text-white">Quadras</h3>
+          <h3 className="text-[11px] font-black uppercase tracking-wider text-white">Quadras</h3>
         </div>
         <p className="text-xs text-center py-2 text-muted-foreground">Carregando...</p>
       </div>
@@ -40,7 +40,7 @@ export function QuadrasSection({ ocultoNoMapa, dash }: Props) {
     <KPIRow
       titulo="Quadras"
       cor={cor}
-      extra={ocultoNoMapa ? <span className="text-[9px] font-medium text-white/75">oculto no mapa</span> : undefined}
+      extra={ocultoNoMapa ? <span className="text-[11px] font-medium text-white/75">oculto no mapa</span> : undefined}
       valor={compactoBr(mostraImpacto ? totalAtg : total, 0)}
       sub={mostraImpacto ? "Atingidas" : "Total"}
       delta={

@@ -11,11 +11,6 @@ import { KPICard } from "@/components/KPICard";
 
 const PANEL_HDR = { background: "linear-gradient(135deg, #055071 0%, #0a6e9a 100%)" } as const;
 
-interface ConabStats {
-  soja: { area_ha: number };
-  arroz: { area_ha: number };
-}
-
 interface AgriculturaTabProps {
   municipio: string;
   cenario: string;
@@ -23,14 +18,13 @@ interface AgriculturaTabProps {
   isCenarioAtivo: boolean;
   baseAgriStats: Record<string, number> | null;
   atingidosAgriStats: Record<string, number> | null;
-  conabStats: ConabStats | null;
   allMunAgriStats?: Record<string, Record<string, number>>;
   allMunAgriAtingidosStats?: Record<string, Record<string, number>>;
 }
 
 export function AgriculturaTab({
   municipio, cenario, isVisaoGeral, isCenarioAtivo,
-  baseAgriStats, atingidosAgriStats, conabStats, allMunAgriStats, allMunAgriAtingidosStats,
+  baseAgriStats, atingidosAgriStats, allMunAgriStats, allMunAgriAtingidosStats,
 }: AgriculturaTabProps) {
 
   // ── Visão Geral RS ─────────────────────────────────────────────────────────
@@ -74,7 +68,7 @@ export function AgriculturaTab({
                 }}
               >
                 <div className="border-t px-3 py-2.5 flex flex-col gap-1.5" style={{ borderColor: "rgba(5,80,113,0.15)" }}>
-                  <span className="text-[9px] font-bold uppercase tracking-wide text-muted-foreground">Por Município</span>
+                  <span className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">Por Município</span>
                   {MUNICIPIOS.map(mun => {
                     const mHa = statsSource?.[mun]?.[nome] ?? 0;
                     const mHaBase = baseSource?.[mun]?.[nome] ?? 0;
@@ -82,26 +76,26 @@ export function AgriculturaTab({
                     const mPct = ha > 0 ? (mHa / ha * 100) : 0;
                     return (
                       <div key={mun} className="flex items-center gap-1.5">
-                        <span className="text-[10px] w-24 shrink-0 truncate" style={{ color: C.muted }}>{mun}</span>
+                        <span className="text-[11px] w-24 shrink-0 truncate" style={{ color: C.muted }}>{mun}</span>
                         <div className="flex-1 rounded-full h-1.5 overflow-hidden bg-slate-100">
                           <div className="h-full rounded-full" style={{ width: `${mPct}%`, backgroundColor: cor }} />
                         </div>
-                        <span className="text-[10px] tabular-nums w-24 text-right shrink-0" style={{ color: C.muted }}>
+                        <span className="text-[11px] tabular-nums w-24 text-right shrink-0" style={{ color: C.muted }}>
                           {mHa.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} ha
                           {hasAtingidos && mHaBase > 0 && (
-                            <span className="text-[9px] opacity-60"> ({(mHa / mHaBase * 100).toFixed(0)}%)</span>
+                            <span className="text-[11px] opacity-60"> ({(mHa / mHaBase * 100).toFixed(0)}%)</span>
                           )}
                         </span>
                       </div>
                     );
                   })}
-                  <p className="text-[10px] pt-0.5" style={{ color: C.muted }}>{pct}% do total atingido no RS</p>
+                  <p className="text-[11px] pt-0.5" style={{ color: C.muted }}>{pct}% do total atingido no RS</p>
                 </div>
               </KPICard>
             );
           })}
         </div>
-        <p className="text-[10px] italic mt-2 text-muted-foreground">
+        <p className="text-[11px] italic mt-2 text-muted-foreground">
           Fonte: MapaBiomas — Coleção 10{hasAtingidos ? " · Manchas por município (pior cenário)" : ""}
         </p>
       </TabsContent>
@@ -131,11 +125,8 @@ export function AgriculturaTab({
   const areaImpacto: Record<string, { ha: number; fonte: string }> = {};
   if (isCenarioAtivo && coefs) {
     Object.keys(coefs).forEach(nome => {
-      let ha = atingidosAgriStats?.[nome] ?? 0;
-      let fonte = "MapaBiomas";
-      if (nome === "Soja"  && conabStats && conabStats.soja.area_ha  > 0) { ha = conabStats.soja.area_ha;  fonte = "CONAB"; }
-      if (nome === "Arroz" && conabStats && conabStats.arroz.area_ha > 0) { ha = conabStats.arroz.area_ha; fonte = "CONAB"; }
-      if (ha > 0) areaImpacto[nome] = { ha, fonte };
+      const ha = atingidosAgriStats?.[nome] ?? 0;
+      if (ha > 0) areaImpacto[nome] = { ha, fonte: "MapaBiomas" };
     });
   }
   const impactoTotal = Object.entries(areaImpacto)
@@ -147,7 +138,7 @@ export function AgriculturaTab({
       {pieData.length > 0 && (
         <div className="rounded-xl overflow-hidden mb-3 shadow-xs print:hidden" style={{ border: "1px solid rgba(5,80,113,0.15)" }}>
           <div className="flex items-center px-2.5 py-1.5" style={PANEL_HDR}>
-            <h3 className="text-[10px] font-black uppercase tracking-wider text-white">Área por Cultura</h3>
+            <h3 className="text-[11px] font-black uppercase tracking-wider text-white">Área por Cultura</h3>
           </div>
           <div className="flex flex-col" style={{ backgroundColor: PANEL_CARD_BG }}>
             <div className="flex items-center justify-center py-2">
@@ -160,7 +151,7 @@ export function AgriculturaTab({
                     <span className="text-2xl font-black text-foreground leading-none">
                       {haTotal.toLocaleString("pt-BR", { maximumFractionDigits: 0 })}
                     </span>
-                    <span className="mt-1 text-[9px] text-muted-foreground leading-none">
+                    <span className="mt-1 text-[11px] text-muted-foreground leading-none">
                       {isCenarioAtivo
                         ? `de ${haTotalBase.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} ha (${haTotalBase > 0 ? (haTotal / haTotalBase * 100).toFixed(1) : "0,0"}%)`
                         : "ha"}
@@ -177,11 +168,11 @@ export function AgriculturaTab({
       {isCenarioAtivo && coefs && impactoTotal > 0 && (
         <Card size="sm" className="mb-3 rounded-2xl border-orange-200/80 bg-orange-50/80 backdrop-blur-md shadow-xs print:break-inside-avoid">
           <CardContent className="p-3">
-            <p className="text-[10px] uppercase tracking-wider font-bold mb-0.5 text-orange-700">Prejuízo Agrícola Estimado</p>
+            <p className="text-[11px] uppercase tracking-wider font-bold mb-0.5 text-orange-700">Prejuízo Agrícola Estimado</p>
             <p className="text-[22px] font-black leading-none text-orange-600">
               R$ {impactoTotal.toLocaleString("pt-BR", { maximumFractionDigits: 0 })}
             </p>
-            <p className="text-[10px] mt-0.5 text-orange-800">
+            <p className="text-[11px] mt-0.5 text-orange-800">
               {Object.keys(areaImpacto).length} cultura{Object.keys(areaImpacto).length !== 1 ? "s" : ""} afetada{Object.keys(areaImpacto).length !== 1 ? "s" : ""}
             </p>
           </CardContent>
@@ -217,7 +208,7 @@ export function AgriculturaTab({
               }}
             >
               {isCenarioAtivo && c && (
-                <div className="border-t px-3 py-2 flex flex-col gap-0.5 text-[10px]" style={{ borderColor: "rgba(5,80,113,0.15)", color: C.muted }}>
+                <div className="border-t px-3 py-2 flex flex-col gap-0.5 text-[11px]" style={{ borderColor: "rgba(5,80,113,0.15)", color: C.muted }}>
                   <span>Situação: <b className="text-slate-600">{c.status}</b> · R$ {c.coef.toLocaleString("pt-BR")}/ha</span>
                   <span className="italic">{c.nota}</span>
                 </div>
@@ -234,10 +225,10 @@ export function AgriculturaTab({
       {isCenarioAtivo && coefs && (
         <Card size="sm" className="mt-1 py-0 gap-0 rounded-2xl border-sky-200/80 bg-sky-50/70 backdrop-blur-md shadow-xs print:break-inside-avoid">
           <CardContent className="p-2">
-            <p className="text-[10px] font-bold mb-0.5" style={{ color: C.primary }}>Metodologia</p>
-            <p className="text-[10px] leading-relaxed text-muted-foreground">
+            <p className="text-[11px] font-bold mb-0.5" style={{ color: C.primary }}>Metodologia</p>
+            <p className="text-[11px] leading-relaxed text-muted-foreground">
               Coeficientes baseados no calendário agrícola RS e preços mínimos CONAB.
-              Soja/Arroz: área via CONAB (quando disponível), demais via MapaBiomas Col. 10.
+              Áreas atingidas via MapaBiomas Col. 10.
               &ldquo;Outras Lavouras&rdquo; inclui principalmente Trigo e Aveia.
               Estimativa de custo direto — não inclui perdas indiretas.
             </p>
@@ -245,8 +236,8 @@ export function AgriculturaTab({
         </Card>
       )}
 
-      <p className="text-[10px] italic mt-3 text-muted-foreground">
-        Fontes: MapaBiomas Col. 10 · CONAB Mapeamentos Agrícolas · Preços Mínimos CONAB 2024
+      <p className="text-[11px] italic mt-3 text-muted-foreground">
+        Fontes: MapaBiomas Col. 10 · Preços Mínimos CONAB 2024
       </p>
     </TabsContent>
   );

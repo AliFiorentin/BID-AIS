@@ -44,7 +44,7 @@ export function DetalhePorCategoria({
           key={l}
           className="rounded-2xl border border-white/80 bg-white/90 backdrop-blur-md px-4 py-3.5 shadow-xs hover-lift apple-interactive transition-all"
         >
-          <p className="text-[10px] font-black tracking-wider text-[#2f6a83] uppercase">
+          <p className="text-[11px] font-black tracking-wider text-[#2f6a83] uppercase">
             {l}
           </p>
           <p className="text-xl leading-tight font-black text-slate-800">{v}</p>

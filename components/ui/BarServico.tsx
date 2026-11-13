@@ -10,8 +10,8 @@ export function BarServico({ label, value, total, cor }: BarServicoProps) {
   return (
     <div className="flex flex-col gap-0.5">
       <div className="flex items-center justify-between gap-1">
-        <span className="text-[10px] text-slate-500">{label}</span>
-        <span className="text-[10px] font-bold shrink-0 text-slate-700">
+        <span className="text-[11px] text-slate-500">{label}</span>
+        <span className="text-[11px] font-bold shrink-0 text-slate-700">
           {value.toLocaleString("pt-BR")} <span className="font-normal text-slate-500">({pct}%)</span>
         </span>
       </div>

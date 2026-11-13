@@ -40,7 +40,7 @@ O painel integra dados das enchentes de 2024 que afetaram mais de 400 município
 | Eldorado do Sul | Cenário ADA · Todas as cotas                    | Enchentes de maio de 2024  |
 | Lajeado         | Cenário 27m · Cenário 30m · Todas as cotas      | Enchentes de maio de 2024  |
 | Porto Alegre    | Cenário ADA · Climada Evento 2024 · Todas as cotas | Enchentes de maio de 2024  |
-| Rio Grande      | Cenário Maio 2024 · Cenário Maio 2024 +50% · Cenário Setembro 2023 | Tormenta de maio de 2024 · Setembro de 2023 |
+| Rio Grande      | Cenário Maio 2024 · Cenário Maio 2024 +50% | Tormenta de maio de 2024 |
 
 A **Visão Geral RS** exibe os 4 municípios simultaneamente com o pior cenário de cada um aplicado e a mancha de inundação estadual de referência (`mancha_rs_enchente_2024.geojson`).
 
@@ -69,7 +69,7 @@ As manchas de inundação (polígonos vetoriais) provêm de estudos hidrológico
 - **Porto Alegre e Eldorado do Sul:** Área Diretamente Afetada (ADA) — MUP / Mapa Único do Plano Rio Grande (Gov. RS), maio/2024.
 - **Porto Alegre (Climada Evento 2024):** raster de duração (dias) do evento real de maio/2024 usado na calibração do exercício de adaptação climática CLIMADA/UNU-EHS (BID), vetorizado (pixels > 0) via `pipeline/vetorizar_climada.py`. O mesmo script também vetoriza os rasters de profundidade por período de retorno sintético (RP10 a RP500) do exercício CLIMADA — mantidos em `data/raw/manchas/porto_alegre/climada/`. Não aparecem como cenário selecionável no mapa (não são "manchas observadas"), mas alimentam o protótipo de Dano Físico (§ 5 abaixo).
 - **Lajeado:** Simulação hidráulica do rio Taquari para cotas de 27 m e 30 m (LabModel).
-- **Rio Grande:** Modelagem hidrológica e hidráulica (CIEX/FURG) — cenários de maio/2024 e setembro/2023.
+- **Rio Grande:** Modelagem hidrológica e hidráulica (CIEX/FURG) — cenários de maio/2024.
 
 As manchas são armazenadas como `{municipio_slug}___{cenario_slug}.geojson` em projeção WGS 84 (EPSG:4326).
 
@@ -382,12 +382,12 @@ python pipeline/limpar_geometrias_infra.py
 | Geocodificação de endereços | OpenStreetMap / Nominatim | — |
 | Manchas de inundação PA e EDS | MUP / Gov. RS | maio/2024 |
 | Manchas de inundação Lajeado | LabModel | maio/2024 |
-| Manchas de inundação Rio Grande | CIEX/FURG | maio/2024 · set/2023 |
+| Manchas de inundação Rio Grande | CIEX/FURG | maio/2024 |
 | Infraestrutura urbana POA | IPPOA / Dados Abertos | 2023–2024 |
 | Infraestrutura Rio Grande | Prefeitura RG | 2023–2024 |
 | Infraestrutura Lajeado | Prefeitura Lajeado | 2023–2024 |
 | Edificações | Google Open Buildings v3 | 2023 |
-| Uso do solo agrícola | MapBiomas Coleção 10 | 2023 e 2024 |
+| Uso do solo agrícola | MapBiomas Coleção 10 | 2024 |
 | Área cultivada (contexto) | CONAB | Safra 2023/24 |
 | Coeficientes de perda agrícola | EMATER-RS / CONAB | 2024 |
 | Labor share setorial (perda de VAB) | IBGE — Sistema de Contas Nacionais, Tab. 17 | 2021 |

@@ -58,7 +58,7 @@ export function SaudeTab({ dash }: Props) {
           <>
             <div className="rounded-xl overflow-hidden mb-3 mt-2 shadow-xs" style={{ border: "1px solid rgba(5,80,113,0.15)" }}>
               <div className="flex items-center px-2.5 py-1.5" style={PANEL_HDR}>
-                <h3 className="text-[10px] font-black uppercase tracking-wider text-white">Unidades por Tipo</h3>
+                <h3 className="text-[11px] font-black uppercase tracking-wider text-white">Unidades por Tipo</h3>
               </div>
               <div className="flex flex-col" style={{ backgroundColor: PANEL_CARD_BG }}>
                 <div className="flex items-center justify-center py-2">
@@ -71,7 +71,7 @@ export function SaudeTab({ dash }: Props) {
                         <span className="text-2xl font-black text-foreground leading-none">
                           {mostraImpacto ? inteiroBr(totalAtg) : inteiroBr(totalBase)}
                         </span>
-                        <span className="mt-1 text-[9px] text-muted-foreground leading-none">
+                        <span className="mt-1 text-[11px] text-muted-foreground leading-none">
                           {mostraImpacto ? `de ${inteiroBr(totalBase)} (${totalBase > 0 ? Math.round(totalAtg / totalBase * 100) : 0}%)` : "unidades"}
                         </span>
                       </div>
@@ -103,7 +103,7 @@ export function SaudeTab({ dash }: Props) {
                   return (
                     <Collapsible key={tipoKey} open={cfg.state} onOpenChange={() => cfg.setState(p => !p)} className="rounded-xl overflow-hidden shadow-xs">
                       <CollapsibleTrigger asChild>
-                        <button className="w-full flex items-center justify-between px-3 py-2 text-[10px] font-bold text-white active:brightness-95 transition-all" style={PANEL_HDR}>
+                        <button className="w-full flex items-center justify-between px-3 py-2 text-[11px] font-bold text-white active:brightness-95 transition-all" style={PANEL_HDR}>
                           <span>{cfg.label} ({lista.length})</span>
                           <ChevronDown className={cn("h-3 w-3 transition-transform shrink-0", cfg.state && "rotate-180")} />
                         </button>
@@ -113,7 +113,7 @@ export function SaudeTab({ dash }: Props) {
                           {lista.map((nome: string, i: number) => (
                             <div key={i} className="flex gap-2 items-start py-0.5 border-b border-border/50 last:border-0 text-muted-foreground">
                               <MapPin className="h-3 w-3 shrink-0 mt-0.5 text-red-500" />
-                              <span className="text-[10px]">{formatName(nome)}</span>
+                              <span className="text-[11px]">{formatName(nome)}</span>
                             </div>
                           ))}
                         </div>
@@ -150,7 +150,7 @@ export function SaudeTab({ dash }: Props) {
                 const pct = d.base > 0 ? Math.round(d.atg / d.base * 100) : 0;
                 return (
                   <div key={d.name} className="flex items-center gap-2">
-                    <span className="text-[10px] w-16 shrink-0 truncate text-muted-foreground" title={d.name}>{d.name}</span>
+                    <span className="text-[11px] w-16 shrink-0 truncate text-muted-foreground" title={d.name}>{d.name}</span>
                     <div className="flex-1 rounded-full h-2.5 overflow-hidden bg-muted">
                       <div className="h-full rounded-full" style={{
                         width: mostraImpacto
@@ -159,7 +159,7 @@ export function SaudeTab({ dash }: Props) {
                         backgroundColor: DONUT_COLORS[i % DONUT_COLORS.length],
                       }} />
                     </div>
-                    <span className="text-[10px] font-bold tabular-nums shrink-0 whitespace-nowrap text-foreground">
+                    <span className="text-[11px] font-bold tabular-nums shrink-0 whitespace-nowrap text-foreground">
                       {mostraImpacto ? `${inteiroBr(d.atg)}/${inteiroBr(d.base)}` : inteiroBr(d.base)}
                       {mostraImpacto && d.base > 0 && (
                         <span className="text-muted-foreground font-normal ml-0.5">({pct}%)</span>
@@ -172,7 +172,7 @@ export function SaudeTab({ dash }: Props) {
           </KPICard>
         );
       })()}
-      <p className="text-[10px] italic pt-2 text-muted-foreground">Fonte: CNES — Cadastro Nacional de Estabelecimentos de Saúde</p>
+      <p className="text-[11px] italic pt-2 text-muted-foreground">Fonte: CNES — Cadastro Nacional de Estabelecimentos de Saúde</p>
     </TabsContent>
   );
 }

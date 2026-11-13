@@ -86,7 +86,6 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
     setShowListaAmbulat,
     baseAgriStats,
     atingidosAgriStats,
-    conabStats,
     allMunAgriStats,
     allMunAgriAtingidosStats,
     infraPainel,
@@ -198,7 +197,7 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
                 )}
                 <button
                   onClick={() => setShowPainelAnalise(false)}
-                  className="active-press hover-lift flex h-6 items-center gap-1 rounded-full border border-slate-200/80 bg-white/80 px-2.5 text-[9px] font-bold text-slate-700 hover:bg-white active:scale-[0.96] transition-all"
+                  className="active-press hover-lift flex h-6 items-center gap-1 rounded-full border border-slate-200/80 bg-white/80 px-2.5 text-[11px] font-bold text-slate-700 hover:bg-white active:scale-[0.96] transition-all"
                 >
                   <EyeOff size={10} strokeWidth={2.5} />
                   Ocultar
@@ -206,10 +205,10 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
               </div>
             </h2>
             <p className="mt-0.5 text-xs leading-tight" style={{ color: C.muted }}>
-              <strong style={{ color: C.primary }}>{municipio}</strong>
+              <strong style={{ color: C.primary }}>{isVisaoGeral ? "Visão Geral" : municipio}</strong>
               {(mostraImpacto || cotasAtivo) &&
                 (isVisaoGeral
-                  ? " · Piores Cenários"
+                  ? " · 4 municípios · Cenário ADA"
                   : ` · ${cenarioLabel(cenario)}`)}
             </p>
           </div>
@@ -282,7 +281,7 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
                         mostrarAvisoMancha(AVISO_COTAS_SIMULACAO)
                       }
                     }}
-                    className={`active-press hover-lift flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-[10px] font-bold transition-colors ${
+                    className={`active-press hover-lift flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-bold transition-colors ${
                       isActive
                         ? "border-transparent text-white shadow-sm"
                         : "border-[#b3cdd8] bg-white/70 text-[#055071] hover:bg-white"
@@ -324,7 +323,7 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
                       <div className="flex items-end justify-between gap-1">
                         <div className="min-w-0">
                           <div className="mb-0.5 flex items-center gap-1">
-                            <span className="text-[8.5px] leading-none font-bold tracking-wider text-purple-500 uppercase">
+                            <span className="text-[11px] leading-none font-bold tracking-wider text-purple-500 uppercase">
                               Pop. Total
                             </span>
                             <MetricInfoPopover metricKey="populacao" title="População Residente" corIcone="#a855f7" iconSize={10} />
@@ -336,7 +335,7 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
                                 : popMunData?.pop_total
                               )?.toLocaleString("pt-BR")}
                             </span>
-                            <span className="text-[8.5px] text-purple-400">
+                            <span className="text-[11px] text-purple-400">
                               hab.
                             </span>
                           </div>
@@ -345,7 +344,7 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
                           ? popGeralAtingida != null
                           : cenario !== "(nenhum)") && (
                           <div className="min-w-0 shrink-0 text-right">
-                            <div className="mb-0.5 text-[8.5px] leading-none font-bold tracking-wider text-red-500 uppercase">
+                            <div className="mb-0.5 text-[11px] leading-none font-bold tracking-wider text-red-500 uppercase">
                               {isVisaoGeral
                                 ? "Atingida (piores)"
                                 : rotuloPop?.estimado
@@ -360,7 +359,7 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
                                     : popCenData?.pop_atingida
                                   )?.toLocaleString("pt-BR")}
                                 </span>
-                                <span className="text-[8.5px] text-red-400">
+                                <span className="text-[11px] text-red-400">
                                   (
                                   {(isVisaoGeral
                                     ? popGeralPct
@@ -370,7 +369,7 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
                                 </span>
                               </div>
                             ) : (
-                              <div className="text-[9px] font-semibold text-slate-500">
+                              <div className="text-[11px] font-semibold text-slate-500">
                                 {rotuloPop?.texto}
                               </div>
                             )}
@@ -422,7 +421,6 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
                 metricasSau,
                 baseAgriStats,
                 atingidosAgriStats,
-                conabStats,
                 allMunAgriStats,
                 allMunAgriAtingidosStats,
                 infraPainel,
@@ -483,7 +481,6 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
                   isCenarioAtivo={isCenarioAtivo}
                   baseAgriStats={baseAgriStats}
                   atingidosAgriStats={atingidosAgriStats}
-                  conabStats={conabStats}
                   allMunAgriStats={allMunAgriStats ?? undefined}
                   allMunAgriAtingidosStats={
                     allMunAgriAtingidosStats ?? undefined

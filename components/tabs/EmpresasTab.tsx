@@ -77,13 +77,13 @@ export function EmpresasTab({ dash }: Props) {
             className="flex items-center justify-between px-2.5 py-1.5"
             style={PANEL_HDR}
           >
-            <h3 className="text-[10px] font-black tracking-wider text-white uppercase">
+            <h3 className="text-[11px] font-black tracking-wider text-white uppercase">
               Empresas por Setor
             </h3>
             {filtroSetor !== "(todos)" && (
               <button
                 onClick={() => setFiltroSetor("(todos)")}
-                className="rounded-full bg-white/20 px-2 py-0.5 text-[9px] font-bold text-white transition-all hover:bg-white/30 active:scale-[0.97]"
+                className="rounded-full bg-white/20 px-2 py-0.5 text-[11px] font-bold text-white transition-all hover:bg-white/30 active:scale-[0.97]"
               >
                 ✕ Limpar filtro
               </button>
@@ -107,7 +107,7 @@ export function EmpresasTab({ dash }: Props) {
                       {mostraImpacto ? inteiroBr(totalAtg) : inteiroBr(total)}
                     </span>
                     <span
-                      className="mt-1 text-[9px] leading-none"
+                      className="mt-1 text-[11px] leading-none"
                       style={{ color: C.muted }}
                     >
                       {mostraImpacto
@@ -135,14 +135,14 @@ export function EmpresasTab({ dash }: Props) {
                       }}
                     />
                     <span
-                      className="flex-1 truncate text-[10px]"
+                      className="flex-1 truncate text-[11px]"
                       style={{ color: isSelected ? C.primary : C.muted }}
                       title={item.setor}
                     >
                       {item.setor}
                     </span>
                     <span
-                      className="text-[10px] font-bold tabular-nums"
+                      className="text-[11px] font-bold tabular-nums"
                       style={{ color: C.primary }}
                     >
                       {mostraImpacto
@@ -150,7 +150,7 @@ export function EmpresasTab({ dash }: Props) {
                         : inteiroBr(item.base)}
                     </span>
                     <span
-                      className="w-9 text-right text-[10px] tabular-nums"
+                      className="w-9 text-right text-[11px] tabular-nums"
                       style={{ color: C.muted }}
                     >
                       {mostraImpacto
@@ -182,7 +182,7 @@ export function EmpresasTab({ dash }: Props) {
         {setoresEmpregadosChart.length > 0 && (
           <div className="-mt-1 mb-1 overflow-hidden rounded-xl shadow-xs">
             <div className="flex items-center px-2.5 py-1.5" style={PANEL_HDR}>
-              <span className="text-[10px] font-black tracking-wider text-white uppercase">
+              <span className="text-[11px] font-black tracking-wider text-white uppercase">
                 Empregados por Setor
               </span>
             </div>
@@ -204,14 +204,14 @@ export function EmpresasTab({ dash }: Props) {
                       style={{ backgroundColor: barColor }}
                     />
                     <span
-                      className="flex-1 truncate text-[10px]"
+                      className="flex-1 truncate text-[11px]"
                       style={{ color: C.muted }}
                       title={setor}
                     >
                       {setor}
                     </span>
                     <span
-                      className="text-[10px] font-bold tabular-nums"
+                      className="text-[11px] font-bold tabular-nums"
                       style={{ color: C.primary }}
                     >
                       {mostraImpacto
@@ -219,7 +219,7 @@ export function EmpresasTab({ dash }: Props) {
                         : inteiroBr(base)}
                     </span>
                     <span
-                      className="w-9 text-right text-[10px] tabular-nums"
+                      className="w-9 text-right text-[11px] tabular-nums"
                       style={{ color: C.muted }}
                     >
                       {mostraImpacto
@@ -251,7 +251,7 @@ export function EmpresasTab({ dash }: Props) {
         />
       </div>
       <p
-        className="mt-2 border-t pt-2 text-[9px] italic"
+        className="mt-2 border-t pt-2 text-[11px] italic"
         style={{ color: C.muted, borderColor: C.border }}
       >
         Fonte: RAIS — Relação Anual de Informações Sociais

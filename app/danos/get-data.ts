@@ -49,12 +49,10 @@ export function getDanosPageData(): {
     dadosClimada = JSON.parse(readFileSync(p, "utf8"));
   } catch { /* graceful degradation */ }
 
-  // Mesmo cálculo por RP de Porto Alegre, replicado em Eldorado do Sul (RP convertido em cota):
-  // pipeline/climada_rp_por_cota.py. Lajeado só tem a visão por cota.
+  // A visão por RP existe só para Porto Alegre (climada_dano_fisico_prototipo.json, acima).
+  // Eldorado do Sul, Lajeado e Rio Grande usam apenas cota ou cenário: não há RP nesses municípios.
   const dadosClimadaMun: Record<string, ClimadaData> = {};
-  const arquivosRp: Record<string, string> = {
-    "Eldorado do Sul": "climada_dano_fisico_eldorado_do_sul.json",
-  };
+  const arquivosRp: Record<string, string> = {};
   for (const [mun, arq] of Object.entries(arquivosRp)) {
     try {
       const p = join(process.cwd(), "public", "dados_convertidos", arq);

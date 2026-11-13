@@ -98,7 +98,7 @@ export function CotasPanel({
         {linhas.map(([k, val]) => (
           <div
             key={k}
-            className="flex justify-between gap-1 text-[10.5px] leading-snug text-slate-600"
+            className="flex justify-between gap-1 text-[11px] leading-snug text-slate-600"
           >
             <span className="min-w-0 break-words">{k}</span>
             <span className="font-bold tabular-nums text-slate-800 shrink-0">{val}</span>
@@ -127,7 +127,7 @@ export function CotasPanel({
           style={{ background: "linear-gradient(135deg, #055071 0%, #0a6e9a 100%)" }}
         >
           <div className="flex items-baseline justify-between gap-2">
-            <span className="text-[9.5px] uppercase tracking-wider font-extrabold text-white/90">
+            <span className="text-[11px] uppercase tracking-wider font-extrabold text-white/90">
               Valor exposto atingido · cota {fmtCota(cota)} m
             </span>
             <span className="text-lg font-black tabular-nums leading-none">
@@ -188,9 +188,9 @@ export function CotasPanel({
               strokeWidth="1.5"
             />
           </svg>
-          <div className="flex justify-between items-center text-[8px] text-white/80 mt-1 font-semibold">
+          <div className="flex justify-between items-center text-[11px] text-white/80 mt-1 font-semibold">
             <span>Mín: <strong>{fmtCota(x0)} m</strong></span>
-            <span className="rounded bg-black/20 px-1.5 py-0.5 text-[8px] font-bold text-amber-300 border border-white/10">
+            <span className="rounded bg-black/20 px-1.5 py-0.5 text-[11px] font-bold text-amber-300 border border-white/10">
               Cota {fmtCota(cota)} m · {fmtBRL(total)}
             </span>
             <span>Pico: <strong>{fmtCota(x1)} m</strong></span>
@@ -277,14 +277,14 @@ export function CotasPanel({
                 </div>
               );
             })()}
-            <div className="flex flex-col gap-0.5 text-[8.5px] leading-tight text-slate-500 px-0.5 pt-1 border-t border-slate-200/60">
+            <div className="flex flex-col gap-0.5 text-[11px] leading-tight text-slate-500 px-0.5 pt-1 border-t border-slate-200/60">
               <div className="flex items-start gap-1">
                 <Coins size={9} className="shrink-0 mt-px text-slate-400" />
                 <span>Exposição física na cota {fmtCota(parseFloat(chave!))} m (valor de reposição sob água).</span>
               </div>
               <div className="flex items-center justify-between font-bold text-slate-500">
                 <span>Fonte das cotas: <strong className="text-[#055071] font-black">{fonteCotas(municipio)}</strong></span>
-                <span className="text-[8px] text-slate-400">Ver Danos</span>
+                <span className="text-[11px] text-slate-400">Ver Danos</span>
               </div>
             </div>
           </div>

@@ -99,8 +99,8 @@
     ],
     "cenarios": {
       "Cenario ADA": {
-        "pop_atingida": 165400,
-        "pct_atingida": 12.3
+        "pop_atingida": 148825,
+        "pct_atingida": 11.1
       },
       "Climada RP10": {
         "pop_atingida": 36080,
@@ -135,8 +135,8 @@
         "pct_atingida": 12.3
       },
       "Cenário ADA": {
-        "pop_atingida": 165400,
-        "pct_atingida": 12.3
+        "pop_atingida": 148825,
+        "pct_atingida": 11.1
       },
       "Simulação Climada Evento 2024": {
         "pop_atingida": 165400,
@@ -174,8 +174,8 @@
         "pct_atingida": 40.4
       },
       "Todas as cotas": {
-        "pop_atingida": 22899,
-        "pct_atingida": 11.5
+        "pop_atingida": 23000,
+        "pct_atingida": 11.6
       },
       "Cenario ADA": {
         "pop_atingida": 59499,

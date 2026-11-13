@@ -55,11 +55,6 @@ export function isCenarioSimulacao(cenario: string | null | undefined): boolean 
 
 /** Defasagem das bases (RAIS 2023, Censo Escolar 2024, CNES abr/2024) frente ao ano do evento. */
 export function AVISO_BASES(ano: number): string {
-  const relacao =
-    ano <= 2023
-      ? "posteriores ao evento"
-      : ano === 2024
-        ? "do mesmo período do evento ou anteriores"
-        : "anteriores ao evento"
+  const relacao = ano === 2024 ? "do mesmo período do evento ou anteriores" : "anteriores ao evento"
   return `Bases: RAIS 2023, Censo Escolar 2024 e CNES de abril/2024, ${relacao} (evento de ${ano}). Ver Metodologia, Seção 12.`
 }

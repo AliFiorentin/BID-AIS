@@ -42,7 +42,7 @@ export function TerrenosSection({ ocultoNoMapa, dash }: Props) {
       <div>
         <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg mb-2" style={PANEL_HDR}>
           <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: cor }} />
-          <h3 className="text-[10px] font-black uppercase tracking-wider text-white">Terrenos</h3>
+          <h3 className="text-[11px] font-black uppercase tracking-wider text-white">Terrenos</h3>
         </div>
         <p className="text-xs text-center py-2 text-muted-foreground">Carregando...</p>
       </div>
@@ -67,7 +67,7 @@ export function TerrenosSection({ ocultoNoMapa, dash }: Props) {
     <KPICard
       titulo="Terrenos"
       cor={cor}
-      extra={ocultoNoMapa ? <span className="text-[9px] font-medium text-white/75">oculto no mapa</span> : undefined}
+      extra={ocultoNoMapa ? <span className="text-[11px] font-medium text-white/75">oculto no mapa</span> : undefined}
       principal={{
         valor: compactoBr(mostraImpacto ? totalAtg : total, 0),
         sub: mostraImpacto ? "Atingidos" : "Total",
@@ -107,13 +107,13 @@ export function TerrenosSection({ ocultoNoMapa, dash }: Props) {
             <span className="text-lg font-black leading-none" style={{ color: cor }}>
               {compactoBr(totalAtg, 0)}
             </span>
-            <span className="text-[9px] font-medium" style={{ color: C.muted }}>{pct}% atingidos</span>
-            <span className="text-[9px]" style={{ color: C.muted }}>de {compactoBr(total, 0)}</span>
+            <span className="text-[11px] font-medium" style={{ color: C.muted }}>{pct}% atingidos</span>
+            <span className="text-[11px]" style={{ color: C.muted }}>de {compactoBr(total, 0)}</span>
           </div>
         </div>
       )}
       <div className="border-t px-3 py-2.5 flex flex-col gap-2" style={{ borderColor: "rgba(5,80,113,0.15)" }}>
-        <span className="text-[9px] font-bold uppercase tracking-wide text-muted-foreground">Cobertura de Serviços</span>
+        <span className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">Cobertura de Serviços</span>
         {servicos.map(({ label, val }) => (
           <BarServico key={label} label={label} value={val} total={total} cor={cor} />
         ))}

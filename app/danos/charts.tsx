@@ -327,7 +327,7 @@ export function SensibChart({
               style={{ opacity: d === diasSelecionado ? 1 : 0.3 }}
             />
             <span
-              className={`text-[10px] font-medium ${d === diasSelecionado ? "text-[#055071]" : "text-slate-600"}`}
+              className={`text-[11px] font-medium ${d === diasSelecionado ? "text-[#055071]" : "text-slate-600"}`}
             >
               {d} dias{d === diasSelecionado ? " ◀" : ""}
             </span>
@@ -536,13 +536,13 @@ export function CotaBarChart({
         const x = pL + i * (barW + gap)
         let yTop = pT + chartH
         const segs = setores.map((st) => {
-          const v = d[st].dano_fisico_brl_poa
+          const v = d[st].dano_fisico_brl_poa ?? 0
           const h = Math.max((v / esc.max) * chartH, v > 0 ? 1 : 0)
           yTop -= h
           return { st, y: yTop, h }
         })
         const crua = setores.reduce(
-          (sum, k) => sum + d[k].dano_fisico_brl_jrc_crua,
+          (sum, k) => sum + (d[k].dano_fisico_brl_jrc_crua ?? 0),
           0
         )
         const yCrua = pT + chartH - (crua / esc.max) * chartH

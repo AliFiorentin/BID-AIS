@@ -65,10 +65,10 @@ export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
               <p className="font-bold">Colapso do Sistema de Proteção em Porto Alegre (Cenário ADA):</p>
               <p className="mt-1 leading-relaxed">
                 Durante a enchente de maio de 2024, falhas nas comportas e estações de bombeamento inundaram o Centro
-                Histórico, o 4º Distrito e o Aeroporto Salgado Filho, totalizando <strong>R$ 10,44 bilhões</strong> em
-                patrimônio atingido (8.692 empresas, 126 escolas e 852 estabelecimentos de saúde). Na simulação
+                Histórico, o 4º Distrito e o Aeroporto Salgado Filho, totalizando <strong>R$ 10,43 bilhões</strong> em
+                patrimônio atingido (8.692 empresas, 126 escolas e 821 estabelecimentos de saúde). Na simulação
                 hidrodinâmica teórica de cota pura (onde os diques são considerados estanques), a exposição calculada
-                era de apenas R$ 381 milhões (restrita à orla desprotegida e ilhas).
+                era de apenas R$ 379 milhões (restrita à orla desprotegida e ilhas).
               </p>
             </div>
           </div>
@@ -95,9 +95,9 @@ export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
                   className="px-4 py-3 text-white"
                   style={{ backgroundColor: MUN_CARD_COLORS[mun] ?? "#055071" }}
                 >
-                  <p className="text-[10px] font-black tracking-wider uppercase text-white/90">{mun}</p>
+                  <p className="text-[11px] font-black tracking-wider uppercase text-white/90">{mun}</p>
                   <p className="text-xl font-black leading-tight mt-0.5">{fmtBRL(d.total)}</p>
-                  <p className="text-[9px] font-mono text-white/80 mt-1">{CENARIO_FISICO_LABELS[cen] ?? cen}</p>
+                  <p className="text-[11px] font-mono text-white/80 mt-1">{CENARIO_FISICO_LABELS[cen] ?? cen}</p>
                 </div>
                 <div className="p-3 text-[11px] space-y-1.5 text-slate-600">
                   <div className="flex justify-between border-b pb-1">
@@ -131,7 +131,7 @@ export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
 
         {cenariosFisicosDisponiveis.length > 1 && (
           <div className="mb-6 flex flex-wrap items-center gap-2">
-            <span className="text-[10px] font-black uppercase text-[#055071]">Alternar Cenário:</span>
+            <span className="text-[11px] font-black uppercase text-[#055071]">Alternar Cenário:</span>
             {cenariosFisicosDisponiveis.map((c) => (
               <button
                 key={c}
@@ -151,11 +151,11 @@ export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
         {/* 4 Cards de KPI do Cenário */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
           <div className="hover-lift rounded-2xl border border-[#055071] bg-gradient-to-br from-[#055071] to-[#0a6e9a] p-4 text-white shadow-xs">
-            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-white/80">
+            <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-white/80">
               <Waves size={13} strokeWidth={2.5} /> Total Exposto
             </div>
             <div className="mt-2 text-2xl font-black">{fmtBRL(dadosCenarioFisico.total)}</div>
-            <div className="mt-1 text-[10px] text-white/70">
+            <div className="mt-1 text-[11px] text-white/70">
               {fmtN(
                 dadosCenarioFisico.empresas_atingidas +
                   dadosCenarioFisico.educacao_atingidas +
@@ -166,7 +166,7 @@ export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
           </div>
 
           <div className="hover-lift rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
-            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#055071]">
+            <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[#055071]">
               <Building2 size={13} strokeWidth={2.5} /> Empresas
             </div>
             <div className="mt-2 text-2xl font-black text-slate-800">
@@ -178,7 +178,7 @@ export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
           </div>
 
           <div className="hover-lift rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
-            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#2da8cc]">
+            <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[#2da8cc]">
               <GraduationCap size={13} strokeWidth={2.5} /> Educação
             </div>
             <div className="mt-2 text-2xl font-black text-slate-800">
@@ -190,7 +190,7 @@ export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
           </div>
 
           <div className="hover-lift rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
-            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#e35d4b]">
+            <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[#e35d4b]">
               <HeartPulse size={13} strokeWidth={2.5} /> Saúde
             </div>
             <div className="mt-2 text-2xl font-black text-slate-800">
@@ -273,7 +273,7 @@ export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
             ...(["Porto Alegre", "Eldorado do Sul", "Lajeado", "Rio Grande"] as const).flatMap((mun) => {
               const cens = dadosFisicosCenarios[mun]
               if (!cens) return []
-              const keys = Object.keys(cens).filter((k) => !k.toLowerCase().includes("setembro"))
+              const keys = Object.keys(cens)
               const dedupedKeys = keys.filter((k) => {
                 if (k === "cenario_ada") return true
                 if (k.startsWith("cenario_") && keys.includes(k.replace("cenario_", "simulacao_"))) return false

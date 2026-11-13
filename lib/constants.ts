@@ -266,23 +266,6 @@ export const IMPACTO_AGRICOLA: Record<string, Record<string, ImpactoCoef>> = {
       nota: "Trigo/aveia: perda de sementes e insumos de plantio",
     },
   },
-  setembro_2023: {
-    Soja: {
-      coef: 250,
-      status: "Pré-plantio (set/2023)",
-      nota: "Solo em preparo; impacto mínimo direto",
-    },
-    Arroz: {
-      coef: 250,
-      status: "Pré-plantio (set/2023)",
-      nota: "Solo em preparo; impacto mínimo direto",
-    },
-    "Outras Lavouras Temporárias": {
-      coef: 2800,
-      status: "Colheita (set–out/2023)",
-      nota: "Trigo/aveia na colheita: perda quase total da safra de inverno",
-    },
-  },
 }
 
 // ── Saúde ────────────────────────────────────────────────────────────────────
