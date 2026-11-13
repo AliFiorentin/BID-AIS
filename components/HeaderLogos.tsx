@@ -2,7 +2,7 @@ import Image from "next/image";
 
 /**
  * Selo de logos (BID/GPEA/CIEX/IPH) para o canto direito dos headers escuros
- * de /danos e /metodologia -- mesmo chip branco usado no WelcomeModal.
+ * de /danos e /metodologia.
  */
 export function HeaderLogos() {
   return (
