@@ -9,6 +9,7 @@
   "premissas": {
     "sem_curva": true,
     "so_cota": true,
+    "sem_profundidade": false,
     "leitura": "teto do dano: equivale a perda total de tudo que molha; sem curva JRC nem calibracao",
     "raster_nota": "Rasters de Porto Alegre (cota do Guaiba), 1.75 a 6.00 m, passo 0,25 m, amostrados nos pontos de Eldorado do Sul; a parte oeste do municipio fica fora da grade.",
     "valor_reposicao": {
@@ -179,7 +180,7 @@
         "n_total": 35,
         "n_atingidos": 0,
         "valor_exposto_atingido_brl": 0.0,
-        "exposicao_total_brl": 95345151.0,
+        "exposicao_total_brl": 91128514.71,
         "profundidade_media_atingidos_m": 0.0,
         "profundidade_max_m": 0.0,
         "faixas_valor_brl": {
@@ -191,10 +192,10 @@
         }
       },
       "saude": {
-        "n_total": 44,
+        "n_total": 37,
         "n_atingidos": 0,
         "valor_exposto_atingido_brl": 0.0,
-        "exposicao_total_brl": 36516886.56,
+        "exposicao_total_brl": 36092271.6,
         "profundidade_media_atingidos_m": 0.0,
         "profundidade_max_m": 0.0,
         "faixas_valor_brl": {
@@ -226,7 +227,7 @@
         "n_total": 35,
         "n_atingidos": 0,
         "valor_exposto_atingido_brl": 0.0,
-        "exposicao_total_brl": 95345151.0,
+        "exposicao_total_brl": 91128514.71,
         "profundidade_media_atingidos_m": 0.0,
         "profundidade_max_m": 0.0,
         "faixas_valor_brl": {
@@ -238,10 +239,10 @@
         }
       },
       "saude": {
-        "n_total": 44,
+        "n_total": 37,
         "n_atingidos": 0,
         "valor_exposto_atingido_brl": 0.0,
-        "exposicao_total_brl": 36516886.56,
+        "exposicao_total_brl": 36092271.6,
         "profundidade_media_atingidos_m": 0.0,
         "profundidade_max_m": 0.0,
         "faixas_valor_brl": {
@@ -273,7 +274,7 @@
         "n_total": 35,
         "n_atingidos": 0,
         "valor_exposto_atingido_brl": 0.0,
-        "exposicao_total_brl": 95345151.0,
+        "exposicao_total_brl": 91128514.71,
         "profundidade_media_atingidos_m": 0.0,
         "profundidade_max_m": 0.0,
         "faixas_valor_brl": {
@@ -285,10 +286,10 @@
         }
       },
       "saude": {
-        "n_total": 44,
+        "n_total": 37,
         "n_atingidos": 0,
         "valor_exposto_atingido_brl": 0.0,
-        "exposicao_total_brl": 36516886.56,
+        "exposicao_total_brl": 36092271.6,
         "profundidade_media_atingidos_m": 0.0,
         "profundidade_max_m": 0.0,
         "faixas_valor_brl": {
@@ -320,7 +321,7 @@
         "n_total": 35,
         "n_atingidos": 0,
         "valor_exposto_atingido_brl": 0.0,
-        "exposicao_total_brl": 95345151.0,
+        "exposicao_total_brl": 91128514.71,
         "profundidade_media_atingidos_m": 0.0,
         "profundidade_max_m": 0.0,
         "faixas_valor_brl": {
@@ -332,10 +333,10 @@
         }
       },
       "saude": {
-        "n_total": 44,
+        "n_total": 37,
         "n_atingidos": 0,
         "valor_exposto_atingido_brl": 0.0,
-        "exposicao_total_brl": 36516886.56,
+        "exposicao_total_brl": 36092271.6,
         "profundidade_media_atingidos_m": 0.0,
         "profundidade_max_m": 0.0,
         "faixas_valor_brl": {
@@ -367,7 +368,7 @@
         "n_total": 35,
         "n_atingidos": 0,
         "valor_exposto_atingido_brl": 0.0,
-        "exposicao_total_brl": 95345151.0,
+        "exposicao_total_brl": 91128514.71,
         "profundidade_media_atingidos_m": 0.0,
         "profundidade_max_m": 0.0,
         "faixas_valor_brl": {
@@ -379,10 +380,10 @@
         }
       },
       "saude": {
-        "n_total": 44,
+        "n_total": 37,
         "n_atingidos": 0,
         "valor_exposto_atingido_brl": 0.0,
-        "exposicao_total_brl": 36516886.56,
+        "exposicao_total_brl": 36092271.6,
         "profundidade_media_atingidos_m": 0.0,
         "profundidade_max_m": 0.0,
         "faixas_valor_brl": {
@@ -414,7 +415,7 @@
         "n_total": 35,
         "n_atingidos": 0,
         "valor_exposto_atingido_brl": 0.0,
-        "exposicao_total_brl": 95345151.0,
+        "exposicao_total_brl": 91128514.71,
         "profundidade_media_atingidos_m": 0.0,
         "profundidade_max_m": 0.0,
         "faixas_valor_brl": {
@@ -426,10 +427,10 @@
         }
       },
       "saude": {
-        "n_total": 44,
+        "n_total": 37,
         "n_atingidos": 1,
         "valor_exposto_atingido_brl": 970548.48,
-        "exposicao_total_brl": 36516886.56,
+        "exposicao_total_brl": 36092271.6,
         "profundidade_media_atingidos_m": 0.244,
         "profundidade_max_m": 0.244,
         "faixas_valor_brl": {
@@ -460,12 +461,12 @@
       "educacao": {
         "n_total": 35,
         "n_atingidos": 2,
-        "valor_exposto_atingido_brl": 9944415.8,
-        "exposicao_total_brl": 95345151.0,
+        "valor_exposto_atingido_brl": 9279675.49,
+        "exposicao_total_brl": 91128514.71,
         "profundidade_media_atingidos_m": 0.17,
         "profundidade_max_m": 0.194,
         "faixas_valor_brl": {
-          "ate_0_5m": 9944415.8,
+          "ate_0_5m": 9279675.49,
           "0_5_a_1m": 0.0,
           "1_a_2m": 0.0,
           "2_a_3m": 0.0,
@@ -473,10 +474,10 @@
         }
       },
       "saude": {
-        "n_total": 44,
+        "n_total": 37,
         "n_atingidos": 1,
         "valor_exposto_atingido_brl": 970548.48,
-        "exposicao_total_brl": 36516886.56,
+        "exposicao_total_brl": 36092271.6,
         "profundidade_media_atingidos_m": 0.46,
         "profundidade_max_m": 0.46,
         "faixas_valor_brl": {
@@ -507,12 +508,12 @@
       "educacao": {
         "n_total": 35,
         "n_atingidos": 2,
-        "valor_exposto_atingido_brl": 9944415.8,
-        "exposicao_total_brl": 95345151.0,
+        "valor_exposto_atingido_brl": 9279675.49,
+        "exposicao_total_brl": 91128514.71,
         "profundidade_media_atingidos_m": 0.409,
         "profundidade_max_m": 0.458,
         "faixas_valor_brl": {
-          "ate_0_5m": 9944415.8,
+          "ate_0_5m": 9279675.49,
           "0_5_a_1m": 0.0,
           "1_a_2m": 0.0,
           "2_a_3m": 0.0,
@@ -520,10 +521,10 @@
         }
       },
       "saude": {
-        "n_total": 44,
+        "n_total": 37,
         "n_atingidos": 1,
         "valor_exposto_atingido_brl": 970548.48,
-        "exposicao_total_brl": 36516886.56,
+        "exposicao_total_brl": 36092271.6,
         "profundidade_media_atingidos_m": 0.676,
         "profundidade_max_m": 0.676,
         "faixas_valor_brl": {
@@ -554,23 +555,23 @@
       "educacao": {
         "n_total": 35,
         "n_atingidos": 2,
-        "valor_exposto_atingido_brl": 9944415.8,
-        "exposicao_total_brl": 95345151.0,
+        "valor_exposto_atingido_brl": 9279675.49,
+        "exposicao_total_brl": 91128514.71,
         "profundidade_media_atingidos_m": 0.695,
         "profundidade_max_m": 0.801,
         "faixas_valor_brl": {
           "ate_0_5m": 0.0,
-          "0_5_a_1m": 9944415.8,
+          "0_5_a_1m": 9279675.49,
           "1_a_2m": 0.0,
           "2_a_3m": 0.0,
           "acima_3m": 0.0
         }
       },
       "saude": {
-        "n_total": 44,
+        "n_total": 37,
         "n_atingidos": 6,
         "valor_exposto_atingido_brl": 21230748.0,
-        "exposicao_total_brl": 36516886.56,
+        "exposicao_total_brl": 36092271.6,
         "profundidade_media_atingidos_m": 0.243,
         "profundidade_max_m": 0.922,
         "faixas_valor_brl": {
@@ -601,23 +602,23 @@
       "educacao": {
         "n_total": 35,
         "n_atingidos": 2,
-        "valor_exposto_atingido_brl": 9944415.8,
-        "exposicao_total_brl": 95345151.0,
+        "valor_exposto_atingido_brl": 9279675.49,
+        "exposicao_total_brl": 91128514.71,
         "profundidade_media_atingidos_m": 0.955,
         "profundidade_max_m": 1.114,
         "faixas_valor_brl": {
           "ate_0_5m": 0.0,
-          "0_5_a_1m": 2321630.33,
-          "1_a_2m": 7622785.47,
+          "0_5_a_1m": 2212493.86,
+          "1_a_2m": 7067181.63,
           "2_a_3m": 0.0,
           "acima_3m": 0.0
         }
       },
       "saude": {
-        "n_total": 44,
+        "n_total": 37,
         "n_atingidos": 12,
         "valor_exposto_atingido_brl": 23596459.92,
-        "exposicao_total_brl": 36516886.56,
+        "exposicao_total_brl": 36092271.6,
         "profundidade_media_atingidos_m": 0.377,
         "profundidade_max_m": 1.159,
         "faixas_valor_brl": {
@@ -648,23 +649,23 @@
       "educacao": {
         "n_total": 35,
         "n_atingidos": 17,
-        "valor_exposto_atingido_brl": 51831131.34,
-        "exposicao_total_brl": 95345151.0,
+        "valor_exposto_atingido_brl": 49281306.57,
+        "exposicao_total_brl": 91128514.71,
         "profundidade_media_atingidos_m": 0.203,
         "profundidade_max_m": 1.309,
         "faixas_valor_brl": {
-          "ate_0_5m": 41886715.54,
+          "ate_0_5m": 40001631.08,
           "0_5_a_1m": 0.0,
-          "1_a_2m": 9944415.8,
+          "1_a_2m": 9279675.49,
           "2_a_3m": 0.0,
           "acima_3m": 0.0
         }
       },
       "saude": {
-        "n_total": 44,
+        "n_total": 37,
         "n_atingidos": 14,
         "valor_exposto_atingido_brl": 25537556.88,
-        "exposicao_total_brl": 36516886.56,
+        "exposicao_total_brl": 36092271.6,
         "profundidade_media_atingidos_m": 0.518,
         "profundidade_max_m": 1.391,
         "faixas_valor_brl": {
@@ -695,23 +696,23 @@
       "educacao": {
         "n_total": 35,
         "n_atingidos": 25,
-        "valor_exposto_atingido_brl": 77653236.51,
-        "exposicao_total_brl": 95345151.0,
+        "valor_exposto_atingido_brl": 73892989.09,
+        "exposicao_total_brl": 91128514.71,
         "profundidade_media_atingidos_m": 0.391,
         "profundidade_max_m": 1.614,
         "faixas_valor_brl": {
-          "ate_0_5m": 67708820.71,
+          "ate_0_5m": 64613313.6,
           "0_5_a_1m": 0.0,
-          "1_a_2m": 9944415.8,
+          "1_a_2m": 9279675.49,
           "2_a_3m": 0.0,
           "acima_3m": 0.0
         }
       },
       "saude": {
-        "n_total": 44,
+        "n_total": 37,
         "n_atingidos": 16,
         "valor_exposto_atingido_brl": 25658875.44,
-        "exposicao_total_brl": 36516886.56,
+        "exposicao_total_brl": 36092271.6,
         "profundidade_media_atingidos_m": 0.737,
         "profundidade_max_m": 1.631,
         "faixas_valor_brl": {
@@ -742,27 +743,27 @@
       "educacao": {
         "n_total": 35,
         "n_atingidos": 26,
-        "valor_exposto_atingido_brl": 79258336.31,
-        "exposicao_total_brl": 95345151.0,
+        "valor_exposto_atingido_brl": 75458402.91,
+        "exposicao_total_brl": 91128514.71,
         "profundidade_media_atingidos_m": 0.59,
         "profundidade_max_m": 1.835,
         "faixas_valor_brl": {
-          "ate_0_5m": 26548656.4,
-          "0_5_a_1m": 42765264.11,
-          "1_a_2m": 9944415.8,
+          "ate_0_5m": 25298547.76,
+          "0_5_a_1m": 40880179.65,
+          "1_a_2m": 9279675.49,
           "2_a_3m": 0.0,
           "acima_3m": 0.0
         }
       },
       "saude": {
-        "n_total": 44,
-        "n_atingidos": 24,
-        "valor_exposto_atingido_brl": 27842609.52,
-        "exposicao_total_brl": 36516886.56,
-        "profundidade_media_atingidos_m": 0.69,
+        "n_total": 37,
+        "n_atingidos": 21,
+        "valor_exposto_atingido_brl": 27660631.68,
+        "exposicao_total_brl": 36092271.6,
+        "profundidade_media_atingidos_m": 0.769,
         "profundidade_max_m": 1.873,
         "faixas_valor_brl": {
-          "ate_0_5m": 2305052.64,
+          "ate_0_5m": 2123074.8,
           "0_5_a_1m": 4185490.32,
           "1_a_2m": 21352066.56,
           "2_a_3m": 0.0,
@@ -789,28 +790,28 @@
       "educacao": {
         "n_total": 35,
         "n_atingidos": 29,
-        "valor_exposto_atingido_brl": 90740881.82,
-        "exposicao_total_brl": 95345151.0,
+        "valor_exposto_atingido_brl": 86544088.53,
+        "exposicao_total_brl": 91128514.71,
         "profundidade_media_atingidos_m": 0.835,
         "profundidade_max_m": 2.179,
         "faixas_valor_brl": {
-          "ate_0_5m": 13087645.31,
-          "0_5_a_1m": 67708820.71,
-          "1_a_2m": 2321630.33,
-          "2_a_3m": 7622785.47,
+          "ate_0_5m": 12651099.44,
+          "0_5_a_1m": 64613313.6,
+          "1_a_2m": 2212493.86,
+          "2_a_3m": 7067181.63,
           "acima_3m": 0.0
         }
       },
       "saude": {
-        "n_total": 44,
-        "n_atingidos": 30,
-        "valor_exposto_atingido_brl": 28752498.72,
-        "exposicao_total_brl": 36516886.56,
-        "profundidade_media_atingidos_m": 0.864,
+        "n_total": 37,
+        "n_atingidos": 27,
+        "valor_exposto_atingido_brl": 28570520.88,
+        "exposicao_total_brl": 36092271.6,
+        "profundidade_media_atingidos_m": 0.904,
         "profundidade_max_m": 2.124,
         "faixas_valor_brl": {
-          "ate_0_5m": 1152526.32,
-          "0_5_a_1m": 3942853.2,
+          "ate_0_5m": 1031207.76,
+          "0_5_a_1m": 3882193.92,
           "1_a_2m": 22686570.72,
           "2_a_3m": 970548.48,
           "acima_3m": 0.0
@@ -836,28 +837,28 @@
       "educacao": {
         "n_total": 35,
         "n_atingidos": 32,
-        "valor_exposto_atingido_brl": 93428317.75,
-        "exposicao_total_brl": 95345151.0,
+        "valor_exposto_atingido_brl": 89211681.46,
+        "exposicao_total_brl": 91128514.71,
         "profundidade_media_atingidos_m": 1.047,
         "profundidade_max_m": 2.489,
         "faixas_valor_brl": {
-          "ate_0_5m": 14169981.43,
-          "0_5_a_1m": 5518495.45,
-          "1_a_2m": 66117055.39,
-          "2_a_3m": 7622785.47,
+          "ate_0_5m": 13753278.55,
+          "0_5_a_1m": 5201007.55,
+          "1_a_2m": 63190213.73,
+          "2_a_3m": 7067181.63,
           "acima_3m": 0.0
         }
       },
       "saude": {
-        "n_total": 44,
-        "n_atingidos": 33,
-        "valor_exposto_atingido_brl": 28934476.56,
-        "exposicao_total_brl": 36516886.56,
-        "profundidade_media_atingidos_m": 1.089,
+        "n_total": 37,
+        "n_atingidos": 30,
+        "valor_exposto_atingido_brl": 28752498.72,
+        "exposicao_total_brl": 36092271.6,
+        "profundidade_media_atingidos_m": 1.115,
         "profundidade_max_m": 2.369,
         "faixas_valor_brl": {
           "ate_0_5m": 363955.68,
-          "0_5_a_1m": 2911645.44,
+          "0_5_a_1m": 2729667.6,
           "1_a_2m": 24688326.96,
           "2_a_3m": 970548.48,
           "acima_3m": 0.0
@@ -883,29 +884,29 @@
       "educacao": {
         "n_total": 35,
         "n_atingidos": 34,
-        "valor_exposto_atingido_brl": 94706206.58,
-        "exposicao_total_brl": 95345151.0,
+        "valor_exposto_atingido_brl": 90489570.3,
+        "exposicao_total_brl": 91128514.71,
         "profundidade_media_atingidos_m": 1.282,
         "profundidade_max_m": 2.79,
         "faixas_valor_brl": {
-          "ate_0_5m": 13275459.25,
-          "0_5_a_1m": 3777510.82,
-          "1_a_2m": 67708820.71,
-          "2_a_3m": 9944415.8,
+          "ate_0_5m": 12858756.37,
+          "0_5_a_1m": 3737824.83,
+          "1_a_2m": 64613313.6,
+          "2_a_3m": 9279675.49,
           "acima_3m": 0.0
         }
       },
       "saude": {
-        "n_total": 44,
-        "n_atingidos": 36,
-        "valor_exposto_atingido_brl": 32331396.24,
-        "exposicao_total_brl": 36516886.56,
-        "profundidade_media_atingidos_m": 1.296,
+        "n_total": 37,
+        "n_atingidos": 32,
+        "valor_exposto_atingido_brl": 32088759.12,
+        "exposicao_total_brl": 36092271.6,
+        "profundidade_media_atingidos_m": 1.344,
         "profundidade_max_m": 2.634,
         "faixas_valor_brl": {
-          "ate_0_5m": 3457578.96,
+          "ate_0_5m": 3396919.68,
           "0_5_a_1m": 1031207.76,
-          "1_a_2m": 10251418.32,
+          "1_a_2m": 10069440.48,
           "2_a_3m": 17591191.2,
           "acima_3m": 0.0
         }
@@ -930,29 +931,29 @@
       "educacao": {
         "n_total": 35,
         "n_atingidos": 34,
-        "valor_exposto_atingido_brl": 94706206.58,
-        "exposicao_total_brl": 95345151.0,
+        "valor_exposto_atingido_brl": 90489570.3,
+        "exposicao_total_brl": 91128514.71,
         "profundidade_media_atingidos_m": 1.534,
         "profundidade_max_m": 3.034,
         "faixas_valor_brl": {
           "ate_0_5m": 1277888.83,
-          "0_5_a_1m": 14169981.43,
-          "1_a_2m": 69313920.51,
-          "2_a_3m": 2321630.33,
-          "acima_3m": 7622785.47
+          "0_5_a_1m": 13753278.55,
+          "1_a_2m": 66178727.42,
+          "2_a_3m": 2212493.86,
+          "acima_3m": 7067181.63
         }
       },
       "saude": {
-        "n_total": 44,
-        "n_atingidos": 40,
-        "valor_exposto_atingido_brl": 32695351.92,
-        "exposicao_total_brl": 36516886.56,
-        "profundidade_media_atingidos_m": 1.417,
+        "n_total": 37,
+        "n_atingidos": 34,
+        "valor_exposto_atingido_brl": 32331396.24,
+        "exposicao_total_brl": 36092271.6,
+        "profundidade_media_atingidos_m": 1.516,
         "profundidade_max_m": 2.874,
         "faixas_valor_brl": {
-          "ate_0_5m": 3760875.36,
+          "ate_0_5m": 3578897.52,
           "0_5_a_1m": 242637.12,
-          "1_a_2m": 8734936.32,
+          "1_a_2m": 8552958.48,
           "2_a_3m": 19956903.12,
           "acima_3m": 0.0
         }
@@ -977,29 +978,29 @@
       "educacao": {
         "n_total": 35,
         "n_atingidos": 35,
-        "valor_exposto_atingido_brl": 95345151.0,
-        "exposicao_total_brl": 95345151.0,
+        "valor_exposto_atingido_brl": 91128514.71,
+        "exposicao_total_brl": 91128514.71,
         "profundidade_media_atingidos_m": 1.744,
         "profundidade_max_m": 3.282,
         "faixas_valor_brl": {
           "ate_0_5m": 638944.42,
-          "0_5_a_1m": 13275459.25,
-          "1_a_2m": 30056798.58,
-          "2_a_3m": 43751163.28,
-          "acima_3m": 7622785.47
+          "0_5_a_1m": 12858756.37,
+          "1_a_2m": 28796768.44,
+          "2_a_3m": 41766863.85,
+          "acima_3m": 7067181.63
         }
       },
       "saude": {
-        "n_total": 44,
-        "n_atingidos": 40,
-        "valor_exposto_atingido_brl": 32695351.92,
-        "exposicao_total_brl": 36516886.56,
-        "profundidade_media_atingidos_m": 1.679,
+        "n_total": 37,
+        "n_atingidos": 34,
+        "valor_exposto_atingido_brl": 32331396.24,
+        "exposicao_total_brl": 36092271.6,
+        "profundidade_media_atingidos_m": 1.777,
         "profundidade_max_m": 3.136,
         "faixas_valor_brl": {
-          "ate_0_5m": 303296.4,
-          "0_5_a_1m": 3457578.96,
-          "1_a_2m": 3396919.68,
+          "ate_0_5m": 242637.12,
+          "0_5_a_1m": 3336260.4,
+          "1_a_2m": 3214941.84,
           "2_a_3m": 24567008.4,
           "acima_3m": 970548.48
         }

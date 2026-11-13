@@ -49,9 +49,9 @@ export function ClimadaPorRp({ ctx }: { ctx: DanosCtx }) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-5">
             <div className="hover-lift bg-white border border-[#b3cdd8]/70 rounded-2xl overflow-hidden shadow-xs">
               <div className="px-4 py-3" style={{ backgroundColor: "#055071" }}>
-                <p className="text-[10px] font-black uppercase tracking-wider text-white/95 mb-0.5">{munClimadaAtivo} · {rpAtivo}</p>
+                <p className="text-[11px] font-black uppercase tracking-wider text-white/95 mb-0.5">{munClimadaAtivo} · {rpAtivo}</p>
                 <p className="text-2xl font-black text-white leading-none">{fmtBRL(totalAtualClimada)}</p>
-                <p className="text-[9px] text-white/95 font-mono mt-1">
+                <p className="text-[11px] text-white/95 font-mono mt-1">
                   dano físico estimado (3 setores) · {RP_PROBABILIDADE[rpAtivo]} de chance/ano de ocorrer
                 </p>
               </div>
@@ -72,7 +72,7 @@ export function ClimadaPorRp({ ctx }: { ctx: DanosCtx }) {
             </div>
 
             <div className="hover-lift bg-white border border-[#b3cdd8]/70 rounded-2xl p-4 shadow-xs">
-              <p className="text-[10px] font-black uppercase tracking-wider text-[#2f6a83] mb-2">Exposição total (patrimônio no raio de risco)</p>
+              <p className="text-[11px] font-black uppercase tracking-wider text-[#2f6a83] mb-2">Exposição total (patrimônio no raio de risco)</p>
               <p className="text-2xl font-black text-slate-800 leading-none mb-3">{fmtBRL(exposicaoAtualClimada)}</p>
               {climadaSetores.map((s) => (
                 <div key={s} className="flex items-center justify-between text-[11px] py-1 border-t border-slate-100 first:border-t-0">
@@ -111,11 +111,16 @@ export function ClimadaPorRp({ ctx }: { ctx: DanosCtx }) {
             </p>
             <div className="hover-lift bg-white border border-[#b3cdd8]/70 rounded-2xl overflow-hidden shadow-xs mt-3">
               <div className="px-4 py-3" style={{ backgroundColor: "#055071" }}>
-                <p className="text-[10px] font-black uppercase tracking-wider text-white/95 mb-0.5">{munClimadaAtivo} · todos os setores</p>
+                <p className="text-[11px] font-black uppercase tracking-wider text-white/95 mb-0.5">{munClimadaAtivo} · todos os setores</p>
                 <p className="text-2xl font-black text-white leading-none">{fmtBRL(eai.total)} / ano</p>
-                <p className="text-[9px] text-white/95 font-mono mt-1">
+                <p className="text-[11px] text-white/95 font-mono mt-1">
                   risco anual esperado, integrado sobre {eai.rps_usados.length} período(s) de retorno ({eai.rps_usados[0]}..{eai.rps_usados[eai.rps_usados.length - 1]})
                 </p>
+                {medidasMun && (
+                  <p className="text-[11px] text-white/95 mt-1">
+                    Sem a cauda assumida (reta &ldquo;evento anual, dano zero&rdquo; até o RP10): {fmtBRL(medidasMun.base.eai_sem_cauda_brl)} / ano. Ver Seção 5.
+                  </p>
+                )}
               </div>
               <div className="px-4 py-4 grid grid-cols-1 gap-y-1.5">
                 {climadaSetores.map((s) => {
@@ -171,11 +176,11 @@ export function ClimadaPorRp({ ctx }: { ctx: DanosCtx }) {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-5">
                     <div className="bg-white border border-[#b3cdd8] rounded-xl overflow-hidden shadow-sm">
                       <div className="px-4 py-3" style={{ backgroundColor: "#055071" }}>
-                        <p className="text-[10px] font-black uppercase tracking-wider text-white/95 mb-0.5">Risco anual esperado</p>
+                        <p className="text-[11px] font-black uppercase tracking-wider text-white/95 mb-0.5">Risco anual esperado</p>
                         <p className="text-2xl font-black text-white leading-none">
                           {fmtBRL(t.risco_2025_brl)} <span className="text-sm opacity-60">→</span> {fmtBRL(t.risco_2050_brl)}
                         </p>
-                        <p className="text-[9px] text-white/95 font-mono mt-1">2025 → 2050 · {premissas.rps_usados.length} RPs com remapeamento oficial</p>
+                        <p className="text-[11px] text-white/95 font-mono mt-1">2025 → 2050 · {premissas.rps_usados.length} RPs com remapeamento oficial</p>
                       </div>
                       <div className="px-4 py-4 grid grid-cols-1 gap-y-1.5">
                         <KpiRow label="Aumento total" value={`${fmtBRL(t.aumento_total_brl)}/ano`} sub="2025→2050" color="#055071" />
@@ -185,7 +190,7 @@ export function ClimadaPorRp({ ctx }: { ctx: DanosCtx }) {
                     </div>
 
                     <div className="bg-white border border-[#b3cdd8] rounded-xl p-4 shadow-sm">
-                      <p className="text-[10px] font-black uppercase tracking-wider text-[#2f6a83] mb-2">Premissas</p>
+                      <p className="text-[11px] font-black uppercase tracking-wider text-[#2f6a83] mb-2">Premissas</p>
                       <div className="flex flex-col gap-1.5 text-[11px]">
                         <div className="flex justify-between border-t border-slate-100 pt-1 first:border-t-0 first:pt-0">
                           <span className="text-slate-600">Crescimento econômico</span>
@@ -196,7 +201,7 @@ export function ClimadaPorRp({ ctx }: { ctx: DanosCtx }) {
                           <span className="font-bold text-slate-700">{premissas.rps_usados.join(", ")}</span>
                         </div>
                       </div>
-                      <p className="text-[10px] text-slate-600 mt-2 leading-relaxed">{premissas.crescimento_fonte}</p>
+                      <p className="text-[11px] text-slate-600 mt-2 leading-relaxed">{premissas.crescimento_fonte}</p>
                     </div>
                   </div>
 
@@ -240,7 +245,7 @@ export function ClimadaPorRp({ ctx }: { ctx: DanosCtx }) {
             para cada RP disponível.
           </p>
           <div className="bg-white border border-[#b3cdd8] rounded-xl p-5 shadow-sm mt-3">
-            <p className="text-[10px] text-slate-600 font-medium mb-2">
+            <p className="text-[11px] text-slate-600 font-medium mb-2">
               Cada barra soma o dano físico dos 3 setores para aquele RP, dividida por cor
               (proporcional). O número no topo é o total; a barra com contorno âmbar é o RP
               selecionado acima.
@@ -250,7 +255,7 @@ export function ClimadaPorRp({ ctx }: { ctx: DanosCtx }) {
               {climadaSetores.map((s) => (
                 <div key={s} className="flex items-center gap-1.5">
                   <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: SETOR_COLORS[s] }} />
-                  <span className="text-[10px] text-slate-600 font-medium">{SETOR_LABEL[s]}</span>
+                  <span className="text-[11px] text-slate-600 font-medium">{SETOR_LABEL[s]}</span>
                 </div>
               ))}
             </div>

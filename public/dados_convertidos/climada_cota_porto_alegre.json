@@ -1,10 +1,11 @@
 {
   "municipio": "Porto Alegre",
   "premissas": {
-    "calibracao": "fator de Porto Alegre (POA_CALIBRATION_FACTOR) herdado como premissa; sem perda observada por cota",
+    "calibracao": "fator de calibracao de Porto Alegre (POA_CALIBRATION_FACTOR, informado pelo BID)",
     "poa_calibration_factor": 0.360351,
     "sensibilidade": "jrc_crua = fator 1.0 (Educacao inalterada)",
     "cummax_entre_cotas": true,
+    "sem_profundidade": false,
     "eai": "nao calculado -- rasters sem periodo de retorno/frequencia",
     "uso_dos_rasters": "so calculo CLIMADA; nao entram em cenarios do painel (manchas antigas = so visual)",
     "raster_nota": "Rasters por cota do Guaiba, 1.75 a 6.00 m, passo 0,25 m (visao complementar aos RP10-RP500 do prototipo).",
@@ -123,12 +124,12 @@
     "n_pontos": {
       "empresas": 39757,
       "educacao": 936,
-      "saude": 7008
+      "saude": 6774
     },
     "pontos_excluidos_fora_do_municipio": {
       "empresas": 51,
       "educacao": 2,
-      "saude": 14
+      "saude": 12
     },
     "coordenadas_repetidas": {
       "empresas": {
@@ -142,9 +143,9 @@
         "maior_pilha": 54
       },
       "saude": {
-        "n_pontos": 7008,
-        "n_coordenadas_unicas": 6281,
-        "maior_pilha": 448
+        "n_pontos": 6774,
+        "n_coordenadas_unicas": 6082,
+        "maior_pilha": 428
       }
     },
     "cota_mais_baixa": "1.75",
@@ -166,16 +167,16 @@
         "n_atingidos": 1,
         "profundidade_media_atingidos_m": 1.583,
         "profundidade_max_m": 1.583,
-        "exposicao_total_brl": 2982978142.8,
+        "exposicao_total_brl": 2832304750.99,
         "dano_fisico_brl_poa": 645475.49,
         "dano_fisico_brl_jrc_crua": 645475.49
       },
       "saude": {
-        "n_total": 7008,
+        "n_total": 6774,
         "n_atingidos": 14,
         "profundidade_media_atingidos_m": 1.22,
         "profundidade_max_m": 1.762,
-        "exposicao_total_brl": 5636945571.84,
+        "exposicao_total_brl": 5622751300.32,
         "dano_fisico_brl_poa": 500793.36,
         "dano_fisico_brl_jrc_crua": 1389737.67
       }
@@ -195,16 +196,16 @@
         "n_atingidos": 1,
         "profundidade_media_atingidos_m": 1.845,
         "profundidade_max_m": 1.845,
-        "exposicao_total_brl": 2982978142.8,
+        "exposicao_total_brl": 2832304750.99,
         "dano_fisico_brl_poa": 687547.39,
         "dano_fisico_brl_jrc_crua": 687547.39
       },
       "saude": {
-        "n_total": 7008,
+        "n_total": 6774,
         "n_atingidos": 14,
         "profundidade_media_atingidos_m": 1.227,
         "profundidade_max_m": 1.762,
-        "exposicao_total_brl": 5636945571.84,
+        "exposicao_total_brl": 5622751300.32,
         "dano_fisico_brl_poa": 501109.11,
         "dano_fisico_brl_jrc_crua": 1390613.91
       }
@@ -224,16 +225,16 @@
         "n_atingidos": 1,
         "profundidade_media_atingidos_m": 2.11,
         "profundidade_max_m": 2.11,
-        "exposicao_total_brl": 2982978142.8,
+        "exposicao_total_brl": 2832304750.99,
         "dano_fisico_brl_poa": 715353.02,
         "dano_fisico_brl_jrc_crua": 715353.02
       },
       "saude": {
-        "n_total": 7008,
+        "n_total": 6774,
         "n_atingidos": 14,
         "profundidade_media_atingidos_m": 1.238,
         "profundidade_max_m": 1.762,
-        "exposicao_total_brl": 5636945571.84,
+        "exposicao_total_brl": 5622751300.32,
         "dano_fisico_brl_poa": 501578.87,
         "dano_fisico_brl_jrc_crua": 1391917.51
       }
@@ -253,16 +254,16 @@
         "n_atingidos": 1,
         "profundidade_media_atingidos_m": 2.368,
         "profundidade_max_m": 2.368,
-        "exposicao_total_brl": 2982978142.8,
+        "exposicao_total_brl": 2832304750.99,
         "dano_fisico_brl_poa": 722138.32,
         "dano_fisico_brl_jrc_crua": 722138.32
       },
       "saude": {
-        "n_total": 7008,
+        "n_total": 6774,
         "n_atingidos": 14,
         "profundidade_media_atingidos_m": 1.253,
         "profundidade_max_m": 1.762,
-        "exposicao_total_brl": 5636945571.84,
+        "exposicao_total_brl": 5622751300.32,
         "dano_fisico_brl_poa": 502189.7,
         "dano_fisico_brl_jrc_crua": 1393612.62
       }
@@ -282,16 +283,16 @@
         "n_atingidos": 1,
         "profundidade_media_atingidos_m": 2.627,
         "profundidade_max_m": 2.627,
-        "exposicao_total_brl": 2982978142.8,
+        "exposicao_total_brl": 2832304750.99,
         "dano_fisico_brl_poa": 728957.9,
         "dano_fisico_brl_jrc_crua": 728957.9
       },
       "saude": {
-        "n_total": 7008,
+        "n_total": 6774,
         "n_atingidos": 14,
         "profundidade_media_atingidos_m": 1.272,
         "profundidade_max_m": 1.762,
-        "exposicao_total_brl": 5636945571.84,
+        "exposicao_total_brl": 5622751300.32,
         "dano_fisico_brl_poa": 505076.02,
         "dano_fisico_brl_jrc_crua": 1401622.37
       }
@@ -311,16 +312,16 @@
         "n_atingidos": 1,
         "profundidade_media_atingidos_m": 2.896,
         "profundidade_max_m": 2.896,
-        "exposicao_total_brl": 2982978142.8,
+        "exposicao_total_brl": 2832304750.99,
         "dano_fisico_brl_poa": 736002.11,
         "dano_fisico_brl_jrc_crua": 736002.11
       },
       "saude": {
-        "n_total": 7008,
+        "n_total": 6774,
         "n_atingidos": 16,
         "profundidade_media_atingidos_m": 1.154,
         "profundidade_max_m": 1.861,
-        "exposicao_total_brl": 5636945571.84,
+        "exposicao_total_brl": 5622751300.32,
         "dano_fisico_brl_poa": 595155.5,
         "dano_fisico_brl_jrc_crua": 1651599.41
       }
@@ -340,16 +341,16 @@
         "n_atingidos": 1,
         "profundidade_media_atingidos_m": 3.15,
         "profundidade_max_m": 3.15,
-        "exposicao_total_brl": 2982978142.8,
+        "exposicao_total_brl": 2832304750.99,
         "dano_fisico_brl_poa": 740550.82,
         "dano_fisico_brl_jrc_crua": 740550.82
       },
       "saude": {
-        "n_total": 7008,
+        "n_total": 6774,
         "n_atingidos": 16,
         "profundidade_media_atingidos_m": 1.208,
         "profundidade_max_m": 2.037,
-        "exposicao_total_brl": 5636945571.84,
+        "exposicao_total_brl": 5622751300.32,
         "dano_fisico_brl_poa": 801684.83,
         "dano_fisico_brl_jrc_crua": 2224733.18
       }
@@ -369,16 +370,16 @@
         "n_atingidos": 1,
         "profundidade_media_atingidos_m": 3.392,
         "profundidade_max_m": 3.392,
-        "exposicao_total_brl": 2982978142.8,
+        "exposicao_total_brl": 2832304750.99,
         "dano_fisico_brl_poa": 743454.0,
         "dano_fisico_brl_jrc_crua": 743454.0
       },
       "saude": {
-        "n_total": 7008,
+        "n_total": 6774,
         "n_atingidos": 18,
         "profundidade_media_atingidos_m": 1.13,
         "profundidade_max_m": 2.27,
-        "exposicao_total_brl": 5636945571.84,
+        "exposicao_total_brl": 5622751300.32,
         "dano_fisico_brl_poa": 991504.96,
         "dano_fisico_brl_jrc_crua": 2751497.74
       }
@@ -398,16 +399,16 @@
         "n_atingidos": 1,
         "profundidade_media_atingidos_m": 3.663,
         "profundidade_max_m": 3.663,
-        "exposicao_total_brl": 2982978142.8,
+        "exposicao_total_brl": 2832304750.99,
         "dano_fisico_brl_poa": 746707.13,
         "dano_fisico_brl_jrc_crua": 746707.13
       },
       "saude": {
-        "n_total": 7008,
+        "n_total": 6774,
         "n_atingidos": 18,
         "profundidade_media_atingidos_m": 1.206,
         "profundidade_max_m": 2.43,
-        "exposicao_total_brl": 5636945571.84,
+        "exposicao_total_brl": 5622751300.32,
         "dano_fisico_brl_poa": 1334781.12,
         "dano_fisico_brl_jrc_crua": 3704113.82
       }
@@ -427,16 +428,16 @@
         "n_atingidos": 1,
         "profundidade_media_atingidos_m": 3.924,
         "profundidade_max_m": 3.924,
-        "exposicao_total_brl": 2982978142.8,
+        "exposicao_total_brl": 2832304750.99,
         "dano_fisico_brl_poa": 749845.3,
         "dano_fisico_brl_jrc_crua": 749845.3
       },
       "saude": {
-        "n_total": 7008,
+        "n_total": 6774,
         "n_atingidos": 20,
         "profundidade_media_atingidos_m": 1.164,
         "profundidade_max_m": 2.603,
-        "exposicao_total_brl": 5636945571.84,
+        "exposicao_total_brl": 5622751300.32,
         "dano_fisico_brl_poa": 1667682.26,
         "dano_fisico_brl_jrc_crua": 4627938.49
       }
@@ -456,16 +457,16 @@
         "n_atingidos": 2,
         "profundidade_media_atingidos_m": 2.124,
         "profundidade_max_m": 4.168,
-        "exposicao_total_brl": 2982978142.8,
-        "dano_fisico_brl_poa": 842767.42,
-        "dano_fisico_brl_jrc_crua": 842767.42
+        "exposicao_total_brl": 2832304750.99,
+        "dano_fisico_brl_poa": 837014.14,
+        "dano_fisico_brl_jrc_crua": 837014.14
       },
       "saude": {
-        "n_total": 7008,
+        "n_total": 6774,
         "n_atingidos": 20,
         "profundidade_media_atingidos_m": 1.275,
         "profundidade_max_m": 2.923,
-        "exposicao_total_brl": 5636945571.84,
+        "exposicao_total_brl": 5622751300.32,
         "dano_fisico_brl_poa": 1991746.46,
         "dano_fisico_brl_jrc_crua": 5527240.0
       }
@@ -485,16 +486,16 @@
         "n_atingidos": 3,
         "profundidade_media_atingidos_m": 1.616,
         "profundidade_max_m": 4.422,
-        "exposicao_total_brl": 2982978142.8,
-        "dano_fisico_brl_poa": 1713409.08,
-        "dano_fisico_brl_jrc_crua": 1713409.08
+        "exposicao_total_brl": 2832304750.99,
+        "dano_fisico_brl_poa": 1655193.98,
+        "dano_fisico_brl_jrc_crua": 1655193.98
       },
       "saude": {
-        "n_total": 7008,
+        "n_total": 6774,
         "n_atingidos": 21,
         "profundidade_media_atingidos_m": 1.299,
         "profundidade_max_m": 3.091,
-        "exposicao_total_brl": 5636945571.84,
+        "exposicao_total_brl": 5622751300.32,
         "dano_fisico_brl_poa": 2189837.58,
         "dano_fisico_brl_jrc_crua": 6076957.15
       }
@@ -514,16 +515,16 @@
         "n_atingidos": 3,
         "profundidade_media_atingidos_m": 1.87,
         "profundidade_max_m": 4.666,
-        "exposicao_total_brl": 2982978142.8,
-        "dano_fisico_brl_poa": 2830507.03,
-        "dano_fisico_brl_jrc_crua": 2830507.03
+        "exposicao_total_brl": 2832304750.99,
+        "dano_fisico_brl_poa": 2716229.49,
+        "dano_fisico_brl_jrc_crua": 2716229.49
       },
       "saude": {
-        "n_total": 7008,
+        "n_total": 6774,
         "n_atingidos": 22,
         "profundidade_media_atingidos_m": 1.355,
         "profundidade_max_m": 3.393,
-        "exposicao_total_brl": 5636945571.84,
+        "exposicao_total_brl": 5622751300.32,
         "dano_fisico_brl_poa": 2329955.56,
         "dano_fisico_brl_jrc_crua": 6465794.64
       }
@@ -543,16 +544,16 @@
         "n_atingidos": 3,
         "profundidade_media_atingidos_m": 2.126,
         "profundidade_max_m": 4.931,
-        "exposicao_total_brl": 2982978142.8,
-        "dano_fisico_brl_poa": 3491050.16,
-        "dano_fisico_brl_jrc_crua": 3491050.16
+        "exposicao_total_brl": 2832304750.99,
+        "dano_fisico_brl_poa": 3344347.14,
+        "dano_fisico_brl_jrc_crua": 3344347.14
       },
       "saude": {
-        "n_total": 7008,
+        "n_total": 6774,
         "n_atingidos": 23,
         "profundidade_media_atingidos_m": 1.392,
         "profundidade_max_m": 3.551,
-        "exposicao_total_brl": 5636945571.84,
+        "exposicao_total_brl": 5622751300.32,
         "dano_fisico_brl_poa": 2434573.01,
         "dano_fisico_brl_jrc_crua": 6756115.61
       }
@@ -572,16 +573,16 @@
         "n_atingidos": 4,
         "profundidade_media_atingidos_m": 1.817,
         "profundidade_max_m": 5.186,
-        "exposicao_total_brl": 2982978142.8,
-        "dano_fisico_brl_poa": 4077329.72,
-        "dano_fisico_brl_jrc_crua": 4077329.72
+        "exposicao_total_brl": 2832304750.99,
+        "dano_fisico_brl_poa": 3901364.58,
+        "dano_fisico_brl_jrc_crua": 3901364.58
       },
       "saude": {
-        "n_total": 7008,
+        "n_total": 6774,
         "n_atingidos": 24,
         "profundidade_media_atingidos_m": 1.435,
         "profundidade_max_m": 3.719,
-        "exposicao_total_brl": 5636945571.84,
+        "exposicao_total_brl": 5622751300.32,
         "dano_fisico_brl_poa": 2508824.63,
         "dano_fisico_brl_jrc_crua": 6962169.19
       }
@@ -601,16 +602,16 @@
         "n_atingidos": 5,
         "profundidade_media_atingidos_m": 1.697,
         "profundidade_max_m": 5.458,
-        "exposicao_total_brl": 2982978142.8,
-        "dano_fisico_brl_poa": 5595232.13,
-        "dano_fisico_brl_jrc_crua": 5595232.13
+        "exposicao_total_brl": 2832304750.99,
+        "dano_fisico_brl_poa": 5320033.64,
+        "dano_fisico_brl_jrc_crua": 5320033.64
       },
       "saude": {
-        "n_total": 7008,
+        "n_total": 6774,
         "n_atingidos": 25,
         "profundidade_media_atingidos_m": 1.492,
         "profundidade_max_m": 3.913,
-        "exposicao_total_brl": 5636945571.84,
+        "exposicao_total_brl": 5622751300.32,
         "dano_fisico_brl_poa": 2587052.21,
         "dano_fisico_brl_jrc_crua": 7179256.36
       }
@@ -630,16 +631,16 @@
         "n_atingidos": 7,
         "profundidade_media_atingidos_m": 1.703,
         "profundidade_max_m": 5.702,
-        "exposicao_total_brl": 2982978142.8,
-        "dano_fisico_brl_poa": 12600614.08,
-        "dano_fisico_brl_jrc_crua": 12600614.08
+        "exposicao_total_brl": 2832304750.99,
+        "dano_fisico_brl_poa": 11864820.67,
+        "dano_fisico_brl_jrc_crua": 11864820.67
       },
       "saude": {
-        "n_total": 7008,
+        "n_total": 6774,
         "n_atingidos": 26,
         "profundidade_media_atingidos_m": 1.547,
         "profundidade_max_m": 4.096,
-        "exposicao_total_brl": 5636945571.84,
+        "exposicao_total_brl": 5622751300.32,
         "dano_fisico_brl_poa": 2718182.36,
         "dano_fisico_brl_jrc_crua": 7543151.97
       }
@@ -659,16 +660,16 @@
         "n_atingidos": 14,
         "profundidade_media_atingidos_m": 1.382,
         "profundidade_max_m": 5.968,
-        "exposicao_total_brl": 2982978142.8,
-        "dano_fisico_brl_poa": 21968969.61,
-        "dano_fisico_brl_jrc_crua": 21968969.61
+        "exposicao_total_brl": 2832304750.99,
+        "dano_fisico_brl_poa": 20660197.47,
+        "dano_fisico_brl_jrc_crua": 20660197.47
       },
       "saude": {
-        "n_total": 7008,
+        "n_total": 6774,
         "n_atingidos": 29,
         "profundidade_media_atingidos_m": 1.556,
         "profundidade_max_m": 4.306,
-        "exposicao_total_brl": 5636945571.84,
+        "exposicao_total_brl": 5622751300.32,
         "dano_fisico_brl_poa": 3178836.43,
         "dano_fisico_brl_jrc_crua": 8821500.22
       }

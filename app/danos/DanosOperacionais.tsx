@@ -62,13 +62,13 @@ export function DanosOperacionais({ ctx }: { ctx: DanosCtx }) {
                   backgroundColor: MUN_CARD_COLORS[mun] ?? "#055071",
                 }}
               >
-                <p className="mb-0.5 text-[10px] font-black tracking-wider text-white/95 uppercase">
+                <p className="mb-0.5 text-[11px] font-black tracking-wider text-white/95 uppercase">
                   {mun}
                 </p>
                 <p className="text-2xl leading-none font-black text-white">
                   {fmtBRL(cenVal.total)}
                 </p>
-                <p className="mt-1 font-mono text-[9px] text-white/90">
+                <p className="mt-1 font-mono text-[11px] text-white/90">
                   {cenarioLabel(cenNome)} · {dias} dias ef.
                 </p>
               </div>
@@ -124,7 +124,7 @@ export function DanosOperacionais({ ctx }: { ctx: DanosCtx }) {
                   className="h-3 w-3 rounded-sm"
                   style={{ backgroundColor: cor }}
                 />
-                <span className="text-[10px] font-medium text-slate-600">
+                <span className="text-[11px] font-medium text-slate-600">
                   {mun}
                 </span>
               </div>
@@ -196,13 +196,13 @@ export function DanosOperacionais({ ctx }: { ctx: DanosCtx }) {
                         {cenarioLabel(cen)}
                       </p>
                       {isSimulacao && (
-                        <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[9px] font-bold text-amber-800 border border-amber-200" title="Modelagem computacional / simulação numérica">
+                        <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[11px] font-bold text-amber-800 border border-amber-200" title="Modelagem computacional / simulação numérica">
                           Simulação
                         </span>
                       )}
                     </div>
                     <p
-                      className="font-mono text-[9px] text-slate-600"
+                      className="font-mono text-[11px] text-slate-600"
                       title="f = fator de interrupção: fração do ano em que a atividade ficou parada (dias efetivos ÷ 365)."
                     >
                       {dias} dias ef. · f = {v.f_interrup.toFixed(4)}
@@ -241,7 +241,7 @@ export function DanosOperacionais({ ctx }: { ctx: DanosCtx }) {
                         ] as const
                       ).map(({ label, value, color }) => (
                         <div key={label}>
-                          <div className="mb-0.5 flex justify-between text-[10px]">
+                          <div className="mb-0.5 flex justify-between text-[11px]">
                             <div className="flex items-center gap-1">
                               <div
                                 className="h-1.5 w-1.5 rounded-full"

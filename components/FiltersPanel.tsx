@@ -181,7 +181,7 @@ export function FiltersPanel({ dash }: FiltersPanelProps) {
       key={c.id}
       onClick={c.toggle}
       aria-pressed={c.on}
-      className="active-press hover-lift flex h-6 min-w-0 items-center gap-1 rounded-full border px-2 text-[9px] font-bold active:scale-[0.96] transition-all duration-150"
+      className="active-press hover-lift flex h-6 min-w-0 items-center gap-1 rounded-full border px-2 text-[11px] font-bold active:scale-[0.96] transition-all duration-150"
       style={{
         backgroundColor: c.on ? `${c.cor}20` : "transparent",
         borderColor: c.on ? c.cor : "#cbd5e1",
@@ -197,7 +197,7 @@ export function FiltersPanel({ dash }: FiltersPanelProps) {
   )
 
   const titulo = (txt: string) => (
-    <div className="text-[8px] font-black tracking-wider text-slate-500 uppercase">
+    <div className="text-[11px] font-black tracking-wider text-slate-500 uppercase">
       {txt}
     </div>
   )
@@ -215,11 +215,10 @@ export function FiltersPanel({ dash }: FiltersPanelProps) {
           onFocus={() => {
             interagiu.current = true
           }}
-          className="absolute z-20 flex w-48 flex-col gap-1.5 overflow-y-auto rounded-2xl p-2.5 shadow-2xl transition-[left,top] duration-300 ease-out print:hidden [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-track]:bg-transparent"
+          className="absolute z-20 flex w-48 flex-col gap-1.5 rounded-2xl p-2.5 shadow-2xl transition-[left,top] duration-300 ease-out print:hidden"
           style={{
             top: topPosition,
             left: leftPosition,
-            maxHeight: `calc(100vh - ${topPosition + 20}px)`,
             ...glassStyle(0.8),
           }}
         >
@@ -228,7 +227,7 @@ export function FiltersPanel({ dash }: FiltersPanelProps) {
             style={{ borderColor: C.border }}
           >
             <span
-              className="text-[9px] font-black tracking-wider uppercase"
+              className="text-[11px] font-black tracking-wider uppercase"
               style={{ color: C.primary }}
             >
               Filtros de Mapa
@@ -256,7 +255,7 @@ export function FiltersPanel({ dash }: FiltersPanelProps) {
                     <button
                       key={rp}
                       onClick={() => setRpDanoFisico(rp)}
-                      className="rounded border px-1.5 py-0.5 text-[9px] font-bold transition-colors duration-150"
+                      className="rounded border px-1.5 py-0.5 text-[11px] font-bold transition-colors duration-150"
                       style={{
                         backgroundColor:
                           rpDanoFisico === rp ? "#d97706" : "transparent",
@@ -286,7 +285,7 @@ export function FiltersPanel({ dash }: FiltersPanelProps) {
               <button
                 onClick={() => setAbertoFiltros((v) => !v)}
                 aria-expanded={abertoFiltros}
-                className="flex items-center justify-between text-[8px] font-black tracking-wider text-slate-500 uppercase"
+                className="flex items-center justify-between text-[11px] font-black tracking-wider text-slate-500 uppercase"
               >
                 <span>
                   Filtrar dados
@@ -305,14 +304,14 @@ export function FiltersPanel({ dash }: FiltersPanelProps) {
                 <>
                   {camadas.includes("Empresas") && (
                     <div className="flex w-full shrink-0 flex-col gap-0.5 overflow-hidden">
-                      <label className="text-[8px] font-bold tracking-wider text-blue-700 uppercase">
+                      <label className="text-[11px] font-bold tracking-wider text-blue-700 uppercase">
                         Setor (Empresas)
                       </label>
                       <Select
                         value={filtroSetor}
                         onValueChange={setFiltroSetor}
                       >
-                        <SelectTrigger className="h-6 w-full border-blue-200/60 bg-blue-50/50 text-[10px] [&>span]:truncate">
+                        <SelectTrigger className="h-6 w-full border-blue-200/60 bg-blue-50/50 text-[11px] [&>span]:truncate">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -328,11 +327,11 @@ export function FiltersPanel({ dash }: FiltersPanelProps) {
                   )}
                   {camadas.includes("Educação") && (
                     <div className="flex w-full shrink-0 flex-col gap-0.5 overflow-hidden">
-                      <label className="text-[8px] font-bold tracking-wider text-green-700 uppercase">
+                      <label className="text-[11px] font-bold tracking-wider text-green-700 uppercase">
                         Dependência (Escolas)
                       </label>
                       <Select value={filtroDep} onValueChange={setFiltroDep}>
-                        <SelectTrigger className="h-6 w-full border-green-200/60 bg-green-50/50 text-[10px] [&>span]:truncate">
+                        <SelectTrigger className="h-6 w-full border-green-200/60 bg-green-50/50 text-[11px] [&>span]:truncate">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -348,11 +347,11 @@ export function FiltersPanel({ dash }: FiltersPanelProps) {
                   )}
                   {camadas.includes("Saúde") && (
                     <div className="flex w-full shrink-0 flex-col gap-0.5 overflow-hidden">
-                      <label className="text-[8px] font-bold tracking-wider text-red-700 uppercase">
+                      <label className="text-[11px] font-bold tracking-wider text-red-700 uppercase">
                         Unidade (Saúde)
                       </label>
                       <Select value={filtroTipo} onValueChange={setFiltroTipo}>
-                        <SelectTrigger className="h-6 w-full border-red-200/60 bg-red-50/50 text-[10px] [&>span]:truncate">
+                        <SelectTrigger className="h-6 w-full border-red-200/60 bg-red-50/50 text-[11px] [&>span]:truncate">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -388,7 +387,7 @@ export function FiltersPanel({ dash }: FiltersPanelProps) {
           <span>Filtros</span>
           {nFiltrosAtivos > 0 && (
             <span
-              className="ml-0.5 rounded-full px-1.5 py-px text-[10px] text-white font-black"
+              className="ml-0.5 rounded-full px-1.5 py-px text-[11px] text-white font-black"
               style={{ backgroundColor: C.primary }}
             >
               {nFiltrosAtivos}

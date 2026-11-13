@@ -8,8 +8,8 @@
   "Soja": 220.47
  },
  "area_agricola_na_grade_ha": {
-  "Arroz": 183.78,
-  "Outras Lavouras Temporárias": 218.44,
+  "Arroz": 183.77,
+  "Outras Lavouras Temporárias": 218.43,
   "Soja": 219.67
  },
  "totais": {
@@ -17,7 +17,7 @@
    "n": 39757
   },
   "saude": {
-   "n": 7008
+   "n": 6774
   },
   "educacao": {
    "n": 936
@@ -26,7 +26,7 @@
  "pontos_excluidos_fora_do_municipio": {
   "empresas": 51,
   "educacao": 2,
-  "saude": 14
+  "saude": 12
  },
  "maior_pilha": {
   "empresas": {
@@ -38,12 +38,12 @@
    "valor_reposicao_brl": 658089550.62
   },
   "saude": {
-   "n_pontos": 448,
+   "n_pontos": 428,
    "lon": -51.23,
    "lat": -30.033,
-   "ruas_distintas": 210,
-   "bairros_distintos": 59,
-   "valor_reposicao_brl": 1075246397.28
+   "ruas_distintas": 201,
+   "bairros_distintos": 55,
+   "valor_reposicao_brl": 1074033211.68
   },
   "educacao": {
    "n_pontos": 54,
@@ -51,7 +51,7 @@
    "lat": -30.0324999,
    "ruas_distintas": 54,
    "bairros_distintos": 31,
-   "valor_reposicao_brl": 126996135.74
+   "valor_reposicao_brl": 121479783.32
   }
  },
  "por_cota": {
@@ -205,9 +205,9 @@
     ]
    },
    "agricultura": {
-    "area_ha": 276.09,
+    "area_ha": 276.07,
     "culturas": {
-     "Arroz": 147.63,
+     "Arroz": 147.61,
      "Outras Lavouras Temporárias": 117.33,
      "Soja": 11.13
     }
@@ -363,9 +363,9 @@
     ]
    },
    "agricultura": {
-    "area_ha": 287.61,
+    "area_ha": 287.6,
     "culturas": {
-     "Arroz": 150.2,
+     "Arroz": 150.19,
      "Outras Lavouras Temporárias": 124.63,
      "Soja": 12.78
     }
@@ -521,9 +521,9 @@
     ]
    },
    "agricultura": {
-    "area_ha": 298.35,
+    "area_ha": 298.34,
     "culturas": {
-     "Arroz": 157.08,
+     "Arroz": 157.07,
      "Outras Lavouras Temporárias": 127.96,
      "Soja": 13.31
     }
@@ -679,9 +679,9 @@
     ]
    },
    "agricultura": {
-    "area_ha": 306.79,
+    "area_ha": 306.78,
     "culturas": {
-     "Arroz": 161.34,
+     "Arroz": 161.33,
      "Outras Lavouras Temporárias": 131.79,
      "Soja": 13.66
     }
@@ -845,10 +845,10 @@
     ]
    },
    "agricultura": {
-    "area_ha": 309.41,
+    "area_ha": 309.38,
     "culturas": {
-     "Arroz": 162.17,
-     "Outras Lavouras Temporárias": 133.29,
+     "Arroz": 162.15,
+     "Outras Lavouras Temporárias": 133.28,
      "Soja": 13.95
     }
    }
@@ -1018,10 +1018,10 @@
     ]
    },
    "agricultura": {
-    "area_ha": 310.49,
+    "area_ha": 310.47,
     "culturas": {
-     "Arroz": 162.25,
-     "Outras Lavouras Temporárias": 134.12,
+     "Arroz": 162.24,
+     "Outras Lavouras Temporárias": 134.11,
      "Soja": 14.12
     }
    }
@@ -1199,9 +1199,9 @@
     ]
    },
    "agricultura": {
-    "area_ha": 311.38,
+    "area_ha": 311.37,
     "culturas": {
-     "Arroz": 162.27,
+     "Arroz": 162.26,
      "Outras Lavouras Temporárias": 134.79,
      "Soja": 14.32
     }
@@ -1380,10 +1380,10 @@
     ]
    },
    "agricultura": {
-    "area_ha": 313.82,
+    "area_ha": 313.8,
     "culturas": {
-     "Arroz": 162.27,
-     "Outras Lavouras Temporárias": 136.84,
+     "Arroz": 162.26,
+     "Outras Lavouras Temporárias": 136.83,
      "Soja": 14.71
     }
    }
@@ -1561,9 +1561,9 @@
     ]
    },
    "agricultura": {
-    "area_ha": 315.5,
+    "area_ha": 315.49,
     "culturas": {
-     "Arroz": 162.28,
+     "Arroz": 162.27,
      "Outras Lavouras Temporárias": 137.84,
      "Soja": 15.38
     }
@@ -1764,10 +1764,10 @@
     ]
    },
    "agricultura": {
-    "area_ha": 321.82,
+    "area_ha": 321.8,
     "culturas": {
-     "Arroz": 162.29,
-     "Outras Lavouras Temporárias": 141.19,
+     "Arroz": 162.28,
+     "Outras Lavouras Temporárias": 141.18,
      "Soja": 18.34
     }
    }
@@ -1945,9 +1945,9 @@
    },
    "educacao": {
     "n": 2,
-    "matriculas": 358,
+    "matriculas": 340,
     "docentes": 27,
-    "valor_exposto_brl": 3606761.86,
+    "valor_exposto_brl": 3428174.91,
     "etapas": {
      "infantil": 47,
      "fundamental": 228,
@@ -1960,8 +1960,8 @@
      {
       "nome": "Estadual",
       "n": 1,
-      "valor_exposto_brl": 2856002.17,
-      "matriculas": 311,
+      "valor_exposto_brl": 2677415.22,
+      "matriculas": 293,
       "docentes": 22
      },
      {
@@ -1974,10 +1974,10 @@
     ]
    },
    "agricultura": {
-    "area_ha": 370.81,
+    "area_ha": 370.79,
     "culturas": {
-     "Arroz": 162.37,
-     "Outras Lavouras Temporárias": 168.12,
+     "Arroz": 162.36,
+     "Outras Lavouras Temporárias": 168.11,
      "Soja": 40.32
     }
    }
@@ -2155,9 +2155,9 @@
    },
    "educacao": {
     "n": 3,
-    "matriculas": 466,
+    "matriculas": 442,
     "docentes": 39,
-    "valor_exposto_brl": 5295599.1,
+    "valor_exposto_brl": 5057483.17,
     "etapas": {
      "infantil": 149,
      "fundamental": 228,
@@ -2170,15 +2170,15 @@
      {
       "nome": "Estadual",
       "n": 1,
-      "valor_exposto_brl": 2856002.17,
-      "matriculas": 311,
+      "valor_exposto_brl": 2677415.22,
+      "matriculas": 293,
       "docentes": 22
      },
      {
       "nome": "Municipal",
       "n": 1,
-      "valor_exposto_brl": 1688837.24,
-      "matriculas": 108,
+      "valor_exposto_brl": 1629308.26,
+      "matriculas": 102,
       "docentes": 12
      },
      {
@@ -2191,10 +2191,10 @@
     ]
    },
    "agricultura": {
-    "area_ha": 413.58,
+    "area_ha": 413.56,
     "culturas": {
-     "Arroz": 162.45,
-     "Outras Lavouras Temporárias": 187.22,
+     "Arroz": 162.44,
+     "Outras Lavouras Temporárias": 187.21,
      "Soja": 63.91
     }
    }
@@ -2379,9 +2379,9 @@
    },
    "educacao": {
     "n": 3,
-    "matriculas": 466,
+    "matriculas": 442,
     "docentes": 39,
-    "valor_exposto_brl": 5295599.1,
+    "valor_exposto_brl": 5057483.17,
     "etapas": {
      "infantil": 149,
      "fundamental": 228,
@@ -2394,15 +2394,15 @@
      {
       "nome": "Estadual",
       "n": 1,
-      "valor_exposto_brl": 2856002.17,
-      "matriculas": 311,
+      "valor_exposto_brl": 2677415.22,
+      "matriculas": 293,
       "docentes": 22
      },
      {
       "nome": "Municipal",
       "n": 1,
-      "valor_exposto_brl": 1688837.24,
-      "matriculas": 108,
+      "valor_exposto_brl": 1629308.26,
+      "matriculas": 102,
       "docentes": 12
      },
      {
@@ -2415,10 +2415,10 @@
     ]
    },
    "agricultura": {
-    "area_ha": 472.31,
+    "area_ha": 472.28,
     "culturas": {
-     "Arroz": 162.47,
-     "Outras Lavouras Temporárias": 202.85,
+     "Arroz": 162.45,
+     "Outras Lavouras Temporárias": 202.84,
      "Soja": 106.99
     }
    }
@@ -2603,9 +2603,9 @@
    },
    "educacao": {
     "n": 3,
-    "matriculas": 466,
+    "matriculas": 442,
     "docentes": 39,
-    "valor_exposto_brl": 5295599.1,
+    "valor_exposto_brl": 5057483.17,
     "etapas": {
      "infantil": 149,
      "fundamental": 228,
@@ -2618,15 +2618,15 @@
      {
       "nome": "Estadual",
       "n": 1,
-      "valor_exposto_brl": 2856002.17,
-      "matriculas": 311,
+      "valor_exposto_brl": 2677415.22,
+      "matriculas": 293,
       "docentes": 22
      },
      {
       "nome": "Municipal",
       "n": 1,
-      "valor_exposto_brl": 1688837.24,
-      "matriculas": 108,
+      "valor_exposto_brl": 1629308.26,
+      "matriculas": 102,
       "docentes": 12
      },
      {
@@ -2639,10 +2639,10 @@
     ]
    },
    "agricultura": {
-    "area_ha": 478.04,
+    "area_ha": 478.02,
     "culturas": {
-     "Arroz": 162.57,
-     "Outras Lavouras Temporárias": 203.87,
+     "Arroz": 162.56,
+     "Outras Lavouras Temporárias": 203.86,
      "Soja": 111.6
     }
    }
@@ -2827,9 +2827,9 @@
    },
    "educacao": {
     "n": 4,
-    "matriculas": 553,
+    "matriculas": 523,
     "docentes": 51,
-    "valor_exposto_brl": 6648990.53,
+    "valor_exposto_brl": 6351345.61,
     "etapas": {
      "infantil": 230,
      "fundamental": 228,
@@ -2842,31 +2842,31 @@
      {
       "nome": "Estadual",
       "n": 1,
-      "valor_exposto_brl": 2856002.17,
-      "matriculas": 311,
+      "valor_exposto_brl": 2677415.22,
+      "matriculas": 293,
       "docentes": 22
      },
      {
       "nome": "Privada",
       "n": 2,
-      "valor_exposto_brl": 2104151.11,
-      "matriculas": 134,
+      "valor_exposto_brl": 2044622.13,
+      "matriculas": 128,
       "docentes": 17
      },
      {
       "nome": "Municipal",
       "n": 1,
-      "valor_exposto_brl": 1688837.24,
-      "matriculas": 108,
+      "valor_exposto_brl": 1629308.26,
+      "matriculas": 102,
       "docentes": 12
      }
     ]
    },
    "agricultura": {
-    "area_ha": 481.95,
+    "area_ha": 481.92,
     "culturas": {
-     "Arroz": 162.75,
-     "Outras Lavouras Temporárias": 204.43,
+     "Arroz": 162.74,
+     "Outras Lavouras Temporárias": 204.41,
      "Soja": 114.77
     }
    }
@@ -3051,9 +3051,9 @@
    },
    "educacao": {
     "n": 5,
-    "matriculas": 1274,
+    "matriculas": 1180,
     "docentes": 92,
-    "valor_exposto_brl": 14207881.55,
+    "valor_exposto_brl": 13275260.82,
     "etapas": {
      "infantil": 297,
      "fundamental": 818,
@@ -3066,31 +3066,31 @@
      {
       "nome": "Municipal",
       "n": 2,
-      "valor_exposto_brl": 9247728.27,
-      "matriculas": 829,
+      "valor_exposto_brl": 8553223.47,
+      "matriculas": 759,
       "docentes": 53
      },
      {
       "nome": "Estadual",
       "n": 1,
-      "valor_exposto_brl": 2856002.17,
-      "matriculas": 311,
+      "valor_exposto_brl": 2677415.22,
+      "matriculas": 293,
       "docentes": 22
      },
      {
       "nome": "Privada",
       "n": 2,
-      "valor_exposto_brl": 2104151.11,
-      "matriculas": 134,
+      "valor_exposto_brl": 2044622.13,
+      "matriculas": 128,
       "docentes": 17
      }
     ]
    },
    "agricultura": {
-    "area_ha": 485.47,
+    "area_ha": 485.45,
     "culturas": {
-     "Arroz": 162.85,
-     "Outras Lavouras Temporárias": 204.88,
+     "Arroz": 162.84,
+     "Outras Lavouras Temporárias": 204.87,
      "Soja": 117.74
     }
    }
@@ -3282,9 +3282,9 @@
    },
    "educacao": {
     "n": 7,
-    "matriculas": 1461,
+    "matriculas": 1360,
     "docentes": 113,
-    "valor_exposto_brl": 17152581.91,
+    "valor_exposto_brl": 16150510.69,
     "etapas": {
      "infantil": 477,
      "fundamental": 818,
@@ -3297,31 +3297,31 @@
      {
       "nome": "Municipal",
       "n": 3,
-      "valor_exposto_brl": 10782881.52,
-      "matriculas": 927,
+      "valor_exposto_brl": 10038769.24,
+      "matriculas": 852,
       "docentes": 69
      },
      {
       "nome": "Privada",
       "n": 3,
-      "valor_exposto_brl": 3513698.21,
-      "matriculas": 223,
+      "valor_exposto_brl": 3434326.24,
+      "matriculas": 215,
       "docentes": 22
      },
      {
       "nome": "Estadual",
       "n": 1,
-      "valor_exposto_brl": 2856002.17,
-      "matriculas": 311,
+      "valor_exposto_brl": 2677415.22,
+      "matriculas": 293,
       "docentes": 22
      }
     ]
    },
    "agricultura": {
-    "area_ha": 487.87,
+    "area_ha": 487.84,
     "culturas": {
-     "Arroz": 162.96,
-     "Outras Lavouras Temporárias": 205.12,
+     "Arroz": 162.94,
+     "Outras Lavouras Temporárias": 205.11,
      "Soja": 119.79
     }
    }
@@ -3521,9 +3521,9 @@
    },
    "educacao": {
     "n": 14,
-    "matriculas": 3002,
+    "matriculas": 2780,
     "docentes": 204,
-    "valor_exposto_brl": 33923563.19,
+    "valor_exposto_brl": 31720990.82,
     "etapas": {
      "infantil": 831,
      "fundamental": 1697,
@@ -3536,31 +3536,31 @@
      {
       "nome": "Estadual",
       "n": 4,
-      "valor_exposto_brl": 13853267.4,
-      "matriculas": 1486,
+      "valor_exposto_brl": 12593237.27,
+      "matriculas": 1359,
       "docentes": 86
      },
      {
       "nome": "Municipal",
       "n": 4,
-      "valor_exposto_brl": 12982874.3,
-      "matriculas": 1067,
+      "valor_exposto_brl": 12179233.03,
+      "matriculas": 986,
       "docentes": 79
      },
      {
       "nome": "Privada",
       "n": 6,
-      "valor_exposto_brl": 7087421.48,
-      "matriculas": 449,
+      "valor_exposto_brl": 6948520.52,
+      "matriculas": 435,
       "docentes": 39
      }
     ]
    },
    "agricultura": {
-    "area_ha": 489.95,
+    "area_ha": 489.92,
     "culturas": {
-     "Arroz": 162.97,
-     "Outras Lavouras Temporárias": 205.31,
+     "Arroz": 162.95,
+     "Outras Lavouras Temporárias": 205.3,
      "Soja": 121.67
     }
    }

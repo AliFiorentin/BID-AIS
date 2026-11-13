@@ -62,7 +62,7 @@ export function EducacaoTab({ dash }: Props) {
           <>
             <div className="rounded-xl overflow-hidden mb-3 shadow-xs" style={{ border: "1px solid rgba(5,80,113,0.15)" }}>
               <div className="flex items-center px-2.5 py-1.5" style={PANEL_HDR}>
-                <h3 className="text-[10px] font-black uppercase tracking-wider text-white">Escolas por Dependência</h3>
+                <h3 className="text-[11px] font-black uppercase tracking-wider text-white">Escolas por Dependência</h3>
               </div>
               <div className="flex flex-col" style={{ backgroundColor: PANEL_CARD_BG }}>
                 <div className="flex items-center justify-center py-2">
@@ -75,7 +75,7 @@ export function EducacaoTab({ dash }: Props) {
                         <span className="text-2xl font-black text-foreground leading-none">
                           {mostraImpacto ? inteiroBr(totalAtg) : inteiroBr(totalBase)}
                         </span>
-                        <span className="mt-1 text-[9px] text-muted-foreground leading-none">
+                        <span className="mt-1 text-[11px] text-muted-foreground leading-none">
                           {mostraImpacto ? `de ${inteiroBr(totalBase)} (${totalBase > 0 ? Math.round(totalAtg / totalBase * 100) : 0}%)` : "escolas"}
                         </span>
                       </div>
@@ -101,7 +101,7 @@ export function EducacaoTab({ dash }: Props) {
             {lista.length > 0 && (
               <Collapsible open={showListaEscolas} onOpenChange={() => setShowListaEscolas(p => !p)} className="mb-2 rounded-xl overflow-hidden shadow-xs">
                 <CollapsibleTrigger asChild>
-                  <button className="w-full flex items-center justify-between px-3 py-2 text-[10px] font-bold text-white active:brightness-95 transition-all" style={PANEL_HDR}>
+                  <button className="w-full flex items-center justify-between px-3 py-2 text-[11px] font-bold text-white active:brightness-95 transition-all" style={PANEL_HDR}>
                     <span>Escolas Atingidas ({lista.length})</span>
                     <ChevronDown className={cn("h-3 w-3 transition-transform shrink-0", showListaEscolas && "rotate-180")} />
                   </button>
@@ -111,7 +111,7 @@ export function EducacaoTab({ dash }: Props) {
                     {lista.map((nome: string, i: number) => (
                       <div key={i} className="flex gap-2 items-start py-0.5 border-b border-border/50 last:border-0 text-muted-foreground">
                         <MapPin className="h-3 w-3 shrink-0 mt-0.5 text-blue-500" />
-                        <span className="text-[10px]">{formatName(nome)}</span>
+                        <span className="text-[11px]">{formatName(nome)}</span>
                       </div>
                     ))}
                   </div>
@@ -127,18 +127,18 @@ export function EducacaoTab({ dash }: Props) {
         {professoresDepChart.length > 0 && (
           <div className="rounded-xl overflow-hidden -mt-1 mb-1 shadow-xs">
             <div className="flex items-center px-2.5 py-1.5" style={PANEL_HDR}>
-              <span className="text-[10px] font-black uppercase tracking-wider text-white">Professores por Dependência</span>
+              <span className="text-[11px] font-black uppercase tracking-wider text-white">Professores por Dependência</span>
             </div>
             <div className="flex flex-col gap-1 px-2.5 py-2" style={PANEL_GLASS}>
               {professoresDepChart.map(({ dep, base, atg }) => {
                 const pct = base > 0 ? Math.round(atg / base * 100) : 0;
                 return (
                   <div key={dep} className="flex items-center gap-1.5">
-                    <span className="text-[9px] w-14 shrink-0 text-muted-foreground">{dep}</span>
+                    <span className="text-[11px] w-14 shrink-0 text-muted-foreground">{dep}</span>
                     <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
                       <div className="h-full rounded-full bg-green-600" style={{ width: `${mostraImpacto ? pct : 100}%` }} />
                     </div>
-                    <span className="text-[9px] font-bold tabular-nums text-foreground w-16 text-right shrink-0">
+                    <span className="text-[11px] font-bold tabular-nums text-foreground w-16 text-right shrink-0">
                       {mostraImpacto ? `${inteiroBr(atg)}/${inteiroBr(base)}` : inteiroBr(base)}{" "}
                       {mostraImpacto && <span className="text-muted-foreground font-normal">({pct}%)</span>}
                     </span>
@@ -152,8 +152,10 @@ export function EducacaoTab({ dash }: Props) {
       {(() => {
         const NIVEIS: [string, string][] = [
           ["Infantil","inf"],["Fundamental","fund"],["Medio","med"],
-          ["Profissional","profis"],["EJA","eja"],["Especial","esp"],
+          ["Profissional","profis"],["EJA","eja"],
         ];
+        // Educação especial é subconjunto das etapas (INEP, Tabela M9): fica fora da soma para não contar duas vezes.
+        const espBase = (metricasEdu.base as Record<string, number>).esp || 0;
         const baseRecord = metricasEdu.base as Record<string, number>;
         const atgRecord = metricasEdu.impacto as Record<string, number>;
         const pieData = NIVEIS.map(([name, key]) => ({ name, value: baseRecord[key] || 0, atg: atgRecord[key] || 0 })).filter(d => d.value > 0).map((d, i) => {
@@ -167,7 +169,7 @@ export function EducacaoTab({ dash }: Props) {
         return (
           <div className="rounded-xl overflow-hidden mt-3 mb-3 shadow-xs" style={{ border: "1px solid rgba(5,80,113,0.15)" }}>
             <div className="flex items-center px-2.5 py-1.5" style={PANEL_HDR}>
-              <h3 className="text-[10px] font-black uppercase tracking-wider text-white">Matrículas por Nível</h3>
+              <h3 className="text-[11px] font-black uppercase tracking-wider text-white">Matrículas por Nível</h3>
             </div>
             <div className="flex flex-col" style={{ backgroundColor: PANEL_CARD_BG }}>
               <div className="flex items-center justify-center py-2">
@@ -180,7 +182,7 @@ export function EducacaoTab({ dash }: Props) {
                       <span className="text-2xl font-black text-foreground leading-none">
                         {mostraImpacto ? compactoBr(totalAtg, 0) : compactoBr(totalBase, 0)}
                       </span>
-                      <span className="mt-1 text-[9px] text-muted-foreground leading-none">
+                      <span className="mt-1 text-[11px] text-muted-foreground leading-none">
                         {mostraImpacto ? `de ${compactoBr(totalBase, 0)} (${totalBase > 0 ? Math.round(totalAtg / totalBase * 100) : 0}%)` : "alunos"}
                       </span>
                     </div>
@@ -201,11 +203,16 @@ export function EducacaoTab({ dash }: Props) {
                   </div>
                 ))}
               </div>
+              {espBase > 0 && (
+                <p className="px-2.5 pb-2.5 text-[11px] italic text-muted-foreground">
+                  Inclui {inteiroBr(espBase)} alunos da educação especial, já contados nas etapas acima.
+                </p>
+              )}
             </div>
           </div>
         );
       })()}
-      <p className="text-[10px] italic mt-2 text-muted-foreground">Fonte: IBGE — Censo Escolar</p>
+      <p className="text-[11px] italic mt-2 text-muted-foreground">Fonte: IBGE — Censo Escolar</p>
     </TabsContent>
   );
 }

@@ -2,7 +2,13 @@
 
 import React from "react"
 import Link from "next/link"
-import { Building2, GraduationCap, HeartPulse, Sprout, TrendingDown } from "lucide-react"
+import {
+  Building2,
+  GraduationCap,
+  HeartPulse,
+  Sprout,
+  TrendingDown,
+} from "lucide-react"
 import type { DanosCtx } from "./ctx"
 import { Section, SubTitle, DataTable, Note, DiasBadge } from "./ui"
 import { fmtBRL, fmtN } from "./helpers"
@@ -43,8 +49,12 @@ export function PerdasPorCotaView({ ctx }: { ctx: DanosCtx }) {
   return (
     <>
       {/* ═══ 1. RESUMO DAS PERDAS OPERACIONAIS POR COTA ═══ */}
-      <Section id="resumo-cota" num="1" title={`Perdas Operacionais por Cota: ${munPerdasAtivo}`}>
-        <div className="flex flex-wrap items-center gap-2 mb-3">
+      <Section
+        id="resumo-cota"
+        num="1"
+        title={`Perdas Operacionais por Cota: ${munPerdasAtivo}`}
+      >
+        <div className="mb-3 flex flex-wrap items-center gap-2">
           <DiasBadge dias={dias} />
           <span className="rounded-full border border-[#055071]/30 bg-[#055071]/10 px-2.5 py-0.5 text-xs font-semibold text-[#055071]">
             Cota Ativa: {cotaPerdasAtiva.replace(".", ",")} m
@@ -61,20 +71,27 @@ export function PerdasPorCotaView({ ctx }: { ctx: DanosCtx }) {
         </div>
 
         <Note type="warning">
-          <strong>Aviso de Simulação:</strong> As perdas operacionais por cota representam uma modelagem numérica de inundação gradual ({munPerdasAtivo === "Rio Grande" ? "CIEX" : "IPH"}), sujeita a incertezas metodológicas. Para dados consolidados do evento real observado, consulte o <strong>Cenário ADA</strong>.
+          <strong>Aviso de Simulação:</strong> As perdas operacionais por cota
+          representam uma modelagem numérica de inundação gradual (
+          {munPerdasAtivo === "Rio Grande" ? "CIEX" : "IPH"}), sujeita a
+          incertezas metodológicas. Para dados consolidados do evento real
+          observado, consulte o <strong>Cenário ADA</strong>.
         </Note>
 
         <Note type="info">
-          <strong>Metodologia DaLA aplicada a Cotas:</strong> As perdas operacionais estimam o fluxo de produção e
-          serviços interrompidos durante a paralisação provocada pela água em cada cota altimétrica do rio. O cálculo
-          avalia o VAB perdido das empresas (a partir da massa salarial e insumo-produto), perda de dias letivos e custo
-          de reposição escolar (LDB/FUNDEB), interrupção de produção ambulatorial do SUS e perdas de safra agrícola.
+          <strong>Metodologia DaLA aplicada a Cotas:</strong> As perdas
+          operacionais estimam o fluxo de produção e serviços interrompidos
+          durante a paralisação provocada pela água em cada cota altimétrica do
+          rio. O cálculo avalia o VAB perdido das empresas (a partir da massa
+          salarial e insumo-produto), perda de dias letivos e custo de reposição
+          escolar (LDB/FUNDEB), interrupção de produção ambulatorial do SUS e
+          perdas de safra agrícola.
         </Note>
 
         {/* Seletor de Cota */}
         {cotasLista.length > 1 && (
           <div className="mt-4 mb-6">
-            <span className="text-[10px] font-black uppercase text-[#055071] block mb-1.5">
+            <span className="mb-1.5 block text-[11px] font-black text-[#055071] uppercase">
               Selecionar Cota Altimétrica (m):
             </span>
             <div className="flex flex-wrap gap-1.5">
@@ -82,7 +99,7 @@ export function PerdasPorCotaView({ ctx }: { ctx: DanosCtx }) {
                 <button
                   key={c}
                   onClick={() => setCotaPerdas(c)}
-                  className={`active-press hover-lift rounded-full border px-3 py-1 text-xs font-semibold active:scale-[0.97] transition-all duration-150 ${
+                  className={`active-press hover-lift rounded-full border px-3 py-1 text-xs font-semibold transition-all duration-150 active:scale-[0.97] ${
                     cotaPerdasAtiva === c
                       ? "border-[#055071] bg-[#055071] text-white shadow-xs"
                       : "border-slate-300 bg-white text-slate-600 hover:border-[#055071] hover:text-[#055071]"
@@ -96,50 +113,60 @@ export function PerdasPorCotaView({ ctx }: { ctx: DanosCtx }) {
         )}
 
         {/* 5 Cards de KPI da Cota Selecionada */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5 mb-6">
+        <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
           <div className="hover-lift rounded-2xl border border-[#055071] bg-gradient-to-br from-[#055071] to-[#0a6e9a] p-4 text-white shadow-xs lg:col-span-1">
-            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-white/80">
+            <div className="flex items-center gap-1.5 text-[11px] font-bold tracking-wider text-white/80 uppercase">
               <TrendingDown size={13} strokeWidth={2.5} /> Total ({dias} dias)
             </div>
             <div className="mt-2 text-2xl font-black">{fmtBRL(v.total)}</div>
-            <div className="mt-1 text-[10px] text-white/70">Cota {cotaPerdasAtiva.replace(".", ",")} m</div>
+            <div className="mt-1 text-[11px] text-white/70">
+              Cota {cotaPerdasAtiva.replace(".", ",")} m
+            </div>
           </div>
 
           <div className="hover-lift rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
-            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#055071]">
+            <div className="flex items-center gap-1.5 text-[11px] font-bold tracking-wider text-[#055071] uppercase">
               <Building2 size={13} strokeWidth={2.5} /> Empresas (VAB)
             </div>
-            <div className="mt-2 text-xl font-black text-slate-800">{fmtBRL(v.empresas_vab)}</div>
+            <div className="mt-2 text-xl font-black text-slate-800">
+              {fmtBRL(v.empresas_vab)}
+            </div>
             <div className="mt-1 text-[11px] text-slate-500">
               <strong>{fmtN(v.empresas_n)}</strong> empresas atingidas
             </div>
           </div>
 
           <div className="hover-lift rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
-            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#2da8cc]">
+            <div className="flex items-center gap-1.5 text-[11px] font-bold tracking-wider text-[#2da8cc] uppercase">
               <GraduationCap size={13} strokeWidth={2.5} /> Educação
             </div>
-            <div className="mt-2 text-xl font-black text-slate-800">{fmtBRL(v.educacao_perdas + v.educacao_custo_adicional)}</div>
+            <div className="mt-2 text-xl font-black text-slate-800">
+              {fmtBRL(v.educacao_perdas + v.educacao_custo_adicional)}
+            </div>
             <div className="mt-1 text-[11px] text-slate-500">
               <strong>{fmtN(v.educacao_n)}</strong> escolas atingidas
             </div>
           </div>
 
           <div className="hover-lift rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
-            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#e35d4b]">
+            <div className="flex items-center gap-1.5 text-[11px] font-bold tracking-wider text-[#e35d4b] uppercase">
               <HeartPulse size={13} strokeWidth={2.5} /> Saúde (SUS)
             </div>
-            <div className="mt-2 text-xl font-black text-slate-800">{fmtBRL(v.saude_producao)}</div>
+            <div className="mt-2 text-xl font-black text-slate-800">
+              {fmtBRL(v.saude_producao)}
+            </div>
             <div className="mt-1 text-[11px] text-slate-500">
               <strong>{fmtN(v.saude_n)}</strong> unidades afetadas
             </div>
           </div>
 
           <div className="hover-lift rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
-            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#16a34a]">
+            <div className="flex items-center gap-1.5 text-[11px] font-bold tracking-wider text-[#16a34a] uppercase">
               <Sprout size={13} strokeWidth={2.5} /> Agricultura
             </div>
-            <div className="mt-2 text-xl font-black text-slate-800">{fmtBRL(v.agricultura_perdas)}</div>
+            <div className="mt-2 text-xl font-black text-slate-800">
+              {fmtBRL(v.agricultura_perdas)}
+            </div>
             <div className="mt-1 text-[11px] text-slate-500">
               <strong>{fmtN(v.agricultura_ha)}</strong> ha atingidos
             </div>
@@ -148,8 +175,11 @@ export function PerdasPorCotaView({ ctx }: { ctx: DanosCtx }) {
 
         {/* Composição Setorial na Cota */}
         <div className="rounded-xl border border-[#b3cdd8] bg-white p-5 shadow-sm">
-          <SubTitle>Composição Setorial das Perdas na Cota {cotaPerdasAtiva.replace(".", ",")} m</SubTitle>
-          <div className="mt-3 h-4 w-full overflow-hidden rounded-full bg-slate-100 flex">
+          <SubTitle>
+            Composição Setorial das Perdas na Cota{" "}
+            {cotaPerdasAtiva.replace(".", ",")} m
+          </SubTitle>
+          <div className="mt-3 flex h-4 w-full overflow-hidden rounded-full bg-slate-100">
             {v.total > 0 ? (
               <>
                 <div
@@ -195,7 +225,10 @@ export function PerdasPorCotaView({ ctx }: { ctx: DanosCtx }) {
             <div className="flex items-center gap-1.5">
               <span className="h-3 w-3 rounded-full bg-[#2da8cc]" />
               <span>
-                Educação: <strong>{fmtBRL(v.educacao_perdas + v.educacao_custo_adicional)}</strong>
+                Educação:{" "}
+                <strong>
+                  {fmtBRL(v.educacao_perdas + v.educacao_custo_adicional)}
+                </strong>
               </span>
             </div>
             <div className="flex items-center gap-1.5">
@@ -215,21 +248,58 @@ export function PerdasPorCotaView({ ctx }: { ctx: DanosCtx }) {
       </Section>
 
       {/* ═══ 2. EVOLUÇÃO HIDROMÉTRICA DAS PERDAS ═══ */}
-      <Section id="evolucao-cota" num="2" title="Evolução das Perdas Conforme o Nível do Rio Sobe">
+      <Section
+        id="evolucao-cota"
+        num="2"
+        title="Evolução das Perdas Conforme o Nível do Rio Sobe"
+      >
         <p className="mb-4">
-          Comportamento acumulado das perdas operacionais ({dias} dias) da menor cota ({cotaMin.replace(".", ",")} m)
-          até o pico modelado ({cotaMax.replace(".", ",")} m).
+          Comportamento acumulado das perdas operacionais ({dias} dias) da menor
+          cota ({cotaMin.replace(".", ",")} m) até o pico modelado (
+          {cotaMax.replace(".", ",")} m).
         </p>
 
         {/* Gráfico SVG de curva de perdas por cota */}
         <div className="rounded-xl border border-[#b3cdd8] bg-white p-5 shadow-sm">
           <div className="h-64 w-full">
-            <svg viewBox="0 0 600 200" preserveAspectRatio="none" className="w-full h-full">
+            <svg
+              viewBox="0 0 600 200"
+              preserveAspectRatio="none"
+              className="h-full w-full"
+            >
               {/* Grid lines */}
-              <line x1="40" y1="20" x2="580" y2="20" stroke="#f1f5f9" strokeWidth="1" />
-              <line x1="40" y1="70" x2="580" y2="70" stroke="#f1f5f9" strokeWidth="1" />
-              <line x1="40" y1="120" x2="580" y2="120" stroke="#f1f5f9" strokeWidth="1" />
-              <line x1="40" y1="170" x2="580" y2="170" stroke="#cbd5e1" strokeWidth="1" />
+              <line
+                x1="40"
+                y1="20"
+                x2="580"
+                y2="20"
+                stroke="#f1f5f9"
+                strokeWidth="1"
+              />
+              <line
+                x1="40"
+                y1="70"
+                x2="580"
+                y2="70"
+                stroke="#f1f5f9"
+                strokeWidth="1"
+              />
+              <line
+                x1="40"
+                y1="120"
+                x2="580"
+                y2="120"
+                stroke="#f1f5f9"
+                strokeWidth="1"
+              />
+              <line
+                x1="40"
+                y1="170"
+                x2="580"
+                y2="170"
+                stroke="#cbd5e1"
+                strokeWidth="1"
+              />
 
               {/* Area and Line */}
               {serie.length > 1 && (
@@ -267,17 +337,33 @@ export function PerdasPorCotaView({ ctx }: { ctx: DanosCtx }) {
                 const y = 170 - (v.total / maxSerie) * 150
                 return (
                   <g>
-                    <line x1={x} y1="20" x2={x} y2="170" stroke="#d97706" strokeWidth="1.5" strokeDasharray="3 3" />
-                    <circle cx={x} cy={y} r="5" fill="#d97706" stroke="#fff" strokeWidth="2" />
+                    <line
+                      x1={x}
+                      y1="20"
+                      x2={x}
+                      y2="170"
+                      stroke="#d97706"
+                      strokeWidth="1.5"
+                      strokeDasharray="3 3"
+                    />
+                    <circle
+                      cx={x}
+                      cy={y}
+                      r="5"
+                      fill="#d97706"
+                      stroke="#fff"
+                      strokeWidth="2"
+                    />
                   </g>
                 )
               })()}
             </svg>
           </div>
-          <div className="flex justify-between text-xs text-slate-500 font-mono mt-2 px-2">
+          <div className="mt-2 flex justify-between px-2 font-mono text-xs text-slate-500">
             <span>Cota mínima: {cotaMin.replace(".", ",")} m</span>
             <span className="font-bold text-[#055071]">
-              Cota selecionada: {cotaPerdasAtiva.replace(".", ",")} m ({fmtBRL(v.total)})
+              Cota selecionada: {cotaPerdasAtiva.replace(".", ",")} m (
+              {fmtBRL(v.total)})
             </span>
             <span>Cota máxima: {cotaMax.replace(".", ",")} m</span>
           </div>
@@ -285,13 +371,18 @@ export function PerdasPorCotaView({ ctx }: { ctx: DanosCtx }) {
       </Section>
 
       {/* ═══ 3. TABELA COMPLETA POR COTA ═══ */}
-      <Section id="tabela-cotas" num="3" title={`Tabela Completa de Perdas por Cota: ${munPerdasAtivo}`}>
+      <Section
+        id="tabela-cotas"
+        num="3"
+        title={`Tabela Completa de Perdas por Cota: ${munPerdasAtivo}`}
+      >
         <p className="mb-4">
-          Todas as cotas hidrométricas com detalhamento setorial recalculado para <strong>{dias} dias</strong> de
-          interrupção.
+          Todas as cotas hidrométricas com detalhamento setorial recalculado
+          para <strong>{dias} dias</strong> de interrupção.
         </p>
 
         <DataTable
+          semScroll
           rows={[
             [
               "Cota (m)",
@@ -309,19 +400,27 @@ export function PerdasPorCotaView({ ctx }: { ctx: DanosCtx }) {
                   key="c"
                   onClick={() => setCotaPerdas(c)}
                   className={`font-mono text-xs font-bold hover:underline ${
-                    ativa ? "text-[#055071] underline font-black" : "text-slate-700"
+                    ativa
+                      ? "font-black text-[#055071] underline"
+                      : "text-slate-700"
                   }`}
                 >
                   {c.replace(".", ",")} m {ativa && "◀"}
                 </button>,
-                cv ? `${fmtBRL(cv.empresas_vab)} (${fmtN(cv.empresas_n)})` : "—",
-                cv ? fmtBRL(cv.educacao_perdas + cv.educacao_custo_adicional) : "—",
+                cv
+                  ? `${fmtBRL(cv.empresas_vab)} (${fmtN(cv.empresas_n)})`
+                  : "—",
+                cv
+                  ? fmtBRL(cv.educacao_perdas + cv.educacao_custo_adicional)
+                  : "—",
                 cv ? fmtBRL(cv.saude_producao) : "—",
                 cv ? fmtBRL(cv.agricultura_perdas) : "—",
                 cv ? (
                   <strong
                     key="t"
-                    className={ativa ? "text-[#055071] font-black" : "text-slate-900"}
+                    className={
+                      ativa ? "font-black text-[#055071]" : "text-slate-900"
+                    }
                   >
                     {fmtBRL(cv.total)}
                   </strong>
@@ -334,9 +433,12 @@ export function PerdasPorCotaView({ ctx }: { ctx: DanosCtx }) {
         />
 
         <Note type="warning">
-          Para ver a destruição e exposição do estoque de capital (prédios, equipamentos e patrimônio físico sob água),
-          acesse a página de{" "}
-          <Link href="/danos-fisicos" className="font-bold underline underline-offset-2">
+          Para ver a destruição e exposição do estoque de capital (prédios,
+          equipamentos e patrimônio físico sob água), acesse a página de{" "}
+          <Link
+            href="/danos-fisicos"
+            className="font-bold underline underline-offset-2"
+          >
             Danos Físicos
           </Link>
           .

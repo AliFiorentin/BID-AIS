@@ -317,7 +317,7 @@ export function useDanosContext({
   const totalCota = (
     c: Record<string, CotaSetor>,
     k: "dano_fisico_brl_poa" | "dano_fisico_brl_jrc_crua"
-  ) => climadaSetores.reduce((s, st) => s + c[st][k], 0)
+  ) => climadaSetores.reduce((s, st) => s + (c[st][k] ?? 0), 0)
   const maxTotalCota =
     dadosCotas && cotasDisponiveis.length
       ? Math.max(

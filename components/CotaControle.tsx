@@ -34,18 +34,18 @@ export function CotaControle({
     return (
       <div className={`flex flex-col items-center gap-2 ${className}`}>
         <div className="text-center">
-          <div className="text-[9px] font-bold tracking-wide text-slate-500 uppercase">
+          <div className="text-[11px] font-bold tracking-wide text-slate-500 uppercase">
             Cota
           </div>
           <div className="text-base leading-tight font-black text-[#055071] tabular-nums">
             {fmt(cota)}
           </div>
-          <div className="text-[9px] font-bold text-slate-500">
+          <div className="text-[11px] font-bold text-slate-500">
             {pronta ? "metros" : "carregando…"}
           </div>
           {municipio && (
             <div
-              className="mt-0.5 rounded px-1 py-0.2 text-[8px] font-black uppercase tracking-wider text-white"
+              className="mt-0.5 rounded px-1 py-0.2 text-[11px] font-black uppercase tracking-wider text-white"
               style={{
                 backgroundColor:
                   fonteCotas(municipio) === "CIEX" ? "#0a6e9a" : "#055071",
@@ -88,7 +88,7 @@ export function CotaControle({
           aria-valuetext={`cota ${fmt(cota)} metros`}
           style={{ writingMode: "vertical-lr", direction: "rtl", width: 20 }}
         />
-        <div className="text-[9px] font-bold text-slate-500 tabular-nums">
+        <div className="text-[11px] font-bold text-slate-500 tabular-nums">
           {fmt(minimo)}
         </div>
         {onOpacidadeChange && (
@@ -101,10 +101,10 @@ export function CotaControle({
               const proximo = niveis[(idx + 1) % niveis.length]
               onOpacidadeChange(proximo)
             }}
-            className="mt-1 flex flex-col items-center gap-0.5 rounded px-1.5 py-1 text-[8.5px] font-bold text-slate-600 hover:text-[#055071] bg-slate-100 hover:bg-slate-200/80 transition-colors border border-slate-200/70 shadow-xs"
+            className="mt-1 flex flex-col items-center gap-0.5 rounded px-1.5 py-1 text-[11px] font-bold text-slate-600 hover:text-[#055071] bg-slate-100 hover:bg-slate-200/80 transition-colors border border-slate-200/70 shadow-xs"
             title={`Opacidade da mancha: ${Math.round((opacidade ?? 0.55) * 100)}% (clique para alternar 35%, 55%, 75%, 90%)`}
           >
-            <span className="text-[10px] leading-none">💧</span>
+            <span className="text-[11px] leading-none">💧</span>
             <span className="tabular-nums">{Math.round((opacidade ?? 0.55) * 100)}%</span>
           </button>
         )}
@@ -114,11 +114,11 @@ export function CotaControle({
   return (
     <div className={`flex items-center gap-3 sm:gap-4 ${className}`}>
       <div className="w-24 shrink-0 text-center">
-        <div className="text-[10px] font-bold tracking-wide text-slate-500 uppercase flex items-center justify-center gap-1">
+        <div className="text-[11px] font-bold tracking-wide text-slate-500 uppercase flex items-center justify-center gap-1">
           <span>Cota</span>
           {municipio && (
             <span
-              className="rounded px-1 py-0.2 text-[8px] font-black text-white"
+              className="rounded px-1 py-0.2 text-[11px] font-black text-white"
               style={{
                 backgroundColor:
                   fonteCotas(municipio) === "CIEX" ? "#0a6e9a" : "#055071",

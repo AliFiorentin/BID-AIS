@@ -27,7 +27,7 @@ export function KpiRow({
       </div>
       <span className="shrink-0 font-bold text-slate-700">
         {value}{" "}
-        <span className="text-[9px] font-normal text-slate-400">({sub})</span>
+        <span className="text-[11px] font-normal text-slate-400">({sub})</span>
       </span>
     </div>
   )
@@ -171,7 +171,7 @@ export function GeoCard({
       >
         {title}
       </p>
-      <p className="mb-3 font-mono text-[10px]" style={{ color: primary }}>
+      <p className="mb-3 font-mono text-[11px]" style={{ color: primary }}>
         {operation}
       </p>
       {children}
@@ -198,7 +198,7 @@ export function MathBlock({
           <div key={i} className="flex flex-wrap items-baseline gap-4">
             {label && (
               <span
-                className="w-44 shrink-0 text-[10px] font-bold tracking-wider uppercase"
+                className="w-44 shrink-0 text-[11px] font-bold tracking-wider uppercase"
                 style={{ color: primary }}
               >
                 {label}
@@ -219,14 +219,21 @@ export function DataTable({
   rows,
   primary = DOC_PRIMARY,
   destaque,
+  semScroll = false,
 }: {
   rows: React.ReactNode[][]
   primary?: string
   destaque?: number
+  /** Sem barra de rolagem: a tabela se ajusta à largura (células quebram linha). */
+  semScroll?: boolean
 }) {
   const [header, ...body] = rows
   return (
-    <div className="my-3 overflow-x-auto rounded-2xl border border-[#b3cdd8]/70 shadow-xs">
+    <div
+      className={`my-3 rounded-2xl border border-[#b3cdd8]/70 shadow-xs ${
+        semScroll ? "overflow-hidden" : "overflow-x-auto"
+      }`}
+    >
       <table className="w-full border-collapse text-[12px]">
         <thead>
           <tr style={{ backgroundColor: primary }} className="text-white">
@@ -305,7 +312,7 @@ export function SectionSources({
   return (
     <div className="mt-4 border-t border-[#b3cdd8] pt-3">
       <p
-        className="mb-1.5 text-[10px] font-bold tracking-wider uppercase"
+        className="mb-1.5 text-[11px] font-bold tracking-wider uppercase"
         style={{ color: primary }}
       >
         Fontes

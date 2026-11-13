@@ -147,7 +147,7 @@ export function useDashboard() {
     baseEmpresas, baseEducacao, baseSaude,
     atingidosEmpresas, atingidosEducacao, atingidosSaude,
     manchaCenario, manchaRS, limitePA,
-    baseAgriStats, atingidosAgriStats, conabStats, baseAgriGeo, atingidosAgriGeo,
+    baseAgriStats, atingidosAgriStats, baseAgriGeo, atingidosAgriGeo,
     allMunAgriStats, allMunAgriAtingidosStats, allMunInfraStats,
   } = scenario;
 
@@ -313,7 +313,7 @@ export function useDashboard() {
     baseEmpresas, baseEducacao, baseSaude, baseInfra, infraPainel, infraAtg, areaCotaKm2,
     atingidosEmpresas, atingidosEducacao, atingidosSaude, atingidosInfra,
     manchaCenario, manchaRS, limitePA,
-    baseAgriStats, atingidosAgriStats, conabStats,
+    baseAgriStats, atingidosAgriStats,
     baseAgriGeo, atingidosAgriGeo,
     allMunAgriStats, allMunAgriAtingidosStats, allMunInfraStats,
     cursor, setCursor,

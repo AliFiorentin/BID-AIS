@@ -83,7 +83,7 @@ export function MetricInfoPopover({
               </span>
             </div>
             {finalMetodologia && (
-              <span className="text-[10px] font-semibold text-slate-500">
+              <span className="text-[11px] font-semibold text-slate-500">
                 {finalMetodologia}
               </span>
             )}
@@ -92,10 +92,10 @@ export function MetricInfoPopover({
           {/* Fórmula */}
           {finalFormula && (
             <div className="flex flex-col gap-1 rounded-xl bg-slate-50/80 p-2.5 border border-slate-200/60">
-              <span className="text-[9px] font-bold tracking-wider text-slate-500 uppercase">
+              <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase">
                 Fórmula de Cálculo
               </span>
-              <code className="text-[10px] leading-relaxed font-mono font-semibold text-slate-900 break-words">
+              <code className="text-[11px] leading-relaxed font-mono font-semibold text-slate-900 break-words">
                 {finalFormula}
               </code>
             </div>
@@ -104,10 +104,10 @@ export function MetricInfoPopover({
           {/* Parâmetros */}
           {finalParametros && finalParametros.length > 0 && (
             <div className="flex flex-col gap-1">
-              <span className="text-[9px] font-bold tracking-wider text-slate-500 uppercase">
+              <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase">
                 Parâmetros Oficiais
               </span>
-              <div className="flex flex-col gap-1 text-[9.5px]">
+              <div className="flex flex-col gap-1 text-[11px]">
                 {finalParametros.map((p) => (
                   <div
                     key={p.nome}
@@ -126,10 +126,10 @@ export function MetricInfoPopover({
           {/* Fonte Oficial */}
           {finalFonte && (
             <div className="flex flex-col gap-0.5 pt-0.5">
-              <span className="text-[9px] font-bold tracking-wider text-slate-500 uppercase">
+              <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase">
                 Base de Dados & Fonte Oficial
               </span>
-              <p className="text-[10px] leading-snug font-medium text-slate-700">
+              <p className="text-[11px] leading-snug font-medium text-slate-700">
                 {finalFonte}
               </p>
             </div>
@@ -137,7 +137,7 @@ export function MetricInfoPopover({
 
           {/* Observação */}
           {finalObs && (
-            <p className="text-[9.5px] italic text-slate-500 border-t border-slate-100 pt-1 leading-tight">
+            <p className="text-[11px] italic text-slate-500 border-t border-slate-100 pt-1 leading-tight">
               {finalObs}
             </p>
           )}

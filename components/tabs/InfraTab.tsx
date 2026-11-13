@@ -112,7 +112,7 @@ export function InfraTab({ dash }: Props) {
               }}
             >
               <div className="border-t px-3 py-2.5 flex flex-col gap-1.5" style={{ borderColor: "rgba(5,80,113,0.15)" }}>
-                <span className="text-[9px] font-bold uppercase tracking-wide text-muted-foreground">Por Município</span>
+                <span className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">Por Município</span>
                 {MUNICIPIOS.map(mun => {
                   const d = areaData?.[mun];
                   if (!d) return null;
@@ -121,13 +121,13 @@ export function InfraTab({ dash }: Props) {
                   const pctMun = d.area_km2 > 0 ? (atg / d.area_km2 * 100) : 0;
                   return (
                     <div key={mun} className="flex items-center gap-1.5">
-                      <span className="text-[10px] w-24 shrink-0 truncate" style={{ color: C.muted }} title={mun}>
+                      <span className="text-[11px] w-24 shrink-0 truncate" style={{ color: C.muted }} title={mun}>
                         {mun}
                       </span>
                       <div className="flex-1 rounded-full h-1.5 overflow-hidden bg-slate-100">
                         <div className="h-full rounded-full" style={{ width: `${pctMun}%`, backgroundColor: COR_AREA }} />
                       </div>
-                      <span className="text-[10px] tabular-nums w-28 text-right shrink-0" style={{ color: C.muted }}>
+                      <span className="text-[11px] tabular-nums w-28 text-right shrink-0" style={{ color: C.muted }}>
                         {compactoBr(atg, 1)} de {compactoBr(d.area_km2, 1)} km²
                       </span>
                     </div>
@@ -170,18 +170,18 @@ export function InfraTab({ dash }: Props) {
                 }] : undefined}
               >
                 <div className="border-t px-3 py-2.5 flex flex-col gap-1.5" style={{ borderColor: "rgba(5,80,113,0.15)" }}>
-                  <span className="text-[9px] font-bold uppercase tracking-wide text-muted-foreground">Por Município</span>
+                  <span className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">Por Município</span>
                   {entradas.map(({ mun, tipoBruto, entry }) => {
                     const pct = entry.count_base > 0 ? (entry.count_atingido / entry.count_base * 100) : 0;
                     return (
                       <div key={mun} className="flex items-center gap-1.5">
-                        <span className="text-[10px] w-24 shrink-0 truncate" style={{ color: C.muted }} title={tipoBruto !== grupo ? `${mun} (${tipoBruto})` : mun}>
+                        <span className="text-[11px] w-24 shrink-0 truncate" style={{ color: C.muted }} title={tipoBruto !== grupo ? `${mun} (${tipoBruto})` : mun}>
                           {mun}{tipoBruto !== grupo && <span className="opacity-60"> ({tipoBruto})</span>}
                         </span>
                         <div className="flex-1 rounded-full h-1.5 overflow-hidden bg-slate-100">
                           <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: cor }} />
                         </div>
-                        <span className="text-[10px] tabular-nums w-24 text-right shrink-0" style={{ color: C.muted }}>
+                        <span className="text-[11px] tabular-nums w-24 text-right shrink-0" style={{ color: C.muted }}>
                           {compactoBr(entry.count_atingido, 0)} de {compactoBr(entry.count_base, 0)}
                         </span>
                       </div>
@@ -192,7 +192,7 @@ export function InfraTab({ dash }: Props) {
             );
           })}
         </div>
-        <p className="text-[10px] italic mt-2 text-muted-foreground">
+        <p className="text-[11px] italic mt-2 text-muted-foreground">
           Fonte: Prefeituras Municipais
         </p>
       </TabsContent>
@@ -263,7 +263,7 @@ export function InfraTab({ dash }: Props) {
       </div>
 
       <p
-        className="text-[9px] italic mt-3 pt-2 border-t"
+        className="text-[11px] italic mt-3 pt-2 border-t"
         style={{ color: C.muted, borderColor: C.border }}
       >
         Fonte: Prefeituras Municipais

@@ -45,7 +45,7 @@ export function KPIRow({ titulo, valor, sub, delta, cor, extra, infoKey }: KPIRo
               style={{ backgroundColor: cor }}
             />
           )}
-          <span className="truncate text-[9px] leading-none font-black tracking-wider text-white uppercase">
+          <span className="truncate text-[11px] leading-none font-black tracking-wider text-white uppercase">
             {titulo}
           </span>
         </div>
@@ -59,12 +59,12 @@ export function KPIRow({ titulo, valor, sub, delta, cor, extra, infoKey }: KPIRo
         style={{ backgroundColor: PANEL_CARD_BG }}
       >
         <div className="flex min-w-0 flex-col">
-          <span className="text-[10px] leading-none" style={{ color: C.muted }}>
+          <span className="text-[11px] leading-none" style={{ color: C.muted }}>
             {sub}
           </span>
           {delta && (
             <span
-              className="mt-1.5 inline-block w-fit rounded px-1.5 py-0.5 text-[9px] font-semibold"
+              className="mt-1.5 inline-block w-fit rounded px-1.5 py-0.5 text-[11px] font-semibold"
               style={{
                 backgroundColor: PANEL_CARD_BG,
                 border: `1px solid ${C.border}`,

@@ -13,10 +13,10 @@ export const METRIC_METADATA: Record<string, MetricMetadata> = {
     metodologia: "Metodologia DaLA (CEPAL / Banco Mundial)",
     formula: "VAB Interrompido = (Massa Salarial × 12 / Labor Share) × (Dias Efetivos / 365)",
     parametros: [
-      { nome: "Labor Share Indústria", valor: "0,176 (17,6% da massa no VAB)" },
-      { nome: "Labor Share Comércio", valor: "0,338 (33,8%)" },
+      { nome: "Labor Share Agropecuária", valor: "0,176 (17,6% da massa no VAB)" },
+      { nome: "Labor Share Indústria", valor: "0,338 (33,8%)" },
       { nome: "Labor Share Serviços", valor: "0,433 (43,3%)" },
-      { nome: "Labor Share Agropecuária", valor: "0,883 (88,3%)" },
+      { nome: "Labor Share Administração Pública", valor: "0,883 (88,3%)" },
       { nome: "Dias Efetivos", valor: "30 a 60 dias (30 agudos + 60 de recuperação a 50%)" },
     ],
     fonte: "RAIS 2023 (Ministério do Trabalho e Emprego) e Contas Regionais do IBGE",
@@ -69,7 +69,7 @@ export const METRIC_METADATA: Record<string, MetricMetadata> = {
       { nome: "Trigo", valor: "R$ 3.800,00 / ha" },
       { nome: "Outras Culturas / Pastagens", valor: "R$ 1.100,00 / ha" },
     ],
-    fonte: "MapBiomas Coleção 9 (2023), CONAB e EMATER-RS Ascar (safra 2023/2024)",
+    fonte: "MapBiomas Coleção 10 (2024), CONAB e EMATER-RS Ascar (safra 2023/2024)",
     observacao:
       "Área de cultivo em estágio de colheita ou preparo cruzada com o custo operacional efetivo de lavouras e perdas de insumos.",
   },

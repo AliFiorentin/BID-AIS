@@ -71,7 +71,7 @@ export function LegendaComposicao({
             <span className="text-sm font-black text-slate-800 tabular-nums">
               {fmt(valor)}
             </span>
-            <span className="text-[10px] text-slate-500 tabular-nums">
+            <span className="text-[11px] text-slate-500 tabular-nums">
               {total > 0
                 ? `${((valor / total) * 100).toFixed(1).replace(".", ",")}%`
                 : "0%"}

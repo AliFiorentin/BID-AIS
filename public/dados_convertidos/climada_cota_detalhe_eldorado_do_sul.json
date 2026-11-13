@@ -8,16 +8,16 @@
   "Soja": 2586.73
  },
  "area_agricola_na_grade_ha": {
-  "Arroz": 11136.95,
-  "Outras Lavouras Temporárias": 845.61,
-  "Soja": 2360.43
+  "Arroz": 11136.93,
+  "Outras Lavouras Temporárias": 845.56,
+  "Soja": 2360.41
  },
  "totais": {
   "empresas": {
    "n": 524
   },
   "saude": {
-   "n": 44
+   "n": 37
   },
   "educacao": {
    "n": 35
@@ -42,8 +42,8 @@
   },
   "saude": {
    "n_pontos": 1,
-   "lon": -51.659925,
-   "lat": -30.1011405,
+   "lon": -51.6576451,
+   "lat": -30.101137,
    "ruas_distintas": 1,
    "bairros_distintos": 1,
    "valor_reposicao_brl": 60659.28
@@ -54,10 +54,10 @@
    "lat": -29.9975837,
    "ruas_distintas": 13,
    "bairros_distintos": 8,
-   "valor_reposicao_brl": 39534725.43,
+   "valor_reposicao_brl": 37669483.96,
    "cota_entrada": "4.25",
-   "valor_exposto_antes_brl": 9944415.8,
-   "valor_exposto_na_entrada_brl": 51831131.34
+   "valor_exposto_antes_brl": 9279675.49,
+   "valor_exposto_na_entrada_brl": 49281306.57
   }
  },
  "por_cota": {
@@ -106,10 +106,10 @@
     "dependencias": []
    },
    "agricultura": {
-    "area_ha": 873.0,
+    "area_ha": 872.97,
     "culturas": {
-     "Arroz": 844.64,
-     "Outras Lavouras Temporárias": 28.36,
+     "Arroz": 844.63,
+     "Outras Lavouras Temporárias": 28.34,
      "Soja": 0.0
     }
    }
@@ -159,10 +159,10 @@
     "dependencias": []
    },
    "agricultura": {
-    "area_ha": 1140.49,
+    "area_ha": 1140.47,
     "culturas": {
      "Arroz": 1096.06,
-     "Outras Lavouras Temporárias": 30.98,
+     "Outras Lavouras Temporárias": 30.96,
      "Soja": 13.45
     }
    }
@@ -212,10 +212,10 @@
     "dependencias": []
    },
    "agricultura": {
-    "area_ha": 1234.89,
+    "area_ha": 1234.88,
     "culturas": {
      "Arroz": 1169.8,
-     "Outras Lavouras Temporárias": 40.93,
+     "Outras Lavouras Temporárias": 40.92,
      "Soja": 24.16
     }
    }
@@ -265,10 +265,10 @@
     "dependencias": []
    },
    "agricultura": {
-    "area_ha": 1259.64,
+    "area_ha": 1259.62,
     "culturas": {
-     "Arroz": 1190.58,
-     "Outras Lavouras Temporárias": 44.9,
+     "Arroz": 1190.57,
+     "Outras Lavouras Temporárias": 44.89,
      "Soja": 24.16
     }
    }
@@ -437,10 +437,10 @@
     "dependencias": []
    },
    "agricultura": {
-    "area_ha": 1374.29,
+    "area_ha": 1374.27,
     "culturas": {
-     "Arroz": 1264.56,
-     "Outras Lavouras Temporárias": 68.23,
+     "Arroz": 1264.55,
+     "Outras Lavouras Temporárias": 68.22,
      "Soja": 41.5
     }
    }
@@ -525,9 +525,9 @@
    },
    "educacao": {
     "n": 2,
-    "matriculas": 959,
+    "matriculas": 892,
     "docentes": 49,
-    "valor_exposto_brl": 9944415.8,
+    "valor_exposto_brl": 9279675.49,
     "etapas": {
      "infantil": 71,
      "fundamental": 821,
@@ -540,8 +540,8 @@
      {
       "nome": "Municipal",
       "n": 2,
-      "valor_exposto_brl": 9944415.8,
-      "matriculas": 959,
+      "valor_exposto_brl": 9279675.49,
+      "matriculas": 892,
       "docentes": 49
      }
     ]
@@ -549,8 +549,8 @@
    "agricultura": {
     "area_ha": 1478.3,
     "culturas": {
-     "Arroz": 1351.09,
-     "Outras Lavouras Temporárias": 85.71,
+     "Arroz": 1351.1,
+     "Outras Lavouras Temporárias": 85.7,
      "Soja": 41.5
     }
    }
@@ -699,9 +699,9 @@
    },
    "educacao": {
     "n": 2,
-    "matriculas": 959,
+    "matriculas": 892,
     "docentes": 49,
-    "valor_exposto_brl": 9944415.8,
+    "valor_exposto_brl": 9279675.49,
     "etapas": {
      "infantil": 71,
      "fundamental": 821,
@@ -714,16 +714,16 @@
      {
       "nome": "Municipal",
       "n": 2,
-      "valor_exposto_brl": 9944415.8,
-      "matriculas": 959,
+      "valor_exposto_brl": 9279675.49,
+      "matriculas": 892,
       "docentes": 49
      }
     ]
    },
    "agricultura": {
-    "area_ha": 1727.86,
+    "area_ha": 1727.87,
     "culturas": {
-     "Arroz": 1544.19,
+     "Arroz": 1544.2,
      "Outras Lavouras Temporárias": 142.17,
      "Soja": 41.5
     }
@@ -902,9 +902,9 @@
    },
    "educacao": {
     "n": 2,
-    "matriculas": 959,
+    "matriculas": 892,
     "docentes": 49,
-    "valor_exposto_brl": 9944415.8,
+    "valor_exposto_brl": 9279675.49,
     "etapas": {
      "infantil": 71,
      "fundamental": 821,
@@ -917,17 +917,17 @@
      {
       "nome": "Municipal",
       "n": 2,
-      "valor_exposto_brl": 9944415.8,
-      "matriculas": 959,
+      "valor_exposto_brl": 9279675.49,
+      "matriculas": 892,
       "docentes": 49
      }
     ]
    },
    "agricultura": {
-    "area_ha": 2460.72,
+    "area_ha": 2460.71,
     "culturas": {
      "Arroz": 2209.07,
-     "Outras Lavouras Temporárias": 209.07,
+     "Outras Lavouras Temporárias": 209.06,
      "Soja": 42.58
     }
    }
@@ -1141,9 +1141,9 @@
    },
    "educacao": {
     "n": 2,
-    "matriculas": 959,
+    "matriculas": 892,
     "docentes": 49,
-    "valor_exposto_brl": 9944415.8,
+    "valor_exposto_brl": 9279675.49,
     "etapas": {
      "infantil": 71,
      "fundamental": 821,
@@ -1156,17 +1156,17 @@
      {
       "nome": "Municipal",
       "n": 2,
-      "valor_exposto_brl": 9944415.8,
-      "matriculas": 959,
+      "valor_exposto_brl": 9279675.49,
+      "matriculas": 892,
       "docentes": 49
      }
     ]
    },
    "agricultura": {
-    "area_ha": 4206.59,
+    "area_ha": 4206.58,
     "culturas": {
      "Arroz": 3901.36,
-     "Outras Lavouras Temporárias": 259.05,
+     "Outras Lavouras Temporárias": 259.04,
      "Soja": 46.18
     }
    }
@@ -1411,9 +1411,9 @@
    },
    "educacao": {
     "n": 17,
-    "matriculas": 4888,
+    "matriculas": 4623,
     "docentes": 252,
-    "valor_exposto_brl": 51831131.34,
+    "valor_exposto_brl": 49281306.57,
     "etapas": {
      "infantil": 676,
      "fundamental": 3340,
@@ -1426,31 +1426,31 @@
      {
       "nome": "Municipal",
       "n": 10,
-      "valor_exposto_brl": 37780862.69,
-      "matriculas": 3493,
+      "valor_exposto_brl": 35915621.23,
+      "matriculas": 3304,
       "docentes": 164
      },
      {
       "nome": "Estadual",
       "n": 5,
-      "valor_exposto_brl": 7853579.34,
-      "matriculas": 855,
+      "valor_exposto_brl": 7327739.99,
+      "matriculas": 795,
       "docentes": 49
      },
      {
       "nome": "Privada",
       "n": 2,
-      "valor_exposto_brl": 6196689.31,
-      "matriculas": 540,
+      "valor_exposto_brl": 6037945.36,
+      "matriculas": 524,
       "docentes": 39
      }
     ]
    },
    "agricultura": {
-    "area_ha": 4972.78,
+    "area_ha": 4972.77,
     "culturas": {
-     "Arroz": 4661.03,
-     "Outras Lavouras Temporárias": 265.57,
+     "Arroz": 4661.04,
+     "Outras Lavouras Temporárias": 265.55,
      "Soja": 46.18
     }
    }
@@ -1695,9 +1695,9 @@
    },
    "educacao": {
     "n": 25,
-    "matriculas": 7362,
+    "matriculas": 6973,
     "docentes": 372,
-    "valor_exposto_brl": 77653236.51,
+    "valor_exposto_brl": 73892989.09,
     "etapas": {
      "infantil": 1271,
      "fundamental": 4402,
@@ -1710,31 +1710,31 @@
      {
       "nome": "Municipal",
       "n": 16,
-      "valor_exposto_brl": 58811023.64,
-      "matriculas": 5315,
+      "valor_exposto_brl": 56013161.44,
+      "matriculas": 5030,
       "docentes": 254
      },
      {
       "nome": "Estadual",
       "n": 6,
-      "valor_exposto_brl": 11766974.98,
-      "matriculas": 1452,
+      "valor_exposto_brl": 10963333.71,
+      "matriculas": 1364,
       "docentes": 74
      },
      {
       "nome": "Privada",
       "n": 3,
-      "valor_exposto_brl": 7075237.89,
-      "matriculas": 595,
+      "valor_exposto_brl": 6916493.93,
+      "matriculas": 579,
       "docentes": 44
      }
     ]
    },
    "agricultura": {
-    "area_ha": 6373.91,
+    "area_ha": 6373.89,
     "culturas": {
      "Arroz": 6032.99,
-     "Outras Lavouras Temporárias": 290.82,
+     "Outras Lavouras Temporárias": 290.8,
      "Soja": 50.1
     }
    }
@@ -1894,10 +1894,10 @@
     ]
    },
    "saude": {
-    "n": 24,
+    "n": 21,
     "leitos": 0,
     "profissionais": 456,
-    "valor_exposto_brl": 27842609.52,
+    "valor_exposto_brl": 27660631.68,
     "staff": {
      "staff_medicos": 166,
      "staff_enfermagem": 164,
@@ -1934,18 +1934,18 @@
       "profissionais": 60
      },
      {
-      "nome": "Ambulatório",
-      "n": 9,
-      "valor_exposto_brl": 1880437.68,
-      "leitos": 0,
-      "profissionais": 29
-     },
-     {
       "nome": "Central de Gestao em Saude",
       "n": 1,
       "valor_exposto_brl": 1880437.68,
       "leitos": 0,
       "profissionais": 31
+     },
+     {
+      "nome": "Ambulatório",
+      "n": 7,
+      "valor_exposto_brl": 1759119.12,
+      "leitos": 0,
+      "profissionais": 29
      },
      {
       "nome": "Unidade de Atencao Domiciliar",
@@ -1970,8 +1970,8 @@
      },
      {
       "nome": "Farmacia",
-      "n": 4,
-      "valor_exposto_brl": 242637.12,
+      "n": 3,
+      "valor_exposto_brl": 181977.84,
       "leitos": 0,
       "profissionais": 3
      }
@@ -1979,9 +1979,9 @@
    },
    "educacao": {
     "n": 26,
-    "matriculas": 7464,
+    "matriculas": 7071,
     "docentes": 378,
-    "valor_exposto_brl": 79258336.31,
+    "valor_exposto_brl": 75458402.91,
     "etapas": {
      "infantil": 1369,
      "fundamental": 4402,
@@ -1994,31 +1994,31 @@
      {
       "nome": "Municipal",
       "n": 17,
-      "valor_exposto_brl": 60416123.45,
-      "matriculas": 5417,
+      "valor_exposto_brl": 57578575.26,
+      "matriculas": 5128,
       "docentes": 260
      },
      {
       "nome": "Estadual",
       "n": 6,
-      "valor_exposto_brl": 11766974.98,
-      "matriculas": 1452,
+      "valor_exposto_brl": 10963333.71,
+      "matriculas": 1364,
       "docentes": 74
      },
      {
       "nome": "Privada",
       "n": 3,
-      "valor_exposto_brl": 7075237.89,
-      "matriculas": 595,
+      "valor_exposto_brl": 6916493.93,
+      "matriculas": 579,
       "docentes": 44
      }
     ]
    },
    "agricultura": {
-    "area_ha": 6654.11,
+    "area_ha": 6654.1,
     "culturas": {
      "Arroz": 6288.07,
-     "Outras Lavouras Temporárias": 295.27,
+     "Outras Lavouras Temporárias": 295.26,
      "Soja": 70.77
     }
    }
@@ -2178,10 +2178,10 @@
     ]
    },
    "saude": {
-    "n": 30,
+    "n": 27,
     "leitos": 0,
     "profissionais": 471,
-    "valor_exposto_brl": 28752498.72,
+    "valor_exposto_brl": 28570520.88,
     "staff": {
      "staff_medicos": 170,
      "staff_enfermagem": 168,
@@ -2219,8 +2219,8 @@
      },
      {
       "nome": "Ambulatório",
-      "n": 12,
-      "valor_exposto_brl": 2487030.48,
+      "n": 10,
+      "valor_exposto_brl": 2365711.92,
       "leitos": 0,
       "profissionais": 39
      },
@@ -2254,8 +2254,8 @@
      },
      {
       "nome": "Farmacia",
-      "n": 6,
-      "valor_exposto_brl": 363955.68,
+      "n": 5,
+      "valor_exposto_brl": 303296.4,
       "leitos": 0,
       "profissionais": 5
      }
@@ -2263,9 +2263,9 @@
    },
    "educacao": {
     "n": 29,
-    "matriculas": 8481,
+    "matriculas": 8048,
     "docentes": 428,
-    "valor_exposto_brl": 90740881.82,
+    "valor_exposto_brl": 86544088.53,
     "etapas": {
      "infantil": 1637,
      "fundamental": 5046,
@@ -2278,31 +2278,31 @@
      {
       "nome": "Municipal",
       "n": 18,
-      "valor_exposto_brl": 69351126.13,
-      "matriculas": 6273,
+      "valor_exposto_brl": 66156404.05,
+      "matriculas": 5948,
       "docentes": 302
      },
      {
       "nome": "Estadual",
       "n": 6,
-      "valor_exposto_brl": 11766974.98,
-      "matriculas": 1452,
+      "valor_exposto_brl": 10963333.71,
+      "matriculas": 1364,
       "docentes": 74
      },
      {
       "nome": "Privada",
       "n": 5,
-      "valor_exposto_brl": 9622780.71,
-      "matriculas": 756,
+      "valor_exposto_brl": 9424350.76,
+      "matriculas": 736,
       "docentes": 52
      }
     ]
    },
    "agricultura": {
-    "area_ha": 7231.24,
+    "area_ha": 7231.21,
     "culturas": {
-     "Arroz": 6844.79,
-     "Outras Lavouras Temporárias": 304.91,
+     "Arroz": 6844.78,
+     "Outras Lavouras Temporárias": 304.89,
      "Soja": 81.54
     }
    }
@@ -2462,10 +2462,10 @@
     ]
    },
    "saude": {
-    "n": 33,
+    "n": 30,
     "leitos": 0,
     "profissionais": 474,
-    "valor_exposto_brl": 28934476.56,
+    "valor_exposto_brl": 28752498.72,
     "staff": {
      "staff_medicos": 170,
      "staff_enfermagem": 168,
@@ -2503,8 +2503,8 @@
      },
      {
       "nome": "Ambulatório",
-      "n": 14,
-      "valor_exposto_brl": 2608349.04,
+      "n": 12,
+      "valor_exposto_brl": 2487030.48,
       "leitos": 0,
       "profissionais": 41
      },
@@ -2530,26 +2530,26 @@
       "profissionais": 9
      },
      {
-      "nome": "Farmacia",
-      "n": 7,
-      "valor_exposto_brl": 424614.96,
-      "leitos": 0,
-      "profissionais": 6
-     },
-     {
       "nome": "Central de Abastecimento",
       "n": 1,
       "valor_exposto_brl": 424614.96,
       "leitos": 0,
       "profissionais": 7
+     },
+     {
+      "nome": "Farmacia",
+      "n": 6,
+      "valor_exposto_brl": 363955.68,
+      "leitos": 0,
+      "profissionais": 6
      }
     ]
    },
    "educacao": {
     "n": 32,
-    "matriculas": 8650,
+    "matriculas": 8215,
     "docentes": 443,
-    "valor_exposto_brl": 93428317.75,
+    "valor_exposto_brl": 89211681.46,
     "etapas": {
      "infantil": 1804,
      "fundamental": 5046,
@@ -2562,22 +2562,22 @@
      {
       "nome": "Municipal",
       "n": 18,
-      "valor_exposto_brl": 69351126.13,
-      "matriculas": 6273,
+      "valor_exposto_brl": 66156404.05,
+      "matriculas": 5948,
       "docentes": 302
      },
      {
       "nome": "Privada",
       "n": 8,
-      "valor_exposto_brl": 12310216.64,
-      "matriculas": 925,
+      "valor_exposto_brl": 12091943.7,
+      "matriculas": 903,
       "docentes": 67
      },
      {
       "nome": "Estadual",
       "n": 6,
-      "valor_exposto_brl": 11766974.98,
-      "matriculas": 1452,
+      "valor_exposto_brl": 10963333.71,
+      "matriculas": 1364,
       "docentes": 74
      }
     ]
@@ -2585,8 +2585,8 @@
    "agricultura": {
     "area_ha": 7834.18,
     "culturas": {
-     "Arroz": 7424.21,
-     "Outras Lavouras Temporárias": 314.41,
+     "Arroz": 7424.22,
+     "Outras Lavouras Temporárias": 314.4,
      "Soja": 95.56
     }
    }
@@ -2746,10 +2746,10 @@
     ]
    },
    "saude": {
-    "n": 36,
+    "n": 32,
     "leitos": 0,
     "profissionais": 529,
-    "valor_exposto_brl": 32331396.24,
+    "valor_exposto_brl": 32088759.12,
     "staff": {
      "staff_medicos": 183,
      "staff_enfermagem": 185,
@@ -2787,8 +2787,8 @@
      },
      {
       "nome": "Ambulatório",
-      "n": 16,
-      "valor_exposto_brl": 2790326.88,
+      "n": 13,
+      "valor_exposto_brl": 2608349.04,
       "leitos": 0,
       "profissionais": 43
      },
@@ -2814,26 +2814,26 @@
       "profissionais": 9
      },
      {
-      "nome": "Farmacia",
-      "n": 7,
-      "valor_exposto_brl": 424614.96,
-      "leitos": 0,
-      "profissionais": 6
-     },
-     {
       "nome": "Central de Abastecimento",
       "n": 1,
       "valor_exposto_brl": 424614.96,
       "leitos": 0,
       "profissionais": 7
+     },
+     {
+      "nome": "Farmacia",
+      "n": 6,
+      "valor_exposto_brl": 363955.68,
+      "leitos": 0,
+      "profissionais": 6
      }
     ]
    },
    "educacao": {
     "n": 34,
-    "matriculas": 8707,
+    "matriculas": 8268,
     "docentes": 449,
-    "valor_exposto_brl": 94706206.58,
+    "valor_exposto_brl": 90489570.3,
     "etapas": {
      "infantil": 1857,
      "fundamental": 5046,
@@ -2846,31 +2846,31 @@
      {
       "nome": "Municipal",
       "n": 18,
-      "valor_exposto_brl": 69351126.13,
-      "matriculas": 6273,
+      "valor_exposto_brl": 66156404.05,
+      "matriculas": 5948,
       "docentes": 302
      },
      {
       "nome": "Privada",
       "n": 10,
-      "valor_exposto_brl": 13588105.47,
-      "matriculas": 982,
+      "valor_exposto_brl": 13369832.53,
+      "matriculas": 956,
       "docentes": 73
      },
      {
       "nome": "Estadual",
       "n": 6,
-      "valor_exposto_brl": 11766974.98,
-      "matriculas": 1452,
+      "valor_exposto_brl": 10963333.71,
+      "matriculas": 1364,
       "docentes": 74
      }
     ]
    },
    "agricultura": {
-    "area_ha": 8247.2,
+    "area_ha": 8247.19,
     "culturas": {
      "Arroz": 7824.26,
-     "Outras Lavouras Temporárias": 320.2,
+     "Outras Lavouras Temporárias": 320.19,
      "Soja": 102.74
     }
    }
@@ -3030,10 +3030,10 @@
     ]
    },
    "saude": {
-    "n": 40,
+    "n": 34,
     "leitos": 0,
     "profissionais": 533,
-    "valor_exposto_brl": 32695351.92,
+    "valor_exposto_brl": 32331396.24,
     "staff": {
      "staff_medicos": 184,
      "staff_enfermagem": 185,
@@ -3064,15 +3064,15 @@
      },
      {
       "nome": "Outros",
-      "n": 2,
-      "valor_exposto_brl": 3700216.08,
+      "n": 1,
+      "valor_exposto_brl": 3639556.8,
       "leitos": 0,
       "profissionais": 60
      },
      {
       "nome": "Ambulatório",
-      "n": 19,
-      "valor_exposto_brl": 3093623.28,
+      "n": 15,
+      "valor_exposto_brl": 2850986.16,
       "leitos": 0,
       "profissionais": 47
      },
@@ -3098,26 +3098,26 @@
       "profissionais": 9
      },
      {
-      "nome": "Farmacia",
-      "n": 7,
-      "valor_exposto_brl": 424614.96,
-      "leitos": 0,
-      "profissionais": 6
-     },
-     {
       "nome": "Central de Abastecimento",
       "n": 1,
       "valor_exposto_brl": 424614.96,
       "leitos": 0,
       "profissionais": 7
+     },
+     {
+      "nome": "Farmacia",
+      "n": 6,
+      "valor_exposto_brl": 363955.68,
+      "leitos": 0,
+      "profissionais": 6
      }
     ]
    },
    "educacao": {
     "n": 34,
-    "matriculas": 8707,
+    "matriculas": 8268,
     "docentes": 449,
-    "valor_exposto_brl": 94706206.58,
+    "valor_exposto_brl": 90489570.3,
     "etapas": {
      "infantil": 1857,
      "fundamental": 5046,
@@ -3130,31 +3130,31 @@
      {
       "nome": "Municipal",
       "n": 18,
-      "valor_exposto_brl": 69351126.13,
-      "matriculas": 6273,
+      "valor_exposto_brl": 66156404.05,
+      "matriculas": 5948,
       "docentes": 302
      },
      {
       "nome": "Privada",
       "n": 10,
-      "valor_exposto_brl": 13588105.47,
-      "matriculas": 982,
+      "valor_exposto_brl": 13369832.53,
+      "matriculas": 956,
       "docentes": 73
      },
      {
       "nome": "Estadual",
       "n": 6,
-      "valor_exposto_brl": 11766974.98,
-      "matriculas": 1452,
+      "valor_exposto_brl": 10963333.71,
+      "matriculas": 1364,
       "docentes": 74
      }
     ]
    },
    "agricultura": {
-    "area_ha": 8635.82,
+    "area_ha": 8635.79,
     "culturas": {
-     "Arroz": 8200.46,
-     "Outras Lavouras Temporárias": 324.89,
+     "Arroz": 8200.45,
+     "Outras Lavouras Temporárias": 324.87,
      "Soja": 110.47
     }
    }
@@ -3314,10 +3314,10 @@
     ]
    },
    "saude": {
-    "n": 40,
+    "n": 34,
     "leitos": 0,
     "profissionais": 533,
-    "valor_exposto_brl": 32695351.92,
+    "valor_exposto_brl": 32331396.24,
     "staff": {
      "staff_medicos": 184,
      "staff_enfermagem": 185,
@@ -3348,15 +3348,15 @@
      },
      {
       "nome": "Outros",
-      "n": 2,
-      "valor_exposto_brl": 3700216.08,
+      "n": 1,
+      "valor_exposto_brl": 3639556.8,
       "leitos": 0,
       "profissionais": 60
      },
      {
       "nome": "Ambulatório",
-      "n": 19,
-      "valor_exposto_brl": 3093623.28,
+      "n": 15,
+      "valor_exposto_brl": 2850986.16,
       "leitos": 0,
       "profissionais": 47
      },
@@ -3382,26 +3382,26 @@
       "profissionais": 9
      },
      {
-      "nome": "Farmacia",
-      "n": 7,
-      "valor_exposto_brl": 424614.96,
-      "leitos": 0,
-      "profissionais": 6
-     },
-     {
       "nome": "Central de Abastecimento",
       "n": 1,
       "valor_exposto_brl": 424614.96,
       "leitos": 0,
       "profissionais": 7
+     },
+     {
+      "nome": "Farmacia",
+      "n": 6,
+      "valor_exposto_brl": 363955.68,
+      "leitos": 0,
+      "profissionais": 6
      }
     ]
    },
    "educacao": {
     "n": 35,
-    "matriculas": 8735,
+    "matriculas": 8296,
     "docentes": 453,
-    "valor_exposto_brl": 95345151.0,
+    "valor_exposto_brl": 91128514.71,
     "etapas": {
      "infantil": 1885,
      "fundamental": 5046,
@@ -3414,31 +3414,31 @@
      {
       "nome": "Municipal",
       "n": 18,
-      "valor_exposto_brl": 69351126.13,
-      "matriculas": 6273,
+      "valor_exposto_brl": 66156404.05,
+      "matriculas": 5948,
       "docentes": 302
      },
      {
       "nome": "Privada",
       "n": 11,
-      "valor_exposto_brl": 14227049.89,
-      "matriculas": 1010,
+      "valor_exposto_brl": 14008776.95,
+      "matriculas": 984,
       "docentes": 77
      },
      {
       "nome": "Estadual",
       "n": 6,
-      "valor_exposto_brl": 11766974.98,
-      "matriculas": 1452,
+      "valor_exposto_brl": 10963333.71,
+      "matriculas": 1364,
       "docentes": 74
      }
     ]
    },
    "agricultura": {
-    "area_ha": 9106.62,
+    "area_ha": 9106.59,
     "culturas": {
-     "Arroz": 8656.31,
-     "Outras Lavouras Temporárias": 331.46,
+     "Arroz": 8656.3,
+     "Outras Lavouras Temporárias": 331.44,
      "Soja": 118.85
     }
    }

@@ -150,7 +150,7 @@ const TRILHAS: { titulo: string; sub: string }[][] = [
   ],
   [
     { titulo: "Território", sub: "ruas, lotes e prédios" },
-    { titulo: "Uso do solo", sub: "MapBiomas 2023/2024" },
+    { titulo: "Uso do solo", sub: "MapBiomas 2024" },
     { titulo: "Polígonos", sub: "recorte espacial" },
   ],
   [

@@ -43,7 +43,7 @@ function Eixo({ max, fmt }: { max: number; fmt: (v: number) => string }) {
               x={PL - 6}
               y={y + 3}
               textAnchor="end"
-              fontSize={10}
+              fontSize={11}
               fill="#64748b"
             >
               {fmt(t)}
@@ -280,7 +280,7 @@ export function GraficoLinhas({
                 x={px(s.valores.length - 1) + 8}
                 y={yFinalPorSerie[idx] ?? py(vFinal) + 4}
                 textAnchor="start"
-                fontSize={10}
+                fontSize={11}
                 fontWeight={700}
                 fill={s.cor}
               >
@@ -345,7 +345,7 @@ export function GraficoBarrasAgrupadas({
                       x={x + larg / 2}
                       y={y - 4}
                       textAnchor="middle"
-                      fontSize={9}
+                      fontSize={11}
                       fontWeight={700}
                       fill={s.cor}
                     >

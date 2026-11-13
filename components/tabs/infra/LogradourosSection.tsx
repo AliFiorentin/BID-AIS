@@ -47,7 +47,7 @@ export function LogradourosSection({ ocultoNoMapa, dash }: Props) {
         <>
           <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg mb-2" style={PANEL_HDR}>
             <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: cor }} />
-            <h3 className="text-[10px] font-black uppercase tracking-wider text-white">Logradouros</h3>
+            <h3 className="text-[11px] font-black uppercase tracking-wider text-white">Logradouros</h3>
           </div>
           <p className="text-xs text-center py-2 text-muted-foreground">Carregando...</p>
         </>
@@ -55,7 +55,7 @@ export function LogradourosSection({ ocultoNoMapa, dash }: Props) {
         <KPICard
           titulo="Logradouros"
           cor={cor}
-          extra={ocultoNoMapa ? <span className="text-[9px] font-medium text-white/75">oculto no mapa</span> : undefined}
+          extra={ocultoNoMapa ? <span className="text-[11px] font-medium text-white/75">oculto no mapa</span> : undefined}
           principal={{
             valor: compactoBr(mostraImpacto ? ruasAtg : ruasBase, 0),
             sub: mostraImpacto ? "Atingidas" : "Total",
@@ -72,7 +72,7 @@ export function LogradourosSection({ ocultoNoMapa, dash }: Props) {
             <div className="border-t" style={{ borderColor: "rgba(5,80,113,0.15)" }}>
               <button
                 onClick={() => setShowListaLogradouros((p) => !p)}
-                className="w-full flex items-center justify-between px-3 py-2 text-[10px] font-bold text-white"
+                className="w-full flex items-center justify-between px-3 py-2 text-[11px] font-bold text-white"
                 style={PANEL_HDR}
               >
                 <span>Ruas Atingidas ({listaRuas.length})</span>
@@ -84,7 +84,7 @@ export function LogradourosSection({ ocultoNoMapa, dash }: Props) {
                   style={{ backgroundColor: PANEL_CARD_BG, scrollbarColor: "#055071 transparent" }}
                 >
                   {listaRuas.map((label, i) => (
-                    <span key={i} className="text-[10px] px-1.5 py-0.5 rounded text-muted-foreground" title={label}>{label}</span>
+                    <span key={i} className="text-[11px] px-1.5 py-0.5 rounded text-muted-foreground" title={label}>{label}</span>
                   ))}
                 </div>
               )}
@@ -92,7 +92,7 @@ export function LogradourosSection({ ocultoNoMapa, dash }: Props) {
           )}
           {(drenBase > 0 || ilumBase > 0) && (
             <div className="border-t px-3 py-2.5 flex flex-col gap-2" style={{ borderColor: "rgba(5,80,113,0.15)" }}>
-              <span className="text-[9px] font-bold uppercase tracking-wide text-muted-foreground">Cobertura de Serviços</span>
+              <span className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">Cobertura de Serviços</span>
               {drenBase > 0 && <BarServico label="Drenagem" value={mostraImpacto ? drenAtg : drenBase} total={segBase} cor={cor} />}
               {ilumBase > 0 && <BarServico label="Iluminação" value={mostraImpacto ? ilumAtg : ilumBase} total={segBase} cor={cor} />}
             </div>

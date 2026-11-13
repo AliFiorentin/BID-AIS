@@ -554,7 +554,7 @@ function ScenarioCompareMapInner({
             {/* Seletor Lado A (Esquerda / Azul) */}
             <div className="flex items-center gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full bg-[#055071] border border-white/50 shrink-0" />
-              <span className="text-[10px] font-bold text-white/70 uppercase">Lado A:</span>
+              <span className="text-[11px] font-bold text-white/70 uppercase">Lado A:</span>
               {modo === "cotas" ? (
                 <Select
                   value={cotaA != null ? String(cotaA) : ""}
@@ -590,7 +590,7 @@ function ScenarioCompareMapInner({
             {/* Seletor Lado B (Direita / Vermelho) */}
             <div className="flex items-center gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full bg-[#c9402e] border border-white/50 shrink-0" />
-              <span className="text-[10px] font-bold text-white/70 uppercase">Lado B:</span>
+              <span className="text-[11px] font-bold text-white/70 uppercase">Lado B:</span>
               {modo === "cotas" ? (
                 <Select
                   value={cotaB != null ? String(cotaB) : ""}

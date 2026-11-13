@@ -299,10 +299,10 @@ export default function Dashboard() {
             className="flex w-full shrink-0 items-center justify-between gap-2 px-2 py-1"
             style={{ background: BRAND_GRADIENT }}
           >
-            <span className="text-[7.5px] font-black tracking-wider text-white uppercase">
+            <span className="text-[11px] font-black tracking-wider text-white uppercase">
               Legenda
             </span>
-            <span className="text-white/80" style={{ fontSize: 7.5 }}>
+            <span className="text-white/80" style={{ fontSize: 11 }}>
               {showLegenda ? "▼" : "▲"}
             </span>
           </button>
@@ -375,13 +375,13 @@ export default function Dashboard() {
                                 />
                                 <div className="flex flex-col gap-0.5 leading-none">
                                   <span
-                                    className="text-[10px] font-medium"
+                                    className="text-[11px] font-medium"
                                     style={{ color: C.primary }}
                                   >
                                     0% → 100%
                                   </span>
                                   <span
-                                    className="text-[8px]"
+                                    className="text-[11px]"
                                     style={{ color: C.muted }}
                                   >
                                     do valor de reposição
@@ -452,13 +452,13 @@ export default function Dashboard() {
                               />
                               <div className="flex flex-col gap-0.5 leading-none">
                                 <span
-                                  className="text-[10px] font-medium"
+                                  className="text-[11px] font-medium"
                                   style={{ color: C.primary }}
                                 >
                                   Pop. (hab./pixel)
                                 </span>
                                 <span
-                                  className="text-[8px]"
+                                  className="text-[11px]"
                                   style={{ color: C.muted }}
                                 >
                                   baixo → alto
@@ -511,7 +511,7 @@ export default function Dashboard() {
                                   />
                                   <div className="flex flex-col gap-0.5 leading-none">
                                     <span
-                                      className="text-[10px] font-medium"
+                                      className="text-[11px] font-medium"
                                       style={{ color: C.primary }}
                                     >
                                       0 →{" "}
@@ -521,7 +521,7 @@ export default function Dashboard() {
                                       dias
                                     </span>
                                     <span
-                                      className="text-[8px]"
+                                      className="text-[11px]"
                                       style={{ color: C.muted }}
                                     >
                                       CLIMADA · UNU-EHS
@@ -549,7 +549,7 @@ export default function Dashboard() {
 
                 if (secoes.length === 0)
                   return (
-                    <span className="text-[9px]" style={{ color: C.muted }}>
+                    <span className="text-[11px]" style={{ color: C.muted }}>
                       Nenhuma camada ativa.
                     </span>
                   )
@@ -561,7 +561,7 @@ export default function Dashboard() {
                     style={{ borderColor: C.border }}
                   >
                     <div
-                      className="text-[7px] font-black tracking-wider uppercase"
+                      className="text-[11px] font-black tracking-wider uppercase"
                       style={{ color: C.muted }}
                     >
                       {titulo}
@@ -591,12 +591,12 @@ export default function Dashboard() {
           style={glassStyle(0.55)}
         >
           <span
-            className="text-[9px] font-black tracking-wider uppercase"
+            className="text-[11px] font-black tracking-wider uppercase"
             style={{ color: C.muted }}
           >
             © GPEa — Grupo de Pesquisa em Economia Azul
           </span>
-          <span className="text-[9px]" style={{ color: C.muted }}>
+          <span className="text-[11px]" style={{ color: C.muted }}>
             {" "}
             | Alisson T. G. Fiorentin
           </span>

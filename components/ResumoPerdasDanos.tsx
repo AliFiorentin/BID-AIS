@@ -4,7 +4,13 @@ import React, { useEffect, useState } from "react"
 import Link from "next/link"
 import { Skeleton } from "@/components/ui/skeleton"
 import { TrendingDown, Waves } from "lucide-react"
-import { MUNICIPIOS, PIORES_CENARIOS, COTAS_CENARIO, PANEL_CARD_BG, C } from "@/lib/constants"
+import {
+  MUNICIPIOS,
+  PIORES_CENARIOS,
+  COTAS_CENARIO,
+  PANEL_CARD_BG,
+  C,
+} from "@/lib/constants"
 import { compactoBr, findCenarioData, slugify } from "@/lib/geo-utils"
 import { scaleTo } from "@/app/danos/helpers"
 import { MetricInfoPopover } from "@/components/MetricInfoPopover"
@@ -68,14 +74,14 @@ function Cartao({
         className="flex items-center justify-between gap-1 px-2.5 py-[5px]"
         style={{ background: BRAND_GRADIENT }}
       >
-        <div className="flex items-center gap-1.5 min-w-0">
+        <div className="flex min-w-0 items-center gap-1.5">
           <span className="text-white">{icone}</span>
-          <span className="truncate text-[9px] font-black tracking-wide text-white uppercase">
+          <span className="truncate text-[11px] font-black tracking-wide text-white uppercase">
             {titulo}
           </span>
         </div>
         <div
-          className="flex items-center gap-1 shrink-0"
+          className="flex shrink-0 items-center gap-1"
           onClick={(e) => {
             e.stopPropagation()
           }}
@@ -84,18 +90,18 @@ function Cartao({
         </div>
       </div>
       <div
-        className="flex-1 px-2.5 py-2 flex flex-col justify-between"
+        className="flex flex-1 flex-col justify-between px-2.5 py-2"
         style={{ backgroundColor: PANEL_CARD_BG }}
       >
         <div>
           <div className="flex items-center justify-between gap-1">
-            <div className="text-[9px] font-bold tracking-wide text-slate-500 uppercase">
+            <div className="text-[11px] font-bold tracking-wide text-slate-500 uppercase">
               {rotuloValor}
             </div>
             {seletor}
           </div>
           <div
-            className="text-[17px] leading-tight font-black whitespace-nowrap tabular-nums mt-0.5"
+            className="mt-0.5 text-[17px] leading-tight font-black whitespace-nowrap tabular-nums"
             style={{ color: PRIMARY }}
           >
             {valor}
@@ -104,7 +110,7 @@ function Cartao({
             {linhas.map((l) => (
               <div
                 key={l.rotulo}
-                className="flex items-baseline justify-between gap-1.5 text-[9px] whitespace-nowrap tabular-nums"
+                className="flex items-baseline justify-between gap-1.5 text-[11px] whitespace-nowrap tabular-nums"
               >
                 <dt className="text-slate-500">{l.rotulo}</dt>
                 <dd className="font-bold text-slate-700">{l.valor}</dd>
@@ -113,7 +119,7 @@ function Cartao({
           </dl>
         </div>
         {faixaSensibilidade && (
-          <div className="mt-1.5 pt-1 border-t border-slate-200/60 flex items-center justify-between text-[8px] font-medium text-slate-500">
+          <div className="mt-1.5 flex items-center justify-between border-t border-slate-200/60 pt-1 text-[11px] font-medium text-slate-500">
             <span className="truncate">{faixaSensibilidade}</span>
           </div>
         )}
@@ -137,9 +143,10 @@ export function ResumoPerdasDanos({
   cotaValores?: DetalheCotaValores | null
   cotaAtual?: number | null
 }) {
-  const [diasOp, setDiasOp] = useState<number>(DIAS_PADRAO)
+  const diasOp = DIAS_PADRAO
   const [danosOp, setDanosOp] = useState<DanosData | null>(cacheOperacionais)
-  const [fisicosCenarios, setFisicosCenarios] = useState<DanosFisicosCenarios | null>(cacheFisicosCenarios)
+  const [fisicosCenarios, setFisicosCenarios] =
+    useState<DanosFisicosCenarios | null>(cacheFisicosCenarios)
   const [exposicaoMap, setExposicaoMap] = useState<
     Record<string, ExposicaoMun | null>
   >({ ...cacheExposicao })
@@ -201,8 +208,6 @@ export function ResumoPerdasDanos({
 
   // Perdas operacionais para o cenário atual (ou soma dos piores cenários na Visão Geral), escaladas para diasOp
   let opEntry: CenarioDanos | null = null
-  let opMinTotal = 0
-  let opMaxTotal = 0
   if (danosOp) {
     if (isVisaoGeral) {
       const buildAcc = (targetDias: number) => {
@@ -219,7 +224,8 @@ export function ResumoPerdasDanos({
         }
         MUNICIPIOS.forEach((m) => {
           const cen = PIORES_CENARIOS[m]
-          const raw = cen && danosOp[m] ? findCenarioData(danosOp[m], cen) : null
+          const raw =
+            cen && danosOp[m] ? findCenarioData(danosOp[m], cen) : null
           const d = raw ? scaleTo(raw, targetDias) : null
           if (d) {
             acc.empresas_vab += d.empresas_vab
@@ -235,8 +241,6 @@ export function ResumoPerdasDanos({
       const acc = buildAcc(diasOp)
       if (acc.total > 0) {
         opEntry = acc
-        opMinTotal = buildAcc(30).total
-        opMaxTotal = buildAcc(60).total
       }
     } else {
       const mMap = danosOp[municipio]
@@ -250,8 +254,6 @@ export function ResumoPerdasDanos({
           findCenarioData(mMap, PIORES_CENARIOS[municipio])
         if (raw) {
           opEntry = scaleTo(raw, diasOp)
-          opMinTotal = scaleTo(raw, 30).total
-          opMaxTotal = scaleTo(raw, 60).total
         }
       }
     }
@@ -314,7 +316,10 @@ export function ResumoPerdasDanos({
     if (isVisaoGeral) {
       MUNICIPIOS.forEach((m) => {
         const cen = PIORES_CENARIOS[m]
-        const d = cen && fisicosCenarios[m] ? findCenarioData(fisicosCenarios[m], cen) : null
+        const d =
+          cen && fisicosCenarios[m]
+            ? findCenarioData(fisicosCenarios[m], cen)
+            : null
         if (d) {
           expEmp += d.empresas_valor_brl
           expEdu += d.educacao_valor_brl
@@ -324,7 +329,8 @@ export function ResumoPerdasDanos({
     } else {
       const mMap = fisicosCenarios[municipio]
       if (mMap) {
-        const cenBusca = cenario !== "(nenhum)" ? cenario : PIORES_CENARIOS[municipio]
+        const cenBusca =
+          cenario !== "(nenhum)" ? cenario : PIORES_CENARIOS[municipio]
         const d =
           (cenBusca ? findCenarioData(mMap, cenBusca) : null) ??
           findCenarioData(mMap, PIORES_CENARIOS[municipio])
@@ -337,37 +343,8 @@ export function ResumoPerdasDanos({
     }
   }
   const expTotal = expEmp + expEdu + expSau
-  if (cotaValores === undefined && isVisaoGeral && isCotas) rotuloExp = "Exposição (picos)"
-
-  const seletorDias = (
-    <div
-      className="inline-flex rounded-md p-0.5 bg-slate-200/80 text-[8.5px] font-bold"
-      onClick={(e) => {
-        e.preventDefault()
-        e.stopPropagation()
-      }}
-    >
-      {[30, 45, 60].map((d) => (
-        <button
-          key={d}
-          type="button"
-          onClick={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            setDiasOp(d)
-          }}
-          className={`px-1.5 py-0.5 rounded transition-all ${
-            diasOp === d
-              ? "bg-white text-[#055071] shadow-xs font-black"
-              : "text-slate-600 hover:text-slate-900"
-          }`}
-          title={`Escalar perdas para ${d} dias efetivos`}
-        >
-          {d}d
-        </button>
-      ))}
-    </div>
-  )
+  if (cotaValores === undefined && isVisaoGeral && isCotas)
+    rotuloExp = "Exposição (picos)"
 
   return (
     <div className="flex flex-col gap-1">
@@ -394,9 +371,12 @@ export function ResumoPerdasDanos({
             ]}
             ajuda="DaLA: produção e serviços interrompidos. Clique para abrir Perdas Operacionais."
             href="/perdas-operacionais"
-            extraHeader={<MetricInfoPopover metricKey="perdas_operacionais" title="Perdas Operacionais (DaLA)" />}
-            seletor={seletorDias}
-            faixaSensibilidade={`Faixa (30–60d): ${fmtBRL(opMinTotal)} – ${fmtBRL(opMaxTotal)}`}
+            extraHeader={
+              <MetricInfoPopover
+                metricKey="perdas_operacionais"
+                title="Perdas Operacionais (DaLA)"
+              />
+            }
           />
         )}
         <Cartao
@@ -411,7 +391,12 @@ export function ResumoPerdasDanos({
           ]}
           ajuda="Valor de reposição exposto (CLIMADA / por cota). Clique para abrir Danos Físicos."
           href="/danos-fisicos"
-          extraHeader={<MetricInfoPopover metricKey="danos_fisicos" title="Danos Físicos e Exposição" />}
+          extraHeader={
+            <MetricInfoPopover
+              metricKey="danos_fisicos"
+              title="Danos Físicos e Exposição"
+            />
+          }
           faixaSensibilidade={
             expTotal > 0
               ? `Faixa CUB (±10%): ${fmtBRL(expTotal * 0.9)} – ${fmtBRL(expTotal * 1.1)}`

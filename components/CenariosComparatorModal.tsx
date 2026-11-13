@@ -144,7 +144,7 @@ function fmtDelta(diff: number, isPercent = false): string {
 function DeltaBadge({ diff, pct }: { diff: number; pct: number }) {
   if (Math.abs(diff) < 1e-4) {
     return (
-      <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[9.5px] font-bold bg-slate-100 text-slate-600">
+      <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-bold bg-slate-100 text-slate-600">
         Igual
       </span>
     )
@@ -152,7 +152,7 @@ function DeltaBadge({ diff, pct }: { diff: number; pct: number }) {
   const isIncrease = diff > 0
   return (
     <span
-      className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9.5px] font-bold tabular-nums ${
+      className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[11px] font-bold tabular-nums ${
         isIncrease
           ? "bg-red-50 text-red-700 border border-red-200/60"
           : "bg-emerald-50 text-emerald-700 border border-emerald-200/60"
@@ -486,7 +486,7 @@ export function CenariosComparatorModal({
         <div className="space-y-1.5">
           {/* Barra Lado A */}
           <div className="flex items-center gap-2">
-            <span className="w-12 text-[10px] font-bold text-sky-800 truncate text-right shrink-0">
+            <span className="w-12 text-[11px] font-bold text-sky-800 truncate text-right shrink-0">
               Lado A
             </span>
             <div className="flex-1 h-3.5 bg-slate-100 rounded-md overflow-hidden">
@@ -495,14 +495,14 @@ export function CenariosComparatorModal({
                 style={{ width: `${pctBarA}%` }}
               />
             </div>
-            <span className="w-24 text-right text-[10.5px] font-black text-slate-800 tabular-nums shrink-0">
+            <span className="w-24 text-right text-[11px] font-black text-slate-800 tabular-nums shrink-0">
               {formatValue(valA)}
             </span>
           </div>
 
           {/* Barra Lado B */}
           <div className="flex items-center gap-2">
-            <span className="w-12 text-[10px] font-bold text-rose-800 truncate text-right shrink-0">
+            <span className="w-12 text-[11px] font-bold text-rose-800 truncate text-right shrink-0">
               Lado B
             </span>
             <div className="flex-1 h-3.5 bg-slate-100 rounded-md overflow-hidden">
@@ -511,7 +511,7 @@ export function CenariosComparatorModal({
                 style={{ width: `${pctBarB}%` }}
               />
             </div>
-            <span className="w-24 text-right text-[10.5px] font-black text-slate-800 tabular-nums shrink-0">
+            <span className="w-24 text-right text-[11px] font-black text-slate-800 tabular-nums shrink-0">
               {formatValue(valB)}
             </span>
           </div>
@@ -591,7 +591,7 @@ export function CenariosComparatorModal({
             {/* Seletor Lado A */}
             <div className="flex items-center gap-1.5 shrink-0">
               <span className="h-2 w-2 rounded-full bg-[#38bdf8] shrink-0 shadow-2xs" />
-              <span className="text-[10px] font-bold text-sky-200 uppercase tracking-wide shrink-0">Lado A:</span>
+              <span className="text-[11px] font-bold text-sky-200 uppercase tracking-wide shrink-0">Lado A:</span>
               {tipoComparador === "cotas" ? (
                 <Select
                   value={cotaA != null ? String(cotaA) : ""}
@@ -633,14 +633,14 @@ export function CenariosComparatorModal({
             </div>
 
             {/* Badge Central VS */}
-            <span className="text-[9px] font-black tracking-wider text-white/60 uppercase shrink-0">
+            <span className="text-[11px] font-black tracking-wider text-white/60 uppercase shrink-0">
               vs
             </span>
 
             {/* Seletor Lado B */}
             <div className="flex items-center gap-1.5 shrink-0">
               <span className="h-2 w-2 rounded-full bg-[#f87171] shrink-0 shadow-2xs" />
-              <span className="text-[10px] font-bold text-rose-200 uppercase tracking-wide shrink-0">Lado B:</span>
+              <span className="text-[11px] font-bold text-rose-200 uppercase tracking-wide shrink-0">Lado B:</span>
               {tipoComparador === "cotas" ? (
                 <Select
                   value={cotaB != null ? String(cotaB) : ""}
@@ -754,7 +754,7 @@ export function CenariosComparatorModal({
                       <span className="text-xs font-black text-slate-900 uppercase tracking-wide block">
                         Métricas & Danos
                       </span>
-                      <span className="text-[10px] text-slate-500 font-medium">
+                      <span className="text-[11px] text-slate-500 font-medium">
                         {currentLabelA} vs {currentLabelB}
                       </span>
                     </div>
@@ -805,7 +805,7 @@ export function CenariosComparatorModal({
                                 <span className="text-xs font-black text-slate-900 tracking-wide uppercase block">
                                   Impacto Total Combinado
                                 </span>
-                                <span className="text-[10px] text-slate-500 font-medium">
+                                <span className="text-[11px] text-slate-500 font-medium">
                                   Perdas DaLA (30d) + Danos Físicos de Reposição
                                 </span>
                               </div>
@@ -825,7 +825,7 @@ export function CenariosComparatorModal({
                           <div className="grid grid-cols-2 gap-2.5 pt-2.5">
                             <div className="rounded-lg bg-white/90 p-2.5 border border-sky-100 shadow-2xs">
                               <div className="flex items-center justify-between">
-                                <span className="text-[10px] font-bold text-sky-950 uppercase">
+                                <span className="text-[11px] font-bold text-sky-950 uppercase">
                                   Lado A · {currentLabelA}
                                 </span>
                                 <span className="h-2 w-2 rounded-full bg-[#055071]" />
@@ -833,7 +833,7 @@ export function CenariosComparatorModal({
                               <span className="text-lg font-black text-slate-900 block mt-0.5">
                                 {fmtBRL(metricsA.totalOp + metricsA.totalFis)}
                               </span>
-                              <div className="flex items-center justify-between text-[9.5px] text-slate-500 pt-1 border-t border-slate-100 mt-1">
+                              <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1 border-t border-slate-100 mt-1">
                                 <span>DaLA: {fmtBRL(metricsA.totalOp)}</span>
                                 <span>Físico: {fmtBRL(metricsA.totalFis)}</span>
                               </div>
@@ -841,7 +841,7 @@ export function CenariosComparatorModal({
 
                             <div className="rounded-lg bg-white/90 p-2.5 border border-rose-100 shadow-2xs">
                               <div className="flex items-center justify-between">
-                                <span className="text-[10px] font-bold text-rose-950 uppercase">
+                                <span className="text-[11px] font-bold text-rose-950 uppercase">
                                   Lado B · {currentLabelB}
                                 </span>
                                 <span className="h-2 w-2 rounded-full bg-[#c9402e]" />
@@ -849,7 +849,7 @@ export function CenariosComparatorModal({
                               <span className="text-lg font-black text-cyan-900 block mt-0.5">
                                 {fmtBRL(metricsB.totalOp + metricsB.totalFis)}
                               </span>
-                              <div className="flex items-center justify-between text-[9.5px] text-slate-500 pt-1 border-t border-slate-100 mt-1">
+                              <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1 border-t border-slate-100 mt-1">
                                 <span>DaLA: {fmtBRL(metricsB.totalOp)}</span>
                                 <span>Físico: {fmtBRL(metricsB.totalFis)}</span>
                               </div>
@@ -878,11 +878,11 @@ export function CenariosComparatorModal({
                           </div>
                           <div className="grid grid-cols-2 gap-2 pt-1.5 text-center">
                             <div>
-                              <span className="text-[9px] text-slate-400 block truncate font-medium">Lado A</span>
+                              <span className="text-[11px] text-slate-400 block truncate font-medium">Lado A</span>
                               <span className="text-sm font-black text-slate-800">{metricsA ? fmtBRL(metricsA.totalOp) : "—"}</span>
                             </div>
                             <div className="border-l border-slate-100 pl-2">
-                              <span className="text-[9px] text-slate-400 block truncate font-medium">Lado B</span>
+                              <span className="text-[11px] text-slate-400 block truncate font-medium">Lado B</span>
                               <span className="text-sm font-black text-cyan-800">{metricsB ? fmtBRL(metricsB.totalOp) : "—"}</span>
                             </div>
                           </div>
@@ -906,11 +906,11 @@ export function CenariosComparatorModal({
                           </div>
                           <div className="grid grid-cols-2 gap-2 pt-1.5 text-center">
                             <div>
-                              <span className="text-[9px] text-slate-400 block truncate font-medium">Lado A</span>
+                              <span className="text-[11px] text-slate-400 block truncate font-medium">Lado A</span>
                               <span className="text-sm font-black text-slate-800">{metricsA ? fmtBRL(metricsA.totalFis) : "—"}</span>
                             </div>
                             <div className="border-l border-slate-100 pl-2">
-                              <span className="text-[9px] text-slate-400 block truncate font-medium">Lado B</span>
+                              <span className="text-[11px] text-slate-400 block truncate font-medium">Lado B</span>
                               <span className="text-sm font-black text-blue-800">{metricsB ? fmtBRL(metricsB.totalFis) : "—"}</span>
                             </div>
                           </div>
@@ -934,11 +934,11 @@ export function CenariosComparatorModal({
                           </div>
                           <div className="grid grid-cols-2 gap-2 pt-1.5 text-center">
                             <div>
-                              <span className="text-[9px] text-slate-400 block truncate font-medium">Lado A</span>
+                              <span className="text-[11px] text-slate-400 block truncate font-medium">Lado A</span>
                               <span className="text-sm font-black text-slate-800">{metricsA ? `${compactoBr(metricsA.pop, 1)} hab` : "—"}</span>
                             </div>
                             <div className="border-l border-slate-100 pl-2">
-                              <span className="text-[9px] text-slate-400 block truncate font-medium">Lado B</span>
+                              <span className="text-[11px] text-slate-400 block truncate font-medium">Lado B</span>
                               <span className="text-sm font-black text-indigo-800">{metricsB ? `${compactoBr(metricsB.pop, 1)} hab` : "—"}</span>
                             </div>
                           </div>
@@ -962,11 +962,11 @@ export function CenariosComparatorModal({
                           </div>
                           <div className="grid grid-cols-2 gap-2 pt-1.5 text-center">
                             <div>
-                              <span className="text-[9px] text-slate-400 block truncate font-medium">Lado A</span>
+                              <span className="text-[11px] text-slate-400 block truncate font-medium">Lado A</span>
                               <span className="text-sm font-black text-slate-800">{metricsA ? `${metricsA.area.toFixed(1)} km²` : "—"}</span>
                             </div>
                             <div className="border-l border-slate-100 pl-2">
-                              <span className="text-[9px] text-slate-400 block truncate font-medium">Lado B</span>
+                              <span className="text-[11px] text-slate-400 block truncate font-medium">Lado B</span>
                               <span className="text-sm font-black text-emerald-800">{metricsB ? `${metricsB.area.toFixed(1)} km²` : "—"}</span>
                             </div>
                           </div>
@@ -981,7 +981,7 @@ export function CenariosComparatorModal({
                               <TrendingDown size={13} className="text-[#055071]" />
                               Comparativo Financeiro por Dimensão
                             </span>
-                            <span className="text-[10px] font-bold text-slate-400">
+                            <span className="text-[11px] font-bold text-slate-400">
                               Valores em R$
                             </span>
                           </div>
@@ -1005,7 +1005,7 @@ export function CenariosComparatorModal({
                               <Building2 size={13} className="text-[#055071]" />
                               Ativos e Infraestrutura Atingida
                             </span>
-                            <span className="text-[10px] font-bold text-slate-400">
+                            <span className="text-[11px] font-bold text-slate-400">
                               Quantitativo Físico
                             </span>
                           </div>
@@ -1069,7 +1069,7 @@ export function CenariosComparatorModal({
                       <div className="rounded-xl border border-slate-200 bg-white shadow-xs overflow-hidden mb-2">
                         <div className="overflow-x-auto">
                           <div className="min-w-[480px]">
-                            <div className="grid grid-cols-12 gap-2 py-2 px-3 bg-slate-100 text-[10px] font-bold text-slate-600 uppercase tracking-wider sticky top-0 z-10 border-b border-slate-200">
+                            <div className="grid grid-cols-12 gap-2 py-2 px-3 bg-slate-100 text-[11px] font-bold text-slate-600 uppercase tracking-wider sticky top-0 z-10 border-b border-slate-200">
                               <div className="col-span-4">Dimensão / Métrica</div>
                               <div className="col-span-3 text-right">Lado A ({currentLabelA})</div>
                               <div className="col-span-3 text-right">Lado B ({currentLabelB})</div>
@@ -1079,28 +1079,28 @@ export function CenariosComparatorModal({
                             {metricsA && metricsB && (
                               <div className="divide-y divide-slate-100">
                                 {/* Território & População */}
-                                <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                <div className="px-3 py-1 bg-slate-50 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
                                   Território e População
                                 </div>
                                 {renderRow("População Atingida", <Users size={12} />, metricsA.pop, metricsB.pop, false, " hab")}
                                 {renderRow("Área Inundada", <MapPin size={12} />, metricsA.area, metricsB.area, false, " km²")}
 
                                 {/* Empresas */}
-                                <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                <div className="px-3 py-1 bg-slate-50 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
                                   Empresas e Atividade Econômica
                                 </div>
                                 {renderRow("Empresas Atingidas", <Building2 size={12} />, metricsA.empAtg, metricsB.empAtg)}
                                 {renderRow("Perda de VAB (DaLA)", <TrendingDown size={12} />, metricsA.vabEmp, metricsB.vabEmp, true)}
 
                                 {/* Educação */}
-                                <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                <div className="px-3 py-1 bg-slate-50 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
                                   Educação
                                 </div>
                                 {renderRow("Escolas Atingidas", <GraduationCap size={12} />, metricsA.eduAtg, metricsB.eduAtg)}
                                 {renderRow("Perdas Operacionais", <TrendingDown size={12} />, metricsA.eduPerdas, metricsB.eduPerdas, true)}
 
                                 {/* Saúde */}
-                                <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                <div className="px-3 py-1 bg-slate-50 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
                                   Saúde
                                 </div>
                                 {renderRow("Unidades de Saúde", <HeartPulse size={12} />, metricsA.sauAtg, metricsB.sauAtg)}
@@ -1109,7 +1109,7 @@ export function CenariosComparatorModal({
                                 {/* Agricultura */}
                                 {(metricsA.agrPerdas > 0 || metricsB.agrPerdas > 0) && (
                                   <>
-                                    <div className="px-3 py-1 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                    <div className="px-3 py-1 bg-slate-50 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
                                       Agricultura
                                     </div>
                                     {renderRow("Prejuízo Agrícola", <Sprout size={12} />, metricsA.agrPerdas, metricsB.agrPerdas, true)}
@@ -1117,7 +1117,7 @@ export function CenariosComparatorModal({
                                 )}
 
                                 {/* Totais Finais */}
-                                <div className="px-3 py-1 bg-cyan-50/70 text-[10px] font-bold text-cyan-900 uppercase tracking-wider">
+                                <div className="px-3 py-1 bg-cyan-50/70 text-[11px] font-bold text-cyan-900 uppercase tracking-wider">
                                   Impacto Consolidado
                                 </div>
                                 {renderRow("Total Perdas Operacionais", <TrendingDown size={12} />, metricsA.totalOp, metricsB.totalOp, true)}

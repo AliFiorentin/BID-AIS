@@ -76,7 +76,7 @@ export function DanosIndice({ ctx }: { ctx: DanosCtx }) {
     <aside className="hidden w-52 shrink-0 lg:block print:hidden">
       <div className="sticky top-[56px] flex flex-col gap-3">
         <nav className="rounded-2xl border border-[#b3cdd8]/60 bg-white/85 p-4 shadow-sm backdrop-blur-xl">
-          <p className="mb-2 text-[10px] font-black tracking-wider text-[#055071] uppercase">
+          <p className="mb-2 text-[11px] font-black tracking-wider text-[#055071] uppercase">
             Índice
           </p>
           <ol className="flex flex-col gap-1">

@@ -421,7 +421,7 @@ function CompareRevealBase({
           className={cn(
             "pointer-events-none absolute top-4 z-[8] rounded-full px-3 py-1.5 transition-opacity duration-300",
             "border border-[rgba(160,186,224,0.3)] bg-[rgba(6,10,20,0.7)] backdrop-blur-[6px]",
-            "font-mono text-[10.5px] uppercase tracking-[0.12em] text-[#eef4ff] font-bold shadow-md",
+            "font-mono text-[11px] uppercase tracking-[0.12em] text-[#eef4ff] font-bold shadow-md",
             i === 0 ? "left-4" : "right-4",
           )}
         >
