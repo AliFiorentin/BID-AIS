@@ -136,7 +136,14 @@ export const CENARIOS_CONFIG: Record<string, string[]> = {
   "Eldorado do Sul": ["Cenário ADA", COTAS_CENARIO],
   Lajeado: ["Cenário ADA", "Simulação 27m", "Simulação 30m", COTAS_CENARIO],
   "Porto Alegre": ["Cenário ADA", "Simulação Climada Evento 2024", COTAS_CENARIO],
-  "Rio Grande": ["Cenário ADA", "Simulação Maio 2024", "Simulação Maio 2024 + 50%", COTAS_CENARIO],
+  "Rio Grande": [
+    "Cenário ADA",
+    "Simulação Maio 2024 – Sem intervenção",
+    "Simulação Maio 2024 – Diques",
+    "Simulação Maio 2024 – Diques + barragens",
+    "Simulação Maio 2024 + 50%",
+    COTAS_CENARIO,
+  ],
 }
 
 export const INFRAESTRUTURA_CONFIG: Record<string, string[]> = {
@@ -239,6 +246,12 @@ export const CENARIO_PERIODO: Record<string, string> = {
   rio_grande___cenario_maio_2024_50: "maio_2024",
   rio_grande___simulacao_maio_2024: "maio_2024",
   rio_grande___simulacao_maio_2024_50: "maio_2024",
+  rio_grande___simulacao_de_maio_de_2024_sem_intervencao: "maio_2024",
+  rio_grande___simulacao_de_maio_de_2024_diques: "maio_2024",
+  rio_grande___simulacao_de_maio_de_2024_diques_barragens: "maio_2024",
+  rio_grande___simulacao_maio_2024_sem_intervencao: "maio_2024",
+  rio_grande___simulacao_maio_2024_diques: "maio_2024",
+  rio_grande___simulacao_maio_2024_diques_barragens: "maio_2024",
 }
 
 export interface ImpactoCoef {
@@ -320,6 +333,12 @@ const CENARIO_DISPLAY_LABEL: Record<string, string> = {
   "Cenário 30m": "Simulação 30m",
   "Cenário Maio 2024": "Simulação Maio 2024",
   "Cenário Maio 2024 + 50%": "Simulação Maio 2024 + 50%",
+  "Simulação Maio 2024 – Sem intervenção": "Simulação Maio 2024 – Sem intervenção (Cota 2,62m)",
+  "Simulação de Maio de 2024 – Sem intervenção": "Simulação Maio 2024 – Sem intervenção (Cota 2,62m)",
+  "Simulação Maio 2024 – Diques": "Simulação Maio 2024 – Diques",
+  "Simulação de Maio de 2024 – Diques": "Simulação Maio 2024 – Diques",
+  "Simulação Maio 2024 – Diques + barragens": "Simulação Maio 2024 – Diques + barragens",
+  "Simulação de Maio de 2024 – Diques + barragens": "Simulação Maio 2024 – Diques + barragens",
 }
 export const cenarioLabel = (cen: string): string => {
   if (cen === "Cenário ADA" || cen === "Cenario ADA") return "Cenário ADA"
@@ -373,3 +392,31 @@ export const isManchaDuracao = (cen: string): boolean =>
   cen === "Simulação Climada Evento 2024" || cen === "Climada Evento 2024"
 export const MANCHA_DURACAO_GRADIENT_CSS =
   "linear-gradient(to right, #f7fbff, #c6dbef, #6baed6, #2171b5, #08306b)"
+
+// ── Rasters de Profundidade de Intervenção (Rio Grande, Maio/2024) ─────────
+export const ALTURA_SIMULACAO_RIO_GRANDE = {
+  coords: [
+    [-52.204013, -32.023926], // NW
+    [-52.071023, -32.023926], // NE
+    [-52.071023, -32.1052],   // SE
+    [-52.204013, -32.1052],   // SW
+  ] as [[number, number], [number, number], [number, number], [number, number]],
+  legenda: [
+    { label: "10–44 cm", cor: "#b8a1d9" },
+    { label: "45–64 cm", cor: "#4b0082" },
+    { label: "65–84 cm", cor: "#00ffff" },
+    { label: "85–104 cm", cor: "#00ff00" },
+    { label: "105–124 cm", cor: "#ffff00" },
+    { label: "125–144 cm", cor: "#ff7f00" },
+    { label: "≥145 cm", cor: "#ff0000" },
+  ],
+}
+
+export const isIntervencaoRioGrande = (mun: string, cen: string): boolean => {
+  if (mun !== "Rio Grande") return false
+  return (
+    cen.includes("Simulação") &&
+    cen.includes("Maio 2024") &&
+    (cen.includes("Diques") || cen.includes("Sem intervenção"))
+  )
+}

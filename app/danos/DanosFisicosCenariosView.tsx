@@ -7,6 +7,7 @@ import type { DanosCtx } from "./ctx"
 import { Section, SubTitle, DataTable, Note } from "./ui"
 import { fmtBRL, fmtN, MUN_COLORS, MUN_CARD_COLORS } from "./helpers"
 import { CENARIO_FISICO_LABELS } from "./ctx"
+import { IntervencoesFisicos } from "./IntervencoesFisicos"
 
 export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
   const {
@@ -254,8 +255,11 @@ export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
         </div>
       </Section>
 
-      {/* ═══ 3. TABELA COMPLETA DE CENÁRIOS ═══ */}
-      <Section id="tabela-cenarios" num="3" title="Tabela Comparativa de Todos os Cenários Físicos">
+      {/* ═══ 3. INTERVENÇÕES E EXPOSIÇÃO FÍSICA EVITADA (RIO GRANDE) ═══ */}
+      <IntervencoesFisicos />
+
+      {/* ═══ 4. TABELA COMPLETA DE CENÁRIOS ═══ */}
+      <Section id="tabela-cenarios" num="4" title="Tabela Comparativa de Todos os Cenários Físicos">
         <p className="mb-4">
           Comparação estruturada entre todos os cenários de inundação mapeados para os municípios avaliados.
         </p>
@@ -278,11 +282,26 @@ export function DanosFisicosCenariosView({ ctx }: { ctx: DanosCtx }) {
                 if (k === "cenario_ada") return true
                 if (k.startsWith("cenario_") && keys.includes(k.replace("cenario_", "simulacao_"))) return false
                 if (k === "climada_evento_2024" && keys.includes("simulacao_climada_evento_2024")) return false
+                if (mun === "Rio Grande" && k === "simulacao_maio_2024" && keys.includes("simulacao_maio_2024_sem_intervencao")) return false
                 return true
               })
-              const sortedKeys = dedupedKeys.sort((a, b) =>
-                a === "cenario_ada" ? -1 : b === "cenario_ada" ? 1 : a.localeCompare(b)
-              )
+              const sortedKeys = dedupedKeys.sort((a, b) => {
+                if (mun === "Rio Grande") {
+                  const order = [
+                    "cenario_ada",
+                    "simulacao_maio_2024_sem_intervencao",
+                    "simulacao_maio_2024_diques",
+                    "simulacao_maio_2024_diques_barragens",
+                    "simulacao_maio_2024_50",
+                  ]
+                  const ia = order.indexOf(a)
+                  const ib = order.indexOf(b)
+                  if (ia !== -1 && ib !== -1) return ia - ib
+                  if (ia !== -1) return -1
+                  if (ib !== -1) return 1
+                }
+                return a === "cenario_ada" ? -1 : b === "cenario_ada" ? 1 : a.localeCompare(b)
+              })
               return sortedKeys.map((cenKey) => {
                 const val = cens[cenKey]
                 return [

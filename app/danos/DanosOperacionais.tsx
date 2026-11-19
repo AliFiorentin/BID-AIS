@@ -15,6 +15,7 @@ import {
 import { CompositionBar, TotaisBarChart, SensibChart } from "./charts"
 import { LegendaComposicao } from "../perdas-operacionais/composicao"
 import { DiasBadge, Section, SubTitle, DataTable, Note } from "./ui"
+import { IntervencoesPerdas } from "./IntervencoesPerdas"
 import type { DanosCtx } from "./ctx"
 
 export function DanosOperacionais({ ctx }: { ctx: DanosCtx }) {
@@ -383,6 +384,11 @@ export function DanosOperacionais({ ctx }: { ctx: DanosCtx }) {
           .
         </Note>
       </Section>
+
+      {/* ══════════════════════════════════════════════════════════════════════
+            SEÇÃO 4 — INTERVENÇÕES E DANO EVITADO (RIO GRANDE)
+        ══════════════════════════════════════════════════════════════════════ */}
+      <IntervencoesPerdas dias={dias} />
     </>
   )
 }
