@@ -1,5 +1,8 @@
 import { Source, Layer } from "react-map-gl/maplibre"
-import { COLORS, MANCHA_DURACAO_CENARIO } from "@/lib/constants"
+import {
+  COLORS,
+  MANCHA_DURACAO_CENARIO,
+} from "@/lib/constants"
 import { CotaCanvasLayer } from "@/components/CotaCanvasLayer"
 import type { DashboardState } from "@/hooks/useDashboard"
 

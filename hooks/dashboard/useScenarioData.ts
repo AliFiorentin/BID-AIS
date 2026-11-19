@@ -156,7 +156,10 @@ export function useScenarioData({
     // faz todo permalink cair no primeiro cenário da lista. Em Lajeado e Rio
     // Grande isso trocava o cenário do link em silêncio (e o efeito de URL
     // ainda regravava o slug errado por cima). Casar por slug.
+    // Prioriza expressamente o Cenário ADA como principal quando iniciado para todos os municípios
+    const adaCenario = cenariosDisp.find(c => c === "Cenário ADA" || c === "Cenario ADA");
     const initialCenario = cenariosDisp.find(c => slugify(c) === desiredCenario)
+      ?? adaCenario
       ?? (cenariosDisp.length > 0 ? cenariosDisp[0] : "(nenhum)");
     setCenario(initialCenario);
 

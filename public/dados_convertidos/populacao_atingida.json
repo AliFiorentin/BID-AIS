@@ -192,6 +192,76 @@
       "Simulação Maio 2024 + 50%": {
         "pop_atingida": 80077,
         "pct_atingida": 40.4
+      },
+      "Simulação Maio 2024 – Sem intervenção": {
+        "pop_atingida": 22512,
+        "pct_atingida": 11.3,
+        "_metodologia": "calculado: soma do raster WorldPop 2024 de 100 m dentro da mancha e do limite municipal"
+      },
+      "Simulacao Maio 2024 – Sem intervencao": {
+        "pop_atingida": 22512,
+        "pct_atingida": 11.3,
+        "_metodologia": "calculado: soma do raster WorldPop 2024 de 100 m dentro da mancha e do limite municipal"
+      },
+      "Simulação de Maio de 2024 – Sem intervenção": {
+        "pop_atingida": 22512,
+        "pct_atingida": 11.3,
+        "_metodologia": "calculado: soma do raster WorldPop 2024 de 100 m dentro da mancha e do limite municipal"
+      },
+      "Simulacao de Maio de 2024 – Sem intervencao": {
+        "pop_atingida": 22512,
+        "pct_atingida": 11.3,
+        "_metodologia": "calculado: soma do raster WorldPop 2024 de 100 m dentro da mancha e do limite municipal"
+      },
+      "Simulação Maio 2024 – Sem intervenção (Cota 2,62m)": {
+        "pop_atingida": 22512,
+        "pct_atingida": 11.3,
+        "_metodologia": "calculado: soma do raster WorldPop 2024 de 100 m dentro da mancha e do limite municipal"
+      },
+      "Simulacao Maio 2024 – Sem intervencao (Cota 2,62m)": {
+        "pop_atingida": 22512,
+        "pct_atingida": 11.3,
+        "_metodologia": "calculado: soma do raster WorldPop 2024 de 100 m dentro da mancha e do limite municipal"
+      },
+      "Simulação Maio 2024 – Diques": {
+        "pop_atingida": 6720,
+        "pct_atingida": 3.4,
+        "_metodologia": "calculado: soma do raster WorldPop 2024 de 100 m dentro da mancha e do limite municipal"
+      },
+      "Simulacao Maio 2024 – Diques": {
+        "pop_atingida": 6720,
+        "pct_atingida": 3.4,
+        "_metodologia": "calculado: soma do raster WorldPop 2024 de 100 m dentro da mancha e do limite municipal"
+      },
+      "Simulação de Maio de 2024 – Diques": {
+        "pop_atingida": 6720,
+        "pct_atingida": 3.4,
+        "_metodologia": "calculado: soma do raster WorldPop 2024 de 100 m dentro da mancha e do limite municipal"
+      },
+      "Simulacao de Maio de 2024 – Diques": {
+        "pop_atingida": 6720,
+        "pct_atingida": 3.4,
+        "_metodologia": "calculado: soma do raster WorldPop 2024 de 100 m dentro da mancha e do limite municipal"
+      },
+      "Simulação Maio 2024 – Diques + barragens": {
+        "pop_atingida": 6705,
+        "pct_atingida": 3.4,
+        "_metodologia": "calculado: soma do raster WorldPop 2024 de 100 m dentro da mancha e do limite municipal"
+      },
+      "Simulacao Maio 2024 – Diques + barragens": {
+        "pop_atingida": 6705,
+        "pct_atingida": 3.4,
+        "_metodologia": "calculado: soma do raster WorldPop 2024 de 100 m dentro da mancha e do limite municipal"
+      },
+      "Simulação de Maio de 2024 – Diques + barragens": {
+        "pop_atingida": 6705,
+        "pct_atingida": 3.4,
+        "_metodologia": "calculado: soma do raster WorldPop 2024 de 100 m dentro da mancha e do limite municipal"
+      },
+      "Simulacao de Maio de 2024 – Diques + barragens": {
+        "pop_atingida": 6705,
+        "pct_atingida": 3.4,
+        "_metodologia": "calculado: soma do raster WorldPop 2024 de 100 m dentro da mancha e do limite municipal"
       }
     }
   }

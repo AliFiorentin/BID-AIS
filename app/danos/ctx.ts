@@ -13,6 +13,7 @@ import type {
 } from "./types"
 import { RP_ORDER, DIAS_OPCOES, scaleTo } from "./helpers"
 import type { DiasOpcao } from "./helpers"
+import { isIntervencaoRioGrande } from "@/lib/constants"
 
 export interface DanosProps {
   dados: DanosData
@@ -52,6 +53,9 @@ export const CENARIO_FISICO_LABELS: Record<string, string> = {
   simulacao_maio_2024: "Simulação Maio 2024",
   cenario_maio_2024_50: "Simulação Maio 2024 + 50%",
   simulacao_maio_2024_50: "Simulação Maio 2024 + 50%",
+  simulacao_maio_2024_sem_intervencao: "Simulação Maio 2024 – Sem intervenção (Cota 2,62m)",
+  simulacao_maio_2024_diques: "Simulação Maio 2024 – Diques",
+  simulacao_maio_2024_diques_barragens: "Simulação Maio 2024 – Diques + barragens",
 }
 
 export function scaleCotaTo(
@@ -208,6 +212,15 @@ export function useDanosContext({
 
     for (const [cen, v] of Object.entries(cens)) {
       if (cen.toLowerCase().includes("ada")) continue
+      // Cenários de intervenção de Rio Grande não entram neste gráfico geral (ficam na Seção 4 dedicada)
+      if (
+        isIntervencaoRioGrande(mun, cen) ||
+        cen.includes("Diques") ||
+        cen.includes("Sem intervenção") ||
+        cen.includes("intervencao")
+      ) {
+        continue
+      }
       const isSim = cen.startsWith("Simulação ")
       const norm = cen.replace(/^(Cen[aá]rio|Simula[cç][aã]o)\s+/, "").toLowerCase()
       if (seen.has(norm)) continue
@@ -245,13 +258,45 @@ export function useDanosContext({
     if (k === "cenario_ada") return true
     if (k.startsWith("cenario_") && rawCenarios.includes(k.replace("cenario_", "simulacao_"))) return false
     if (k === "climada_evento_2024" && rawCenarios.includes("simulacao_climada_evento_2024")) return false
+    // Rio Grande: simulacao_maio_2024 e simulacao_maio_2024_sem_intervencao representam a mesma
+    // simulação hidrodinâmica de maio/2024 sem intervenção. Ocupa apenas a oficial completa.
+    if (
+      munClimadaAtivo === "Rio Grande" &&
+      k === "simulacao_maio_2024" &&
+      rawCenarios.includes("simulacao_maio_2024_sem_intervencao")
+    ) {
+      return false
+    }
     return true
   })
-  const cenariosFisicosDisponiveis = filteredCenarios.sort((a, b) =>
-    a === "cenario_ada" ? -1 : b === "cenario_ada" ? 1 : a.localeCompare(b)
-  )
-  const cenarioFisicoAtivo = cenariosFisicosDisponiveis.includes(cenarioFisico)
-    ? cenarioFisico
+
+  const RIO_GRANDE_FISICO_ORDER = [
+    "cenario_ada",
+    "simulacao_maio_2024_sem_intervencao",
+    "simulacao_maio_2024_diques",
+    "simulacao_maio_2024_diques_barragens",
+    "simulacao_maio_2024_50",
+  ]
+
+  const cenariosFisicosDisponiveis = filteredCenarios.sort((a, b) => {
+    if (munClimadaAtivo === "Rio Grande") {
+      const ia = RIO_GRANDE_FISICO_ORDER.indexOf(a)
+      const ib = RIO_GRANDE_FISICO_ORDER.indexOf(b)
+      if (ia !== -1 && ib !== -1) return ia - ib
+      if (ia !== -1) return -1
+      if (ib !== -1) return 1
+    }
+    return a === "cenario_ada" ? -1 : b === "cenario_ada" ? 1 : a.localeCompare(b)
+  })
+
+  // Se o cenário selecionado for o slug antigo simulacao_maio_2024, normaliza para simulacao_maio_2024_sem_intervencao
+  const cenarioFisicoNormalizado =
+    munClimadaAtivo === "Rio Grande" && cenarioFisico === "simulacao_maio_2024"
+      ? "simulacao_maio_2024_sem_intervencao"
+      : cenarioFisico
+
+  const cenarioFisicoAtivo = cenariosFisicosDisponiveis.includes(cenarioFisicoNormalizado)
+    ? cenarioFisicoNormalizado
     : (DEFAULT_CENARIOS_FISICOS[munClimadaAtivo] ??
       cenariosFisicosDisponiveis[0] ??
       "")

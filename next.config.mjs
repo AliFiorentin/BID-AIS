@@ -14,6 +14,9 @@ const nextConfig = {
   turbopack: {
     root: __dirname,
   },
+  experimental: {
+    agentUpgrade: "security",
+  },
 };
 
 export default nextConfig;

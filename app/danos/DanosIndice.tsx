@@ -18,13 +18,15 @@ export function DanosIndice({ ctx }: { ctx: DanosCtx }) {
             ["#resumo", "1. Resumo Geral"],
             ["#cenarios", "2. Análise por Cenário"],
             ["#sensib", "3. Sensibilidade por Duração"],
+            ["#intervencoes", "4. Intervenções e Dano Evitado (RG)"],
             ["/metodologia#limitacoes", "Limitações (Metodologia) ↗"],
           ]
       : visao === "cenario"
         ? [
             ["#resumo-cenarios", "1. Resumo dos Cenários"],
             ["#detalhe-cenario", "2. Detalhe do Cenário"],
-            ["#tabela-cenarios", "3. Tabela de Cenários"],
+            ["#intervencoes-fisicos", "3. Intervenções e Dano Evitado (RG)"],
+            ["#tabela-cenarios", "4. Tabela de Cenários"],
             ["/metodologia#limitacoes", "Limitações (Metodologia) ↗"],
           ]
         : semCurva

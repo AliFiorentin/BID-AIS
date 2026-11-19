@@ -13,6 +13,7 @@ import {
   MANCHA_DURACAO_CENARIO,
   MANCHA_DURACAO_GRADIENT_CSS,
   cenarioLabel,
+  isIntervencaoRioGrande,
 } from "@/lib/constants"
 import { DashboardMap } from "@/components/DashboardMap"
 import { LegendItem } from "@/components/LegendItem"

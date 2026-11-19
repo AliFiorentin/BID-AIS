@@ -13,6 +13,7 @@ import {
   Users,
   Waves,
   Info,
+  ShieldCheck,
 } from "lucide-react"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 import {
@@ -22,8 +23,10 @@ import {
   MUNICIPIOS,
   PIORES_CENARIOS,
   cenarioLabel,
+  isIntervencaoRioGrande,
 } from "@/lib/constants"
 import { ResumoTab } from "@/components/tabs/ResumoTab"
+import { DanoEvitadoPainel } from "@/components/DanoEvitadoPainel"
 import { EmpresasTab } from "@/components/tabs/EmpresasTab"
 import { EducacaoTab } from "@/components/tabs/EducacaoTab"
 import { SaudeTab } from "@/components/tabs/SaudeTab"
@@ -116,6 +119,20 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cotasAtivo])
+
+  const isIntervencao = isIntervencaoRioGrande(municipio, cenario)
+  const isIntervencaoComObra = isIntervencao && !cenario.includes("Sem intervenção")
+
+  React.useEffect(() => {
+    if (isIntervencaoComObra) {
+      if (tabAtiva === "resumo") {
+        setTabAtiva("dano-evitado")
+      }
+    } else if (tabAtiva === "dano-evitado") {
+      setTabAtiva("resumo")
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isIntervencaoComObra])
 
   // Population KPI
   const popMunData =
@@ -226,6 +243,15 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
                           value: "cotas",
                           label: "Por cota",
                           icon: <Waves size={11} strokeWidth={2.5} />,
+                        },
+                      ]
+                    : []),
+                  ...(isIntervencaoComObra
+                    ? [
+                        {
+                          value: "dano-evitado",
+                          label: "Dano Evitado",
+                          icon: <ShieldCheck size={11} strokeWidth={2.5} />,
                         },
                       ]
                     : []),
@@ -406,6 +432,15 @@ export function AnalysisPanel({ dash }: AnalysisPanelProps) {
                   isVisaoGeral={isVisaoGeral}
                   mostraImpacto={mostraImpacto}
                 />
+              </TabsContent>
+            )}
+
+            {isIntervencaoComObra && (
+              <TabsContent
+                value="dano-evitado"
+                className="mt-2 flex flex-1 flex-col overflow-y-auto pr-1 pb-2 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-track]:bg-transparent"
+              >
+                <DanoEvitadoPainel cenario={cenario} />
               </TabsContent>
             )}
 
