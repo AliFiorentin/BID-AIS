@@ -759,15 +759,16 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
           <SubTitle>Cobertura e filtragem por município</SubTitle>
           <p>
             O arquivo-fonte cobre todo o Rio Grande do Sul com <strong>7.438.931 edificações</strong>.
-            Para cada município, as feições são recortadas pela bounding box territorial e
-            filtradas por limiar mínimo de confiança do modelo de detecção:
+            Para cada município, as feições são filtradas por limiar mínimo de confiança do modelo
+            de detecção e recortadas pelo polígono municipal (centroide dentro do município), o que
+            exclui as edificações de municípios vizinhos que o recorte por retângulo envolvente incluiria:
           </p>
           <DataTable rows={[
-            ["Município",       "Edificações BASE", "Confiança mínima", "Justificativa do limiar"],
-            ["Porto Alegre",    "494.590",           "0,80",             "Reduz volume de ~998 mil para ~494 mil; área densa exige maior precisão"],
-            ["Rio Grande",      "220.655",           "0,65",             "Limiar padrão (área mista urbana/rural)"],
-            ["Eldorado do Sul", "142.554",           "0,65",             "Limiar padrão"],
-            ["Lajeado",         "84.925",            "0,65",             "Limiar padrão"],
+            ["Município",       "Edificações BASE (recortadas pelo município)", "Confiança mínima", "Justificativa do limiar"],
+            ["Porto Alegre",    "269.362",           "0,80",             "Reduz volume de ~998 mil (retângulo do município) para ~494 mil e, recortado pelo município, para ~269 mil; área densa exige maior precisão"],
+            ["Rio Grande",      "179.872",           "0,65",             "Limiar padrão (área mista urbana/rural)"],
+            ["Eldorado do Sul", "38.729",           "0,65",             "Limiar padrão"],
+            ["Lajeado",         "53.689",            "0,65",             "Limiar padrão"],
           ]} />
           <p>
             A pontuação de confiança (0–1) reflete a probabilidade de que a feição detectada
@@ -1251,14 +1252,15 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
           <DataTable rows={[
             ["Etapa", <span key="l">Lotação máxima por turma (<Math tex="L" />)</span>, <span key="t">Turnos (<Math tex="T" />)</span>, "Fonte"],
             ["Educação Infantil", `${dadosClimada.premissas.lotacao_infantil} alunos/turma`, `${dadosClimada.premissas.turnos_padrao}`, "CNE/CEB Resolução nº 1/2024, Art. 6º-V (faixa de 4-5 anos, a mais numerosa da pré-escola)"],
-            ["Ensino Fundamental (+ Especial)", `${dadosClimada.premissas.lotacao_fundamental} alunos/turma`, `${dadosClimada.premissas.turnos_padrao}`, "Média ponderada dos limites da rede estadual RS por ano (25 no 1º ano, 30 do 2º ao 4º, 35 do 5º ao 9º)"],
+            ["Ensino Fundamental", `${dadosClimada.premissas.lotacao_fundamental} alunos/turma`, `${dadosClimada.premissas.turnos_padrao}`, "Média ponderada dos limites da rede estadual RS por ano (25 no 1º ano, 30 do 2º ao 4º, 35 do 5º ao 9º)"],
             ["Ensino Médio, Profissional e EJA", `${dadosClimada.premissas.lotacao_medio} alunos/turma`, `${dadosClimada.premissas.turnos_padrao}`, "Parecer CEEd/RS nº 580/2000, também usado para Profissional/EJA por falta de norma específica"],
           ]} />
           <p className="text-[12px] text-slate-600">
             Área construída do projeto padrão FNDE (6 salas): {dadosClimada.premissas.area_escola_padrao_m2.toLocaleString("pt-BR")} m².
             Cobre salas de aula, bloco administrativo, cozinha, banheiros, circulação e pátio
             coberto (área construída total do prédio, não só as 6 salas); não inclui quadra
-            coberta nem área externa descoberta.
+            coberta nem área externa descoberta. As matrículas de educação especial são um subconjunto
+            das etapas (INEP) e não são somadas no cálculo das salas.
           </p>
           <SectionSources links={[
             ["Sinduscon-RS: Preços e Custos da Construção, CUB/RS dezembro/2024", "https://sinduscon-rs.com.br/wp-content/uploads/2025/01/PRECOS-E-CUSTOS-DA-CONSTRUCAO-JANEIRO-2025.pdf"],

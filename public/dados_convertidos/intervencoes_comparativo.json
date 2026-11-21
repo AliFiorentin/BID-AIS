@@ -38,9 +38,9 @@
           "perdas_dias_efetivos": 60,
           "populacao": 22512,
           "exposicao_empresas": 1124083371.24,
-          "exposicao_educacao": 226596954.19,
+          "exposicao_educacao": 204776803.95,
           "exposicao_saude": 209213856.72,
-          "exposicao_total": 1559894182.15
+          "exposicao_total": 1538074031.91
         },
         "diques": {
           "area_ha": 333.2194,
@@ -74,9 +74,9 @@
           "perdas_dias_efetivos": 60,
           "populacao": 6720,
           "exposicao_empresas": 110326192.2,
-          "exposicao_educacao": 55839197.91,
+          "exposicao_educacao": 52003745.55,
           "exposicao_saude": 14194271.52,
-          "exposicao_total": 180359661.63
+          "exposicao_total": 176524209.27
         },
         "diques-barragens": {
           "area_ha": 327.3298,
@@ -110,9 +110,9 @@
           "perdas_dias_efetivos": 60,
           "populacao": 6705,
           "exposicao_empresas": 110232439.56,
-          "exposicao_educacao": 55839197.91,
+          "exposicao_educacao": 52003745.55,
           "exposicao_saude": 13708997.28,
-          "exposicao_total": 179780634.75
+          "exposicao_total": 175945182.39
         }
       },
       "evitado": {
@@ -202,16 +202,16 @@
             "pct": 0.901852
           },
           "exposicao_educacao": {
-            "valor": 170757756.28,
-            "pct": 0.753575
+            "valor": 152773058.4,
+            "pct": 0.746047
           },
           "exposicao_saude": {
             "valor": 195019585.2,
             "pct": 0.932154
           },
           "exposicao_total": {
-            "valor": 1379534520.52,
-            "pct": 0.884377
+            "valor": 1361549822.64,
+            "pct": 0.88523
           }
         },
         "diques-barragens": {
@@ -300,16 +300,16 @@
             "pct": 0.901936
           },
           "exposicao_educacao": {
-            "valor": 170757756.28,
-            "pct": 0.753575
+            "valor": 152773058.4,
+            "pct": 0.746047
           },
           "exposicao_saude": {
             "valor": 195504859.44,
             "pct": 0.934474
           },
           "exposicao_total": {
-            "valor": 1380113547.4,
-            "pct": 0.884748
+            "valor": 1362128849.52,
+            "pct": 0.885607
           }
         }
       }
