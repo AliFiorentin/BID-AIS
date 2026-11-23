@@ -170,7 +170,9 @@ export function MetodologiaContent({ dadosClimada }: { dadosClimada: ClimadaData
             ["Porto Alegre",    "Simulação Climada Evento 2024", "Maio 2024",                "Simulação hidrodinâmica e duração do evento real", "CLIMADA - UNU/EHS"],
             ["Porto Alegre",    "Simulação por Cota",       "Série de cotas (1,75 a 6,00 m)","Simulação gradual de inundação no Guaíba", "IPH"],
             ["Rio Grande",      "Cenário ADA (Inicial)",    "Maio 2024",                     "Área Diretamente Afetada observada em campo (extensão máxima registrada)", "MUP / Gov. RS"],
-            ["Rio Grande",      "Simulação Maio 2024",      "Maio 2024",                     "Extensão modelada computacionalmente para o evento de maio", "CIEX/FURG"],
+            ["Rio Grande",      "Simulação Maio 2024 – Sem intervenção", "Maio 2024",        "Extensão modelada computacionalmente para o evento de maio, sem obras de proteção", "CIEX/FURG"],
+            ["Rio Grande",      "Simulação Maio 2024 – Diques", "Maio 2024",                 "Mesmo evento com o sistema de diques, limiar de 10 cm de lâmina d'água", "CIEX/FURG"],
+            ["Rio Grande",      "Simulação Maio 2024 – Diques + barragens", "Maio 2024",     "Mesmo evento com diques e barragens, limiar de 10 cm de lâmina d'água", "CIEX/FURG"],
             ["Rio Grande",      "Simulação Maio 2024 + 50%","Maio 2024, nível 60 cm acima", "Simulação computacional do evento de maio com a água 60 cm mais alta", "CIEX/FURG"],
             ["Rio Grande",      "Simulação por Cota",       "Série de cotas (1,00 a 2,62 m)","Simulação gradual de inundação na Lagoa dos Patos", "CIEX"],
           ]} />
