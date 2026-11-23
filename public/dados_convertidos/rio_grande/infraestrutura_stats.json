@@ -1,18 +1,18 @@
 {
   "Logradouros": {
-    "count_base": 8184,
-    "count_atingido": 2377
+    "count_base": 8180,
+    "count_atingido": 2374
   },
   "Quadras": {
-    "count_base": 3203,
-    "count_atingido": 885
+    "count_base": 3200,
+    "count_atingido": 882
   },
   "Terrenos": {
-    "count_base": 71019,
-    "count_atingido": 19847
+    "count_base": 70864,
+    "count_atingido": 19767
   },
   "Imóveis": {
-    "count_base": 90961,
+    "count_base": 81834,
     "count_atingido": 25585
   },
   "Prédios Públicos": {
